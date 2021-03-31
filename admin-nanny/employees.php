@@ -64,7 +64,7 @@ $banner =  $connection->select('settings')->where('id', 1)->first();
                                     <th scope="col">Image</th>
                                     <th scope="col">Employee name</th>
                                     <th scope="col">Email</th>
-                                    <th scope="col">Activate</th>
+                                    <th scope="col">Feature</th>
                                     <th scope="col">Last login</th>
                                     <th scope="col">Date registered</th>
                                     <th scope="col">Action</th>
@@ -88,7 +88,7 @@ $banner =  $connection->select('settings')->where('id', 1)->first();
                                         <td>
                                             <div class="ui_kit_whitchbox">
                                                 <div class="custom-control custom-switch">
-                                                    <input type="checkbox"  data-id="<?= $employee->e_id ?>" class="custom-control-input employee_deactivate_btn" id="customSwitch_<?= $employee->e_id ?>" <?= !$employee->e_is_deactivate ? 'checked' : '';?>>
+                                                    <input type="checkbox"  data-id="<?= $employee->e_id ?>" class="custom-control-input employee_feature_btn" id="customSwitch_<?= $employee->e_id ?>" <?= $employee->is_feature ? 'checked' : '';?>>
                                                     <label class="custom-control-label" for="customSwitch_<?= $employee->e_id ?>"></label>
                                                 </div>
                                             </div>
@@ -184,30 +184,35 @@ $banner =  $connection->select('settings')->where('id', 1)->first();
 <script>
 $(document).ready(function(){
 
-// ==========================================
-// EMPLOYEE DEACTIVATE BUTTON
-// ==========================================
-$('.employee_deactivate_btn').click(function(e){
+// ===========================================
+// FEATURE EMPLOYEE
+// ===========================================
+$(".employee_feature_btn").click(function(e){
+    e.preventDefault();
     var url = $(".ajax_url_page").attr('href');
-    var id = $(this).attr('data-id');
+    var employee_id = $(this).attr('data-id');
     $(".preloader-container").show() //show preloader
+    $(".page_alert_danger").hide();
 
     $.ajax({
-		url: url,
-		method: 'post',
-		data: {
-			employee_id: id,
-			is_employee_deactivate: 'is_employee_deactivate'
-		},
-		success: function(response){
+        url: url,
+        method: "post",
+        data: {
+            employee_id: employee_id,
+            update_employee_feature: 'update_employee_feature'
+        },
+        success: function (response){
             var data = JSON.parse(response);
             if(data.data){
-                location.reload()
-            }else{
-                location.reload()
+                location.reload();
             }
-		}
-	});
+        },
+        error: function(){
+            $(".page_alert_danger").show();
+            $(".page_alert_danger").html('^Network error, try again later!');
+        }
+    });
+    
 });
 
 

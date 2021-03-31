@@ -1,6 +1,8 @@
 <?php
 ob_start();
 
+require_once('vendor/autoload.php');
+
 spl_autoload_register(function($class){
     require_once 'classes/'.$class.'.php';
 });
@@ -72,6 +74,12 @@ if(Cookie::exists('employee_remember_me') && !Session::has('user'))
         return view('/');
     }
 }
+
+
+
+
+// FACEBOOK APP ID = 268608751649972
+// FACEBOOK SECRETE KEY = 2b29b58cddf417552c5abe64c7373000
 
 
 ?>

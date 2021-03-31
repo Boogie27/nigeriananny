@@ -331,10 +331,10 @@ if($request_worker)
                         <div class="col-lg-8">
                             <!-- featured jobs start-->
                             <?php if(Session::has('error')): ?>
-                                <div class="alert-danger text-center p-3 mb-2"><?= Session::flash('error') ?></div>
+                                <div class="alert alert-danger text-center p-3 mb-2"><?= Session::flash('error') ?></div>
                             <?php endif; ?>
                             <?php if(Session::has('success')): ?>
-                                <div class="alert-success text-center p-3 mb-2"><?= Session::flash('success') ?></div>
+                                <div class="alert alert-success text-center p-3 mb-2"><?= Session::flash('success') ?></div>
                             <?php endif; ?>
                            <?php 
                                 $savedJob = saved_jobs($job->worker_id);
@@ -495,6 +495,21 @@ if($request_worker)
                                     </ul>
                                 </div>
                                 <!-- SAFETY END-->
+
+                                 <!-- CV START-->
+                                 <?php if($subscription && $viewed):
+                                    if($job->cv): 
+                                    $cv = json_decode($job->cv, true);  
+                                    ?>
+                                    <div class="j-safety">
+                                        <div class="js-head">CV, Resume:</div>
+                                        <ul>
+                                            <li class="text-center"><a href="<?= url($cv['cv']) ?>" class="btn btn-success">Download CV</a></li>
+                                        </ul>
+                                    </div>
+                                    <?php endif; ?>
+                                <?php endif; ?>
+                                <!-- CV END-->
 
                                  <!-- SHARE START-->
                                  <div class="j-share">

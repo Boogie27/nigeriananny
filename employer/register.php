@@ -67,7 +67,7 @@
         <div class="sr-head"><h4>Creat an Employer Account</h4></div>
         <form action="<?= current_url() ?>" method="POST">
             <?php if(Session::has('success')): ?>
-                <div class="alert-success text-center p-3 mb-2"><?= Session::flash('success') ?></div>
+                <div class="alert alert-success text-center p-3 mb-2"><?= Session::flash('success') ?></div>
             <?php endif; ?>
             <div class="form-seeker form-employer-container">
                 <h4 class="pb-3"><i class="fa fa-user"></i> Personal information</h4>

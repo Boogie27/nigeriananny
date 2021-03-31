@@ -92,5 +92,140 @@
     
 
 
+
+
+
+
+
+
+
+
+
+    public static function shop_google_login($email)
+    {
+        if($email)
+        {
+            $connection = new DB();
+            $check_user = $connection->select('users')->where('email', $email)->first();
+            if($check_user && $check_user->is_deactivate)
+            {
+                return 'deactivated';
+            }    
+
+            if(!$check_user)
+            {
+                $user = $connection->create('users', [
+                    'email' => $email,
+                ]);
+            }
+
+            Session::delete('shop_login');
+            $logged_in = Auth::login($email); //login user in
+
+            // CHECK AND REDIRECT IF OLD URL EXIST
+            if(Session::has('old_url'))
+            {
+                $old_url = Session::get('old_url');
+                return $old_url;
+            }
+
+            return 'login';
+        }
+    }
+
+
+
+
+
+    public static function employer_google_login($email)
+    {
+        if($email)
+        {
+            $connection = new DB();
+            $check_employee = $connection->select('employers')->where('email', $email)->first();
+            if($check_employee && $check_employee->e_deactivate)
+            {
+                return 'deactivated';
+            }
+
+            // IF EMAIL DOES NOT EXIST THEN CREATE NEW EMPLOYEE
+            if(!$check_employee)
+            {
+                $employer = $connection->create('employers', [
+                    'email' => $email,
+                ]);
+            }
+
+            
+            Session::delete('employer_login');
+            $logged_in = Auth_employer::login($email); //login employer in
+
+
+            // CHECK AND REDIRECT IF OLD URL EXIST
+            if(Session::has('old_url'))
+            {
+                $old_url = Session::get('old_url');
+                return $old_url;
+            }
+
+            return 'login';
+        }
+    }
+
+
+
+
+
+
+
+    public static function employee_google_login($email)
+    {
+      if($email)
+      {
+        $connection = new DB();
+        $check_employee = $connection->select('employee')->where('email', $email)->first();
+		if($check_employee && $check_employee->e_is_deactivate)
+		{
+            return 'deactivated';
+		}
+
+		// IF EMAIL DOES NOT EXIST THEN CREATE NEW EMPLOYEE
+		if(!$check_employee)
+		{
+			$employee = $connection->create('employee', [
+				'email' => $email,
+			]);
+
+			if($employee->passed())
+            {
+                $employer = $connection->select('employee')->where('email', $email)->first();
+                $connection->create('workers', [
+                    'employee_id' => $employer->e_id,
+                ]);
+            }
+		}
+
+        Session::delete('employee_login');
+        Auth_employee::login($email);
+
+		// CHECK AND REDIRECT IF OLD URL EXIST
+		if(Session::has('old_url'))
+		{
+			$old_url = Session::get('old_url');
+			return $old_url;
+		}
+
+            return 'login';
+        }
+    }
+
+
+
+
+
+
+
+
+
     // end;
   }

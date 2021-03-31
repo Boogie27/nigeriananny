@@ -11,11 +11,11 @@ if(!Admin_auth::is_loggedin())
 // ===========================================
 // GET REPORTED EMPLOYEES
 // ===========================================
-$employees = $connection->select('employee')->leftJoin('employer_reports', 'employee.e_id', '=', 'employer_reports.employee_rid')->paginate(15);
+$employees = $connection->select('employer_reports')->leftJoin('employee', 'employer_reports.employee_rid', '=', 'employee.e_id')->paginate(15);
 
-
-
-    // app banner settings
+// ==============================================
+// app banner settings
+// ===========================================
 $banner =  $connection->select('settings')->where('id', 1)->first();
 ?>
 

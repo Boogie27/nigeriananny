@@ -80,7 +80,7 @@ if(Input::post('update_profile'))
 // ======================================
 // GET EMPLOYEE DETAILS
 // ======================================
-$employee = $connection->select('employee')->where('e_id', Input::get('wid'))->first();
+$employee = $connection->select('employee')->leftJoin('workers', 'employee.e_id', '=', 'workers.employee_id')->where('e_id', Input::get('wid'))->first();
 if(!$employee)
 {
     return view('/admin-nanny/employees');
@@ -147,6 +147,16 @@ $worker = $connection->select('workers')->where('employee_id', Input::get('wid')
                         </div>
                         <div class="account-x">
                             <div class="account-x-body" id="account-x-body"><br>
+                                <div class="options-x text-right">
+                                    <div class="drop-down">
+                                        <i class="fa fa-ellipsis-h dot-icon"></i>
+                                        <ul class="drop-down-ul">
+                                            <li><a href="#" id="<?= Input::get('wid') ?>" class="employee_add_top_btn"><?= $employee->is_top ? 'Remove from top' : 'Add to top' ?></a></li>
+                                            <li><a href="#" id="<?= Input::get('wid') ?>" class="employee_feature_btn"><?= $employee->is_feature ? 'Unfeature' : 'Feature' ?></a></li>
+                                            <li><a href="#" id="<?= Input::get('wid') ?>" class="employee_deactivate_btn"><?= $employee->e_is_deactivate ? 'Activate' : 'Deactivate' ?></a></li>
+                                        </ul>
+                                    </div>
+                                </div>
                                 <div class="img-conatiner-x">
                                     <div class="em-img">
                                         <?php $profile_image = $employee->w_image ? $employee->w_image : '/images/employee/demo.png' ?>
@@ -616,7 +626,7 @@ $worker = $connection->select('workers')->where('employee_id', Input::get('wid')
                                    <?php  $store = json_decode($worker->cv, true); ?>
                                        <ul class="inner_ul">
                                            <li><b class="text-success"><?= $store['name'] ?></b></li>
-                                           <li>Uploaded on <?= $store['date']?></li>
+                                           <li>Uploaded on <?= $store['date']?>  <span class="float-right"><a href="<?= url($store['cv'])?>" class="text-success">Download cv</a></span></li>
                                        </ul>
                                    </div>
                                    <?php endif; ?>
@@ -676,6 +686,113 @@ $worker = $connection->select('workers')->where('employee_id', Input::get('wid')
 
 <script>
 $(document).ready(function(){
+
+// ===========================================
+// FEATURE EMPLOYEE
+// ===========================================
+$(".employee_feature_btn").click(function(e){
+    e.preventDefault();
+    var url = $(".ajax_url_page").attr('href');
+    var employee_id = $(this).attr('id');
+    $(".preloader-container").show() //show preloader
+    $(".page_alert_danger").hide();
+
+    $.ajax({
+        url: url,
+        method: "post",
+        data: {
+            employee_id: employee_id,
+            update_employee_feature: 'update_employee_feature'
+        },
+        success: function (response){
+            var data = JSON.parse(response);
+            if(data.data){
+                location.reload();
+            }
+        },
+        error: function(){
+            $(".page_alert_danger").show();
+            $(".page_alert_danger").html('^Network error, try again later!');
+        }
+    });
+    
+});
+
+
+
+
+
+
+// ==========================================
+// EMPLOYEE DEACTIVATE BUTTON
+// ==========================================
+$('.employee_deactivate_btn').click(function(e){
+    var url = $(".ajax_url_page").attr('href');
+    var id = $(this).attr('id');
+    $(".preloader-container").show() //show preloader
+
+    $.ajax({
+		url: url,
+		method: 'post',
+		data: {
+			employee_id: id,
+			is_employee_deactivate: 'is_employee_deactivate'
+		},
+		success: function(response){
+            var data = JSON.parse(response);
+            location.reload();
+		},
+        error: function(){
+            remove_preloader();
+            $('.page_alert_danger').show();
+            $('.page_alert_danger').html('*Network error, try again later');
+        }
+	});
+});
+
+
+
+
+
+
+
+
+// ===========================================
+// EMPLOYEE ADD TO TOP
+// ===========================================
+$(".employee_add_top_btn").click(function(e){
+    e.preventDefault();
+    var url = $(".ajax_url_page").attr('href');
+    var employee_id = $(this).attr('id');
+    $(".preloader-container").show() //show preloader
+    $(".page_alert_danger").hide();
+
+    $.ajax({
+        url: url,
+        method: "post",
+        data: {
+            employee_id: employee_id,
+            update_employee_top: 'update_employee_top'
+        },
+        success: function (response){
+            var data = JSON.parse(response);
+            if(data.data){
+                location.reload();
+            }
+            remove_dark_preloader();
+        },
+        error: function(){
+            $(".page_alert_danger").show();
+            $(".page_alert_danger").html('^Network error, try again later!');
+        }
+    });
+    
+});
+
+
+
+
+
 
 // ===========================================
 //      OPEN PROFILE IMAGE

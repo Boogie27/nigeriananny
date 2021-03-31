@@ -59,7 +59,7 @@ if(!Input::exists('get') && Input::get('tid'))
         <div class="sr-head"><h4>Reset to new password</h4></div>
         <form action="<?= current_url() ?>" method="POST">
             <?php if(Session::has('error')): ?>
-                <div class="alert-danger text-center p-3 mb-2"><?= Session::flash('error') ?></div>
+                <div class="alert alert-danger text-center p-3 mb-2"><?= Session::flash('error') ?></div>
             <?php endif; ?>
             <div class="form-seeker form-employer-container">
                 <div class="row">

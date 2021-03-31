@@ -127,10 +127,10 @@ $reports =  $connection->select('reports')->where('is_feature', 1)->get();
                         <div class="col-lg-7">
                             <!-- featured jobs start-->
                             <?php if(Session::has('error')): ?>
-                                <div class="alert-danger text-center p-3 mb-2"><?= Session::flash('error') ?></div>
+                                <div class="alert alert-danger text-center p-3 mb-2"><?= Session::flash('error') ?></div>
                             <?php endif; ?>
                             <?php if(Session::has('success')): ?>
-                                <div class="alert-success text-center p-3 mb-2"><?= Session::flash('success') ?></div>
+                                <div class="alert alert-success text-center p-3 mb-2"><?= Session::flash('success') ?></div>
                             <?php endif; ?>
                            <?php 
                                 $w_image = $job->w_image ? $job->w_image : '/employee/images/demo.png'; 
@@ -262,6 +262,21 @@ $reports =  $connection->select('reports')->where('is_feature', 1)->get();
                                      <p><?= $job->summary ?></p>
                                 </div>
                                 <!-- SUMMARY END -->
+
+                                 <!-- CV START-->
+                            
+                                <?php if($job->cv): 
+                                $cv = json_decode($job->cv, true);  
+                                ?>
+                                <div class="j-safety">
+                                    <div class="js-head">CV, Resume:</div>
+                                    <ul>
+                                        <li><b class="text-success"><?= $cv['name'] ?></b></li>
+                                        <li class="text-center"><a href="<?= url($cv['cv']) ?>" class="btn btn-success">Download CV</a></li>
+                                    </ul>
+                                </div>
+                                <?php endif; ?>
+                                <!-- CV END-->
                                
                             </div>
                             <!-- featured jobs end-->

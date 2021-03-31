@@ -74,7 +74,7 @@ $banner =  $connection->select('settings')->where('id', 1)->first();
                     </div>
                     <?php if($employee->is_flagged): ?>
                         <div class="col-lg-12">
-                            <div class="alert-warning text-center p-3"><i class="fa fa-bell"></i> This employee has been flagged</div>
+                            <div class="text-warning text-center"><i class="fa fa-bell"></i> This employee has been flagged</div>
                         </div>
                     <?php endif; ?>
                     <div class="col-lg-12">

@@ -16,15 +16,15 @@ $categories = $connection->select('job_categories')->where('is_category_featured
 					<li class="list-inline-item">
 	                	<div class="search_overlay">
 						  <a id="search-button-listener" class="mk-search-trigger mk-fullscreen-trigger" href="#">
-						    <div id="search-button"><i class="flaticon-magnifying-glass"></i></div>
+						    <!-- <div id="search-button"><i class="flaticon-magnifying-glass"></i></div> -->
 						  </a>
 							<div class="mk-fullscreen-search-overlay" id="mk-search-overlay">
 							    <a href="#" class="mk-fullscreen-close" id="mk-fullscreen-close-button"><i class="fa fa-times"></i></a>
 							    <div id="mk-fullscreen-search-wrapper">
-							      <form method="get" id="mk-fullscreen-searchform">
+							      <!-- <form method="get" id="mk-fullscreen-searchform">
 							        <input type="text" value="" placeholder="Search courses..." id="mk-fullscreen-search-input">
 							        <i class="flaticon-magnifying-glass fullscreen-search-icon"><input value="" type="submit"></i>
-							      </form>
+							      </form> -->
 							    </div>
 							</div>
 						</div>
@@ -48,7 +48,6 @@ $categories = $connection->select('job_categories')->where('is_category_featured
 					<?php endif; ?>
 				</li>
 				<li><a href="<?= url('/jobs') ?>">Find employee</a></li>
-				<li><a href="<?= url('/') ?>">Post a job</a></li>
 				<?php if(Auth_employer::is_loggedin()): ?>
 					<li><a href="<?= url('/employer/account') ?>"><span class="fa fa-user"></span> Account</a></li>
 				<?php endif; ?>

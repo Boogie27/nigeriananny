@@ -1,6 +1,87 @@
 <?php include('Connection.php');  ?>
 
 <?php
+
+
+
+$google = new Google();
+
+// ==================================
+// GOOGLE LOGIN
+// ==================================
+if(Input::exists('get') && Input::get('code'))
+{
+	$token = $google->auth_code(Input::get('code'));
+	if(!isset($token['error']))
+	{
+		$google->token($token);
+
+		$data = $google->data();
+
+		// LOGIN TO ECOMMERCE SECTION
+		if(Session::has('shop_login'))
+		{
+			$shop_login = Input::shop_google_login($data['email']);
+			if($shop_login == 'deactivated')
+			{
+				Session::flash('error', '*This account has been deactivated, please contact the admin.');
+                return view('/shop/login');
+			}else if($shop_login == 'login'){
+				Session::flash('success', 'You have loggedin successfully!');
+				return view('/shop');
+			}else{
+				Session::delete('old_url');
+				Session::flash('success', 'You have loggedin successfully!');
+				return view($shop_login);
+			}
+		}
+
+
+		// LOGIN AS EMPLOYER
+		if(Session::has('employer_login'))
+		{
+			$employer_login = Input::employer_google_login($data['email']);
+			if($employer_login == 'deactivated')
+			{
+				Session::flash('error', '*This account has been deactivated, please contact the admin.');
+                return view('/employer/login');
+			}else if($employer_login == 'login'){
+				Session::flash('success', 'You have loggedin successfully!');
+				return view('/');
+			}else{
+				Session::delete('old_url');
+				Session::flash('success', 'You have loggedin successfully!');
+				return view($employer_login);
+			}
+		}
+
+
+		// LOGIN AS EMPLOYEE
+		if(Session::has('employee_login'))
+		{
+			$employee_login = Input::employee_google_login($data['email']);
+			if($employee_login == 'deactivated')
+			{
+				Session::flash('error', '*This account has been deactivated, please contact the admin.');
+                return view('/employee/login');
+			}else if($employee_login == 'login'){
+				Session::flash('success', 'You have loggedin successfully!');
+				return view('/');
+			}else{
+				Session::delete('old_url');
+				Session::flash('success', 'You have loggedin successfully!');
+				return view($employee_login);
+			}
+		}
+	}
+}
+
+
+
+
+
+
+
 // ==================================
 // GET EMPLOYERS
 // ==================================
@@ -52,12 +133,12 @@ $testimonials = $connection->select('testimonial')->where('is_featured', 1)->get
 	<!-- jobs start-->
 	<div class="top-jobs-container">
 		<div class="job-head">
-			<h3>Top jobs</h3>
+			<h3 style="color: #333;">Top trending workers</h3>
 		</div>
 		<div class="jobs-body">
 			<div class="alert-container">
 			    <?php if(Session::has('success')): ?>
-                    <div class="alert-success text-center p-3"><?= Session::flash('success') ?></div>
+                    <div class="alert alert-success text-center p-3"><?= Session::flash('success') ?></div>
                 <?php endif; ?>
 			</div>
 			<div class="row">

@@ -10,7 +10,7 @@
 
     if(!$product_detail)
     {
-        return Redirect::to('404.php');
+        return view('/shop');
 	}
 	
 	

@@ -151,7 +151,7 @@ $jobs->paginate(5);
                 <div class="col-lg-9">
                     <div class="job-head-2">
                         <?php if(Session::has('success')): ?>
-                            <div class="alert-success text-center p-3 mb-2"><?= Session::flash('success') ?></div>
+                            <div class="alert alert-success text-center p-3 mb-2"><?= Session::flash('success') ?></div>
                         <?php endif; ?>
                         <h3><?= Input::get('category') ? ucfirst(Input::get('category')).' category' : 'Featured jobs'; ?></h3>
                     </div>
@@ -242,7 +242,6 @@ $jobs->paginate(5);
         </div>
     </div>
     <!-- jobs end-->
-
 
 
 

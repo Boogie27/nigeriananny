@@ -91,10 +91,12 @@ if(Input::post('is_employee_deactivate'))
 
         $update = $connection->update('employee', [
                     'e_is_deactivate' => $is_deactivate,
-                    'is_active' => 0
+                    'is_active' => 0,
+                    'is_feature' => 0
                 ])->where('e_id', $employee_id)->save();
         if($update)
         {
+            Session::flash('success', "Employee status updated successfully!");
             $data = true;
         }
     }
@@ -1104,6 +1106,39 @@ if(Input::post('add_new_employee'))
 }
 
 
+
+
+
+
+
+// ==========================================
+// EMPLOYER DEACTIVATE BUTTON
+// ==========================================
+if(Input::post('is_employer_deactivate'))
+{
+    $data = false;
+    $employer_id = Input::get('employer_id');
+    if(!empty($employer_id))
+    {
+        $connection = new DB();
+        $employer = $connection->select('employers')->where('id', $employer_id)->first();
+        $is_deactivate	 = $employer->e_deactivate ? 0 : 1;
+
+        $update = $connection->update('employers', [
+                    'e_deactivate' => $is_deactivate,
+                    'e_active' => 0
+                ])->where('id', $employer_id)->save();
+        if($update)
+        {
+            $data = true;
+        }
+    }
+    if(!$data)
+    {
+        Session::flash('error', "*Network error, try again later");
+    }
+    return response(['data' => $data]);
+}
 
 
 
@@ -2147,9 +2182,41 @@ if(Input::post('add_function_action'))
 // ========================================
 if(Input::post('get_add_function_action'))
 {
+    return include('common/ajax-add-testimonial-function.php');
+}
+
+
+
+
+
+
+// ========================================
+// ADD TESTIMONIAL FUNCTION CANCLE
+// ========================================
+if(Input::post('add_testimonial_function_cancle'))
+{
     $data = false;
-    $testimonial =  Session::has('funcitons') ? Session::get('funcitons') : null;
-    return include('common/ajax-testimonial-function.php');
+    if(Session::has('functions'))
+    {
+        $stored_functions = Session::get('functions');
+        if(array_key_exists(Input::get('key'), $stored_functions))
+        {
+            unset($stored_functions[Input::get('key')]);
+        }
+    
+        if(count($stored_functions) == 0)
+        {
+            $data = true;
+            Session::delete('functions');
+            return response(['data' => $data]);
+        }
+
+        if(Session::put('functions', $stored_functions))
+        {
+            $data = true;
+        }
+    }
+    return response(['data' => $data]);
 }
 
 
@@ -2159,6 +2226,40 @@ if(Input::post('get_add_function_action'))
 
 
 
+// ======================================
+// ADD TESTIMONIAL PROFILE IMAGE
+// ======================================
+if(Input::post('add_testimonial_image'))
+{
+    $data = true;
+    if(Image::exists('image'))
+    {
+        $expiry = 604800;
+
+        $image = new Image();
+        $file = Image::files('image');
+
+        $file_name = Image::name('image', 'testimonial');
+        $image->resize_image($file, ['name' => $file_name, 'width' => 200, 'height' => 200, 'size_allowed' => 1000000,'file_destination' => '../images/testimonial/']);
+            
+        $image_name = '/images/testimonial/'.$file_name;
+
+        if(!$image->passed())
+        {
+            return response(['error' => ['image' => $image->error()]]);
+        }
+        
+        
+        if(Cookie::has('testimoial_image'))
+        {
+            Image::delete('../'.Cookie::get('testimoial_image'));
+        }
+        Cookie::put('testimoial_image', $image_name, $expiry);
+        
+      
+    }
+    return response(['data' => $data]);
+}
 
 
 
@@ -2167,6 +2268,78 @@ if(Input::post('get_add_function_action'))
 
 
 
+// ========================================
+//     GET ADD TESTIMONIAL  IMAGE
+// ========================================
+if(Input::post('get_add_testimonial_img'))
+{
+    return include('common/ajax-add-testimonial-img.php');
+}
+
+
+
+
+
+
+// ======================================
+// DELETE TESTIMONIAL PROFILE IMAGE
+// ======================================
+if(Input::post('delete_testimonial_img'))
+{
+    $data = false;
+    if(Cookie::has('testimoial_image'))
+    {
+        Image::delete('../'.Cookie::get('testimoial_image'));
+        Cookie::delete('testimoial_image');
+        $data = true;
+    }
+    return response(['data' => $data]);
+}
+
+
+
+
+
+
+// ==========================================
+// MESSAGE  SEEN BUTTON
+// ==========================================
+if(Input::post('is_message_seen'))
+{
+    $data = false;
+    $connection = new DB();
+    $contact =  $connection->select('contact_us')->where('id', Input::get('message_id'))->first();
+    $is_seen = $contact->is_seen ? 0 : 1;
+
+    $update = $connection->update('contact_us', [
+            'is_seen' => $is_seen
+        ])->where('id', Input::get('message_id'))->save();
+    if($update)
+    {
+        $data = true;
+    }
+    return response(['data' => $data]);
+}
+
+
+
+
+
+
+// ==========================================
+// DELETE MESSAGE
+// ==========================================
+if(Input::post('delete_message_action'))
+{
+    $data = false;
+    $connection = new DB();
+    $delete = $connection->delete('contact_us')->where('id', Input::get('message_id'))->save();
+    if($delete)
+    {
+        $data = true;
+    }
+    return response(['data' => $data]);
+}
 
 
 
@@ -2174,9 +2347,50 @@ if(Input::post('get_add_function_action'))
 
 
 
+// ===========================================
+// FEATURE EMPLOYEE
+// ===========================================
+if(Input::post('update_employee_feature'))
+{
+    $data = false;
+    $connection = new DB();
+    $employee =  $connection->select('employee')->where('e_id', Input::get('employee_id'))->first();
+    $is_featured = $employee->is_feature ? 0 : 1;
+
+    $update = $connection->update('employee', [
+            'is_feature' => $is_featured
+        ])->where('e_id', Input::get('employee_id'))->save();
+    if($update)
+    {
+        Session::flash('success', 'Employee features updated successfully!');
+        $data = true;
+    }
+    return response(['data' => $data]);
+}
 
 
 
+
+// ===========================================
+// EMPLOYEE ADD TO TOP
+// ===========================================
+if(Input::post('update_employee_top'))
+{
+    $data = false;
+    $connection = new DB();
+    $worker =  $connection->select('workers')->where('employee_id', Input::get('employee_id'))->first();
+    $is_top = $worker->is_top ? 0 : 1;
+
+    $update = $connection->update('workers', [
+            'is_top' => $is_top
+        ])->where('employee_id', Input::get('employee_id'))->save();
+    if($update)
+    {
+        Session::flash('success', 'Employee updated successfully!');
+        $data = true;
+    }
+    return response(['data' => $data]);
+}
 
 
 

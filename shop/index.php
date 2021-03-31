@@ -88,10 +88,14 @@ $banner =  $connection->select('settings')->where('id', 1)->first();
 			<div class="row">
 				<div class="col-md-12">
 				<div class="col-lg-6 offset-lg-3">
-							<div class="main-title text-center">
-								<h3 class="mt0">Recently added products</h3>
-							</div>
-						</div>
+					<div class="text-center">
+						<h3 class="mt0">Recently added products</h3>
+						<?php if(Session::has('success')): ?>
+							<div class="alert alert-success text-center"><?= Session::flash('success'); ?></div>
+						<?php endif; ?>
+					</div>
+					<br><br>
+				</div>
 					<?php $recentProduct = $connection->select('shop_products')->where('product_quantity', '>=', 1)->where('product_is_featured', 1)->orderBy('product_date_added', 'DESC')->limit(4)->get(); 
 					
 					?>

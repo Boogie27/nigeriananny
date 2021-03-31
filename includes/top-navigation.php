@@ -30,17 +30,6 @@ $settings = $connection->select('settings')->where('id', 1)->first();
 					<div class="ht_right_widget float-right">
 						<ul class="text-right">
 							<li class="list-inline-item"><i class="fa fa-phone"></i>  <a href="#">Call: <?= $settings->phone ? $settings->phone : ''; ?></a></li>
-							<li class="list-inline-item">
-								<div class="header_top_lang_widget">
-									<select class="selectpicker show-tick">
-										<option>English</option>
-										<option>Frenc</option>
-										<option>Italian</option>
-										<option>Spanish</option>
-										<option>Turkey</option>
-									</select>
-								</div>
-							</li>
 						</ul>
 					</div>
 				</div>

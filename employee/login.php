@@ -6,66 +6,106 @@
       return view('/');
   }
   
+
+
+
+//==================================================
+// EMAIL LOGIN
+// =================================================
  if(Input::post('login_employee'))
  {
-      $validate = new DB();
-     
-      $validation = $validate->validate([
-          'email' => 'required|email',
-          'password' => 'required|min:6|max:12',
-      ]);
+    $validate = new DB();
+    
+    $validation = $validate->validate([
+        'email' => 'required|email',
+        'password' => 'required|min:6|max:12',
+    ]);
 
 
       
-      if($validation->passed())
-      {
-          $verify = new DB();
-          $verification = $verify->select('employee')->where('email', Input::get('email'))->first();
-          if(!$verification)
-          {
-              Session::errors('errors', ['email' => '*Wrong email provided, try again!']);
-              return back();
-          }
+    if($validation->passed())
+    {
+        $verify = new DB();
+        $verification = $verify->select('employee')->where('email', Input::get('email'))->first();
+        if(!$verification)
+        {
+            Session::errors('errors', ['email' => '*Wrong email provided, try again!']);
+            return back();
+        }
 
-          if(!password_verify(Input::get('password'), $verification->password))
-          {
-              Session::errors('errors', ['password' => '*Wrong password, try again!']);
-              return back();
-          }
+        if(!password_verify(Input::get('password'), $verification->password))
+        {
+            Session::errors('errors', ['password' => '*Wrong password, try again!']);
+            return back();
+        }
 
-          if($verification->e_is_deactivate)
-          {
-              Session::flash('error', '*This account has been deactivated, please contact the admin.');
-              return back();
-          }
+        if($verification->e_is_deactivate)
+        {
+            Session::flash('error', '*This account has been deactivated, please contact the admin.');
+            return back();
+        }
 
-          $remember_me = Input::get('remember_me')? true : false;
+        $remember_me = Input::get('remember_me')? true : false;
 
-          $logged_in = Auth_employee::login(Input::get('email'), $remember_me);
+        $logged_in = Auth_employee::login(Input::get('email'), $remember_me);
 
-          if($logged_in && Session::has('old_url'))
-          {
-              $old_url = Session::get('old_url');
-              Session::delete('old_url');
-              Session::flash('success', 'You have loggedin successfully!');
-              return view($old_url);
-          }
+        if($logged_in && Session::has('old_url'))
+        {
+            $old_url = Session::get('old_url');
+            Session::delete('old_url');
+            Session::flash('success', 'You have loggedin successfully!');
+            return view($old_url);
+        }
 
             if($logged_in)
             {
-                if(Auth_employer::is_loggedin())
-                {
-                    Auth_employer::logout();
-                }
-
                 Session::flash('success', 'You have loggedin successfully!');
                 return view('/');
             }
-      }
-     
- }
+    }
+    
+}
+
+
+
+
+
+
+//  =============================================
+// GOOGLE LOGIN AUTH
+// =============================================
+if(Input::post('google_login'))
+{
+    $google = new Google();
+    Session::delete('employer_login');
+    Session::delete('shop_login');
+    Session::put('employee_login', true);
+    return Redirect::to($google->auth_url());
+}
+
+
+
+
+
+
+// ==============================================
+// FACEBOOK LOGIN AUTH
+// ==============================================
+if(Input::post('facebook_login'))
+{
+    $facebook = new Facebook();
+    Session::delete('fb_employer_login');
+    Session::delete('fb_shop_login');
+    Session::put('fb_employee_login', true);
+    return Redirect::to($facebook->login_url());
+}
+
 
 ?>
+
+
+
+
 <?php include('includes/header.php');  ?>
 
 <!-- top navigation-->
@@ -88,10 +128,10 @@
         <div class="sr-head"><h4>Employee login</h4></div>
         <form action="<?= current_url() ?>" method="POST">
             <?php if(Session::has('error')): ?>
-                <div class="alert-danger text-center p-3 mb-2"><?= Session::flash('error') ?></div>
+                <div class="alert alert-danger text-center p-3 mb-2"><?= Session::flash('error') ?></div>
             <?php endif; ?>
             <?php if(Session::has('success')): ?>
-                <div class="alert-success text-center p-3"><?= Session::flash('success') ?></div>
+                <div class="alert alert-success text-center p-3"><?= Session::flash('success') ?></div>
             <?php endif; ?>
             <div class="form-seeker form-employer-container">
                 <div class="row">
@@ -125,6 +165,18 @@
                         <div class="form-group">
                             <button type="submit" name="login_employee" class="uppercase btn-fill">Employee login</button>
                             <p class="apply-p">Don't have an account? <br><a href="<?= url('/employee/register') ?>" class="text-primary">Register</a></p>
+                        </div>
+                    </div>
+                    <div class="col-lg-12">
+                        <hr>
+                        <p class="text-center">or</p>
+                        <div class="row mt40">
+                            <div class="col-lg mb-2">
+                                <button type="submit" name="facebook_login" class="btn btn-block color-white bgc-fb"><i class="fa fa-facebook float-left mb-2"></i> Facebook</button>
+                            </div>
+                            <div class="col-lg mb-2">
+                                <button type="submit" name="google_login" class="btn btn-block color-white bgc-gogle"><i class="fa fa-google float-left  mb-2"></i> Google</button>
+                            </div>
                         </div>
                     </div>
                 </div>

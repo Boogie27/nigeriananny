@@ -2277,9 +2277,38 @@ ul.ul-flagg{
 
 
 
-
-
-
+/* ======================================== */
+/* CONTACT        PAGE                     */
+/* ======================================= */
+#contact-form{
+    padding-top: 20px;
+    padding-bottom: 20px;
+    box-shadow: 0px 2px 2px 0px rgb(197, 197, 197);
+}
+p.contact-p{
+    font-size: 14px;
+    width: 60%;
+    margin: 0 auto;
+    padding-bottom: 30px;
+}
+.alert-cont{
+    height: 20px;
+}
+ul.ul-message li{
+    font-size: 12px;
+}
+@media only screen and (max-width: 992px){
+    p.contact-p{
+        width: 80%;
+    }
+}
+@media only screen and (max-width: 567px){
+    p.contact-p{
+        width: 100%;
+        padding: 0px 20px 20px 20px;
+        text-align: center;
+    }
+}
 
 
 

@@ -36,7 +36,7 @@ $flags = $connection->select('employee')->where('is_flagged', 1)->paginate(12);
                 <h3>Flagged employees</h3>
                 <p>Employees who are appear here has been flagged based on their misdeeds</p>
             </div>
-            <br>
+            <br><br>
             <div class="row">
                 <?php if($flags->result()): 
                 foreach($flags->result() as $flag):

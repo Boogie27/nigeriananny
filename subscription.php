@@ -46,7 +46,7 @@ $subscription_pans = $connection->select('subscription_pan')->where('is_feature'
             <h3 class="h">Choose a subscription plan</h3>
              <div class="alert-container">
                 <?php if(Session::has('success')): ?>
-                    <div class="alert-success text-center p-3"><?= Session::flash('success') ?></div>
+                    <div class="alert alert-success text-center p-3"><?= Session::flash('success') ?></div>
                 <?php endif; ?>
              </div>
             <div class="subscription-forms">

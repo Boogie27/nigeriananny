@@ -84,10 +84,10 @@ if(!$employee)
         <div class="account-container">
             <div class="desktop-alert">
                 <?php if(Session::has('success')): ?>
-                    <div class="alert-success text-center p-3 mb-2"><?= Session::flash('success') ?></div>
+                    <div class="alert alert-success text-center p-3 mb-2"><?= Session::flash('success') ?></div>
                 <?php endif; ?>
                 <?php if(Session::has('error')): ?>
-                    <div class="alert-danger text-center p-3 mb-2"><?= Session::flash('error') ?></div>
+                    <div class="alert alert-danger text-center p-3 mb-2"><?= Session::flash('error') ?></div>
                 <?php endif; ?>
             </div>
             <div class="row">
@@ -125,10 +125,10 @@ if(!$employee)
                                 <div class="col-xl-9 col-lg-9">
                                     <div class="mobile-alert">
                                         <?php if(Session::has('error-m')): ?>
-                                            <div class="alert-danger text-center p-3 mb-2"><?= Session::flash('error-m') ?></div>
+                                            <div class="alert alert-danger text-center p-3 mb-2"><?= Session::flash('error-m') ?></div>
                                         <?php endif; ?>
                                         <?php if(Session::has('success-m')): ?>
-                                            <div class="alert-success text-center p-3 mb-2"><?= Session::flash('success-m') ?></div>
+                                            <div class="alert alert-success text-center p-3 mb-2"><?= Session::flash('success-m') ?></div>
                                         <?php endif; ?>
                                     </div>
                                     <h3 class="rh-head">Change password</h3><br>

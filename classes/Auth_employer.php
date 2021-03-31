@@ -66,6 +66,11 @@ class Auth_employer{
                 if($connection->passed())
                 {
                     Session::put('employer', $login_user);
+
+                    if(Auth_employee::is_loggedin())
+                    {
+                        Auth_employee::logout();
+                    }    
                     return true;
                 }
             }

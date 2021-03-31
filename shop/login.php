@@ -61,8 +61,26 @@
    }
 
 
-   
+// ==========================================
+// SETTINGS
+// ==========================================
 $banner =  $connection->select('settings')->where('id', 1)->first();
+
+
+
+
+//  =============================================
+// GOOGLE LOGIN AUTH
+// =============================================
+$google = new Google();
+if(Input::post('google_login'))
+{
+    Session::delete('employer_login');
+    Session::delete('employee_login');
+    Session::put('shop_login', true);
+    return Redirect::to($google->auth_url());
+}
+
 ?>
 
 <?php include('includes/header.php') ?>
@@ -131,7 +149,7 @@ $banner =  $connection->select('settings')->where('id', 1)->first();
                     <button type="submit" class="btn btn-block color-white bgc-fb"><i class="fa fa-facebook float-left mt5"></i> Facebook</button>
                 </div>
                 <div class="col-lg col-sm-6">
-                    <button type="submit" class="btn btn-block color-white bgc-gogle"><i class="fa fa-google float-left mt5"></i> Google</button>
+                    <button type="submit" name="google_login" class="btn btn-block color-white bgc-gogle"><i class="fa fa-google float-left mt5"></i> Google</button>
                 </div>
             </div>
         </form>

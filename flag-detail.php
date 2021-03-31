@@ -61,7 +61,7 @@ $employee = $connection->select('employee')->where('e_id', Input::get('fid'))->f
                         <div class="emp-rev flex-item">
                             <?php $profile_image = $report->e_image ? $report->e_image : '/employer/images/employer/demo.png';  ?>
                             <img src="<?= asset($profile_image) ?>" alt="<?= $report->first_name ?>" class="review-img">
-                            <ul class="info pt-2">
+                            <ul class="info p-3">
                                 <li><b>Name: </b><?= ucfirst($report->first_name.' '.$report->last_name)?> <span class="float-right text-success"><?= date('d M Y', strtotime($report->date_reported))?></span></li>
                                 <li><b>Email: </b><?= $report->email ?></li>
                                 <li><b>Report: </b><?= $report->report ?></li>

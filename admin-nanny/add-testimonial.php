@@ -21,22 +21,27 @@ if(Input::post('create_testimonial'))
         $validation = $validate->validate([
             'first_name' => 'required|min:3|max:50',
             'last_name' => 'required|min:3|max:50',
-            'comment' => 'required|min:200|max:300',
+            'comment' => 'required|min:50|max:3000',
         ]);
 
         if($validation->passed())
         {
             $connection = new DB();
+            $image = Cookie::has('testimoial_image') ? Cookie::get('testimoial_image') : null;
             $create = $connection->create('testimonial', [
                     'first_name' => Input::get('first_name'),
                     'last_name' => Input::get('last_name'),
                     'comment' => Input::get('comment'),
+                    'image' => $image,
+                    'function' => json_encode(Session::get('functions'))
                 ]);
     
             if($create->passed())
             {
+                Session::delete('functions');
+                Cookie::delete('testimoial_image');
                 Session::flash('success', 'Testimonial created successfully!');
-                return back();
+                return view('/admin-nanny/testimonial');
             }
         }
 
@@ -115,7 +120,11 @@ if(!$testimonial)
                                 <div class="account-x-body" id="account-x-body"><br>
                                     <div class="img-conatiner-x">
                                         <div class="em-img">
-                                            <img src="<?= asset('/images/testimonial/demo.png') ?>" alt="name" class="acc-img" id="profile_image_img">
+                                            <?php $profile_image = Cookie::has('testimoial_image') ? Cookie::get('testimoial_image') : '/images/testimonial/demo.png'?>
+                                            <img src="<?= asset($profile_image) ?>" alt="name" class="acc-img" id="profile_image_img">
+                                            <?php if(Cookie::has('testimoial_image')): ?>
+                                                <i class="fa fa-trash" id="profile_img_delete"></i>
+                                            <?php endif; ?>
                                             <i class="fa fa-camera" id="profile_img_open"></i>
                                             <input type="file" class="profile_img_input" style="display: none;">
                                             <div class="text-danger alert_profile_img text-center"></div>
@@ -255,8 +264,7 @@ $('.img-conatiner-x').on('change', '.profile_img_input', function(){
     var image = $(image)[0].files[0];
 
     data.append('image', image);
-    data.append('testimonial_id', testimonial_id);
-    data.append('upload_testimonial_image', true);
+    data.append('add_testimonial_image', true);
 
     $.ajax({
         url: url,
@@ -286,16 +294,16 @@ $('.img-conatiner-x').on('change', '.profile_img_input', function(){
 
 
 // ========================================
-//     GET EMPLOYER IMAGE
+//     GET ADD TESTIMONIAL  IMAGE
 // ========================================
-function get_employer_img(){
+function get_testimonial_img(){
     var url = $(".ajax_url_page").attr('href');
 
     $.ajax({
         url: url,
         method: "post",
         data: {
-            get_testimonial_img: 'get_testimonial_img'
+            get_add_testimonial_img: 'get_add_testimonial_img'
         },
         success: function (response){
             $(".img-conatiner-x .em-img").html(response)
@@ -309,12 +317,44 @@ function get_employer_img(){
 
 
 
+// ======================================
+// DELETE TESTIMONIAL PROFILE IMAGE
+// ======================================
+$('.img-conatiner-x').on('click', '#profile_img_delete', function(){
+    var url = $(".ajax_url_page").attr('href');
+    $(".e-loader-kamo").show();
+    $(".page_alert_danger").hide();
+
+    $.ajax({
+        url: url,
+        method: "post",
+        data: {
+            delete_testimonial_img: 'delete_testimonial_img'
+        },
+        success: function (response){
+           var data = JSON.parse(response);
+           if(data.data){
+                img_preloader();
+            }else{
+                $(".e-loader-kamo").hide();
+                $(".page_alert_danger").show();
+                $(".page_alert_danger").html('There was an error, try again later!');
+            }
+        },
+        error: function(){
+            $(".page_alert_danger").show();
+            $(".page_alert_danger").html('There was an error, try again later!');
+        }
+    });
+});
+
+
 // ========================================
 //     GET ERROR PRELOADER
 // ========================================
 function img_preloader(string){
     setTimeout(function(){
-        get_employer_img()
+        get_testimonial_img()
         $(".e-loader-kamo").hide();
     }, 5000);
 }
@@ -377,15 +417,14 @@ function add_testimonial_function(){
             add_function_action: 'add_function_action'
         },
         success: function (response){
-            // var data = JSON.parse(response);
-            // if(data.error){
-            //     $(".alert_0").html(data.error.functions);
-            // }else if(data.data){
-            //     $("#testimonial_function_input").val('');
-            //     // get_testimonial_function();
-            // }
-            // remove_preloader();
-            console.log(response)
+            var data = JSON.parse(response);
+            if(data.error){
+                $(".alert_0").html(data.error.functions);
+            }else if(data.data){
+                $("#testimonial_function_input").val('');
+                get_testimonial_function();
+            }
+            remove_preloader();
         },
         error: function(){
             remove_preloader();
@@ -430,10 +469,11 @@ function get_testimonial_function(){
 
 
 // ========================================
-// TESTIMONIAL FUNCTION CANCLE
+// ADD TESTIMONIAL FUNCTION CANCLE
 // ========================================
 $('#function_container').on('click', '.funciton_cancle_btn', function(e){
     e.preventDefault();
+    $(".alert_0").html('');
     $(".alert-x").hide();
     var key = $(this).attr('id');
     var url = $(".ajax_url_page").attr('href');
@@ -444,7 +484,7 @@ $('#function_container').on('click', '.funciton_cancle_btn', function(e){
         method: "post",
         data: {
             key: key,
-            function_cancle_action: 'function_cancle_action'
+            add_testimonial_function_cancle: 'add_testimonial_function_cancle'
         },
         success: function (response){
             var data = JSON.parse(response);

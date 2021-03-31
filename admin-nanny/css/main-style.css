@@ -574,7 +574,7 @@ ul.inner_ul .li-link a{
 .em-img .req-img{
     border-radius: 50%;
 }
-.em-img i{
+.em-img i.fa-camera{
     right: 20px;
     position: absolute;
     bottom: 10px;
@@ -584,6 +584,17 @@ ul.inner_ul .li-link a{
     border-radius: 50%;
     cursor: pointer;
     background-color: rgba(135, 134, 134, 0.515);
+}
+.em-img i.fa-trash{
+    right: -10px;
+    position: absolute;
+    bottom: 50px;
+    padding: 10px 12px;
+    color: #fff;
+    font-size: 20px;
+    border-radius: 50%;
+    cursor: pointer;
+    background-color: rgba(241, 121, 121, 0.515);
 }
 .account-profile-form input:focus, .account-profile-form textarea:focus, .account-profile-form select:focus{
       box-shadow: none;
@@ -624,6 +635,12 @@ ul.inner_ul .li-link a{
     }
     .em-img i{
         right: 0px;
+    }
+    .em-img i.fa-trash, .em-img i.fa-camera{
+        font-size: 13px;
+    }
+    .em-img i.fa-camera{
+        right: 10px;
     }
 }
 @media only screen and (max-width: 398px){
@@ -1331,10 +1348,32 @@ ul.ability-x li{
 
 
 
-
-
-
-
+/* ============================================= */
+/* MESSAGE PAGE                                   */
+/* ============================================== */
+.message-body{
+    padding: 0px 20px;
+}
+ul.ul-message li{
+    font-size: 13px;
+}
+ul.ul-message p{
+    font-size: 13px;
+    padding: 10px;
+    border-radius: 4px;
+    display: inline-block;
+    background-color: rgb(242, 242, 242);
+}
+@media only screen and (max-width: 567px){
+    ul.ul-message p{
+        display: block;
+    }
+}
+@media only screen and (max-width: 398px){
+    .message-body{
+        padding: 10px;
+    }
+}
 
 
 

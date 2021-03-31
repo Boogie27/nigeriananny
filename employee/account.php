@@ -116,10 +116,10 @@ $worker = $connection->select('workers')->where('employee_id', Auth_employee::em
         <div class="account-container" id="account-container">
             <div class="desktop-alert">
                 <?php if(Session::has('error')): ?>
-                    <div class="alert-danger text-center p-3 mb-2"><?= Session::flash('error') ?></div>
+                    <div class="alert alert-danger text-center p-3 mb-2"><?= Session::flash('error') ?></div>
                 <?php endif; ?>
                 <?php if(Session::has('success')): ?>
-                    <div class="alert-success text-center p-3 mb-2"><?= Session::flash('success') ?></div>
+                    <div class="alert alert-success text-center p-3 mb-2"><?= Session::flash('success') ?></div>
                 <?php endif; ?>
            </div>
             <div class="row">
@@ -159,10 +159,10 @@ $worker = $connection->select('workers')->where('employee_id', Auth_employee::em
                         <div class="col-lg-9"><!-- content start-->
                             <div class="mobile-alert">
                                 <?php if(Session::has('error-m')): ?>
-                                    <div class="alert-danger text-center p-3 mb-2"><?= Session::flash('error-m') ?></div>
+                                    <div class="alert alert-danger text-center p-3 mb-2"><?= Session::flash('error-m') ?></div>
                                 <?php endif; ?>
                                 <?php if(Session::has('success-m')): ?>
-                                    <div class="alert-success text-center p-3 mb-2"><?= Session::flash('success-m') ?></div>
+                                    <div class="alert alert-success text-center p-3 mb-2"><?= Session::flash('success-m') ?></div>
                                 <?php endif; ?>
                             </div>
                             <div class="account-x">
@@ -622,7 +622,7 @@ $worker = $connection->select('workers')->where('employee_id', Auth_employee::em
                                    <?php  $store = json_decode($worker->cv, true); ?>
                                        <ul class="inner_ul">
                                            <li><b class="text-success"><?= $store['name'] ?></b></li>
-                                           <li>Uploaded on <?= $store['date']?></li>
+                                           <li>Uploaded on <?= $store['date']?> <span class="float-right"><a href="<?= url($store['cv'])?>" class="text-success">Download cv</a></span></li>
                                        </ul>
                                    </div>
                                    <?php endif; ?>
