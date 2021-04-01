@@ -2,6 +2,8 @@
 $settings = $connection->select('settings')->where('id', 1)->first();
 ?>
 
+
+
 <div class="header_top home2">
 		<div class="container">
 			<div class="row">

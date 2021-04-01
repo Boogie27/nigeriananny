@@ -1377,7 +1377,17 @@ ul.ul-message p{
 
 
 
-
+/* ============================================ */
+/* NEWS LETTER PAGE                            */
+/* ========================================== */
+.table-header{
+    top: -15px;
+    position: relative;
+}
+.table-header label.custom-control-label span{
+    top: 4px;
+    position: relative;
+}
 
 
 

@@ -1,5 +1,7 @@
-	<!-- Main Header Nav -->
-	<header class="header-nav home2 style_one navbar-scrolltofixed main-menu">
+<!-- navbar-scrolltofixed -->
+
+<!-- Main Header Nav -->
+	<header class="header-nav home2 style_one  main-menu">
 		<div class="container">
 		    <!-- Ace Responsive Menu -->
 		    <nav>
@@ -43,6 +45,9 @@
 					<li><a href="<?= url('/flagged') ?>"><span class="title">Flagged</span></a></li>
 					<li class="last">
 		                <a href="<?= url('/contact') ?>"><span class="title">Contact us</span></a>
+					</li>
+					<li class="last">
+		                <a href="#" class="news_letter_open_btn"><span class="title">News letter</span></a>
 		            </li>
 		        </ul>
 		        <ul class="sign_up_btn pull-right dn-smd mt20">

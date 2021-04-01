@@ -333,6 +333,10 @@ $testimonials = $connection->select('testimonial')->where('is_featured', 1)->get
 		</div>
 	</section>
 
+
+
+	
+
 </div>
 <!-- page content end-->
 

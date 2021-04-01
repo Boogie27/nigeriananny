@@ -2432,3 +2432,170 @@ if(Input::post('update_employee_top'))
 
 
 
+
+
+
+
+
+// ========================================
+// SELECT EMPLOYER NEWS LETTER CLIENTS 
+// ======================================== 
+if(Input::post('select_news_letter_clients'))
+{
+    $data = false;
+    $stored_client = [];
+
+    if(!Session::has('employer_type'))
+    {
+        array_push($stored_client, Input::get('news_id'));
+    }else{
+        $stored_client = Session::get('employer_type');
+        if(in_array(Input::get('news_id'), $stored_client))
+        {
+            $key = array_keys($stored_client, Input::get('news_id'))[0];
+            unset($stored_client[$key]);
+        }else{
+            array_push($stored_client, Input::get('news_id'));
+        }
+    }
+
+    if(Session::has('employer_all'))
+    {
+        Session::delete('employer_all');
+    }
+
+    Session::put('employer_type', $stored_client);
+
+    if(count(Session::get('employer_type')) == 0)
+    {
+       Session::delete('employer_type');
+    }
+    
+    $data = true;
+    return response(['data' => $data]);
+}
+
+
+
+
+
+
+
+// ======================================
+// NEWS EMPLYER LETTER ALL BUTTON
+// ======================================
+if(Input::post('select_news_letter_clients_all'))
+{
+    $data = false;
+    Session::delete('employer_type');
+    Session::delete('employer_all');
+
+    if(Input::get('state'))
+    {
+        $stored_client = [];
+        $client_types = $connection->select('news_letters')->where('client_type', 'employer')->get();
+        foreach($client_types as $client_type)
+        {
+            array_push($stored_client, $client_type->id);
+        }
+
+        $data = true;
+        Session::put('employer_all', true);
+        Session::put('employer_type', $stored_client);
+    }
+    return response(['data' => $data]);
+}
+
+
+
+
+
+
+
+
+// ========================================
+// SELECT EMPLOYEE NEWS LETTER CLIENTS 
+// ======================================== 
+if(Input::post('select_news_letter_employer'))
+{
+    $data = false;
+    $stored_client = [];
+
+    if(!Session::has('employee_type'))
+    {
+        array_push($stored_client, Input::get('news_id'));
+    }else{
+        $stored_client = Session::get('employee_type');
+        if(in_array(Input::get('news_id'), $stored_client))
+        {
+            $key = array_keys($stored_client, Input::get('news_id'))[0];
+            unset($stored_client[$key]);
+        }else{
+            array_push($stored_client, Input::get('news_id'));
+        }
+    }
+
+    if(Session::has('employee_all'))
+    {
+        Session::delete('employee_all');
+    }
+
+    Session::put('employee_type', $stored_client);
+
+    if(count(Session::get('employee_type')) == 0)
+    {
+       Session::delete('employee_type');
+    }
+    
+    $data = true;
+    return response(['data' => $data]);
+}
+
+
+
+
+
+
+
+// ======================================
+// NEWS EMPLYEE LETTER ALL BUTTON
+// ======================================
+if(Input::post('select_news_letter_employee_all'))
+{
+    $data = false;
+    Session::delete('employee_type');
+    Session::delete('employee_all');
+
+    if(Input::get('state'))
+    {
+        $stored_client = [];
+        $client_types = $connection->select('news_letters')->where('client_type', 'employee')->get();
+        foreach($client_types as $client_type)
+        {
+            array_push($stored_client, $client_type->id);
+        }
+
+        $data = true;
+        Session::put('employee_all', true);
+        Session::put('employee_type', $stored_client);
+    }
+    return response(['data' => $data]);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

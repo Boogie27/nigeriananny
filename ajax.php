@@ -1426,3 +1426,93 @@ if(Input::post('update_employee_job_title'))
     return response(['data' => $data]);
 }
 
+
+
+
+
+
+
+
+// ========================================
+// SUBSCRIBE TO NEWS LETTER
+// ========================================
+if(Input::post('subscribe_news_letter'))
+{
+    $validate = new Validator();
+    $validation = $validate->validate([
+        'full_name' => 'required|min:3|max:50',
+        'email' => 'required|email|unique:news_letters',
+        'client_type' => 'required',
+    ]);
+
+    if(!$validation->passed())
+    {
+        return response(['error' => $validation->error()]);
+    }
+
+
+    $create = $connection->create('news_letters', [
+            'full_name' => Input::get('full_name'),
+            'email' => Input::get('email'),
+            'client_type' => Input::get('client_type'),
+    ]);
+
+    if($create)
+    {
+        $data = true;
+    }
+
+
+    return response(['data' => $data]);
+}
+
+
+
+
+
+
+
+
+// ===========================================
+// STOP SEEING NEWS LETTER FORM
+// ===========================================
+if(Input::post('stop_news_letter'))
+{
+    $data = false;
+    $expiry = 3153600;
+
+    if(Cookie::has('remove_news_letter'))
+    {
+        Cookie::delete('remove_news_letter');
+    }
+    if(Cookie::put('remove_news_letter', true, $expiry))
+    {
+        $data = true;
+    }
+    return response(['data' => $data]);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -2321,15 +2321,119 @@ ul.ul-message li{
     }
 }
 
-
-
-
-
-
-
-
-
-
+/* ============================================= */
+/* NEWS LETTER                                  */
+/* =========================================== */
+.news-dark-layer{
+    top: 0px;
+    z-index: 1000;
+    position: absolute;
+    display: table;
+    height: 100vh;
+    width: 100vw;
+    text-align: center;
+    position: fixed;
+    display: none;
+    background-color: rgba(12, 12, 12, 0.624);
+}
+.news-letter-container{
+    position: relative;
+    display: table-cell;
+    vertical-align: middle;
+}
+.news-letter-form{
+    width: 70%;
+    padding: 20px;
+    border-radius: 5px;
+    margin: 0 auto;
+    background-color: #fff;
+}
+.news-letter-form input:focus{
+    outline: none;
+    box-shadow: none;
+}
+.alert_news{
+    top: -10px;
+    font-size: 13px;
+    height: 13px;
+    position: relative;
+}
+.news-letter-checker{
+    border-radius: 50%;
+}
+.updated-container{
+    width: 100%;
+    height: 100%;
+    display: table;
+    text-align: center;
+}
+.update-content{
+    display: table-cell;
+    vertical-align: middle;
+}
+.newsletter-cancle-btn{
+    position: relative;
+    height: 10px;
+}
+.newsletter-cancle-btn button{
+    top: -15px;
+    right: 0px;
+    border: none;
+    color: #555;
+    cursor: pointer;
+    position: absolute;
+    background-color: transparent;
+}
+.newsletter-cancle-btn button:focus{
+    border: none;
+    outline: none;
+    box-shadow: none;
+}
+@media only screen and (max-width: 1125px){
+    .news-letter-form{
+        width: 80%;
+    }
+}
+@media only screen and (max-width: 992px){
+    .news-letter-form{
+        width: 95%;
+    }
+    .news-letter-container{
+        padding-right: 10px;
+    }
+    .news-checker{
+        text-align: left;
+    }
+}
+@media only screen and (max-width: 767px){
+    .news-letter-container{
+        padding: 10px;
+        padding-left: 0px;
+        padding-right: 10px;
+    }
+    .news-letter-form{
+        width: 90%;
+        padding-bottom: 30px;
+    }
+    .updated-container{
+        padding-top: 30px;
+    }
+    .news-checker label{
+        top: -2px;
+        font-size: 13px;
+        position: relative
+    }
+}
+@media only screen and (max-width: 398px){
+    .news-letter-container{
+        padding: 0px;
+    }
+}
+.news-checker label{
+    top: -2px;
+    font-size: 13px;
+    position: relative
+}
 
 
 
