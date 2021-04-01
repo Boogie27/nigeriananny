@@ -154,6 +154,7 @@ $worker = $connection->select('workers')->where('employee_id', Input::get('wid')
                                             <li><a href="#" id="<?= Input::get('wid') ?>" class="employee_add_top_btn"><?= $employee->is_top ? 'Remove from top' : 'Add to top' ?></a></li>
                                             <li><a href="#" id="<?= Input::get('wid') ?>" class="employee_feature_btn"><?= $employee->is_feature ? 'Unfeature' : 'Feature' ?></a></li>
                                             <li><a href="#" id="<?= Input::get('wid') ?>" class="employee_deactivate_btn"><?= $employee->e_is_deactivate ? 'Activate' : 'Deactivate' ?></a></li>
+                                            <li><a href="#" id="<?= Input::get('wid') ?>" class="employee_approve_btn"><?= $employee->e_approved ? 'Unapprove' : 'Approve' ?></a></li>                                        
                                         </ul>
                                     </div>
                                 </div>
@@ -170,6 +171,9 @@ $worker = $connection->select('workers')->where('employee_id', Input::get('wid')
                                         <div class="r">
                                             <div class="preload"></div>
                                         </div>
+                                    </div>
+                                    <div class="approved text-center">
+                                        <span class="text-<?= $employee->e_approved ? 'success' : 'danger'?>"><?= $employee->e_approved ? 'Approved' : 'Not approved'?></span>
                                     </div>
                                 </div>
                                 <form action="<?= current_url()?>" method="POST" class="account-profile-form">
@@ -757,6 +761,15 @@ $('.employee_deactivate_btn').click(function(e){
 
 
 
+
+
+
+
+
+
+
+
+
 // ===========================================
 // EMPLOYEE ADD TO TOP
 // ===========================================
@@ -788,6 +801,49 @@ $(".employee_add_top_btn").click(function(e){
     });
     
 });
+
+
+
+
+
+
+
+
+
+
+// ===========================================
+// EMPLOYEE ADD TO TOP
+// ===========================================
+$(".employee_approve_btn").click(function(e){
+    e.preventDefault();
+    var url = $(".ajax_url_page").attr('href');
+    var employee_id = $(this).attr('id');
+    $(".preloader-container").show() //show preloader
+    $(".page_alert_danger").hide();
+
+    $.ajax({
+        url: url,
+        method: "post",
+        data: {
+            employee_id: employee_id,
+            update_employee_approve: 'update_employee_approve'
+        },
+        success: function (response){
+            var data = JSON.parse(response);
+            if(data.data){
+                location.reload();
+            }
+            remove_dark_preloader();
+        },
+        error: function(){
+            $(".page_alert_danger").show();
+            $(".page_alert_danger").html('^Network error, try again later!');
+        }
+    });
+    
+});
+
+
 
 
 

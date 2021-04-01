@@ -27,7 +27,7 @@
 // ===========================================
 // GET ALL JOBS
 // ===========================================
-$jobs = $connection->select('workers')->leftJoin('employee', 'workers.employee_id', '=', 'employee.e_id')->where('job_approved', 1)->where('employee.is_feature', 1)->where('employee.e_is_deactivate', 0);
+$jobs = $connection->select('workers')->leftJoin('employee', 'workers.employee_id', '=', 'employee.e_id')->where('employee.e_approved', 1)->where('employee.is_feature', 1)->where('is_flagged', 0)->where('employee.e_is_deactivate', 0);
 
 
 
@@ -85,7 +85,7 @@ $jobs->paginate(5);
             </div>
             <div class="job-head" id="remove-jh">
                 <br>
-                <h3><?= Input::get('category') ? ucfirst(Input::get('category')).' category' : 'Featured jobs'; ?></h3>
+                <h3><?= Input::get('category') ? ucfirst(Input::get('category')).' category' : 'Featured workers'; ?></h3>
                 <h5 class="text-center" style="color: #555;"><?= Input::get('state') ? 'Employees forund in '.ucfirst(Input::get('state')).' state' : ''; ?></h5>
             </div>
             <div class="row">

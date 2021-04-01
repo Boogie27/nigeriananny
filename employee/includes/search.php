@@ -1,5 +1,11 @@
 
+<?php
+// ===============================================
+// app banner settings
+// ===========================================
+$banner =  $connection->select('settings')->where('id', 1)->first();
 
+?>
 
 
 
@@ -9,7 +15,7 @@
 
 <!-- page banner start-->
 <div class="banner-container">
-		<div class="page-banner" style="background-image: url('images/home/4.jpg')">
+		<div class="page-banner" style="background-image: url(<?= asset($banner->job_banner) ?>)">
 			<div class="banner-head">
 				<h4>Find an employee in a minute</h4>
 				<h3>Join us and explore thousands of employees</h3>
@@ -18,14 +24,12 @@
 				<div class="col-lg-3">
 					<div class="ui_kit_select_box">
 						<select name="category" class="selectpicker custom-select-lg mb-3">
-							<option value="slug">All category</option>
+							<option value="">All category</option>
 							<?php $categories = $connection->select('job_categories')->where('is_category_featured', 1)->get(); 
 							if(count($categories)): 
 							foreach($categories as $category):?>
 								<option value="<?= $category->category_slug?>"><?= $category->category_name?></option>
 							<?php endforeach; ?>
-							<?php else: ?>
-							<option value="">There are no categories</option>
 							<?php endif; ?>
 						</select>
 					</div>

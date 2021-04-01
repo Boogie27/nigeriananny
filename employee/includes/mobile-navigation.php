@@ -60,6 +60,7 @@ $categories = $connection->select('job_categories')->where('is_category_featured
 				<?php else: ?>
 					<li><a href="<?= url('/employee/login') ?>"><span class="fa fa-users"></span> Job seeker login</a></li>
 				<?php endif; ?>
+				<li><a href="<?= url('/shop') ?>"><span class="fa fa-circle"></span> Market place</a></li>
 				<?php if(Auth_employer::is_loggedin()):?>
 					<li><a href="<?= url('/employer/logout') ?>"><span class="flaticon-edit"></span> Logout</a></li>
 				<?php else: ?>

@@ -50,6 +50,11 @@ if(Input::post('create_employee'))
 
 
 
+// ===============================================
+// app banner settings
+// ===========================================
+$banner =  $connection->select('settings')->where('id', 1)->first();
+
 ?>
 
 <?php include('includes/header.php'); ?>

@@ -92,7 +92,7 @@ $employers = $connection->select('employers')->where('e_feature', 1)->where('e_d
 // ==================================
 // GET EMPLOYEES
 // ==================================
-$workers = $connection->select('workers')->leftJoin('employee', 'workers.employee_id', '=', 'employee.e_id')->where('is_job_feature', 1)->where('is_top', 1)->where('employee.is_feature', 1)->where('employee.e_is_deactivate', 0)->random()->limit(9)->get();
+$workers = $connection->select('workers')->leftJoin('employee', 'workers.employee_id', '=', 'employee.e_id')->where('is_job_feature', 1)->where('is_top', 1)->where('employee.is_feature', 1)->where('employee.e_approved', 1)->where('is_flagged', 0)->where('employee.e_is_deactivate', 0)->random()->limit(9)->get();
 
 
 
@@ -316,7 +316,7 @@ $testimonials = $connection->select('testimonial')->where('is_featured', 1)->get
 						<div class="bi_grid text-center">
 							<h3>Signup as a worker</h3>
 							<p>Teach what you love. Dove Schooll gives you the tools to create an <br class="dn-lg"> online course.</p>
-							<a class="btn btn-thm" href="<?= url('/login') ?>">Start working <span class="flaticon-right-arrow-1"></span></a>							
+							<a class="btn btn-thm" href="<?= url('/employee/register') ?>">Start working <span class="flaticon-right-arrow-1"></span></a>							
 						</div>
 					</div>
 				</div>
@@ -325,7 +325,7 @@ $testimonials = $connection->select('testimonial')->where('is_featured', 1)->get
 						<div class="bi_grid text-center">
 							<h3>Signup as an employer</h3>
 							<p>Get unlimited access to 2,500 of Udemy’s top courses for <br class="dn-lg"> your team.</p>
-							<a class="btn btn-dark" href="<?= url('/employer/login') ?>">Employ a worker <span class="flaticon-right-arrow-1"></span></a>							
+							<a class="btn btn-dark" href="<?= url('/employer/register') ?>">Employ a worker <span class="flaticon-right-arrow-1"></span></a>							
 						</div>
 					</div>
 				</div>

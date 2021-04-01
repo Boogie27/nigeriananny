@@ -100,6 +100,13 @@ if(!$employer)
 $requests = $connection->select('request_workers')->leftJoin('employee', 'request_workers.j_employee_id', '=', 'employee.e_id')->where('j_employer_id', Input::get('wid'))->get();
 
 
+
+
+// ===============================================
+// app banner settings
+// ===========================================
+$banner =  $connection->select('settings')->where('id', 1)->first();
+
 ?>
 
 <?php include('includes/header.php'); ?>

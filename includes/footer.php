@@ -9,6 +9,7 @@ $settings = $connection->select('settings')->where('id', 1)->first();
 				<div class="col-sm-6 col-md-6 col-md-6 col-lg-6">
 					<div class="footer_contact_widget">
 						<h4>CONTACT</h4>
+						<p>Info: <?= $settings->info_email ? $settings->info_email : ''; ?></p>
 						<p>Phone: <?= $settings->phone ? $settings->phone : ''; ?></p>
 						<p>Address: <?= $settings->address ? $settings->address : ''; ?></p>
 						<p>City: <?= $settings->city ? $settings->city : ''; ?></p>

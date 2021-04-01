@@ -1,5 +1,11 @@
 
+<?php
+// ===============================================
+// app banner settings
+// ===========================================
+$banner =  $connection->select('settings')->where('id', 1)->first();
 
+?>
 
 
 
@@ -9,7 +15,7 @@
 
 <!-- page banner start-->
 <div class="banner-container">
-		<div class="page-banner" style="background-image: url('images/home/4.jpg')">
+		<div class="page-banner" style="background-image: url(<?= asset($banner->job_banner) ?>)">
 			<div class="banner-head">
 				<h4>Find an employee in a minute</h4>
 				<h3>Join us and explore thousands of employees</h3>

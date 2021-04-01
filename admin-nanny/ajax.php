@@ -112,6 +112,42 @@ if(Input::post('is_employee_deactivate'))
 
 
 
+// ==========================================
+// EMPLOYEE APPROVE BUTTON
+// ==========================================
+if(Input::post('update_employee_approve'))
+{
+    $data = false;
+    $employee_id = Input::get('employee_id');
+    if(!empty($employee_id))
+    {
+        $connection = new DB();
+        $employee = $connection->select('employee')->where('e_id', $employee_id)->first();
+        $e_approved	 = $employee->e_approved ? 0 : 1;
+        
+        $update = $connection->update('employee', [
+                    'e_is_deactivate' => 1,
+                    'is_active' => 0,
+                    'is_feature' => 0,
+                    'e_approved' => $e_approved
+                ])->where('e_id', $employee_id)->save();
+        if($update)
+        {
+            Session::flash('success', "Employee status updated successfully!");
+            $data = true;
+        }
+    }
+    if(!$data)
+    {
+        Session::flash('error', "*Network error, try again later");
+    }
+    return response(['data' => $data]);
+}
+
+
+
+
+
 
 // ==========================================
 // DELETE EMPLOYEE
@@ -1699,7 +1735,7 @@ if(Input::post('admin_unflag_employee'))
         $employee = $connection->select('employee')->where('e_id', $employee_id)->first();
 
         $update = $connection->update('employee', [
-                    'e_is_deactivate' => 1,
+                    'e_is_deactivate' => 0,
                     'is_flagged' => 0,
                     'flagged_date' => null
                 ])->where('e_id', $employee_id)->save();

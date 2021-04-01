@@ -23,6 +23,7 @@
                     <li><a href="<?= url('/admin-nanny/report-employee') ?>"><span class="flaticon-add-contact"></span> Reported employee</a></li>
                     <li><a href="<?= url('/admin-nanny/testimonial') ?>"><span class="fa fa-folder"></span> Testimonial</a></li>
                     <li><a href="<?= url('/admin-nanny/message') ?>"><span class="fa fa-phone"></span> Messages </a></li>
+                    <li><a href="<?= url('/admin-nanny/job-alert') ?>"><span class="fa fa-phone"></span> Job alert </a></li>
                     <li><a href="<?= url('/admin-nanny/profile') ?>"><span class="fa fa-user"></span>Profile</a></li>
                 </ul>
                 

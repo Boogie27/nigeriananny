@@ -23,8 +23,9 @@ $subscriptions = $connection->select('subscription_pan')->paginate(15);
 
 
 
-
-    // app banner settings
+// ===============================================
+// app banner settings
+// ===========================================
 $banner =  $connection->select('settings')->where('id', 1)->first();
 ?>
 

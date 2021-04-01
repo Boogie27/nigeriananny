@@ -53,9 +53,8 @@
 					<?php endif; ?>
 					<?php if(Auth_employee::is_loggedin()): ?>
 					<li class="list-inline-item"><a href="<?= url('/employee/logout.php') ?>" class="btn btn-md"><i class=""></i> <span class="dn-md">Logout</span></a></li>
-					<?php else: ?>
-						<li class="list-inline-item"><a href="#" class="btn btn-md"><i class=""></i> <span class="dn-md">Post a job</span></a></li>
 					<?php endif; ?>
+					<li class="list-inline-item"><a href="<?= url('/shop') ?>" class="btn btn-md"><i class=""></i> <span class="dn-md">Market place</span></a></li>
 				</ul><!-- Button trigger modal -->
 		    </nav>
 		    <!-- End of Responsive Menu -->
