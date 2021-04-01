@@ -77,6 +77,7 @@ $settings = $connection->select('settings')->where('id', 1)->first();
 							<li class="list-inline-item"><a href="<?= url('/shop') ?>">Home</a></li>
 							<li class="list-inline-item"><a href="#">Privacy</a></li>
 							<li class="list-inline-item"><a href="#">Terms</a></li>
+							<li class="list-inline-item"><a href="#" class="news_letter_open_btn">News letter</a></li>
 							<li class="list-inline-item"><b>Business hours:</b> <?= $settings->business_hours ? $settings->business_hours : '';?></li>
 						</ul>
 					</div>
@@ -129,33 +130,34 @@ $settings = $connection->select('settings')->where('id', 1)->first();
 								<div class="row">
 									<div class="col-lg-12">
 										<div class="form-group">
-											<div class="alert_news alert_news_0 text-danger"></div>
+											<div class="alert_news alert_news_0 text-danger text-left"></div>
 											<input type="text" id="news_letter_fullname" class="form-control h50" value="" placeholder="Full name">
 										</div>
 									</div>
 									<div class="col-lg-12">
 										<div class="form-group">
-											<div class="alert_news alert_news_1 text-danger"></div>
+											<div class="alert_news alert_news_1 text-danger text-left"></div>
 											<input type="email" id="news_letter_email" class="form-control h50" value="" placeholder="Email">
 										</div>
 									</div>
+									<div class="col-lg-12">
+										<div class="form-group" style="margin: 0px;">
+											<div class="alert_news alert_news_2 text-danger"></div>
+										</div>
+									</div>
 									<div class="col-lg-6">
-										<div class="form-group news-checker">
+										<div class="form-group news-checker" style="margin: 0px;">
 											<input type="checkbox" class="news-letter-checker" value="employee">
 											<label for="">Job seeker</label>
 										</div>
 									</div>
 									<div class="col-lg-6">
-										<div class="form-group news-checker">
+										<div class="form-group news-checker" tyle="margin: 0px;">
 											<input type="checkbox" class="news-letter-checker" value="employer">
 											<label for="">Employer</label>
 										</div>
 									</div>
-									<div class="col-lg-12">
-										<div class="form-group">
-											<div class="alert_news alert_news_2 text-danger"></div>
-										</div>
-									</div>
+									
 									<div class="col-lg-12">
 										<input type="hidden" id="client_type_input" value="">
 										<button type="submit" id="submit_newsletter_request_btn" class="btn btn2 btn-block color-white bgc-gogle mb0">
