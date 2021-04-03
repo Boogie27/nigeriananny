@@ -516,7 +516,7 @@ $reports =  $connection->select('reports')->where('is_feature', 1)->get();
 
 
 <!-- Our Footer -->
-<?php include('includes/footer.php');  ?>
+<?php include('../includes/footer.php');  ?>
 
 
 

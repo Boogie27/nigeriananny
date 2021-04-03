@@ -47,7 +47,8 @@ $banner =  $connection->select('settings')->where('id', 1)->first();
 					<li>
 		                <a href="#"><span class="title">News letter</span></a>
 		                <ul>
-		                    <li><a href="<?= url('/admin-nanny/employer-newsletter') ?>">Employer news letter</a></li>
+							<li><a href="<?= url('/admin-nanny/news-letters') ?>">News letter</a></li>
+							<li><a href="<?= url('/admin-nanny/employer-newsletter') ?>">Employer news letter</a></li>
 							<li><a href="<?= url('/admin-nanny/employee-newsletter') ?>">Employee news letter</a></li>
 		                </ul>
 					</li>

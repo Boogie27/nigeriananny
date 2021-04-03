@@ -130,13 +130,13 @@ $jobs->paginate(5);
                     </div>
                     <div class="adds-news">
                         <div class="job-alert-banner"><!-- job-alert jobs start-->
-                            <div class="alert-header">
+                            <!-- <div class="alert-header">
                                 <h3>Jobs in Nigeria</h3>
                             </div>
                             <div class="alert-body">
                                 <p><b>1280</b> jobs found</p>
                                 <a href="#">Create job alert</a>
-                            </div>
+                            </div> -->
                         </div><!-- job-alert jobs start-->
 
                         <div class="advert-banner-2">

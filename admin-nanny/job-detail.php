@@ -72,7 +72,7 @@ $reviews = $connection->select('employee_reviews')->leftJoin('employers', 'emplo
                             <nav class="breadcrumb_widgets" aria-label="breadcrumb mb30">
                                 <h4 class="title float-left">Job information</h4>
                                 <ol class="breadcrumb float-right">
-                                    <li class="breadcrumb-item"><a href="<?= url('/admin/index.php') ?>">Home</a></li>
+                                    <li class="breadcrumb-item"><a href="<?= url('/admin-nanny') ?>">Home</a></li>
                                     <li class="breadcrumb-item active" aria-current="page"><a href="<?= url('/admin-nanny/employees') ?>">Employees</a></li>
                                 </ol>
                             </nav>
@@ -234,7 +234,7 @@ $reviews = $connection->select('employee_reviews')->leftJoin('employers', 'emplo
                                         <div class="emp-rev flex-item">
                                             <?php $review_image = $review->e_image ? $review->e_image : '/employer/images/employer/demo.png';  ?>
                                             <img src="<?= asset($review_image) ?>" alt="<?= $review->first_name ?>" class="review-img">
-                                            <ul class="info">
+                                            <ul class="infos">
                                                 <ul>
                                                     <li>
                                                         <?= employee_star($review->review_stars)?>

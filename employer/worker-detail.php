@@ -272,7 +272,7 @@ if(!$job)
 
 
 <!-- Our Footer -->
-<?php include('includes/footer.php');  ?>
+<?php include('../includes/footer.php');  ?>
 
 
 

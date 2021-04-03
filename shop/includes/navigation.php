@@ -10,7 +10,7 @@ $settings = $connection->select('settings')->where('id', 1)->first();
 		    <nav>
 		        <!-- Menu Toggle btn-->
 		        <div class="menu-toggle">
-		            <img class="nav_logo_img img-fluid" src="<?= asset($settings->logo)?>" alt="header-logo.png">
+		            <img class="nav_logo_img img-fluid" src="<?= asset($settings->logo)?>" alt="<?=$settings->app_name ?>">
 		            <button type="button" id="menu-btn">
 		                <span class="icon-bar"></span>
 		                <span class="icon-bar"></span>
@@ -18,8 +18,8 @@ $settings = $connection->select('settings')->where('id', 1)->first();
 		            </button>
 		        </div>
 		        <a href="<?= url('/shop'); ?>" class="navbar_brand float-left dn-smd">
-		            <img class="logo1 img-fluid" src="<?= asset($settings->logo)?>" alt="header-logo.png">
-		            <img class="logo2 img-fluid" src="images/header-logo2.png" alt="header-logo2.png">
+		            <img class="logo1 img-fluid" src="<?= asset($settings->logo)?>" alt="<?=$settings->app_name ?>">
+		            <img class="logo2 img-fluid" src="<?= asset($settings->logo)?>" alt="<?=$settings->app_name ?>">
 		            <span><?= $settings->app_name ? $settings->app_name : '' ?></span>
 		        </a>
 		        <!-- Responsive Menu Structure-->
@@ -63,6 +63,9 @@ $settings = $connection->select('settings')->where('id', 1)->first();
 		            </li>
 					<li>
 		                <a href="<?= url('/shop/cart') ?>"><span class="title">Cart</span></a>
+		            </li>
+					<li>
+		                <a href="<?= url('/') ?>"><span class="title">Work place</span></a>
 		            </li>
 					
 		        </ul>

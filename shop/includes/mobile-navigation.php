@@ -38,9 +38,7 @@ $settings = $connection->select('settings')->where('id', 1)->first();
 		</div><!-- /.mobile-menu -->
 		<nav id="menu" class="stylehome1">
 			<ul>
-				<li>
-	              <a href="<?= url('/shop') ?>"><span>Home</span></a>
-				</li>
+				<li><a href="<?= url('/shop') ?>"><span>Home</span></a></li>
 				<li><span>Categories</span>
 					<ul>
 					<?php $categories = $connection->select('shop_categories')->where('is_category_feature', 1)->limit(6)->get();
@@ -71,6 +69,7 @@ $settings = $connection->select('settings')->where('id', 1)->first();
 	              <a href="<?= url('/shop/account') ?>"><span>My account</span></a>
 				</li>
 				<li><a href="<?= url('/shop/cart.php'); ?>"><span class="fa fa-shopping-cart"></span> Cart</a></li>
+				<li><a href="<?= url('/') ?>"><span>Work place</span></a></li>
 					<?php if(Auth::is_loggedIn()): ?>
 					<li><a href="<?= url('/shop/logout') ?>"><span class="fa fa-sign-out"></span> Logout</a></li>
 				<?php else: ?>

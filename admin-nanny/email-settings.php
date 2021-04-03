@@ -8,8 +8,10 @@ if(!Admin_auth::is_loggedin())
 }
 
 
-
-
+// smtp = smtp.gmail.com
+// smtp port = 465
+// smtp_username: anonyecharles@gmail.com
+// smtp_password = boogie190
 
 // ===========================================
 // EMAIL SETTINGS

@@ -100,4 +100,4 @@ if(!Input::exists('get') && Input::get('tid'))
 
     
 <!-- Our Footer -->
-<?php include('includes/footer.php');  ?>
+<?php include('../includes/footer.php');  ?>

@@ -1066,21 +1066,21 @@ ul.ability-x li{
     height: 50px;
     border-radius: 50%;
 }
-.emp-rev ul.a-info{
+.emp-rev ul.a-info, .infos{
    margin-left: 10px;
    width: 90%;
    border-radius: 4px;
    padding: 5px;
    background-color: rgb(242, 242, 242);
 }
-.emp-rev ul.a-info{
+.emp-rev ul.a-info, .infos{
     margin-left: 10px;
     width: 90%;
     border-radius: 4px;
     padding: 5px;
     background-color: rgba(242, 242, 242, 0.666);
  }
- .emp-rev ul.a-info li, .emp-rev ul.a-info li p{
+ .emp-rev ul.a-info li, .emp-rev ul.a-info li p, .infos{
     font-size: 13px;
  }
  /* employer review form */
@@ -1387,6 +1387,12 @@ ul.ul-message p{
 .table-header label.custom-control-label span{
     top: 4px;
     position: relative;
+}
+.news-letter-dropdown{
+    position: relative;
+}
+.news-letter-dropdown .drop-down-ul{
+    bottom: -180px;
 }
 
 

@@ -383,9 +383,10 @@ $("#submit_category_edit_btn").click(function(e){
 function edit_category(){
     var id = $("#category_id_edit_input").val();
      var category = $("#category_name_input").val();
+
+     
      var url = $('.ajax_url_page').attr('href')
      $(".top_alert_modal").hide();
-    //  $(".preloader-container").show() //show preloader
 
     $.ajax({
 		url: url,
@@ -428,7 +429,7 @@ function edit_category(){
 // =========================================
 $("#category_category_name_input").keypress(function(e){
     if(e.keyCode == 13 || e.which == 13){
-        edit_category();
+        add_category();
     }
 });
 
@@ -438,12 +439,12 @@ $("#category_category_name_input").keypress(function(e){
 // ==========================================
 $("#submit_category_add_btn").click(function(e){
     e.preventDefault();
-    edit_category();
+    add_category();
 });
 
 
 
-function edit_category(){
+function add_category(){
      var category = $("#category_category_name_input").val();
      var url = $('.ajax_url_page').attr('href')
      $(".top_alert_modal").hide();

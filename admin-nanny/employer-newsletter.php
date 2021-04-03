@@ -11,7 +11,7 @@ if(!Admin_auth::is_loggedin())
 // ===========================================
 // GET ALL NEWS LETTER SUBSCRIBERS
 // ===========================================
-$subscribers = $connection->select('news_letters')->where('client_type', 'employer')->paginate(15);
+$subscribers = $connection->select('newsletters_subscriptions')->where('client_type', 'employer')->paginate(15);
 
 
 // ============================================
@@ -60,13 +60,21 @@ $client_type = Session::has('employer_type') ? Session::get('employer_type') : n
                     </div>
                     <div class="col-lg-12">
                     <?php if(Session::has('success')): ?>
-                        <div class="alert-success text-center p-3 mb-2"><?= Session::flash('success') ?></div>
+                        <div class="alert alert-success text-center p-3 mb-2"><?= Session::flash('success') ?></div>
+                    <?php endif; ?>
+                    <?php if(Session::has('error')): ?>
+                        <div class="alert alert-danger text-center p-3 mb-2"><?= Session::flash('error') ?></div>
+                    <?php endif; ?>
+                    <?php if(!Input::exists('get') || !Input::get('nid')): ?>
+                        <div class="text-warning text-center p-3"><i class="fa fa-bell"></i> Click <a href="<?= url('/admin-nanny/news-letters') ?>" class="text-primary">here</a> to select message to send to employers</div>
                     <?php endif; ?>
                     <div class="alert-danger text-center p-3 mb-2 page_alert_danger" style="display: none;"></div>
                         <nav class="breadcrumb_widgets" aria-label="breadcrumb mb30">
                             <h4 class="title float-left">Manage news letter</h4>
                             <ol class="breadcrumb float-right">
-                                <li class="breadcrumb-item active" aria-current="page"><a href="<?= url('/admin-nanny/send-message') ?>" class="view-btn-fill">Send news letter</a></li>
+                            <?php if(Input::exists('get') && Input::get('nid')):?>
+                                <li class="breadcrumb-item active" aria-current="page"><a href="#" id="<?= Input::get('nid')?>" class="employer_send_news_letter_btn view-btn-fill">Send</a></li>
+                            <?php endif; ?>
                             </ol>
                         </nav>
                     </div>
@@ -98,7 +106,7 @@ $client_type = Session::has('employer_type') ? Session::get('employer_type') : n
                                         <td><?= ucfirst($subscriber->client_type) ?></td>
                                         <td>
                                             <div class="custom-control custom-checkbox">
-                                                <input type="checkbox" data-id="<?= $subscriber->id?>" class="custom-control-input news_letter_select_btn" id="customCheck_<?= $subscriber->id?>" <?= $client_type && in_array($subscriber->id, $client_type) ? 'checked' : '' ?>>
+                                                <input type="checkbox" data-id="<?= $subscriber->id?>" class="custom-control-input news_letter_select_btn" id="customCheck_<?= $subscriber->id?>" <?= $client_type && array_key_exists($subscriber->id, $client_type) ? 'checked' : '' ?>>
                                                 <label class="custom-control-label" for="customCheck_<?= $subscriber->id?>"></label>
                                             </div>
                                         </td>
@@ -230,7 +238,7 @@ function news_letter_check_all(state){
         method: "post",
         data: {
             state: state,
-            select_news_letter_clients_all: ' select_news_letter_clients_all'
+            select_news_letter_employer_all: ' select_news_letter_employer_all'
         },
         success: function (response){
             var data = JSON.parse(response);
@@ -240,6 +248,43 @@ function news_letter_check_all(state){
         }
     });
 }
+
+
+
+
+
+
+
+
+// =============================================
+// SEND NEWS LETTER TO EMPLOYEES
+// =============================================
+$(".employer_send_news_letter_btn").click(function(e){
+    e.preventDefault();
+    var news_id = $(this).attr('id');
+    var url = $(".ajax_url_page").attr('href');
+    $(".preloader-container").show(); //show preloader
+    
+    $.ajax({
+        url: url,
+        method: "post",
+        data: {
+            news_id: news_id,
+            send_news_letter_to_employer: 'send_news_letter_to_employer'
+        },
+        success: function (response){
+            var data = JSON.parse(response);
+            location.reload();
+            remove_preloader();
+            // console.log(response)
+        },
+        error: function(){
+
+        }
+    });
+});
+
+
 
 
 

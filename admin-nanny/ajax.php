@@ -2443,32 +2443,24 @@ if(Input::post('update_employee_top'))
 if(Input::post('select_news_letter_clients'))
 {
     $data = false;
-    $stored_client = [];
 
-    if(!Session::has('employer_type'))
+    $stored_details = ['id' => '', 'email' => ''];
+    $stored_client = Session::has('employer_type') ?  Session::get('employer_type') : array();
+    $client = $connection->select('newsletters_subscriptions')->where('id', Input::get('news_id'))->first();
+    
+    if(array_key_exists($client->id, $stored_client))
     {
-        array_push($stored_client, Input::get('news_id'));
+        unset($stored_client[$client->id]);
     }else{
-        $stored_client = Session::get('employer_type');
-        if(in_array(Input::get('news_id'), $stored_client))
-        {
-            $key = array_keys($stored_client, Input::get('news_id'))[0];
-            unset($stored_client[$key]);
-        }else{
-            array_push($stored_client, Input::get('news_id'));
-        }
-    }
-
-    if(Session::has('employer_all'))
-    {
-        Session::delete('employer_all');
+        $stored_details['id'] = $client->id;
+        $stored_details['email'] = $client->email;
+        $stored_client[$client->id] = $stored_details;
     }
 
     Session::put('employer_type', $stored_client);
-
-    if(count(Session::get('employer_type')) == 0)
+    if(count($stored_client) == 0)
     {
-       Session::delete('employer_type');
+        Session::delete('employer_type');
     }
     
     $data = true;
@@ -2484,7 +2476,7 @@ if(Input::post('select_news_letter_clients'))
 // ======================================
 // NEWS EMPLYER LETTER ALL BUTTON
 // ======================================
-if(Input::post('select_news_letter_clients_all'))
+if(Input::post('select_news_letter_employer_all'))
 {
     $data = false;
     Session::delete('employer_type');
@@ -2493,10 +2485,13 @@ if(Input::post('select_news_letter_clients_all'))
     if(Input::get('state'))
     {
         $stored_client = [];
-        $client_types = $connection->select('news_letters')->where('client_type', 'employer')->get();
-        foreach($client_types as $client_type)
+        $stored_details = ['id' => '', 'email' => ''];
+        $clients = $connection->select('newsletters_subscriptions')->where('client_type', 'employer')->get();
+        foreach($clients as $client)
         {
-            array_push($stored_client, $client_type->id);
+            $stored_details['id'] = $client->id;
+            $stored_details['email'] = $client->email;
+            $stored_client[$client->id] = $stored_details;
         }
 
         $data = true;
@@ -2516,35 +2511,27 @@ if(Input::post('select_news_letter_clients_all'))
 // ========================================
 // SELECT EMPLOYEE NEWS LETTER CLIENTS 
 // ======================================== 
-if(Input::post('select_news_letter_employer'))
+if(Input::post('select_news_letter_employee'))
 {
     $data = false;
-    $stored_client = [];
 
-    if(!Session::has('employee_type'))
+    $stored_details = ['id' => '', 'email' => ''];
+    $stored_client = Session::has('employee_type') ?  Session::get('employee_type') : array();
+    $client = $connection->select('newsletters_subscriptions')->where('id', Input::get('news_id'))->first();
+    
+    if(array_key_exists($client->id, $stored_client))
     {
-        array_push($stored_client, Input::get('news_id'));
+        unset($stored_client[$client->id]);
     }else{
-        $stored_client = Session::get('employee_type');
-        if(in_array(Input::get('news_id'), $stored_client))
-        {
-            $key = array_keys($stored_client, Input::get('news_id'))[0];
-            unset($stored_client[$key]);
-        }else{
-            array_push($stored_client, Input::get('news_id'));
-        }
-    }
-
-    if(Session::has('employee_all'))
-    {
-        Session::delete('employee_all');
+        $stored_details['id'] = $client->id;
+        $stored_details['email'] = $client->email;
+        $stored_client[$client->id] = $stored_details;
     }
 
     Session::put('employee_type', $stored_client);
-
-    if(count(Session::get('employee_type')) == 0)
+    if(count($stored_client) == 0)
     {
-       Session::delete('employee_type');
+        Session::delete('employee_type');
     }
     
     $data = true;
@@ -2569,10 +2556,13 @@ if(Input::post('select_news_letter_employee_all'))
     if(Input::get('state'))
     {
         $stored_client = [];
-        $client_types = $connection->select('news_letters')->where('client_type', 'employee')->get();
-        foreach($client_types as $client_type)
+        $stored_details = ['id' => '', 'email' => ''];
+        $clients = $connection->select('newsletters_subscriptions')->where('client_type', 'employee')->get();
+        foreach($clients as $client)
         {
-            array_push($stored_client, $client_type->id);
+            $stored_details['id'] = $client->id;
+            $stored_details['email'] = $client->email;
+            $stored_client[$client->id] = $stored_details;
         }
 
         $data = true;
@@ -2581,6 +2571,259 @@ if(Input::post('select_news_letter_employee_all'))
     }
     return response(['data' => $data]);
 }
+
+
+
+
+
+
+
+
+
+// ===============================================
+// DELETE NEWS LETTER
+// ===============================================
+if(Input::post('admin_delete_news_letter'))
+{
+    $data = false;
+    $news_letter = $connection->delete('news_letters')->where('id', Input::get('id'))->save();
+    if($news_letter)
+    {
+        Session::flash('error', 'News letter deleted successfully!');
+        $data = true;
+    }
+    return response(['data' => $data]);
+}
+
+
+
+
+
+
+
+
+// =============================================
+// SEND NEWS LETTER TO EMPLOYEES
+// =============================================
+if(Input::post('send_news_letter_to_employee'))
+{
+    $data = false;
+    if(!Session::has('employee_type'))
+    {
+        Session::flash('error', '*Select employees to send news letters to');
+        return response(['error' => true]);
+    }
+
+    $banner =  $connection->select('settings')->where('id', 1)->first(); //get site details like app name, address and logo
+    $news_letter = $connection->select('news_letters')->where('id', Input::get('news_id'))->first();
+    if($news_letter)
+    {
+        $employees = Session::get('employee_type');
+        $newsLetter = get_news_letter_page($banner->logo, $banner->app_name, $banner->address, $news_letter->header, $news_letter->body);
+
+        foreach($employees as $employee)
+        {
+            $mail = new Mail();
+            $send = $mail->mail([
+                'to' => $client['email'],
+                'subject' => $banner->app_name.' monthly letter',
+                'body' => $newsLetter,
+            ]);
+            $send->send_email();
+        }
+
+        $update = $connection->update('news_letters', [
+                     'is_sent' => 1
+                ])->where('id', Input::get('news_id'))->save();
+        if($update)
+        {
+            $data = true;
+        }
+        Session::delete('employee_all');
+        Session::delete('employee_type');
+        Session::flash('success', 'News letter sent successfully!');
+    }
+
+    return response(['data' => $data]);
+}
+
+
+
+
+
+// =============================================
+// SEND NEWS LETTER TO EMPLOYEES
+// =============================================
+if(Input::post('send_news_letter_to_employer'))
+{
+    $data = false;
+    if(!Session::has('employer_type'))
+    {
+        Session::flash('error', '*Select employees to send news letters to');
+        return response(['error' => true]);
+    }
+
+    $banner =  $connection->select('settings')->where('id', 1)->first(); //get site details like app name, address and logo
+    $news_letter = $connection->select('news_letters')->where('id', Input::get('news_id'))->first();
+    if($news_letter)
+    {
+        $clients = Session::get('employer_type');
+        $newsLetter = get_news_letter_page($banner->logo, $banner->app_name, $banner->address, $news_letter->header, $news_letter->body);
+
+        foreach($clients as $client)
+        {
+            $mail = new Mail();
+            $send = $mail->mail([
+                'to' => $client['email'],
+                'subject' => $banner->app_name.' monthly letter',
+                'body' => $newsLetter,
+            ]);
+            $send->send_email();
+        }
+        
+        $update = $connection->update('news_letters', [
+            'is_sent' => 1
+        ])->where('id', Input::get('news_id'))->save();
+        if($update)
+        {
+            $data = true;
+        }
+
+        Session::delete('employer_all');
+        Session::delete('employer_type');
+        Session::flash('success', 'News letter sent successfully!');
+    }
+
+    return response(['data' => $data]);
+}
+
+
+// =============================================
+// GET NEWS LETTER PAGE
+// =============================================
+function get_news_letter_page($logo, $app_name, $address, $header, $body)
+{
+    $news_letters = '';
+    $news_letters .= '<!DOCTYPE html>
+                    <html lang="en">
+                    <head>
+                        <meta charset="UTF-8">
+                        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+                        <style>
+                            *{
+                                padding: 0px;
+                                margin: 0px;
+                            }
+                            .content{
+                                padding: 30px;
+                                background-color: rgb(240, 240, 240);
+                            }
+                            .news-header{
+                                text-align: center;
+                            }
+                            .container{
+                                width: 80%;
+                                margin: 0 auto;
+                                padding: 30px 20px;
+                                background-color: #fff;
+                            }
+                            .news-header h4{
+                                color: #333333;
+                                margin-top: 10px;
+                                font-family: Arial,Helvetica Neue,Helvetica,sans-serif;
+                                font-size: 30px;
+                            }
+                            h4, h3, h2, h1, h5, h6, p, li{
+                                color: #333333;
+                                margin: 0px;
+                                font-family: Arial,Helvetica Neue,Helvetica,sans-serif;
+                            }
+                            .content-header p{
+                                margin-top: 20px;
+                                text-align: center;
+                            }
+                            p.content-body{
+                                margin: 0 auto;
+                                margin-top: 20px;
+                            }
+                            .footer{
+                                padding: 50px 0px;
+                                text-align: center;
+                            }
+                            .footer ul{
+                                padding:0px;
+                                margin: 0px;
+                                list-style: none;
+                            }
+                            .footer ul li{
+                                
+                            }
+                            .footer-header{
+                                font-size: 20px;
+                            }
+                            .anchor{
+                                float: right;
+                                color: blue;
+                                text-decoration: none;
+                            }
+                            @media only screen and (max-width: 767px){
+                                .container{
+                                    width: 90%;
+                                    padding: 30px 10px;
+                                }
+                                .content{
+                                    padding: 20px 0px;
+                                    width: 95%;
+                                    margin: 0 auto;
+                                    background-color: rgb(240, 240, 240);
+                                }
+                            }
+                        </style>
+                    </head>
+                    <body>
+                        <div class="content">
+                            <div class="container">
+                                <div class="news-header">
+                                        <img src="'.asset($logo).'" alt="'.$app_name.'">
+                                        <h4>'.$app_name.'</h4>
+                                </div>
+                                <div class="news-body">
+                                        <div class="content-header"><p>'.$header.'</p></div>
+                                        <p class="content-body">'.$body.'</p>
+                                        <div class="footer">
+                                            <ul>
+                                                <li class="footer-header">'.$app_name.'</li>
+                                                <li>'.$address.'</li>
+                                            </ul>
+                                        </div>
+                                </div>
+                            </div>
+                        </div>
+                    </body>
+                    </html>';
+
+        return $news_letters;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

@@ -169,4 +169,4 @@ if(Input::post('google_login'))
 
     
 <!-- Our Footer -->
-<?php include('includes/footer.php');  ?>
+<?php include('../includes/footer.php');  ?>

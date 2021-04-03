@@ -75,6 +75,9 @@ $banner =  $connection->select('settings')->where('id', 1)->first();
 					<li>
 		                <a href="<?= url('/shop/cart') ?>"><span class="title">Cart</span></a>
 		            </li>
+					<li>
+		                <a href="<?= url('/') ?>"><span class="title">Work place</span></a>
+		            </li>
 		        </ul>
 		        <ul class="header_user_notif pull-right dn-smd">
 	                <li class="user_notif">

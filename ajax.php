@@ -1441,7 +1441,7 @@ if(Input::post('subscribe_news_letter'))
     $validate = new Validator();
     $validation = $validate->validate([
         'full_name' => 'required|min:3|max:50',
-        'email' => 'required|email|unique:news_letters',
+        'email' => 'required|email|unique:newsletters_subscriptions',
         'client_type' => 'required',
     ]);
 
@@ -1451,7 +1451,7 @@ if(Input::post('subscribe_news_letter'))
     }
 
 
-    $create = $connection->create('news_letters', [
+    $create = $connection->create('newsletters_subscriptions', [
             'full_name' => Input::get('full_name'),
             'email' => Input::get('email'),
             'client_type' => Input::get('client_type'),

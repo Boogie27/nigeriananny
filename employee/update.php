@@ -991,7 +991,7 @@ if(Input::exists('get') && Input::get('page') == 'edit_work' && Input::get('eid'
 
 
     <!-- Our Footer -->
-    <?php include('includes/footer.php');  ?>
+    <?php include('../includes/footer.php');  ?>
 
 
 

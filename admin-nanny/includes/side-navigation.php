@@ -1,5 +1,7 @@
 
-
+<?php
+$new_messages = $connection->select('contact_us')->where('is_seen', 0)->get();
+?>
 
 <section class="dashboard_sidebar dn-1199">
     <div class="dashboard_sidebars">
@@ -22,7 +24,7 @@
                     <li><a href="<?= url('/admin-nanny/subscription') ?>"><span class="flaticon-speech-bubble"></span>Employer subscription</a></li>
                     <li><a href="<?= url('/admin-nanny/report-employee') ?>"><span class="flaticon-add-contact"></span> Reported employee</a></li>
                     <li><a href="<?= url('/admin-nanny/testimonial') ?>"><span class="fa fa-folder-o"></span> Testimonial</a></li>
-                    <li><a href="<?= url('/admin-nanny/message') ?>"><span class="fa fa-phone"></span> Messages </a></li>
+                    <li><a href="<?= url('/admin-nanny/message') ?>"><span class="fa fa-envelope-o"></span> Messages <span class="text-danger" style="font-size: 13px;"><?= $new_messages ? '('.count($new_messages).')' : ''?> </span></a></li>
                     <li><a href="<?= url('/admin-nanny/profile') ?>"><span class="fa fa-user-o"></span>Profile</a></li>
                 </ul>
                 

@@ -659,7 +659,7 @@ $worker = $connection->select('workers')->where('employee_id', Auth_employee::em
 
 
     <!-- Our Footer -->
-    <?php include('includes/footer.php');  ?>
+    <?php include('../includes/footer.php');  ?>
 
 
 

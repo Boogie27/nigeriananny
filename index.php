@@ -2,15 +2,13 @@
 
 <?php
 
-
-
-$google = new Google();
-
 // ==================================
 // GOOGLE LOGIN
 // ==================================
 if(Input::exists('get') && Input::get('code'))
 {
+	$google = new Google();
+	
 	$token = $google->auth_code(Input::get('code'));
 	if(!isset($token['error']))
 	{

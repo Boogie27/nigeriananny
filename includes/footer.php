@@ -244,7 +244,7 @@ function display_newsletter(){
 			display: 'table'
 		});
 		$('.news-dark-layer-js').show();
-	}, 200);
+	}, 5000);
 }
 display_newsletter();
 
