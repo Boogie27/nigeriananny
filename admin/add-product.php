@@ -85,7 +85,7 @@ $banner =  $connection->select('settings')->where('id', 1)->first();
                     </div>
                     <div class="col-lg-12">
                        <?php if(Session::has('success')): ?>
-                            <div class="alert-success text-center p-3 mb-2"><?= Session::flash('success') ?></div>
+                            <div class="alert alert-success text-center p-3 mb-2"><?= Session::flash('success') ?></div>
                        <?php endif;?>
                         <nav class="breadcrumb_widgets" aria-label="breadcrumb mb30">
                             <h4 class="title float-left">Add products</h4>

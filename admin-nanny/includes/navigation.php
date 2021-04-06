@@ -25,9 +25,6 @@ $banner =  $connection->select('settings')->where('id', 1)->first();
 		        <!-- Responsive Menu Structure-->
 		        <!--Note: declare the Menu style in the data-menu-style="horizontal" (options: horizontal, vertical, accordion) -->
 		        <ul id="respMenu" class="ace-responsive-menu" data-menu-style="horizontal">
-		            <li>
-		                <a href="<?= url('/admin-nanny') ?>"><span class="title">Dashborad</span></a>
-		            </li>
 					<li>
 		                <a href="#"><span class="title">Categories</span></a>
 						<!-- Level Two-->
@@ -50,6 +47,12 @@ $banner =  $connection->select('settings')->where('id', 1)->first();
 							<li><a href="<?= url('/admin-nanny/news-letters') ?>">News letter</a></li>
 							<li><a href="<?= url('/admin-nanny/employer-newsletter') ?>">Employer news letter</a></li>
 							<li><a href="<?= url('/admin-nanny/employee-newsletter') ?>">Employee news letter</a></li>
+		                </ul>
+					</li>
+					<li>
+		                <a href="#"><span class="title">Others</span></a>
+		                <ul>
+							<li><a href="<?= url('/admin-nanny/faq') ?>">FAQ</a></li>
 		                </ul>
 					</li>
 					<li>

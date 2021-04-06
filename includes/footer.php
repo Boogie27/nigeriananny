@@ -25,6 +25,7 @@ $settings = $connection->select('settings')->where('id', 1)->first();
 							<li><a href="<?= url('/form') ?>">Forms</a></li>
 							<li><a href="<?= url('/jobs') ?>">Employees</a></li>
 							<li><a href="<?= url('/subscription') ?>">Subscription</a></li>
+							<li><a href="<?= url('/faq') ?>">Faq</a></li>
 						</ul>
 					</div>
 				</div>
@@ -246,7 +247,7 @@ function display_newsletter(){
 		$('.news-dark-layer-js').show();
 	}, 5000);
 }
-display_newsletter();
+// display_newsletter();
 
 
 // ========================================

@@ -1,7 +1,7 @@
 <?php include('../Connection.php');  ?>
 
 <?php
-  if(Auth_employee::is_loggedin())
+  if(Auth_employer::is_loggedin())
   {
       return view('/');
   }
@@ -136,3 +136,13 @@
     
 <!-- Our Footer -->
 <?php include('../includes/footer.php');  ?>
+
+
+
+
+
+
+
+
+
+

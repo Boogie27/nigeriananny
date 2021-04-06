@@ -80,7 +80,7 @@ $client_type = Session::has('employee_type') ? Session::get('employee_type') : n
                             <h4 class="title float-left">Manage news letter</h4>
                             <ol class="breadcrumb float-right">
                             <?php if(Input::exists('get') && Input::get('nid')):?>
-                                <li class="breadcrumb-item active" aria-current="page"><a href="#" id="<?= Input::get('nid')?>" class="employee_send_news_letter_btn view-btn-fill">Send</a></li>
+                                <li class="breadcrumb-item active" aria-current="page"><a href="#" id="#" data-toggle="modal" data-target="#employee_send_news_letter_btn"class="view-btn-fill">Send</a></li>
                             <?php endif; ?>
                             </ol>
                             
@@ -150,6 +150,37 @@ $client_type = Session::has('employee_type') ? Session::get('employee_type') : n
 <a class="scrollToHome" href="#"><i class="flaticon-up-arrow-1"></i></a>
 </div>
 
+
+
+
+
+
+
+
+
+<!-- Modal send newsletter-->
+<div class="sign_up_modal modal fade" id="employee_send_news_letter_btn" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" id="modal_newsletter_close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="tab-content" id="myTabContent">
+                <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                    <div class="login_form">
+                        <form action="#">
+                            <div class="heading">
+                                <p class="text-center">Do you wish to send newsletters?</p>
+                                <input type="hidden" id="employee_newsletter_id" value="<?= Input::get('nid')?>">
+                            </div>
+                            <button type="button" data-url="<?= url('/admin-nanny/ajax.php') ?>" id="submit_employee_newsletter_btn" class="btn bg-primary btn-log btn-block" style="color: #fff;">Delete</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 
 
@@ -256,18 +287,14 @@ function news_letter_check_all(state){
 
 
 
-
-
-
-
-
 // =============================================
 // SEND NEWS LETTER TO EMPLOYEES
 // =============================================
-$(".employee_send_news_letter_btn").click(function(e){
+$("#submit_employee_newsletter_btn").click(function(e){
     e.preventDefault();
-    var news_id = $(this).attr('id');
+    var news_id = $('#employee_newsletter_id').val();
     var url = $(".ajax_url_page").attr('href');
+    $("#modal_newsletter_close").click();
     $(".preloader-container").show(); //show preloader
     
     $.ajax({
@@ -284,7 +311,7 @@ $(".employee_send_news_letter_btn").click(function(e){
             // console.log(response)
         },
         error: function(){
-
+            
         }
     });
 });

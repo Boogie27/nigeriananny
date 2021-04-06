@@ -16,6 +16,7 @@ if(Input::post('update_general_settings'))
        
 	$validation = $validate->validate([
 		'app_name' => 'required|min:1|max:50',
+		'info_email' =>  'required|email',
 		'business_hours' => 'required',
 		'alrights' => 'required|min:3|max:50',
 		'phone' => 'required|min:11|max:11|number',
@@ -33,6 +34,7 @@ if(Input::post('update_general_settings'))
 		$connection = new DB();
 		$update_settings = $connection->update('settings', [
 						'app_name' => Input::get('app_name'),
+						'info_email' => Input::get('info_email'),
 						'business_hours' => Input::get('business_hours'),
 						'alrights' => Input::get('alrights'),
 						'phone' => Input::get('phone'),
@@ -113,7 +115,15 @@ $setting =  $connection->select('settings')->where('id', 1)->first();
 											<input type="text" name="app_name" class="form-control h50" value="<?= $setting->app_name ?? old('app_name') ?>" placeholder="App name">
 										</div>
 									</div>
-									<div class="col-lg-12">
+									<div class="col-lg-6">
+										<div class="form-group">
+											<?php  if(isset($errors['info_email'])) : ?>
+												<div class="form-alert text-danger"><?= $errors['info_email']; ?></div>
+											<?php endif; ?>
+											<input type="email" name="info_email" class="form-control h50" value="<?= $setting->info_email ?? old('info_email') ?>" placeholder="App name">
+										</div>
+									</div>
+									<div class="col-lg-6">
 										<div class="form-group">
 											<?php  if(isset($errors['business_hours'])) : ?>
 												<div class="form-alert text-danger"><?= $errors['business_hours']; ?></div>

@@ -20,7 +20,7 @@ if(Input::post('update_email_settings'))
 		'smtp_host' => 'required|min:3|max:50',
 		'smtp_port' => 'required|number',
 		'smtp_username' => 'required|min:3|max:200',
-		'smtp_password' => 'required|min:6|max:12',
+		'smtp_password' => 'required|min:6',
 	]);
 	
 	if($validation->passed())

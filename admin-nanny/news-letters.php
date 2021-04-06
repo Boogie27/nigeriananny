@@ -9,7 +9,7 @@ if(!Admin_auth::is_loggedin())
 
 
 // ===========================================
-// GET ALL NEWS LETTER SUBSCRIBERS
+// GET ALL NEWS LETTER
 // ===========================================
 $news_letters = $connection->select('news_letters')->paginate(15);
 
@@ -69,7 +69,7 @@ $client_type = Session::has('employer_type') ? Session::get('employer_type') : n
                         <nav class="breadcrumb_widgets" aria-label="breadcrumb mb30">
                             <h4 class="title float-left">Manage news letter</h4>
                             <ol class="breadcrumb float-right">
-                                <li class="breadcrumb-item active" aria-current="page"><a href="<?= url('/admin-nanny/send-message') ?>" class="view-btn-fill">Write news letter</a></li>
+                                <li class="breadcrumb-item active" aria-current="page"><a href="<?= url('/admin-nanny/create-message') ?>" class="view-btn-fill">Write news letter</a></li>
                             </ol>
                         </nav>
                     </div>
@@ -101,10 +101,11 @@ $client_type = Session::has('employer_type') ? Session::get('employer_type') : n
                                             <div class="drop-down">
                                                 <i class="fa fa-ellipsis-h dot-icon"></i>
                                                 <ul class="drop-down-ul">
-                                                    <li><a href="#" id="<?= $news_letter->id ?>" class="employee_add_top_btn">Send to All</a></li>
+                                                    <li><a href="#" id="<?= $news_letter->id ?>" data-toggle="modal"  data-target="#exampleModal_send_newsletter_all_btn" class="send_newsletter_all_open_btn">Send to All</a></li>
                                                     <li><a href="<?= url('/admin-nanny/employee-newsletter.php?nid='.$news_letter->id) ?>" class="employee_feature_btn">Sent to Employee</a></li>
                                                     <li><a href="<?= url('/admin-nanny/employer-newsletter.php?nid='.$news_letter->id) ?>" class="employee_deactivate_btn">Send to Employer</a></li>
                                                     <li><a href="<?= url('/admin-nanny/newsletter_preview?nid='.$news_letter->id) ?>"  class="">Preview</a></li>
+                                                    <li><a href="<?= url('/admin-nanny/edit-newsletter.php?nid='.$news_letter->id) ?>"  class="">Edit newsletter</a></li>
                                                     <li><a href="#" id="<?= $news_letter->id ?>" class="delete_news_letter_btn">Delete</a></li>                                        
                                                 </ul>
                                             </div>
@@ -150,6 +151,36 @@ $client_type = Session::has('employer_type') ? Session::get('employer_type') : n
 
 
 
+<!-- Modal -->
+<div class="sign_up_modal modal fade" id="exampleModal_send_newsletter_all_btn" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" id="modal_delete_close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="tab-content" id="myTabContent">
+                <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                    <div class="login_form">
+                        <form action="#">
+                            <div class="heading">
+                                <p class="text-center">Do you wish to newsletter to all?</p>
+                                <input type="hidden" id="admin_send_to_all_id_input" value="">
+                            </div>
+                            <button type="button" data-url="<?= url('/admin-nanny/ajax.php') ?>" id="submit_send_newsletter_all_btn" class="btn bg-primary btn-log btn-block" style="color: #fff;">Send...</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
 
 
 <a href="<?= url('/admin-nanny/ajax.php') ?>" class="ajax_url_page" style="display: none;"></a>
@@ -187,6 +218,7 @@ $(".delete_news_letter_btn").click(function(e){
     e.preventDefault();
     var id = $(this).attr('id');
     var url = $(".ajax_url_page").attr('href');
+    $(".page_alert_danger").hide();
     $(".preloader-container").show() //show preloader
 
     $.ajax({
@@ -202,6 +234,10 @@ $(".delete_news_letter_btn").click(function(e){
                 location.reload();
             }
             remove_preloader();
+        },
+        error: function(){
+            $(".page_alert_danger").show();
+            $(".page_alert_danger").html('*Network error, try again later!');
         }
     });
 
@@ -210,6 +246,48 @@ $(".delete_news_letter_btn").click(function(e){
 
 
 
+
+// =========================================
+// FETCH SEND ALL MODAL ID
+// =========================================
+$(".send_newsletter_all_open_btn").click(function(e){
+    e.preventDefault();
+    var news_id = $(this).attr('id');
+    $("#admin_send_to_all_id_input").val(news_id)
+});
+
+
+
+
+
+// ==========================================
+// SEND NEWS LETTER TO ALL
+// ==========================================
+$("#submit_send_newsletter_all_btn").click(function(e){
+    e.preventDefault();
+    var url = $(".ajax_url_page").attr('href');
+    var news_id = $('#admin_send_to_all_id_input').val();
+    $(".page_alert_danger").hide();
+    $("#modal_delete_close").click();
+    $(".preloader-container").show() //show preloader
+
+    $.ajax({
+        url: url,
+        method: "post",
+        data: {
+            news_id: news_id,
+            admin_send_newsletter_all: ' admin_send_newsletter_all'
+        },
+        success: function (response){
+            var data = JSON.parse(response);
+            location.reload();
+        },
+        error: function(){
+            $(".page_alert_danger").show();
+            $(".page_alert_danger").html('*Network error, try again later!');
+        }
+    });
+});
 
 
 

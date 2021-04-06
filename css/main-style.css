@@ -939,6 +939,7 @@ ul.ability-x li{
     font-size: 13px;
 }
 
+
 @media only screen and (max-width: 567px){
     .j-expirience ul{
         padding: 0px 10px 10px 10px;
@@ -2437,6 +2438,123 @@ ul.ul-message li{
     font-size: 13px;
     position: relative
 }
+
+
+
+
+/* ======================================== */
+/*      FREQUENTLY ASKED QUESTIONM PAGE     */
+/* ======================================== */
+.faq-container{
+    width: 80%;
+    margin: 0 auto;
+    padding: 30px 20px;
+    border-radius: 5px;
+    background-color: #fff;
+    box-shadow: 0px 2px 2px 0px rgb(197, 197, 197);
+}
+.faq-form{
+    margin-top: 50px;
+}
+.faq-form input{
+    width: 60%;
+    margin: 0 auto;
+    border-radius: 200px;
+}
+.faq-form input:focus{
+    box-shadow: none;
+    outline: none;
+}
+.faq-form p{
+    font-size: 13px;
+}
+h3.rh-faq{
+    color: #333;
+    text-align: left;
+    font-size: 18px;
+}
+.faq-container-body{
+    padding: 50px 0px;
+}
+.faq-body .head{
+    font-size: 15px;
+    font-weight: 400;
+    padding: 20px 0px;
+}
+.faq-body ul{
+    padding-left: 30px;
+}
+.faq-body ul li{
+    font-size: 13px;
+    color: #555;
+    list-style: circle;
+    color: blue;
+    padding: 10px 0px;
+}
+.faq-body ul li a:hover{
+   color: blue;
+}
+.inner-faq-answer-body{
+    width: 90%;
+    margin: 0 auto;
+}
+.inner-faq-answer-body p{
+    font-size: 13px;
+}
+
+@media only screen and (max-width: 1125px){
+    .faq-container{
+        width: 90%;
+    }
+}
+@media only screen and (max-width: 992px){
+    .inner-faq-answer-body{
+        width: 100%;
+    }
+}
+@media only screen and (max-width: 767px){
+    .faq-container{
+        width: 100%;
+    }
+    .faq-form input{
+        width: 80%;
+    }
+}
+@media only screen and (max-width: 567px){
+    .faq-form input{
+        width: 100%;
+    }
+    .faq-form p{
+        font-size: 12px;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

@@ -190,5 +190,21 @@ $('#subscription_btn_now').click(function(e){
 
 
 
+
+
+// ========================================
+// REMOVE PRELOADER
+// ========================================
+// function remove_preloader(){
+//     setTimeout(function(){
+//         $(".preloader-container").hide();
+//         $(".alert-success").hide();
+//     }, 2000);
+// }
+
+
+
+
+
 });
 </script>

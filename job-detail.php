@@ -100,7 +100,7 @@ if(Auth_employer::is_loggedin())
 // ============================================
 // GET WORK DETAILS
 // ============================================
-$job = $connection->select('workers')->leftJoin('employee', 'workers.employee_id', '=', 'employee.e_id')->where('worker_id', Input::get('wid'))->where('job_approved', 1)->where('is_deactivate', 0)->where('is_job_feature', 1)->first(); 
+$job = $connection->select('workers')->leftJoin('employee', 'workers.employee_id', '=', 'employee.e_id')->where('worker_id', Input::get('wid'))->where('employee.e_approved', 1)->where('is_deactivate', 0)->where('is_job_feature', 1)->first(); 
 if(!$job)
 {
     return view('/jobs');
@@ -490,8 +490,8 @@ if($request_worker)
                                  <div class="j-safety">
                                     <div class="js-head">Important saftey tips:</div>
                                     <ul>
-                                        <li>1. Do not make any payment without confirming with the Jobberman Customer Support Team.</li>
-                                        <li>2. If you think this advert is not genuine, please report it via the Report Job link below.</li>
+                                        <li>1. Do not make any payment without confirming with the nigeria nanny Customer Support Team.</li>
+                                        <li>2. If you think this advert is not genuine, please report viea this <a href="<?= url('/contact') ?>" class="text-primary">link</a></li>
                                     </ul>
                                 </div>
                                 <!-- SAFETY END-->

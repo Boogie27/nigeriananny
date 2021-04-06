@@ -2626,7 +2626,7 @@ if(Input::post('send_news_letter_to_employee'))
             $mail = new Mail();
             $send = $mail->mail([
                 'to' => $client['email'],
-                'subject' => $banner->app_name.' monthly letter',
+                'subject' => $news_letter->subject,
                 'body' => $newsLetter,
             ]);
             $send->send_email();
@@ -2652,7 +2652,7 @@ if(Input::post('send_news_letter_to_employee'))
 
 
 // =============================================
-// SEND NEWS LETTER TO EMPLOYEES
+// SEND NEWS LETTER TO EMPLOYERS
 // =============================================
 if(Input::post('send_news_letter_to_employer'))
 {
@@ -2675,7 +2675,7 @@ if(Input::post('send_news_letter_to_employer'))
             $mail = new Mail();
             $send = $mail->mail([
                 'to' => $client['email'],
-                'subject' => $banner->app_name.' monthly letter',
+                'subject' => $news_letter->subject,
                 'body' => $newsLetter,
             ]);
             $send->send_email();
@@ -2805,6 +2805,172 @@ function get_news_letter_page($logo, $app_name, $address, $header, $body)
 
         return $news_letters;
 }
+
+
+
+
+
+
+
+
+
+
+
+// ===============================================
+// DELETE FAQ 
+// ===============================================
+if(Input::post('delete_faq_action'))
+{
+    $data = false;
+    $faq = $connection->delete('faqs')->where('id', Input::get('faq_id'))->save();
+    if($faq)
+    {
+        Session::flash('error', 'FAQ deleted successfully!');
+        $data = true;
+    }
+    return response(['data' => $data]);
+}
+
+
+
+
+
+
+
+
+// ==========================================
+// SEND NEWS LETTER TO ALL
+// ==========================================
+if(Input::post('admin_send_newsletter_all'))
+{
+    $data = false;
+    $banner =  $connection->select('settings')->where('id', 1)->first(); //get site details like app name, address and logo
+    $news_letter = $connection->select('news_letters')->where('id', Input::get('news_id'))->first();
+    if($news_letter)
+    {
+        $subscribers = $connection->select('newsletters_subscriptions')->get();
+        $newsLetter = get_news_letter_page($banner->logo, $banner->app_name, $banner->address, $news_letter->header, $news_letter->body);
+        
+        if(!$subscribers)
+        {
+            Session::flash('error', '*There are no active subscribers yet!');
+            return response(['error' => true]);
+        }
+
+        foreach($subscribers as $client)
+        {
+            $mail = new Mail();
+            $send = $mail->mail([
+                'to' => $client->email,
+                'subject' => $news_letter->subject,
+                'body' => $newsLetter,
+            ]);
+            $send->send_email();
+        }
+
+        $update = $connection->update('news_letters', [
+            'is_sent' => 1
+        ])->where('id', Input::get('news_id'))->save();
+        if($update)
+        {
+            $data = true;
+            Session::flash('success', 'News letter sent successfully!');
+        }
+    }
+    return response(['data' => $data]);
+}
+
+
+
+
+
+
+
+
+// ===========================================
+// INCOME CALCULATOR
+// ===========================================
+if(Input::post('calculate_subscription_income'))
+{
+    $data = false;
+    if(empty(Input::get('from_month')))
+    {
+        return response(['error' => ['from_month' => '*From month is required']]);
+    }
+    if(empty(Input::get('from_year')))
+    {
+        return response(['error' => ['from_year' => '*From year is required']]);
+    }
+    
+
+    if(empty(Input::get('to_month')))
+    {
+        return response(['error' => ['to_year' => '*To month is required']]);
+    }
+    if(empty(Input::get('to_year')))
+    {
+        return response(['error' => ['to_year' => '*To year is required']]);
+    }
+
+    if(Input::get('from_year') == Input::get('to_year') && Input::get('from_month') > Input::get('to_month'))
+    {
+        return response(['error' => ['to_month' => '*To month must be greater than from month!']]);
+    }
+
+    $from_day = !empty(Input::get('from_day')) ? Input::get('from_day') : 1;
+    $from_month = !empty(Input::get('from_month')) ? Input::get('from_month') : 1;
+    $from_date = Input::get('from_year').'-'.$from_month.'-'.$from_day;
+
+    $to_day = !empty(Input::get('to_day')) ? Input::get('to_day') : 31;
+    $to_month = !empty(Input::get('to_month')) ? Input::get('to_month') : 12;
+    $to_date = Input::get('to_year').'-'.$to_month.'-'.$to_day;
+
+    $subscriptions = $connection->select('employer_subscriptions')->where('start_date', '>=', $from_date)->where('start_date', '<=', $to_date)->get();
+
+    $amount = 0;
+    foreach($subscriptions as $subscription)
+    {
+        $amount += $subscription->s_amount;
+    }
+
+    if(!$data)
+    {
+        return response(['amount' => number_format($amount)]);
+    }
+
+    return response(['data' => $data]);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
