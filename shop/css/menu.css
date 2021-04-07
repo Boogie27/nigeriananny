@@ -817,9 +817,9 @@ header.stylehome1.home4 a {
 
 @media only screen and (max-width:992px) {
     .header.stylehome1.dashbord_pages:before {
-        background-image: -moz-linear-gradient( 0deg, rgb(52, 82, 255) 0%, rgb(255, 16, 83) 100%);
-        background-image: -webkit-linear-gradient( 0deg, rgb(52, 82, 255) 0%, rgb(255, 16, 83) 100%);
-        background-image: -ms-linear-gradient( 0deg, rgb(52, 82, 255) 0%, rgb(255, 16, 83) 100%);
+        background-image: -moz-linear-gradient( 0deg, rgb(51, 51, 51) 0%, rgb(51, 51, 51) 100%);
+        background-image: -webkit-linear-gradient( 0deg, rgb(51, 51, 51) 0%, rgb(51, 51, 51) 100%);
+        background-image: -ms-linear-gradient( 0deg, rgb(51, 51, 51) 0%, rgb(51, 51, 51) 100%);
     }
     .mobile-menu .header_user_notif.dashbord_pages_mobile_version li:first-child {
         display: inline-block !important;

@@ -619,6 +619,9 @@ ul.inner_ul .li-link a{
     }
 }
 @media only screen and (max-width: 567px){
+    .account-profile-form{
+        padding: 10px;
+    }
     .empty-inner img{
         width: 150px;
         height: 150px;
@@ -1409,6 +1412,11 @@ ul.ul-message p{
 .faq-form input:focus, .faq-form select:focus, .faq-form textarea:focus{
     outline: none;
     box-shadow: none;
+}
+@media only screen and (max-width: 567px){
+    .faq-form{
+        padding: 10px;
+    }
 }
 
 

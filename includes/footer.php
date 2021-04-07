@@ -17,7 +17,7 @@ $settings = $connection->select('settings')->where('id', 1)->first();
 						<p>Country: <?= $settings->country ? $settings->country : ''; ?></p>
 					</div>
 				</div>
-				<div class="col-sm-6 col-md-4 col-md-3 col-lg-2">
+				<div class="col-sm-6 col-md-6 col-lg-3">
 					<div class="footer_company_widget">
 						<h4>NANNY WORK</h4>
 						<ul class="list-unstyled">
@@ -29,7 +29,7 @@ $settings = $connection->select('settings')->where('id', 1)->first();
 						</ul>
 					</div>
 				</div>
-				<div class="col-sm-6 col-md-4 col-md-3 col-lg-2">
+				<div class="col-sm-6 col-md-6 col-lg-3">
 					<div class="footer_company_widget">
 						<h4>NANNY SHOP</h4>
 						<ul class="list-unstyled">
@@ -37,22 +37,6 @@ $settings = $connection->select('settings')->where('id', 1)->first();
 							<li><a href="">Categories</a></li>
 							<li><a href="<?= url('/shop/account') ?>">My account</a></li>
 							<li><a href="<?= url('/shop/order') ?>">My order</a></li>
-						</ul>
-					</div>
-				</div>
-				<div class="col-sm-6 col-md-4 col-md-3 col-lg-2">
-					<div class="footer_program_widget">
-						<h4>FEATURES</h4>
-						<ul class="list-unstyled">
-							<li><a href="<?= url('/shop/order-cancle') ?>">Order cancle</a></li>
-							<li><a href="<?= url('/shop/reviewed') ?>">Reviews</a></li>
-							<li><a href="<?= url('/shop/address-book') ?>">Address book</a></li>
-							<?php if(!Auth::is_loggedin()): ?>
-								<li><a href="<?= url('/shop/login') ?>">Login</a></li>
-								<li><a href="<?= url('/shop/register') ?>">Register</a></li>
-							<?php else: ?>
-								<li><a href="#">Logout</a></li>
-							<?php endif;?>
 						</ul>
 					</div>
 				</div>

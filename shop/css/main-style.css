@@ -125,7 +125,28 @@
 #review-container img{
     width: 50px;
 }
-
+i.share-icon{
+    width: 35px;
+    height: 35px;
+    padding-top: 8px;
+    text-align: center;
+    border-radius: 50%;
+    margin-right: 8px;
+    color: #fff;
+    font-size: 16px;
+}
+.fa-facebook.share-icon{
+    background-color: #3b5998;
+}
+.fa-twitter.share-icon{
+    background-color: #1da1f2;
+}
+.fa-linkedin.share-icon{
+    background-color: #00a0dc;
+}
+.fa-whatsapp.share-icon{
+    background-color: #25d366;
+}
 
 /* =============================================== */
 /*         ALERT                                   */

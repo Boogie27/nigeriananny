@@ -65,7 +65,7 @@ $settings = $connection->select('settings')->where('id', 1)->first();
 		                <a href="<?= url('/shop/cart') ?>"><span class="title">Cart</span></a>
 		            </li>
 					<li>
-		                <a href="<?= url('/') ?>"><span class="title">Work place</span></a>
+		                <a href="<?= url('/') ?>"><span class="title">Find a worker</span></a>
 		            </li>
 					
 		        </ul>

@@ -69,7 +69,7 @@ class Auth_employee{
                     
                     if(Auth_employer::is_loggedin())
                     {
-                        Auth_employer::logout();
+                        Session::delete('employer');
                     }
                     return true;
                 }

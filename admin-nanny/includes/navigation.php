@@ -1,7 +1,15 @@
 
 <?php
-//    banner 
+// =====================================
+//    GET APP BANNER
+// =====================================
 $banner =  $connection->select('settings')->where('id', 1)->first();
+
+
+// =====================================
+//    GET MESSAGE
+// =====================================
+$new_messages = $connection->select('contact_us')->where('is_seen', 0)->get();
 ?>
 
 	<header class="header-nav menu_style_home_one dashbord_pages navbar-scrolltofixed stricky main-menu">
@@ -17,7 +25,7 @@ $banner =  $connection->select('settings')->where('id', 1)->first();
 		                <span class="icon-bar"></span>
 		            </button>
 		        </div>
-		        <a href="#" class="navbar_brand float-left dn-smd">
+		        <a href="<?= url('/') ?>" class="navbar_brand float-left dn-smd">
 		            <img class="logo1 img-fluid" src="<?= asset($banner->logo) ?>" alt="<?= $banner->app_name ?>">
 		            <img class="logo2 img-fluid" src="<?= asset($banner->logo) ?>" alt="<?= $banner->app_name ?>">
 		            <span><?= $banner->app_name ?></span>
@@ -68,92 +76,6 @@ $banner =  $connection->select('settings')->where('id', 1)->first();
 					</li>
 		        </ul>
 		        <ul class="header_user_notif pull-right dn-smd">
-	                <li class="user_notif">
-						<div class="dropdown">
-						    <a class="notification_icon" href="#" data-toggle="dropdown"><span class="flaticon-email"></span></a>
-						    <div class="dropdown-menu notification_dropdown_content">
-								<div class="so_heading">
-									<p>Notifications</p>
-								</div>
-								<div class="so_content" data-simplebar="init">
-									<ul>
-										<li>
-											<h5>Status Update</h5>
-											<p>This is an automated server response message. All systems are online.</p>
-										</li>
-										<li>
-											<h5>Status Update</h5>
-											<p>This is an automated server response message. All systems are online.</p>
-										</li>
-										<li>
-											<h5>Status Update</h5>
-											<p>This is an automated server response message. All systems are online.</p>
-										</li>
-										<li>
-											<h5>Status Update</h5>
-											<p>This is an automated server response message. All systems are online.</p>
-										</li>
-										<li>
-											<h5>Status Update</h5>
-											<p>This is an automated server response message. All systems are online.</p>
-										</li>
-										<li>
-											<h5>Status Update</h5>
-											<p>This is an automated server response message. All systems are online.</p>
-										</li>
-										<li>
-											<h5>Status Update</h5>
-											<p>This is an automated server response message. All systems are online.</p>
-										</li>
-									</ul>
-								</div>
-								<a class="view_all_noti text-thm" href="#">View all alerts</a>
-						    </div>
-						</div>
-	                </li>
-	                <li class="user_notif">
-						<div class="dropdown">
-						    <a class="notification_icon" href="#" data-toggle="dropdown"><span class="flaticon-alarm"></span></a>
-						    <div class="dropdown-menu notification_dropdown_content">
-								<div class="so_heading">
-									<p>Notifications</p>
-								</div>
-								<div class="so_content" data-simplebar="init">
-									<ul>
-										<li>
-											<h5>Status Update</h5>
-											<p>This is an automated server response message. All systems are online.</p>
-										</li>
-										<li>
-											<h5>Status Update</h5>
-											<p>This is an automated server response message. All systems are online.</p>
-										</li>
-										<li>
-											<h5>Status Update</h5>
-											<p>This is an automated server response message. All systems are online.</p>
-										</li>
-										<li>
-											<h5>Status Update</h5>
-											<p>This is an automated server response message. All systems are online.</p>
-										</li>
-										<li>
-											<h5>Status Update</h5>
-											<p>This is an automated server response message. All systems are online.</p>
-										</li>
-										<li>
-											<h5>Status Update</h5>
-											<p>This is an automated server response message. All systems are online.</p>
-										</li>
-										<li>
-											<h5>Status Update</h5>
-											<p>This is an automated server response message. All systems are online.</p>
-										</li>
-									</ul>
-								</div>
-								<a class="view_all_noti text-thm" href="#">View all alerts</a>
-						    </div>
-						</div>
-	                </li>
 	                <li class="user_setting">
 						<div class="dropdown">
 	                		<a class="btn dropdown-toggle" href="#" data-toggle="dropdown"><img class="rounded-circle" src="<?= asset(Admin_auth::admin('image')) ?>" alt="<?= Admin_auth::admin('first_name') ?>"></a>
@@ -164,7 +86,7 @@ $banner =  $connection->select('settings')->where('id', 1)->first();
 						    	</div>
 						    	<div class="user_setting_content">
 									<a class="dropdown-item active" href="<?= url('/admin/profile') ?>">My Profile</a>
-									<a class="dropdown-item" href="#">Messages</a>
+									<a class="dropdown-item" href="<?= url('/admin-nanny/message') ?>">Messages <span class="text-danger" style="font-size: 13px;"><?= $new_messages ? '('.count($new_messages).')' : ''?> </span></a>
 									<a class="dropdown-item" href="<?= url('/admin/transactions') ?>">Transactions</a>
 									<a class="dropdown-item" href="<?= url('/admin/general-settings') ?>">Settings</a>
 									<a class="dropdown-item" href="<?= url('/admin/logout') ?>">Log out</a>

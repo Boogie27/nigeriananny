@@ -135,12 +135,12 @@
 						</ul>
 						<ul class="sspd_social_icon">
 							<li class="list-inline-item">Share:</li>
-							<li class="list-inline-item"><a href="#"><i class="fa fa-facebook"></i></a></li>
-							<li class="list-inline-item"><a href="#"><i class="fa fa-twitter"></i></a></li>
-							<li class="list-inline-item"><a href="#"><i class="fa fa-instagram"></i></a></li>
-							<li class="list-inline-item"><a href="#"><i class="fa fa-pinterest"></i></a></li>
-							<li class="list-inline-item"><a href="#"><i class="fa fa-dribbble"></i></a></li>
-							<li class="list-inline-item"><a href="#"><i class="fa fa-google"></i></a></li>
+							<li>
+								<a href="#" class="facebook_share"><i class="fa fa-facebook share-icon"></i></a>
+								<a href="#" class="twitter_share"><i class="fa fa-twitter share-icon"></i></a>
+								<a href="#" class="linkedin_share"><i class="fa fa-linkedin share-icon"></i></a>
+								<a href="#" class="whatsapp_share"><i class="fa fa-whatsapp share-icon"></i></a>
+							</li>
 						</ul>
 					</div>
 				</div>
@@ -328,6 +328,26 @@
 <script>
 
 $(document).ready(function(){
+
+// =========================================
+//SOCIAL MEDIA SHARE BUTTON
+// =========================================
+var facebook = $(".facebook_share");
+var twitter = $(".twitter_share");
+var linkedin = $(".linkedin_share");
+var whatsapp = $(".whatsapp_share");
+
+var post_url = encodeURI($(location).attr('href'));
+var post_title =encodeURI( "Shop for products on nigeria nanny company");
+
+$(facebook).attr('href', `https://www.facebook.com/sharer/sharer.php?u=${post_url}`);
+$(twitter).attr('href', `https://twitter.com/share?url=${post_url}&text=${post_title}`);
+$(linkedin).attr('href', ` https://www.linkedin.com/shareArticle?url=${post_url}&title=${post_title}`);
+$(whatsapp).attr('href', `https://api.whatsapp.com/send?text=${post_title} ${post_url}`);
+
+
+
+
 
 // =======================================
 // STAR CLICK EFFECT

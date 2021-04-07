@@ -139,16 +139,45 @@ $banner =  $connection->select('settings')->where('id', 1)->first();
 					endif; ?>
 					</ul>
 				</li>
-				<!-- <li><span>Events</span>
+				<li><span>Newsletters</span>
 					<ul>
-						<li><a href="page-event.html">Event List</a></li>
-						<li><a href="page-event-single.html">Event Single</a></li>
+						<li><a href="<?= url('/admin-nanny/news-letters') ?>">News letter</a></li>
+						<li><a href="<?= url('/admin-nanny/employer-newsletter') ?>">Employer news letter</a></li>
+						<li><a href="<?= url('/admin-nanny/employee-newsletter') ?>">Employee news letter</a></li>
+					</ul>
+				</li>
+				<li><span>Settings</span>
+					<ul>
+						<li><a href="<?= url('/admin-nanny/general-settings') ?>">General settings</a></li>
+						<li><a href="<?= url('/admin-nanny/email-settings') ?>">Email settings</a></li>
+						<li><a href="<?= url('/admin-nanny/banner-settings') ?>">Banner settings</a></li>
+					</ul>
+				</li>
+				<li><span>Others</span>
+					<ul>
+						<li><a href="<?= url('/admin-nanny/faq') ?>">FAQ</a></li>
+					</ul>
+				</li>
+				<!-- <li><span>Courses</span>
+					<ul>
+						<li><span>Courses List</span>
+							<ul>
+	                            <li><a href="page-course-v1.html">Courses v1</a></li>
+	                            <li><a href="page-course-v2.html">Courses v2</a></li>
+	                            <li><a href="page-course-v3.html">Courses v3</a></li>
+							</ul>
+						</li>
+						<li><span>Courses Single</span>
+							<ul>
+	                            <li><a href="page-course-single-v1.html">Single V1</a></li>
+	                            <li><a href="page-course-single-v2.html">Single V2</a></li>
+	                            <li><a href="page-course-single-v3.html">Single V3</a></li>
+							</ul>
+						</li>
+                        <li><a href="page-instructors.html">Instructors</a></li>
+		                <li><a href="page-instructors-single.html">Instructor Single</a></li>
 					</ul>
 				</li> -->
-				<li>
-	              <a href="<?= url('/admin/transactions.php') ?>"><span>Transactions</span></a>
-				</li>
-				<li><a href="<?= url('/admin/settings.php'); ?>"><span class="fa fa-cog"></span> Settings</a></li>
 				<li><a href="<?= url('/admin/logout.php') ?>"><span class="fa fa-sign-out"></span> Logout</a></li>
 			</ul>
 		</nav>

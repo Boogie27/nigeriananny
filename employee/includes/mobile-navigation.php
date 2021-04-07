@@ -55,16 +55,18 @@ $categories = $connection->select('job_categories')->where('is_category_featured
 					<li><a href="<?= url('/employee/account') ?>"><span class="fa fa-user"></span> Account</a></li>
 				<?php endif; ?>
 				<li><a href="<?= url('/subscription') ?>"><span class="flaticon-user"></span> Subscription </a></li>
-				<?php if(Auth_employee::is_loggedin()): ?>
-					<li><a href="<?= url('/employee/logout') ?>"><span class="flaticon-edit"></span> Logout</a></li>
-				<?php else: ?>
-					<li><a href="<?= url('/employee/login') ?>"><span class="fa fa-users"></span> Job seeker login</a></li>
-				<?php endif; ?>
 				<li><a href="<?= url('/shop') ?>"><span class="fa fa-circle"></span> Market place</a></li>
-				<?php if(Auth_employer::is_loggedin()):?>
-					<li><a href="<?= url('/employer/logout') ?>"><span class="flaticon-edit"></span> Logout</a></li>
-				<?php else: ?>
+				<?php if(!Auth_employee::is_loggedin()): ?>
+					<li><a href="<?= url('/employee/login') ?>"><span class="fa fa-user-o"></span> Job seeker login</a></li>
+				<?php endif; ?>
+				<?php if(!Auth_employer::is_loggedin()):?>
 					<li><a href="<?= url('/employer/login') ?>"><span class="fa fa-briefcase"></span> Employer login</a></li>
+				<?php endif; ?>
+				<?php if(Auth_employer::is_loggedin()):?>
+					<li><a href="<?= url('/employer/logout') ?>"><span class="fa fa-power-off"></span> Logout</a></li>
+				<?php endif; ?>
+				<?php if(Auth_employee::is_loggedin()): ?>
+					<li><a href="<?= url('/employee/logout') ?>"><span class="fa fa-power-off"></span> Logout</a></li>
 				<?php endif; ?>
 			</ul>
 		</nav>
