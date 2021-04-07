@@ -235,8 +235,19 @@
 .product_review_preloader{
     background-color: #fff;
 }
+.review-container{
+    padding: 20px 0px;
+    width: 80%;
+    margin: 0 auto;
+}
+#review-container{
+    margin: 20px 0px;
+    background-color: #fff;
+}
 #review-container img{
     width: 50px;
+    margin-right: 10px;
+    border-radius: 50%;
 }
 i.share-icon{
     width: 35px;
@@ -259,6 +270,20 @@ i.share-icon{
 }
 .fa-whatsapp.share-icon{
     background-color: #25d366;
+}
+
+@media only screen and (max-width: 992px){
+    .review-container{
+        width: 100%;
+    }
+}
+@media only screen and (max-width: 567px){
+    .product_single_content{
+        padding: 0px;
+    }
+    #review-container img{
+        width: 35px;
+    }
 }
 
 /* =============================================== */
@@ -664,8 +689,14 @@ img.cart_img{
 
 
 
-
-
+/* ========================================= */
+/*         HOME PAGE                         */
+/* ======================================== */
+@media only screen and (max-width: 1125px){
+    .shop_grid .cart_bag{
+        opacity: 1;
+      }
+}
 
 
 

@@ -42,6 +42,26 @@ function money($string)
 
 
 
+// ======================================
+// GET FILE NAME
+// ======================================
+function path($string){
+    $back_url = $_SERVER['PHP_SELF'];
+    $filename = explode('.', basename($back_url));
+    if($filename[0] == 'index' && $string == '/')
+    {
+        return true;
+    }
+    if($filename[0] == $string)
+    {
+        return true;
+    }
+    return false;
+}
+
+
+
+
 
 function dd($string)
 {

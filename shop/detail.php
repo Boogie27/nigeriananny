@@ -189,7 +189,7 @@ $banner =  $connection->select('settings')->where('id', 1)->first();
 							<div class="tab-pane fade" id="review" role="tabpanel" aria-labelledby="review-tab">
 								<div class="product_single_content">
 									<div class="mbp_pagination_comments">
-									    <div class="review-container" >
+									    <div class="review-container">
 											<!-- review start -->
 											<?php
 											$product_reviews = $connection->select('product_review')
@@ -198,9 +198,9 @@ $banner =  $connection->select('settings')->where('id', 1)->first();
 											foreach($product_reviews as $product_review):
 												$user_image = $product_review->user_image ? $product_review->user_image : '/shop/images/users/demo.png';
 											?>
-												<div class="mbp_first media p-3" id="review-container">
-													<img src="<?= asset($user_image) ?>" style="border-radius: 50%;" class="mr-3" alt="review1.png">
-													<div class="media-body m-3">
+												<div class="media p-3" id="review-container">
+													<img src="<?= asset($user_image) ?>" class="" alt="review1.png">
+													<div class="media-body">
 														<h4 class="sub_title mt-0"><?= ucfirst($product_review->first_name) ?>
 															<span class="sspd_review float-right">
 																<ul>

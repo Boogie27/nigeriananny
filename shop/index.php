@@ -107,7 +107,7 @@ $banner =  $connection->select('settings')->where('id', 1)->first();
 					?>
 					<div class="row">
 					<?php foreach($recentProduct as $product):?>
-						<div class="col-lg-3">
+						<div class="col-xl-3 col-lg-4 col-md-6">
 							<div class="shop_grid">
 								<div class="thumb text-center front_img">
 									<a href="detail.php?pid=<?= $product->id ?>">
