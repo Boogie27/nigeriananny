@@ -115,3 +115,17 @@ $banner =  $connection->select('settings')->where('id', 1)->first();
 		</div>
 	</header>
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+

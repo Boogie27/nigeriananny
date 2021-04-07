@@ -131,7 +131,7 @@ if(!Auth::is_loggedin())
 											<span class="flaticon-shopping-bag pr5 fz20 cart_icon"></span>
 											<h4>You have no order</h4>
 											<?php if(!Auth::is_loggedin()): ?>
-												<p class="">Have an account? <a href="<?= url('/shop/login.php') ?>" class="text-primary"> Login</a> or <a href="<?= url('/shop/register.php') ?>" class="text-primary"> Register</a> to view orders.</p>
+												<p class="empty-cart-p">Have an account? <a href="<?= url('/shop/login.php') ?>" class="text-primary"> Login</a> or <a href="<?= url('/shop/register.php') ?>" class="text-primary"> Register</a> to view orders.</p>
 											<?php endif; ?>
 											<a href="<?= url('/shop/index.php') ?>" class="app-btn">Continue shopping</a>
 										</div>
@@ -241,7 +241,7 @@ function cancle_order(url){
 	var message = $("#cancle_message_input").val();
 	var paid_product_id = $(".cancle_order_id_input").val();
 	var reference = $(".cancle_order_reference_input").val();
-
+	$(".preloader-container").show() //show preloader
 
     $.ajax({
         url: url,
@@ -274,6 +274,17 @@ function show_error(error){
 
 
 
+
+
+// ========================================
+// REMOVE PRELOADER
+// ========================================
+function remove_preloader(){
+    setTimeout(function(){
+        $(".preloader-container").hide();
+        $(".alert-success").hide();
+    }, 2000);
+}
 
 
 

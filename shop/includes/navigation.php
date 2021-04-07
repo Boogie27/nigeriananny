@@ -101,4 +101,21 @@ $settings = $connection->select('settings')->where('id', 1)->first();
 	</header>
 
 
+	<!-- alert success start-->
+    <div class="shop-alert-success">
+		<div class="shop-inner-alert" id="shop_alert_success_container">
+			<div class="alert alert-success text-center p-3">Item added to cart successfully!</div>
+		</div>
+	</div>
+	<!-- alert success end-->
+
+	<!-- alert success start-->
+    <!-- <div class="shop-alert-error">
+		<div class="shop-inner-alert">
+			<div class="alert alert-danger text-center p-3"></div>
+		</div>
+	</div> -->
+	<!-- alert success end-->
+
+
     <?php include('mobile-navigation.php') ?>

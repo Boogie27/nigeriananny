@@ -43,3 +43,14 @@
  <div class="detail_preloader">
         <img src="<?= url('/shop/images/preloader.gif') ?>" class="product_review_preloader" alt="preloader">
 </div>
+
+
+
+<!-- ajax preloader-->
+<div class="preloader-container">
+	<div class="ajax-preloader-x">
+		<div class="loader-y">
+			<div class="ajax-loader-x"></div> loading...
+		</div>
+	</div>
+</div>

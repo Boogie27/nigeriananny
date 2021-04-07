@@ -32,7 +32,9 @@ if(!empty(Input::get('search')))
 $products->paginate(12);
 
 
+// ============================================
 // app banner settings
+// ============================================
 $banner =  $connection->select('settings')->where('id', 1)->first();
 
 
@@ -63,13 +65,17 @@ $banner =  $connection->select('settings')->where('id', 1)->first();
 	<section class="inner_page_breadcrumb" style="background-image: url('<?= asset($banner->home_banner); ?>');">
 		<div class="container">
 			<div class="row">
-				<div class="col-xl-6 offset-xl-3 text-center">
+				<div class="col-xl-6 offset-xl-3 text-center breadcrumb_content_x">
 					<div class="breadcrumb_content">
-						<h4 class="breadcrumb_title">Shop</h4>
+						<h4 class="page_title">Shop</h4>
 						<ol class="breadcrumb">
 						    <li class="breadcrumb-item"><a href="#">Home</a></li>
 						    <li class="breadcrumb-item active" aria-current="page">Shop</li>
 						</ol>
+					</div>
+					<div class="banner-icon-x">
+						<i class="fa fa-shopping-cart"></i>
+						<span class="cart_total_quantity"><?= Session::has('cart') ? Session::get('cart')->_totalQty : 0 ?></span>
 					</div>
 				</div>
 			</div>
