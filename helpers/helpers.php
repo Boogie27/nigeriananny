@@ -62,6 +62,23 @@ function path($string){
 
 
 
+// =====================================
+// GET PAGE TITLE
+//======================================
+function title(){
+    $back_url = $_SERVER['PHP_SELF'];
+    $filename = explode('.', basename($back_url));
+    
+    $main_title = implode(' ', explode('-', $filename[0]));
+    if($main_title == 'index')
+    {
+        $main_title = 'home';
+    }
+    return $main_title;
+}
+
+
+
 
 function dd($string)
 {

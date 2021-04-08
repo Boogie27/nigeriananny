@@ -172,25 +172,3 @@ $banner =  $connection->select('settings')->where('id', 1)->first();
 <?php  include('includes/footer.php') ?>
 
 
-<script>
-$(document).ready(function(){
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-});
-</script>

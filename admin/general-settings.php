@@ -10,6 +10,10 @@ if(!Admin_auth::is_loggedin())
 
 
 
+
+// ===============================================
+// UPDATE GENERAL SETTINGS
+// ===============================================
 if(Input::post('update_general_settings'))
 {
 	$validate = new DB();
@@ -54,7 +58,37 @@ if(Input::post('update_general_settings'))
 }
 
 
+
+
+
+
+
+// ===============================================
+// UPDATE SOCIAL MEDIA LINKS
+// ===============================================
+if(Input::post('social_media'))
+{
+	$update_settings = $connection->update('settings', [
+		'facebook' => Input::get('facebook'),
+		'twitter' => Input::get('twitter'),
+		'linkedin' => Input::get('linkedin'),
+		'instagram' => Input::get('instagram'),
+	])->where('id', 1)->save();
+	if($update_settings)
+	{
+		Session::flash('success', 'Social links updated successfully!');
+		return back();
+	}   
+}
+
+
+
+
+
+
+// =================================================
 // app banner settings
+// =================================================
 $setting =  $connection->select('settings')->where('id', 1)->first();
 
 
@@ -158,8 +192,8 @@ $setting =  $connection->select('settings')->where('id', 1)->first();
 												</div>
 											<?php endif; ?>
 										</div>
-										<br>
-										<div class="col-lg-12">
+									
+										<div class="col-lg-12"><br><br>
 											<div class="form-group">
 												<?php  if(isset($errors['paystack_public'])) : ?>
 													<div class="form-alert text-danger"><?= $errors['paystack_public']; ?></div>
@@ -173,6 +207,54 @@ $setting =  $connection->select('settings')->where('id', 1)->first();
 													<label class="custom-control-label" for="paystack_public_btn">Activate</label>
 												</div>
 											<?php endif; ?>
+										</div>
+								   </div>
+								</div>
+								<div class="form-sm">
+								   <div class="row">
+									    <div class="col-lg-12">
+											<h3 class="h3">Social media links</h3>
+										</div>
+										<div class="col-lg-12">
+											<div class="form-group">
+												<?php  if(isset($errors['facebook'])) : ?>
+													<div class="form-alert text-danger"><?= $errors['facebook']; ?></div>
+												<?php endif; ?>
+												<label for="">Facebook</label>
+												<input type="text" name="facebook" class="form-control h50" value="<?= $setting->facebook ?? old('facebook') ?>" placeholder="Facebook link">
+											</div>
+										</div>
+										<div class="col-lg-12">
+										    <div class="form-group">
+												<?php  if(isset($errors['twitter'])) : ?>
+													<div class="form-alert text-danger"><?= $errors['twitter']; ?></div>
+												<?php endif; ?>
+												<label for="">Twitter</label>
+												<input type="text" name="twitter" class="form-control h50" value="<?= $setting->twitter ?? old('twitter') ?>" placeholder="Twitter link">
+											</div>
+										</div>
+										<div class="col-lg-12">
+										    <div class="form-group">
+												<?php  if(isset($errors['instagram'])) : ?>
+													<div class="form-alert text-danger"><?= $errors['instagram']; ?></div>
+												<?php endif; ?>
+												<label for="">Instagram</label>
+												<input type="text" name="instagram" class="form-control h50" value="<?= $setting->instagram ?? old('instagram') ?>" placeholder="Instagram link">
+											</div>
+										</div>
+										<div class="col-lg-12">
+										    <div class="form-group">
+												<?php  if(isset($errors['linkedin'])) : ?>
+													<div class="form-alert text-danger"><?= $errors['linkedin']; ?></div>
+												<?php endif; ?>
+												<label for="">Linkedin</label>
+												<input type="text" name="linkedin" class="form-control h50" value="<?= $setting->linkedin ?? old('linkedin') ?>" placeholder="Linkedin link">
+											</div>
+										</div>
+										<div class="col-lg-12">
+										    <div class="form-group text-right">
+											<button type="submit" name="social_media" class="btn btn-primary">Update...</button>
+											</div>
 										</div>
 								   </div>
 								</div>

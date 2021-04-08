@@ -71,14 +71,14 @@ $settings = $connection->select('settings')->where('id', 1)->first();
 					<div class="footer_social_widget mt15">
 						<ul>
 						<?php if($settings->facebook):?>
-							<li class="list-inline-item"><a href="http://<?= $settings->facebook?>"><i class="fa fa-facebook"></i></a></li>
+							<li class="list-inline-item"><a href="<?= $settings->facebook?>"><i class="fa fa-facebook"></i></a></li>
 						<?php endif; ?>
 						<?php if($settings->twitter):?>
-							<li class="list-inline-item"><a href="http://<?= $settings->twitter?>"><i class="fa fa-twitter"></i></a></li>
+							<li class="list-inline-item"><a href="<?= $settings->twitter?>"><i class="fa fa-twitter"></i></a></li>
 						<?php endif; ?><?php if($settings->instagram):?>
-							<li class="list-inline-item"><a href="http://<?= $settings->instagram?>"><i class="fa fa-instagram"></i></a></li>
-						<?php endif; ?><?php if($settings->google):?>
-							<li class="list-inline-item"><a href="http://<?= $settings->google?>"><i class="fa fa-google"></i></a></li>
+							<li class="list-inline-item"><a href="<?= $settings->instagram?>"><i class="fa fa-instagram"></i></a></li>
+						<?php endif; ?><?php if($settings->linkedin):?>
+							<li class="list-inline-item"><a href="<?= $settings->linkedin?>"><i class="fa fa-linkedin"></i></a></li>
 						<?php endif; ?>
 						</ul>
 					</div>

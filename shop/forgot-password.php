@@ -1,7 +1,11 @@
 <?php include('../Connection.php');  ?>
 
 <?php
-//    banner 
+
+
+// ==================================
+//   GET  APP SITE BANNERS 
+// ==================================
 $site =  $connection->select('settings')->where('id', 1)->first();
 
 if(Input::post('receive_password'))

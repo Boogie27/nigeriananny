@@ -1,8 +1,9 @@
 <?php include('../Connection.php');  ?>
 
 <?php
-// print_r(Session::get('cart'));
-// Session::delete('cart');
+   
+
+
 
 
     $product_detail = $connection->select('shop_products')->where('id', Input::get('pid'))->where('product_is_featured', 1)

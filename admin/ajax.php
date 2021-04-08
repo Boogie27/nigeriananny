@@ -1073,6 +1073,348 @@ if(Input::post('get_footer_logos'))
 
 
 
+// ============================================
+// UPDATE HOME BANNER IMAGE
+// ============================================
+if(Input::post('update_home_banner_image'))
+{
+    $data = false;
+    if(Image::exists('home_banner'))
+    {
+        $image = new Image();
+        $file = Image::files('home_banner');
+
+        $file_name = Image::name('home_banner', 'home_banner');
+        $image->resize_image($file, [ 'name' => $file_name, 'width' => 1920, 'height' => 1000, 'size_allowed' => 1000000,'file_destination' => '../shop/images/banner/']);
+            
+        $image_name = '/shop/images/banner/'.$file_name;
+
+        if(!$image->passed())
+        {
+            return response(['error' => ['home_banner' => $image->error()]]);
+        }
+        
+        $connection = new DB();
+        $settings = $connection->select('settings')->where('id', 1)->first();
+        if($settings->home_banner)
+        {
+            Image::delete('../'.$settings->home_banner);
+        }
+        
+        $update = $connection->update('settings', [
+            'home_banner' => $image_name
+        ])->where('id', 1)->save();
+
+        if($update)
+        {
+            $data =  true;
+        }
+    }
+    return response(['data' => $data]);
+}
+
+
+
+
+
+
+// ========================================
+// GET HOME BANNER IMAGE
+// ========================================
+if(Input::post('get_home_banner_img'))
+{
+    $data = false;
+    $connection = new DB();
+    $settings = $connection->select('settings')->where('id', 1)->first();
+    return require_once('common/ajax-home-banner.php');
+}
+
+
+
+
+
+
+
+// ========================================
+// DELETE HOME BANNER IMAGE
+// ========================================
+if(Input::post('delete_home_banner_img'))
+{
+    $data = false;
+    $connection = new DB();
+    $settings = $connection->select('settings')->where('id', 1)->first();
+    if($settings->home_banner)
+    {
+        Image::delete('../'.$settings->home_banner);
+    }
+
+    $update = $connection->update('settings', [
+        'home_banner' => null
+    ])->where('id', 1)->save();
+
+    if($update)
+    {
+        $data =  true;
+    }
+    return response(['data' => $data]);
+}
+
+
+
+
+
+
+
+
+
+
+// ============================================
+// UPDATE CATEGORY BANNER IMAGE
+// ============================================
+if(Input::post('update_category_banner_image'))
+{
+    $data = false;
+    if(Image::exists('category_banner'))
+    {
+        $image = new Image();
+        $file = Image::files('category_banner');
+
+        $file_name = Image::name('category_banner', 'category_banner');
+        $image->resize_image($file, [ 'name' => $file_name, 'width' => 1920, 'height' => 1000, 'size_allowed' => 1000000,'file_destination' => '../shop/images/banner/']);
+            
+        $image_name = '/shop/images/banner/'.$file_name;
+
+        if(!$image->passed())
+        {
+            return response(['error' => ['category_banner' => $image->error()]]);
+        }
+        
+        $connection = new DB();
+        $settings = $connection->select('settings')->where('id', 1)->first();
+        if($settings->category_banner)
+        {
+            Image::delete('../'.$settings->category_banner);
+        }
+        
+        $update = $connection->update('settings', [
+            'category_banner' => $image_name
+        ])->where('id', 1)->save();
+
+        if($update)
+        {
+            $data =  true;
+        }
+    }
+    return response(['data' => $data]);
+}
+
+
+
+
+
+
+// ========================================
+// GET CATEGORY BANNER IMAGE
+// ========================================
+if(Input::post('get_category_banner_img'))
+{
+    $data = false;
+    $connection = new DB();
+    $settings = $connection->select('settings')->where('id', 1)->first();
+    return require_once('common/ajax-category-banner.php');
+}
+
+
+
+
+
+
+// =========================================
+// DELETE CATEGORY BANNER
+// =========================================
+if(Input::post('delete_category_banner_img'))
+{
+    $data = false;
+    $connection = new DB();
+    $settings = $connection->select('settings')->where('id', 1)->first();
+    if($settings->category_banner)
+    {
+        Image::delete('../'.$settings->category_banner);
+    }
+
+    $update = $connection->update('settings', [
+        'category_banner' => null
+    ])->where('id', 1)->save();
+
+    if($update)
+    {
+        $data =  true;
+    }
+    return response(['data' => $data]);
+}
+
+
+
+
+
+
+
+
+// ============================================
+// UPDATE CART BANNER IMAGE
+// ============================================
+if(Input::post('update_cart_banner_image'))
+{
+    $data = false;
+    if(Image::exists('cart_banner'))
+    {
+        $image = new Image();
+        $file = Image::files('cart_banner');
+
+        $file_name = Image::name('cart_banner', 'cart_banner');
+        $image->resize_image($file, [ 'name' => $file_name, 'width' => 1920, 'height' => 1000, 'size_allowed' => 1000000,'file_destination' => '../shop/images/banner/']);
+            
+        $image_name = '/shop/images/banner/'.$file_name;
+
+        if(!$image->passed())
+        {
+            return response(['error' => ['cart_banner' => $image->error()]]);
+        }
+        
+        $connection = new DB();
+        $settings = $connection->select('settings')->where('id', 1)->first();
+        if($settings->cart_banner)
+        {
+            Image::delete('../'.$settings->cart_banner);
+        }
+        
+        $update = $connection->update('settings', [
+            'cart_banner' => $image_name
+        ])->where('id', 1)->save();
+
+        if($update)
+        {
+            $data =  true;
+        }
+    }
+    return response(['data' => $data]);
+}
+
+
+
+
+
+
+// ========================================
+// GET CART BANNER IMAGE
+// ========================================
+if(Input::post('get_cart_banner_img'))
+{
+    $data = false;
+    $connection = new DB();
+    $settings = $connection->select('settings')->where('id', 1)->first();
+    return require_once('common/ajax-cart-banner.php');
+}
+
+
+
+
+
+
+
+
+// =========================================
+// DELETE CART BANNER
+// =========================================
+if(Input::post('delete_cart_banner_img'))
+{
+    $data = false;
+    $connection = new DB();
+    $settings = $connection->select('settings')->where('id', 1)->first();
+    if($settings->cart_banner)
+    {
+        Image::delete('../'.$settings->cart_banner);
+    }
+
+    $update = $connection->update('settings', [
+        'cart_banner' => null
+    ])->where('id', 1)->save();
+
+    if($update)
+    {
+        $data =  true;
+    }
+    return response(['data' => $data]);
+}
+
+
+
+
+
+
+
+
+// ============================================
+// UPDATE FORM BANNER IMAGE
+// ============================================
+if(Input::post('update_form_banner_image'))
+{
+    $data = false;
+    if(Image::exists('form_banner'))
+    {
+        $image = new Image();
+        $file = Image::files('form_banner');
+
+        $file_name = Image::name('form_banner', 'form_banner');
+        $image->resize_image($file, [ 'name' => $file_name, 'width' => 1920, 'height' => 1000, 'size_allowed' => 1000000,'file_destination' => '../shop/images/banner/']);
+            
+        $image_name = '/shop/images/banner/'.$file_name;
+
+        if(!$image->passed())
+        {
+            return response(['error' => ['form_banner' => $image->error()]]);
+        }
+        
+        $connection = new DB();
+        $settings = $connection->select('settings')->where('id', 1)->first();
+        if($settings->form_banner)
+        {
+            Image::delete('../'.$settings->form_banner);
+        }
+        
+        $update = $connection->update('settings', [
+            'form_banner' => $image_name
+        ])->where('id', 1)->save();
+
+        if($update)
+        {
+            $data =  true;
+        }
+    }
+    return response(['data' => $data]);
+}
+
+
+
+
+
+
+// ========================================
+// GET FORM BANNER IMAGE
+// ========================================
+if(Input::post('get_form_banner_img'))
+{
+    $data = false;
+    $connection = new DB();
+    $settings = $connection->select('settings')->where('id', 1)->first();
+    return require_once('common/ajax-form-banner.php');
+}
+
+
+
+
+
+
 
 
 

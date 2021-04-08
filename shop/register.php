@@ -57,7 +57,7 @@
     <?php include('includes/search-bar.php') ?>
 
 
-<section class="inner_page_breadcrumb" style="background-image: url('<?= asset($banner->register_banner); ?>');">
+<section class="inner_page_breadcrumb" style="background-image: url('<?= asset($banner->form_banner); ?>');">
     <div class="container">
         <div class="row">
             <div class="col-xl-6 offset-xl-3 text-center breadcrumb_content_x">

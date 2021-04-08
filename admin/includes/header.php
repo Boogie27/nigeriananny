@@ -20,7 +20,7 @@
 <link rel="stylesheet" href="<?= asset('/admin/css/main-style.css') ?>">
 
 <!-- Title -->
-<title>admin</title>
+<title><?= title() ?></title>
 <!-- Favicon -->
 <link href="images/favicon.ico" sizes="128x128" rel="shortcut icon" type="image/x-icon" />
 <link href="images/favicon.ico" sizes="128x128" rel="shortcut icon" />
@@ -38,7 +38,7 @@
 </head>
 <body>
 <div class="wrapper">
-	<div class="preloader"></div>
+	<!-- <div class="preloader"></div> -->
 
 
 

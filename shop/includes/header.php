@@ -19,7 +19,7 @@
 <link rel="stylesheet" href="<?= url('/shop/css/dashbord_navitaion.css') ?>">
 
 <!-- Title -->
-<title>shop</title>
+<title><?= title() ?></title>
 <!-- Favicon -->
 <link href="<?= url('/shop/images/favicon.ico') ?>" sizes="128x128" rel="shortcut icon" type="image/x-icon" />
 <link href="<?= url('/shop/images/favicon.ico') ?>" sizes="128x128" rel="shortcut icon" />
