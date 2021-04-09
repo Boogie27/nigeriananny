@@ -2485,9 +2485,9 @@ h3.rh-faq{
     padding-left: 30px;
 }
 .faq-body ul li{
-    font-size: 13px;
+    font-size: 15px;
     color: #555;
-    list-style: circle;
+    list-style: disc;
     color: blue;
     padding: 10px 0px;
 }
@@ -2501,7 +2501,12 @@ h3.rh-faq{
 .inner-faq-answer-body p{
     font-size: 13px;
 }
-
+.inner-faq-answer-body ul li{
+    list-style: disc;
+}
+.inner-faq-answer-body ul li{
+    list-style-type: decimal;
+}
 @media only screen and (max-width: 1125px){
     .faq-container{
         width: 90%;
@@ -2533,17 +2538,104 @@ h3.rh-faq{
 
 
 
+/* ============================================== */
+/*           UNDER CONSTRUCTION                   */
+/* ============================================= */
+.under-contruction{
+    display: table;
+    text-align: center;
+}
+.inner-construction{
+    width: 100vw;
+    height: 100vh;
+    padding: 20px;
+    display: table-cell;
+    vertical-align: middle;
+}
+.inner-construction img{
+    width: 800px;
+    height: 400px;
+}
+.under-contruction h3{
+    color: #555;
+    margin: 0px;
+    padding: 0px;
+    font-size: 25px;
+}
+.under-contruction p{
+    margin: 0px;
+    padding: 0px;
+}
+@media only screen and (max-width: 992px){
+    .inner-construction img{
+        width: 700px;
+        height: 300px;
+    }
+}
+@media only screen and (max-width: 767px){
+    .inner-construction img{
+        width: 500px;
+        height: 200px;
+    }
+}
+@media only screen and (max-width: 567px){
+    .inner-construction img{
+        width: 350px;
+        height: 230px;
+    }
+    .under-contruction p{
+        padding: 0px 40px;
+    }
+    .under-contruction h3{
+        font-size: 20px;
+    }
+}
+@media only screen and (max-width: 398px){
+    .inner-construction img{
+        width: 250px;
+        height: 170px;
+    }
+    .under-contruction p{
+        padding: 0px 5px;
+    }
+}
 
 
 
 
-
-
-
-
-
-
-
+/* ======================================= */
+/*            PRIVACY POLICY              */
+/* ===================================== */
+.privacy-policy{
+    width: 70%;
+    margin: 0 auto;
+    padding: 50px 20px;
+}
+.ph{
+    color: #555;
+}
+.privacy-policy ul{
+   padding-left: 30px;
+}
+.privacy-policy li{
+    list-style: disc;
+}
+.privacy-policy ol{
+    padding-left: 30px;
+    list-style-type: decimal;
+}
+@media only screen and (max-width: 992px){
+    .privacy-policy{
+        width: 90%;
+        margin: 0 auto;
+    }
+}
+@media only screen and (max-width: 567px){
+    .privacy-policy{
+        width: 100%;
+        padding: 50px 10px;
+    }
+}
 
 
 

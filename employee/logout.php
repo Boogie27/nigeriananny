@@ -4,8 +4,7 @@
 
 if(Auth_employee::is_loggedin())
 {
-   if(Auth_employee::logout())
-   {
-        return view('/');
-   }
+    Auth_employee::logout();
+    return view('/');
+   
 }

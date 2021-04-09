@@ -196,7 +196,7 @@ if(count($today_subs))
 						</div>
 						<div class="col-xl-8">
 							<div class="application_statics">
-								<h4>Employers <span class="float-right"><a href="<?= url('/admin-nanny/employers') ?>" class="text-primary" style="font-size: 13px;">view more</a></span></h4>
+								<h4>Employers <span class="float-right"><a href="<?= url('/admin-nanny/employers') ?>" class="text-primary" style="font-size: 16px;">view more</a></span></h4>
 							    <div class="col-lg-12">
 									<div class="table-responsive"> <!-- table start-->
 										<table class="table table-striped">
@@ -240,7 +240,7 @@ if(count($today_subs))
 						</div>
 						<div class="col-xl-4">
 							<div class="recent_job_activity">
-								<h4 class="title">Subscriptions <span class="float-right"><a href="<?= url('/admin-nanny/subscriptions') ?>" class="text-primary" style="font-size: 13px;">view more</a></span></h4>
+								<h4 class="title">Subscriptions <span class="float-right"><a href="<?= url('/admin-nanny/subscriptions') ?>" class="text-primary" style="font-size: 16px;">view more</a></span></h4>
 								<?php if($e_subscriptions):
 									foreach($e_subscriptions as $sub):
 									?>

@@ -72,6 +72,7 @@ if(Input::exists('get') && Input::get('title'))
 
 
 $jobs->paginate(5); 
+
 ?>
 
 
@@ -80,9 +81,11 @@ $jobs->paginate(5);
    <!-- jobs  start-->
     <div class="page-content">
         <div class="inner-jobs">
-            <div class="advert-banner">
-              <a href="#">  <img src="<?= asset('/images/adverts/1.jpg')?>" alt=""></a>
-            </div>
+           
+                <div class="advert-banner">
+                <a href="#">  <img src="<?= asset('/images/adverts/1.jpg')?>" alt=""></a>
+                </div>
+            
             <div class="job-head" id="remove-jh">
                 <br>
                 <h3><?= Input::get('category') ? ucfirst(Input::get('category')).' category' : 'Featured workers'; ?></h3>
@@ -139,12 +142,12 @@ $jobs->paginate(5);
                             </div> -->
                         </div><!-- job-alert jobs start-->
 
-                        <div class="advert-banner-2">
-                            <a href="#"><img src="<?= asset('/images/adverts/4.jpg')?>" alt=""></a>
-                        </div>
-                        <div class="advert-banner-2">
-                            <a href="#"><img src="<?= asset('/images/adverts/4.jpg')?>" alt=""></a>
-                        </div>
+                         <!-- <div class="advert-banner-2">
+                                <a href="#"><img src="images/adverts/4.jpg" alt=""></a>
+                            </div>
+                            <div class="advert-banner-2">
+                                <a href="#"><img src="/images/adverts/4.jpg" alt=""></a>
+                            </div> -->
                     </div>
                 </div><!-- category jobs end-->
 
@@ -221,21 +224,20 @@ $jobs->paginate(5);
                 <div class="col-lg-12">
                     <div class="adds-news-small">
                         <div class="job-alert-banner"><!-- job-alert jobs start-->
-                            <div class="alert-header">
+                            <!-- <div class="alert-header">
                                 <h3>Jobs in Nigeria</h3>
                             </div>
                             <div class="alert-body">
                                 <p><b>1280</b> jobs found</p>
                                 <a href="#">Create job alert</a>
-                            </div>
+                            </div> -->
                         </div><!-- job-alert jobs start-->
-
-                        <div class="advert-banner-2">
-                            <a href="#"><img src="<?= asset('/images/adverts/4.jpg')?>" alt=""></a>
+                        <!-- <div class="advert-banner-2">
+                            <a href="#"><img src="images/adverts/4.jpg" alt=""></a>
                         </div>
                         <div class="advert-banner-2">
-                            <a href="#"><img src="<?= asset('/images/adverts/4.jpg')?>" alt=""></a>
-                        </div>
+                            <a href="#"><img src="/images/adverts/4.jpg" alt=""></a>
+                        </div> -->
                     </div>
                 </div>
             </div>

@@ -57,8 +57,10 @@ $banner =  $connection->select('settings')->where('id', 1)->first();
               text-align: center;
           }
           p.content-body{
+              color: #555;
              margin: 0 auto;
              margin-top: 20px;
+             font-size: 18px;
           }
           .footer{
               padding: 50px 0px;

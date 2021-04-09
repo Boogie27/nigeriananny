@@ -2744,8 +2744,10 @@ function get_news_letter_page($logo, $app_name, $address, $header, $body)
                                 text-align: center;
                             }
                             p.content-body{
+                                color: #555;
                                 margin: 0 auto;
                                 margin-top: 20px;
+                                font-size: 18px;
                             }
                             .footer{
                                 padding: 50px 0px;
@@ -2950,6 +2952,61 @@ if(Input::post('calculate_subscription_income'))
 
 
 
+// ============================================
+// UPDATE HOME BANNER IMAGE
+// ============================================
+if(Input::post('update_home_banner_image'))
+{
+    $data = false;
+    if(Image::exists('home_banner'))
+    {
+        $image = new Image();
+        $file = Image::files('home_banner');
+
+        $file_name = Image::name('home_banner', 'home_banner');
+        $image->resize_image($file, [ 'name' => $file_name, 'width' => 1920, 'height' => 1000, 'size_allowed' => 1000000,'file_destination' => '../images/banner/']);
+            
+        $image_name = '/images/banner/'.$file_name;
+
+        if(!$image->passed())
+        {
+            return response(['error' => ['home_banner' => $image->error()]]);
+        }
+        
+        $connection = new DB();
+        $settings = $connection->select('settings')->where('id', 1)->first();
+        if($settings->job_banner)
+        {
+            Image::delete('../'.$settings->job_banner);
+        }
+        
+        $update = $connection->update('settings', [
+            'job_banner' => $image_name
+        ])->where('id', 1)->save();
+
+        if($update)
+        {
+            $data =  true;
+        }
+    }
+    return response(['data' => $data]);
+}
+
+
+
+
+
+
+// ========================================
+// GET HOME BANNER IMAGE
+// ========================================
+if(Input::post('get_home_banner_img'))
+{
+    $data = false;
+    $connection = new DB();
+    $settings = $connection->select('settings')->where('id', 1)->first();
+    return require_once('common/ajax-job-banner.php');
+}
 
 
 
@@ -2957,6 +3014,123 @@ if(Input::post('calculate_subscription_income'))
 
 
 
+// ========================================
+// DELETE HOME BANNER IMAGE
+// ========================================
+if(Input::post('delete_home_banner_img'))
+{
+    $data = false;
+    $connection = new DB();
+    $settings = $connection->select('settings')->where('id', 1)->first();
+    if($settings->job_banner)
+    {
+        Image::delete('../'.$settings->job_banner);
+    }
+
+    $update = $connection->update('settings', [
+        'job_banner' => null
+    ])->where('id', 1)->save();
+
+    if($update)
+    {
+        $data =  true;
+    }
+    return response(['data' => $data]);
+}
+
+
+
+
+
+
+
+
+// ============================================
+// UPDATE CONSTRUCTION BANNER IMAGE
+// ============================================
+if(Input::post('update_construction_banner_image'))
+{
+    $data = false;
+    if(Image::exists('construction_banner'))
+    {
+        $image = new Image();
+        $file = Image::files('construction_banner');
+
+        $file_name = Image::name('construction_banner', 'construction_banner');
+        $image->resize_image($file, [ 'name' => $file_name, 'width' => 1920, 'height' => 1000, 'size_allowed' => 1000000,'file_destination' => '../images/banner/']);
+            
+        $image_name = '/images/banner/'.$file_name;
+
+        if(!$image->passed())
+        {
+            return response(['error' => ['construction_banner' => $image->error()]]);
+        }
+        
+        $connection = new DB();
+        $settings = $connection->select('settings')->where('id', 1)->first();
+        if($settings->construction_banner)
+        {
+            Image::delete('../'.$settings->construction_banner);
+        }
+        
+        $update = $connection->update('settings', [
+            'construction_banner' => $image_name
+        ])->where('id', 1)->save();
+
+        if($update)
+        {
+            $data =  true;
+        }
+    }
+    return response(['data' => $data]);
+}
+
+
+
+
+
+
+// ========================================
+// GET CONSTRUCTION BANNER IMAGE
+// ========================================
+if(Input::post('get_construction_banner_img'))
+{
+    $data = false;
+    $connection = new DB();
+    $settings = $connection->select('settings')->where('id', 1)->first();
+    return require_once('common/ajax-construction.php');
+}
+
+
+
+
+
+
+
+
+// ========================================
+// DELETE CONSTRUCTION BANNER IMAGE
+// ========================================
+if(Input::post('delete_construction_banner_img'))
+{
+    $data = false;
+    $connection = new DB();
+    $settings = $connection->select('settings')->where('id', 1)->first();
+    if($settings->construction_banner)
+    {
+        Image::delete('../'.$settings->construction_banner);
+    }
+
+    $update = $connection->update('settings', [
+        'construction_banner' => null
+    ])->where('id', 1)->save();
+
+    if($update)
+    {
+        $data =  true;
+    }
+    return response(['data' => $data]);
+}
 
 
 

@@ -8,4 +8,5 @@ if(Auth::is_loggedin())
    {
         return view('/shop');
    }
+   return view('/shop');
 }

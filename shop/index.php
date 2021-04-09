@@ -195,7 +195,7 @@ $banner =  $connection->select('settings')->where('id', 1)->first();
 			<div class="row">
 				<div class="col-md-12 col-lg-8 col-xl-9">
 				        <div class="feature-header">
-							<h3 class="mt10 text-secondary">Featured products</h3>
+							<h3 class="mt10 text-secondary">Featured products</h3><br>
 						</div>
 				
 					<?php  

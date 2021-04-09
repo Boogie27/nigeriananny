@@ -35,8 +35,6 @@ $errors = Session::flash('errors'); //get field errors from session
      
 
 
-
-
 // ==========================================
 // SHOP REMEMBER ME
 // ==========================================

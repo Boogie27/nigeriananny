@@ -8,6 +8,9 @@ if(!Auth::is_loggedin())
    return Redirect::to('login.php');
 }
 
+
+
+
 if(Input::post('update_address'))
 {
     $validate = new DB();
@@ -23,31 +26,16 @@ if(Input::post('update_address'))
         'country' => 'required|min:3|max:50'
     ]);
 
-    $user = $connection->select('users')->where('email', Auth::user('email'))->where('id', Auth::user('id'))->first();
-    if(empty($message))
-    {
-        $message = $user->message ? $user->message : null;
-    }
-
-    $myCity =  $connection->select('tbl_city')->where('id', Input::get('city'))->first(); 
-    $city = $myCity ? $myCity->city : null;
-
-    $myState = $connection->select('tbl_state')->where('id', Input::get('state'))->first(); 
-    $state = $myState ? $myState->state : null;
-
-    $myCountry = $connection->select('tbl_country')->where('id', Input::get('country'))->first();
-    $country = $myCountry ? $myCountry->country : null;
-
     if($validation->passed())
     {
         $update = $connection->update('users', [
             'first_name' => Input::get('first_name'),
             'last_name' => Input::get('last_name'),
             'address' => Input::get('address'),
-            'message' => $message,
-            'city' => $city,
-            'state' => $state,
-            'country' => $country,
+            'user_about' => Input::get('message'),
+            'city' => Input::get('city'),
+            'state' => Input::get('state'),
+            'country' => Input::get('country'),
         ])->where('id', Auth::user('id'))->save();
         
         Session::put('success', 'Address has been updated sucessfully!');
@@ -171,7 +159,7 @@ if(Input::post('update_address'))
                                                     <div class="alert-change text-danger">  <?= $errors['phone'] ?></div>
                                                 <?php endif; ?>
 												<label for="">Additional Information</label>
-											    <textarea name="message" class="form-control" cols="30" rows="5"><?= $user->message ?? old('message') ?></textarea>
+											    <textarea name="message" class="form-control" cols="30" rows="5"><?= $user->user_about ?? old('message') ?></textarea>
 											</div>
 										</div>
                                         <div class="col-lg-12">

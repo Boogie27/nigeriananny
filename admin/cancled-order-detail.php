@@ -117,6 +117,8 @@ $banner =  $connection->select('settings')->where('id', 1)->first();
                                                         <li><b>Cancled  on:</b> <span class="view-btn"><?= date('d M Y', strtotime($orderDetail->cancled_date)) ?></span></li><br>
                                                         <li><b>Refund on:</b> <span class="view-btn <?= $orderDetail->refund_date ? 'bg-success' : 'bg-warning'?>"><?= $orderDetail->refund_date ? date('d M Y', strtotime($orderDetail->refund_date)) : 'pending' ?></span></li><br>
 														<li><b>Refund amount:</b> <span class="view-btn <?= $orderDetail->is_refund ? 'bg-success' : 'bg-warning'?>"><?= $orderDetail->is_refund ? money($orderDetail->cancled_total) : 'pending' ?></span></li>
+                                                        <br>
+                                                        <li><b>Cancled message: </b><?= $orderDetail->message ?></li>
                                                     </ul>
                                                </div>
                                            </div>

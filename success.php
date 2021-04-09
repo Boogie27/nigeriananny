@@ -60,6 +60,7 @@ function store_subscription($reference)
                     'subs_id' => $sub['id'],
                     's_employer_id' => $employer_id,
                     's_amount' => $subscription_pans->amount,
+                    's_access' => $subscription_pans->access,
                     's_type' => $subscription_pans->type,
                     's_duration' => $subscription_pans->duration,
                     'end_date' => $date,

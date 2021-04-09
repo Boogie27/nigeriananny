@@ -57,7 +57,7 @@ if(Input::post('reset_password'))
                 <div class="breadcrumb_content">
                     <h4 class="page_title">Reset password</h4>
                     <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="<?= url('/shop/index.php') ?>">Home</a></li>
+                        <li class="breadcrumb-item"><a href="<?= url('/shop') ?>">Home</a></li>
                         <li class="breadcrumb-item active" aria-current="page">Reset password</li>
                     </ol>
                 </div>

@@ -1,3 +1,16 @@
+<?php
+// ============================================
+// app banner settings
+// ============================================
+$app_active =  $connection->select('settings')->where('id', 1)->where('is_active', 1)->first();
+if(!$app_active && !Admin_auth::is_loggedin())
+{
+    return view('/under-construction');
+}
+?>
+
+
+
 
 <!DOCTYPE html>
 <html dir="ltr" lang="en">

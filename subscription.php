@@ -60,7 +60,12 @@ $subscription_pans = $connection->select('subscription_pan')->where('is_feature'
                                 <li class='plan'><h1><?= ucfirst($subscription->type) ?></h1></li>
                                 <li><h1  class=""> <?= $subscription->duration ?></h1></li>
                                 <li><h4 class="text-primary"> <?= money($subscription->amount) ?></h4></li>
-                                <li><p><?= ucfirst($subscription->description) ?></p></li>
+                                <li>
+                                    <p>
+                                        <b>Employee daily views (<?= $subscription->access ?>)</b><br>
+                                        <?= ucfirst($subscription->description) ?>
+                                    </p>
+                                </li>
                             </ul>
                             <a href="#" data-toggle="modal" id="<?= $subscription->sub_id?>" data-target="#exampleModalCenter" class="subscription_open_btn view-btn-fill">Subscribe now</a>
                        </div>

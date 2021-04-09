@@ -11,10 +11,11 @@ if(!Admin_auth::is_loggedin())
 
 
 
-// ===============================================
-// UPDATE GENERAL SETTINGS
-// ===============================================
-if(Input::post('update_general_settings'))
+
+// =============================================
+// UPDATE APP SETTINGS
+// =============================================
+if(Input::post('update_app_settings'))
 {
 	$validate = new DB();
        
@@ -23,6 +24,37 @@ if(Input::post('update_general_settings'))
 		'info_email' =>  'required|email',
 		'business_hours' => 'required',
 		'alrights' => 'required|min:3|max:50',
+	]);
+
+	if($validation->passed())
+	{
+		$app_active = Input::get('app_active') == 'true' ? 1 : 0;
+		$connection = new DB();
+		$update_settings = $connection->update('settings', [
+						'app_name' => Input::get('app_name'),
+						'info_email' => Input::get('info_email'),
+						'business_hours' => Input::get('business_hours'),
+						'alrights' => Input::get('alrights'),
+						'is_active' => $app_active,
+					])->where('id', 1)->save();
+		if($update_settings)
+		{
+			Session::flash('success', 'App settings updated successfully!');
+			return back();
+		}   
+	}
+}
+
+
+
+// ===============================================
+// UPDATE GENERAL SETTINGS
+// ===============================================
+if(Input::post('update_general_settings'))
+{
+	$validate = new DB();
+       
+	$validation = $validate->validate([
 		'phone' => 'required|min:11|max:11|number',
 		'address' => 'required|min:3|max:200',
 		'city' => 'required|min:1|max:50',
@@ -37,10 +69,6 @@ if(Input::post('update_general_settings'))
 	{
 		$connection = new DB();
 		$update_settings = $connection->update('settings', [
-						'app_name' => Input::get('app_name'),
-						'info_email' => Input::get('info_email'),
-						'business_hours' => Input::get('business_hours'),
-						'alrights' => Input::get('alrights'),
 						'phone' => Input::get('phone'),
 						'address' => Input::get('address'),
 						'city' => Input::get('city'),
@@ -168,6 +196,28 @@ $setting =  $connection->select('settings')->where('id', 1)->first();
 													<div class="form-alert text-danger"><?= $errors['alrights']; ?></div>
 												<?php endif; ?>
 												<textarea name="alrights" class="form-control h50" placeholder="Copyrights"><?= $setting->alrights ?? old('alrights') ?></textarea>
+											</div>
+										</div>
+										<div class="col-lg-12">
+											<div class="form-group">
+												<div class="custom-control custom-checkbox">
+													<input type="checkbox" class="custom-control-input activate_site_btn" id="activate_site" value="true" <?= $setting->is_active ? 'checked' : '' ?>>
+													<label class="custom-control-label" for="activate_site">Activate site</label>
+												</div>
+											</div>
+										</div>
+										<div class="col-lg-12">
+											<div class="form-group">
+												<div class="custom-control custom-checkbox">
+													<input type="checkbox" class="custom-control-input activate_site_btn" id="deactivate_site" value="false" <?= !$setting->is_active ? 'checked' : '' ?>>
+													<label class="custom-control-label" for="deactivate_site">Deactivate site</label>
+												</div>
+												<input type="hidden" name="app_active" id="activate_site_input" value="<?= $setting->is_active ? 'true' : 'false' ?>">
+											</div>
+										</div>
+										<div class="col-lg-12">
+											<div class="form-gorup">
+												<button type="submit" name="update_app_settings" class="btn btn-info float-right">Update...</button>
 											</div>
 										</div>
 							    	</div>
@@ -399,6 +449,38 @@ $setting =  $connection->select('settings')->where('id', 1)->first();
 
 <script>
 $(document).ready(function(){
+// ========================================
+// ASSIGN GENDER FIELD
+// ========================================
+var active_site = $(".activate_site_btn");
+$.each($(".activate_site_btn"), function(index, current){
+    $(this).click(function(){
+        for(var i = 0; i < active_site.length; i++){
+            if(index != i)
+            {
+               $($(active_site)[i]).prop('checked', false);
+            }else{
+                $($(active_site)[i]).prop('checked', true);
+            }
+        }
+    });
+});
+
+
+
+
+// ====================================================
+// ACTIVATE AND DEACTIVATE SITE BUTTON
+// ====================================================
+$(".activate_site_btn").click(function(){
+    var input = $(this).val();
+    $("#activate_site_input").val(input);
+});
+
+
+
+
+
 
 // ======================================
 // OPEN APP LOGO FILE FIELD

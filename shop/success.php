@@ -118,7 +118,7 @@ $banner =  $connection->select('settings')->where('id', 1)->first();
 						<h4 class="text-success">Success</h4>
 						<p style="color: #555;">Transaction successful, thank you for shopping with us!</p>
 					</div>
-					<a class="mt25 fill-pink" href="<?= url('/shop/index.php') ?>">Back to Homepage <span class="flaticon-right-arrow-1"></span></a>
+					<a class="mt25 fill-pink" href="<?= url('/shop') ?>">Back to Homepage <span class="flaticon-right-arrow-1"></span></a>
 				</div>
 			</div>
 		</div>

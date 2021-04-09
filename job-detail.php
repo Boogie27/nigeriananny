@@ -135,7 +135,7 @@ if($subscription)
         ]);
     }else if($is_requested == null){
         $currntCount = $daily_view->count + 1;
-        if($daily_view->count < 2)
+        if($daily_view->count < $subscription->s_access)
         {
             $old_workerID = json_decode($daily_view->worker_id, true);
             if(!array_key_exists($job->worker_id, $old_workerID))
@@ -148,7 +148,7 @@ if($subscription)
                 ])->where('wdv_employer_id', Auth_employer::employer('id'))->save(); 
             }
         }
-        if($currntCount == 2){
+        if($currntCount == $subscription->s_access){
             if(!$daily_view->is_complete)
             {
                 $connection->update('worker_daily_view', [
@@ -319,12 +319,12 @@ if($request_worker)
                                         </div> -->
                                     </div><!-- job-alert jobs start-->
 
-                                    <div class="advert-banner-2">
-                                        <a href="#"><img src="<?= asset('/images/adverts/4.jpg')?>" alt=""></a>
+                                    <!-- <div class="advert-banner-2">
+                                        <a href="#"><img src="images/adverts/4.jpg" alt=""></a>
                                     </div>
                                     <div class="advert-banner-2">
-                                        <a href="#"><img src="<?= asset('/images/adverts/4.jpg')?>" alt=""></a>
-                                    </div>
+                                        <a href="#"><img src="/images/adverts/4.jpg" alt=""></a>
+                                    </div> -->
                                 </div>
                             </div>
                         </div>
@@ -570,12 +570,12 @@ if($request_worker)
                                     </div>
                                 </div><!-- job-alert jobs start-->
 
-                                <div class="advert-banner-2">
-                                    <a href="#"><img src="<?= asset('/images/adverts/4.jpg')?>" alt=""></a>
-                                </div>
-                                <div class="advert-banner-2">
-                                    <a href="#"><img src="<?= asset('/images/adverts/4.jpg')?>" alt=""></a>
-                                </div>
+                                  <!-- <div class="advert-banner-2">
+                                        <a href="#"><img src="images/adverts/4.jpg" alt=""></a>
+                                    </div>
+                                    <div class="advert-banner-2">
+                                        <a href="#"><img src="/images/adverts/4.jpg" alt=""></a>
+                                    </div> -->
                             </div>
                         </div>
                     </div>

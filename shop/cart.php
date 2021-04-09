@@ -23,7 +23,7 @@ $setting =  $connection->select('settings')->where('id', 1)->first();   //    ba
 					<div class="breadcrumb_content">
 						<h4 class="breadcrumb_title">Shopping cart</h4>
 						<ol class="breadcrumb">
-						    <li class="breadcrumb-item"><a href="#">Home</a></li>
+						    <li class="breadcrumb-item"><a href="<?= url('/shop') ?>">Home</a></li>
 						    <li class="breadcrumb-item active" aria-current="page">Shopping cart</li>
 						</ol>
 					</div>

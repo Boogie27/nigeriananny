@@ -700,8 +700,48 @@ img.cart_img{
 
 
 
-
-
+/* ======================================= */
+/*            PRIVACY POLICY              */
+/* ===================================== */
+.privacy-container{
+    padding: 50px 0px;
+}
+.ph{
+    color: #555;
+}
+.privacy-policy{
+    width: 70%;
+    margin: 0 auto;
+    padding: 50px 0px;
+}
+.privacy-policy ul{
+    padding-left: 30px;
+ }
+ .privacy-policy li{
+    list-style: disc;
+ }
+ .privacy-policy ol{
+    padding-left: 30px;
+    list-style-type: decimal;
+}
+@media only screen and (max-width: 992px){
+    .privacy-policy{
+        width: 90%;
+        margin: 0 auto;
+    }
+}
+.account-x{
+    padding: 20px;
+    border-radius: 3px;
+    margin-bottom: 30px;
+    background-color: #fff;
+    box-shadow: 4px 2px 4px 0px rgb(220, 220, 220);
+}
+.account-x .head-x i{
+    padding: 10px 12px 11px 12px;
+    border-radius: 50%;
+    border: 1px solid rgb(163, 163, 163);
+}
 
 
 

@@ -1416,6 +1416,137 @@ if(Input::post('get_form_banner_img'))
 
 
 
+// =========================================
+// DELETE FORM BANNER
+// =========================================
+if(Input::post('delete_form_banner_img'))
+{
+    $data = false;
+    $connection = new DB();
+    $settings = $connection->select('settings')->where('id', 1)->first();
+    if($settings->form_banner)
+    {
+        Image::delete('../'.$settings->form_banner);
+    }
+
+    $update = $connection->update('settings', [
+        'form_banner' => null
+    ])->where('id', 1)->save();
+
+    if($update)
+    {
+        $data =  true;
+    }
+    return response(['data' => $data]);
+}
+
+
+
+
+
+
+
+
+// ============================================
+// UPDATE FORM BANNER IMAGE
+// ============================================
+if(Input::post('update_chcekout_banner_image'))
+{
+    $data = false;
+    if(Image::exists('checkout_banner'))
+    {
+        $image = new Image();
+        $file = Image::files('checkout_banner');
+
+        $file_name = Image::name('checkout_banner', 'checkout_banner');
+        $image->resize_image($file, [ 'name' => $file_name, 'width' => 1920, 'height' => 1000, 'size_allowed' => 1000000,'file_destination' => '../shop/images/banner/']);
+            
+        $image_name = '/shop/images/banner/'.$file_name;
+
+        if(!$image->passed())
+        {
+            return response(['error' => ['checkout_banner' => $image->error()]]);
+        }
+        
+        $connection = new DB();
+        $settings = $connection->select('settings')->where('id', 1)->first();
+        if($settings->checkout_banner)
+        {
+            Image::delete('../'.$settings->checkout_banner);
+        }
+        
+        $update = $connection->update('settings', [
+            'checkout_banner' => $image_name
+        ])->where('id', 1)->save();
+
+        if($update)
+        {
+            $data =  true;
+        }
+    }
+    return response(['data' => $data]);
+}
+
+
+
+
+
+
+// ========================================
+// GET FORM BANNER IMAGE
+// ========================================
+if(Input::post('get_checkout_banner_img'))
+{
+    $data = false;
+    $connection = new DB();
+    $settings = $connection->select('settings')->where('id', 1)->first();
+    return require_once('common/ajax-checkout-banner.php');
+}
+
+
+
+
+
+
+
+
+// =========================================
+// DELETE CHECKOUT BANNER
+// =========================================
+if(Input::post('delete_checkout_banner_img'))
+{
+    $data = false;
+    $connection = new DB();
+    $settings = $connection->select('settings')->where('id', 1)->first();
+    if($settings->checkout_banner)
+    {
+        Image::delete('../'.$settings->checkout_banner);
+    }
+
+    $update = $connection->update('settings', [
+        'checkout_banner' => null
+    ])->where('id', 1)->save();
+
+    if($update)
+    {
+        $data =  true;
+    }
+    return response(['data' => $data]);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

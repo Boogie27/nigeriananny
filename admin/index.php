@@ -123,7 +123,7 @@ $banner =  $connection->select('settings')->where('id', 1)->first();
 						</div>
 						<div class="col-xl-8">
 							<div class="application_statics">
-								<h4>New customers</h4>
+								<h4>New customers <span class="float-right"><a href="<?= url('/admin/customers') ?>" class="text-primary" style="font-size: 16px;">view more</a></span></h4>
 								<div class="col-lg-12">
 									<div class="ite-table table-responsive"> <!-- table start-->
 										<table class="table table-striped">
@@ -173,7 +173,7 @@ $banner =  $connection->select('settings')->where('id', 1)->first();
 						</div>
 						<div class="col-xl-4">
 							<div class="recent_job_activity">
-								<h4 class="title">Order Canclation Messages</h4>
+								<h4 class="title">Order Canclation <span class="float-right"><a href="<?= url('/admin/cancle-order') ?>" class="text-primary" style="font-size: 16px;">view more</a></span></h4>
 								<?php if($messages): 
 								    foreach($messages as $message):?>
 										<div class="grid">
@@ -186,7 +186,7 @@ $banner =  $connection->select('settings')->where('id', 1)->first();
 															<span><?= date('d M Y', strtotime($message->cancled_date)) ?></span>
 														</div>
 												    </li>
-													<li><p><?= $message->message?></p></li>
+													<li><p><?= substr($message->message, 0, 100)?></p></li>
 												</div>
 											</ul>
 										</div>

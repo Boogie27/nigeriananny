@@ -73,6 +73,7 @@ $banner =  $connection->select('settings')->where('id', 1)->first();
                                     <th scope="col">Type</th>
                                     <th scope="col">Duration</th>
                                     <th scope="col">Amount</th>
+                                    <th scope="col">Access</th>
                                     <th scope="col">Activate</th>
                                     <th scope="col">Date registered</th>
                                     <th scope="col">Action</th>
@@ -85,6 +86,7 @@ $banner =  $connection->select('settings')->where('id', 1)->first();
                                     <tr>
                                         <td><?= ucfirst($subscription->type) ?></td>
                                         <td><?= $subscription->duration ?></td>
+                                        <td><?= $subscription->access?></td>
                                         <td><?= money($subscription->amount) ?></td>
                                         <td>
                                             <div class="ui_kit_whitchbox">

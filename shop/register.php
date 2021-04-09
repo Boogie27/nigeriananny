@@ -64,7 +64,7 @@
                 <div class="breadcrumb_content">
                     <h4 class="page_title">Register</h4>
                     <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="<?= url('/shop/index.php') ?>">Home</a></li>
+                        <li class="breadcrumb-item"><a href="<?= url('/shop') ?>">Home</a></li>
                         <li class="breadcrumb-item active" aria-current="page">Register</li>
                     </ol>
                 </div>

@@ -121,8 +121,8 @@ if(Input::exists('get') && Input::get('search'))
                             <div class="inner-faq-answer"> <!-- faq detail start-->
                                 <h3 class="rh-faq text-center pb-2">Frequently Asked Questions</h3>
                                 <div class="inner-faq-answer-body">
-                                    <p class="text-primary" style="font-size: 13px;"><b><?= $faqs_single->faq?>:</b></p>
-                                    <p><?= $faqs_single->content ?></p>
+                                    <p class="text-primary" style="font-size: 15px;"><b><?= $faqs_single->faq?>:</b></p>
+                                    <p style="font-size: 15px;"><?= $faqs_single->content ?></p>
                                     <div class="link-faq text-right">
                                         <a href="<?= url('/faq')?>" class="text-primary"><i class="fa fa-angle-left"></i><i class="fa fa-angle-left"></i> Back</a>
                                     </div>

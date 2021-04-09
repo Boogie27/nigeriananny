@@ -60,6 +60,7 @@ $new_messages = $connection->select('contact_us')->where('is_seen', 0)->get();
 					<li>
 		                <a href="#"><span class="title">Others</span></a>
 		                <ul>
+							<li><a href="<?= url('/admin-nanny/privacy') ?>">Privacy</a></li>
 							<li><a href="<?= url('/admin-nanny/faq') ?>">FAQ</a></li>
 		                </ul>
 					</li>
@@ -87,8 +88,7 @@ $new_messages = $connection->select('contact_us')->where('is_seen', 0)->get();
 						    	<div class="user_setting_content">
 									<a class="dropdown-item active" href="<?= url('/admin/profile') ?>">My Profile</a>
 									<a class="dropdown-item" href="<?= url('/admin-nanny/message') ?>">Messages <span class="text-danger" style="font-size: 13px;"><?= $new_messages ? '('.count($new_messages).')' : ''?> </span></a>
-									<a class="dropdown-item" href="<?= url('/admin/transactions') ?>">Transactions</a>
-									<a class="dropdown-item" href="<?= url('/admin/general-settings') ?>">Settings</a>
+									<a class="dropdown-item" href="<?= url('/admin-nanny/general-settings') ?>">Settings</a>
 									<a class="dropdown-item" href="<?= url('/admin/logout') ?>">Log out</a>
 						    	</div>
 						    </div>

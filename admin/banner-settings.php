@@ -163,7 +163,31 @@ $settings =  $connection->select('settings')->where('id', 1)->first();
 	                                            <div class="img-btns text-center">
 													<input type="file" id="form_banner_img_input" style="display: none;">
 													<label class="upload_img_icon"><a href="#" class="form_banner_img_update"><i class="fa fa-pencil"></i></a></label>
-													<label class="upload_img_icon"><a href="#"><i class="fa fa-trash"></i></a></label>
+													<label class="upload_img_icon"><a href="#" data-toggle="modal" data-target="#exampleModal_formbanner_delete"><i class="fa fa-trash"></i></a></label>
+												</div>
+											</div>
+										</div>
+							    	</div>
+								</div> <!-- home banner end-->
+
+
+								<div class="form-sm"> <!-- home banner start-->
+									<div class="row">
+										<div class="col-lg-12">
+											<div class="form-group">
+												<label for=""><b>Checkout banner:</b></label>
+												<div class="alert alert-danger text-center" id="checkout_banner_alert" style="display: none;"></div>
+												<div class="banner-image" id="checkout_banner_img_x">
+													<?php if($settings->checkout_banner):?>
+														<img src="<?= asset($settings->checkout_banner) ?>" alt="<?= $settings->app_name?>">
+													<?php else: ?>
+														<a href="#"  class="checkout_banner_img_update"></a><i class="fa fa-camera"></i></a>
+													<?php endif; ?>
+												</div>
+	                                            <div class="img-btns text-center">
+													<input type="file" id="checkout_banner_img_input" style="display: none;">
+													<label class="upload_img_icon"><a href="#" class="checkout_banner_img_update"><i class="fa fa-pencil"></i></a></label>
+													<label class="upload_img_icon"><a href="#" data-toggle="modal" data-target="#exampleModal_checkout_delete"><i class="fa fa-trash"></i></a></label>
 												</div>
 											</div>
 										</div>
@@ -267,6 +291,75 @@ $settings =  $connection->select('settings')->where('id', 1)->first();
         </div>
     </div>
 </div>
+
+
+
+
+
+
+
+
+
+
+
+<!-- Modal form banner delete -->
+<div class="sign_up_modal modal fade" id="exampleModal_formbanner_delete" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close modal_promt_close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="tab-content" id="myTabContent">
+                <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                    <div class="login_form">
+                        <form action="#">
+                            <div class="heading">
+                                <p class="text-center">Do you wish to delete form banner?</p>
+                            </div>
+                            <button type="button" id="form_banner_img_delete" class="btn bg-danger btn-log btn-block" style="color: #fff;">Delete</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- Modal checkout banner delete -->
+<div class="sign_up_modal modal fade" id="exampleModal_checkout_delete" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close modal_promt_close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="tab-content" id="myTabContent">
+                <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                    <div class="login_form">
+                        <form action="#">
+                            <div class="heading">
+                                <p class="text-center">Do you wish to delete checkout banner?</p>
+                            </div>
+                            <button type="button" id="chcekout_banner_img_delete" class="btn bg-danger btn-log btn-block" style="color: #fff;">Delete</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 
 
 
@@ -753,6 +846,122 @@ function get_form_banner_img(){
 
 
 
+// =========================================
+// DELETE FORM BANNER
+// =========================================
+$("#form_banner_img_delete").click(function(e){
+	e.preventDefault();
+	var url = $(".ajax_url_tag").attr('href');
+	$('#form_banner_alert').hide();
+	$(".preloader-container").show() //show preloader
+	$(".modal_promt_close").click();
+	
+	$.ajax({
+        url: url,
+        method: "post",
+        data: {
+			delete_form_banner_img: 'delete_form_banner_img'
+		},
+        success: function (response){
+			var data = JSON.parse(response);
+			if(data.error){
+				remove_preloader();
+				$('#form_banner_alert').show();
+				$('#form_banner_alert').html('*Network error, try again later!');
+			}else if(data.data){
+				get_form_banner_img();
+			}
+		},
+		error: function(){
+				$('#form_banner_alert').show();
+				$('#form_banner_alert').html('*Network error, try again later!');
+			}
+    });
+});
+
+
+
+
+
+
+
+
+
+
+// ============================================
+// UPDATE CHECKOUT BANNER IMAGE
+// ============================================
+$(".checkout_banner_img_update").click(function(e){
+	e.preventDefault();
+	$("#checkout_banner_img_input").click();
+});
+
+
+$("#checkout_banner_img_input").on('change', function(e){
+	$(".alert_all").html('');
+	var url = $(".ajax_url_tag").attr('href');
+	var image = $("#checkout_banner_img_input");
+	$('#checkout_banner_alert').hide();
+
+	var data = new FormData();
+	var image = $(image)[0].files[0];
+
+	$(".preloader-container").show() //show preloader
+
+    data.append('checkout_banner', image);
+    data.append('update_chcekout_banner_image', true);
+
+	$.ajax({
+        url: url,
+        method: "post",
+        data: data,
+        contentType: false,
+        processData: false,
+        success: function (response){
+           var data = JSON.parse(response);
+           if(data.error){
+				remove_preloader();
+				$('#checkout_banner_alert').show();
+				$('#checkout_banner_alert').html(data.error.checkout_banner);
+           }else if(data.data){
+				get_checkout_banner_img();
+           }else{
+				remove_preloader();
+				$('#checkout_banner_alert').show();
+				$('#checkout_banner_alert').html('*Network error, try again later!');
+		   }
+		   console.log(response)
+		   $("#form_banner_img_input").val('');
+		},
+		error: function(){
+			remove_preloader();
+			$('#checkout_banner_alert').show();
+			$('#checkout_banner_alert').html('*Network error, try again later!');
+		}
+    });
+});
+
+
+
+
+// ========================================
+// GET FORM BANNER IMAGE
+// ========================================
+function get_checkout_banner_img(){
+	var url = $(".ajax_url_tag").attr('href');
+
+	$.ajax({
+        url: url,
+        method: "post",
+        data: {
+			get_checkout_banner_img: 'get_checkout_banner_img'
+		},
+        success: function (response){
+		   remove_preloader();
+		   $("#checkout_banner_img_x").html(response)
+        }
+    });
+}
 
 
 
@@ -765,14 +974,38 @@ function get_form_banner_img(){
 
 
 
-
-
-
-
-
-
-
-
+// =========================================
+// DELETE FORM BANNER
+// =========================================
+$("#chcekout_banner_img_delete").click(function(e){
+	e.preventDefault();
+	var url = $(".ajax_url_tag").attr('href');
+	$('#checkout_banner_alert').hide();
+	$(".preloader-container").show() //show preloader
+	$(".modal_promt_close").click();
+	
+	$.ajax({
+        url: url,
+        method: "post",
+        data: {
+			delete_checkout_banner_img: 'delete_checkout_banner_img'
+		},
+        success: function (response){
+			var data = JSON.parse(response);
+			if(data.error){
+				remove_preloader();
+				$('#checkout_banner_alert').show();
+				$('#checkout_banner_alert').html('*Network error, try again later!');
+			}else if(data.data){
+				get_checkout_banner_img();
+			}
+		},
+		error: function(){
+				$('#checkout_banner_alert').show();
+				$('#checkout_banner_alert').html('*Network error, try again later!');
+			}
+    });
+});
 
 
 

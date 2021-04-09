@@ -18,6 +18,7 @@ if(Input::post('subscription'))
             'type' => 'required|min:2|max:50',
             'duration' => 'required',
             'amount' => 'required',
+            'access' => 'required',
             'description' => 'required|min:6|max:500'
      ]);
      
@@ -35,6 +36,7 @@ if(Input::post('subscription'))
     $create = $connection->create('subscription_pan', [
                    'type' => Input::get('type'),
                    'duration' => Input::get('duration'),
+                   'access' => Input::get('access'),
                    'description' => Input::get('description'),
                    'amount' => Input::get('amount'),
                    'is_feature' => $is_feature,
@@ -93,7 +95,7 @@ $banner =  $connection->select('settings')->where('id', 1)->first();
                         <form action="<?= current_url() ?>" method="POST" id="subscription_form">
                             <div class="sr-head text-center"><h4>Create subscription</h4></div><br>
                             <div class="row">
-                                <div class="col-lg-12">
+                                <div class="col-lg-6 col-sm-6">
                                     <div class="form-group">
                                         <div class="alert-div">
                                             <?php  if(isset($errors['type'])) : ?>
@@ -132,6 +134,17 @@ $banner =  $connection->select('settings')->where('id', 1)->first();
                                         </div>
                                         <label for="">Amount:</label>
                                         <input type="number" min="1" name="amount" class="form-control h50" value="<?= old('amount') ?>" required>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 col-sm-6">
+                                    <div class="form-group">
+                                        <div class="alert-div">
+                                            <?php  if(isset($errors['access'])) : ?>
+                                                <div class="text-danger"><?= $errors['access']; ?></div>
+                                            <?php endif; ?>
+                                        </div>
+                                        <label for="">Number of access:</label>
+                                        <input type="number" min="1" name="access" class="form-control h50" value="<?= old('access') ?>" required>
                                     </div>
                                 </div>
                                 <div class="col-lg-12">

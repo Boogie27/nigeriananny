@@ -1455,7 +1455,39 @@ ul.ul-message p{
 }
 
 
-
+/* ============================================== */
+/*            BANNER SETINGS                      */
+/* ============================================== */
+.banner-image{
+    text-align: center;
+    padding: 20px 0px;
+}
+.banner-image img, #home_banner_alert{
+    width: 80%;
+    margin: 0 auto;
+}
+.banner-image .fa-camera{
+    color: #ccc;
+    font-size: 200px;
+}
+.img-btns .upload_img_icon{
+    width: 45px;
+    height: 45px;
+    margin-left: 10px;
+    border-radius: 50%;
+    background-color: #e35a9a;;
+}
+.img-btns .upload_img_icon a{
+    top: 6px;
+    color: #fff;
+    font-size: 20px;
+    position: relative;
+}
+@media only screen and (max-width: 567px){
+    .banner-image img, #home_banner_alert{
+        width: 95%;
+    }
+}
 
 
 

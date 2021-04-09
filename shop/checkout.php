@@ -46,14 +46,14 @@ $setting =  $connection->select('settings')->where('id', 1)->first();   //    ba
 
 
 	<!-- Inner Page Breadcrumb -->
-	<section class="inner_page_breadcrumb" style="background-image: url('<?= asset($setting->cart_banner)?>');">
+	<section class="inner_page_breadcrumb" style="background-image: url('<?= asset($setting->checkout_banner)?>');">
 		<div class="container">
 			<div class="row">
 				<div class="col-xl-6 offset-xl-3 text-center" >
 					<div class="breadcrumb_content">
 						<h4 class="page_title">Checkout</h4>
 						<ol class="breadcrumb">
-						    <li class="breadcrumb-item"><a href="<?= url('/shop/index.php') ?>">Home</a></li>
+						    <li class="breadcrumb-item"><a href="<?= url('/shop') ?>">Home</a></li>
 						    <li class="breadcrumb-item active" aria-current="page">checkout</li>
 						</ol>
 					</div>
@@ -182,7 +182,7 @@ $setting =  $connection->select('settings')->where('id', 1)->first();   //    ba
 					</div>
 					
 					<div class="ui_kit_button payment_widget_btn">
-						<a href="<?= url('/shop/ajax.php') ?>"  id="checkout_payment_btn" class="btn dbxshad btn-lg btn-thm3 circle btn-block">Place Order</a>
+						<a href="<?= url('/shop/ajax.php') ?>"  id="checkout_payment_btn" class="btn dbxshad btn-lg btn-thm2 circle btn-block">Place Order</a>
 					</div>
 				</div> 
 			</div>
