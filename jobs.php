@@ -82,9 +82,9 @@ $jobs->paginate(5);
     <div class="page-content">
         <div class="inner-jobs">
            
-                <div class="advert-banner">
-                <a href="#">  <img src="<?= asset('/images/adverts/1.jpg')?>" alt=""></a>
-                </div>
+                <!-- <div class="advert-banner">
+                    <a href="#">  <img src="images/adverts/1.jpg" alt=""></a>
+                </div> -->
             
             <div class="job-head" id="remove-jh">
                 <br>

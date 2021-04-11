@@ -179,9 +179,8 @@ $banner =  $connection->select('settings')->where('id', 1)->first();
 								<div class="product_single_content">
 									<div class="mbp_pagination_comments">
 										<div class="mbp_first media">
-											<div class="media-body pb45">
-										    	
-										    	<p class="mb25 mt10"><?= $product_detail->description ?></p>
+											<div class="pb45">
+										    	<div class="mb25 mt10 product_descrip_x"><?= $product_detail->description; ?></div>
 											</div>
 										</div>
 									</div>
@@ -344,7 +343,6 @@ $banner =  $connection->select('settings')->where('id', 1)->first();
 <script>
 
 $(document).ready(function(){
-
 // =========================================
 //SOCIAL MEDIA SHARE BUTTON
 // =========================================
@@ -354,12 +352,13 @@ var linkedin = $(".linkedin_share");
 var whatsapp = $(".whatsapp_share");
 
 var post_url = encodeURI($(location).attr('href'));
-var post_title =encodeURI( "Shop for products on nigeria nanny company");
+var post_title = encodeURI( "Shop for products on nigeria nanny company");
 
 $(facebook).attr('href', `https://www.facebook.com/sharer/sharer.php?u=${post_url}`);
 $(twitter).attr('href', `https://twitter.com/share?url=${post_url}&text=${post_title}`);
 $(linkedin).attr('href', ` https://www.linkedin.com/shareArticle?url=${post_url}&title=${post_title}`);
 $(whatsapp).attr('href', `https://api.whatsapp.com/send?text=${post_title} ${post_url}`);
+
 
 
 

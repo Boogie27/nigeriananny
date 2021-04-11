@@ -77,8 +77,25 @@ if(Input::post('google_login'))
 {
     Session::delete('employer_login');
     Session::delete('employee_login');
+    Session::put('google_auth', true);
     Session::put('shop_login', true);
     return Redirect::to($google->auth_url());
+}
+
+
+
+
+// =============================================
+// FACEBOOK LOGIN
+// =============================================
+if(Input::post('facebook_login'))
+{
+    $facebook = new Facebook();
+    Session::delete('fb_employer_login');
+    Session::put('fb_shop_login', true);
+    Session::put('facebook_auth', true);
+    Session::delete('fb_employee_login');
+    return Redirect::to($facebook->login_url());
 }
 
 ?>
@@ -118,7 +135,7 @@ if(Input::post('google_login'))
 <!-- login start-->
 <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
     <div class="login_form shop_form_container">
-        <form action="<?= url('/shop/login.php') ?>" method="post">
+        <form action="<?= current_url() ?>" method="post">
             <div class="heading">
                 <h3 class="text-center">Login to your account</h3>
                 <p class="text-center">Don't have an account? <a class="text-thm" href="<?= url('/shop/register.php') ?>">Sign Up!</a></p>
@@ -144,13 +161,13 @@ if(Input::post('google_login'))
             <div class="form-group custom-control custom-checkbox">
                 <input type="checkbox" name="remember_me" id="exampleCheck1" class="custom-control-input">
                 <label class="custom-control-label" for="exampleCheck1">Remember me</label>
-                <a class="tdu btn-fpswd float-right" href="<?= url('/shop/forgot-password.php') ?>">Forgot Password?</a>
+                <a class="tdu btn-fpswd float-right" href="<?= url('/shop/forgot-password') ?>">Forgot Password?</a>
             </div>
             <button type="submit" name="login" class="btn btn-log btn-block btn-thm2">Login</button>
             <hr>
             <div class="row mt40">
                 <div class="col-lg col-sm-6">
-                    <button type="submit" class="btn btn-block color-white bgc-fb"><i class="fa fa-facebook float-left mt5"></i> Facebook</button>
+                    <button type="submit" name="facebook_login" class="btn btn-block color-white bgc-fb"><i class="fa fa-facebook float-left mt5"></i> Facebook</button>
                 </div>
                 <div class="col-lg col-sm-6">
                     <button type="submit" name="google_login" class="btn btn-block color-white bgc-gogle"><i class="fa fa-google float-left mt5"></i> Google</button>

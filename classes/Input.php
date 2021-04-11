@@ -227,5 +227,44 @@
 
 
 
+    public static function facebook_employee_login($email)
+    {
+        if($email)
+        {
+            return   self::employee_google_login($email);
+        }
+        return false;
+    }
+
+
+
+
+
+    public static function facebook_employer_login($email)
+    {
+        if($email)
+        {
+            return  self::employer_google_login($email);
+        }
+        return false;
+    }
+
+    
+
+
+
+    public static function facebook_shop_login($email)
+    {
+        if($email)
+        {
+            return  self::shop_google_login($email);
+        }
+        return false;
+    }
+    
+
+
+
+
     // end;
   }

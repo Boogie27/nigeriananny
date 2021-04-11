@@ -5,9 +5,99 @@
 
 
 // ==================================
-// GOOGLE LOGIN
+// FACEBOOK LOGIN AUTH
 // ==================================
-if(Input::exists('get') && Input::get('code'))
+if(Session::has('facebook_auth') && Input::exists('get') && Input::get('code'))
+{
+	$facebook = new Facebook();
+	$user_data = $facebook->user_data();
+	
+	// LOGIN AN EMPLOYEE
+	if(Session::has('fb_employee_login'))
+	{
+		Session::delete('fb_employee_login');
+		$employee_login = Input::facebook_employee_login($user_data['email']);
+		if($employee_login == 'deactivated')
+		{
+			Session::delete('facebook_auth');
+			Session::flash('error', '*This account has been deactivated, please contact the admin.');
+			return view('/employee/login');
+		}else if($employee_login == 'login'){
+			Session::delete('facebook_auth');
+			Session::flash('success', 'You have loggedin successfully!');
+			return view('/');
+		}else{
+			Session::delete('old_url');
+			Session::delete('facebook_auth');
+			Session::flash('success', 'You have loggedin successfully!');
+			return view($employee_login);
+		}
+	}
+
+
+
+	// LOGIN AN EMPLOYER
+	if(Session::has('fb_employer_login'))
+	{
+		Session::delete('fb_employer_login');
+		$employer_login = Input::facebook_employer_login($user_data['email']);
+		if($employer_login == 'deactivated')
+		{
+			Session::delete('facebook_auth');
+			Session::flash('error', '*This account has been deactivated, please contact the admin.');
+			return view('/employer/login');
+		}else if($employer_login == 'login'){
+			Session::delete('facebook_auth');
+			Session::flash('success', 'You have loggedin successfully!');
+			return view('/');
+		}else{
+			Session::delete('old_url');
+			Session::delete('facebook_auth');
+			Session::flash('success', 'You have loggedin successfully!');
+			return view($employer_login);
+		}
+	}
+
+
+
+
+	// LOGIN USER IN ECOMMERCE
+	if(Session::has('fb_shop_login'))
+	{
+		Session::delete('fb_shop_login');
+		$shop_login = Input::facebook_shop_login($user_data['email']);
+		if($shop_login == 'deactivated')
+		{
+			Session::delete('facebook_auth');
+			Session::flash('error', '*This account has been deactivated, please contact the admin.');
+			return view('/shop/login');
+		}else if($shop_login == 'login'){
+			Session::delete('facebook_auth');
+			Session::flash('success', 'You have loggedin successfully!');
+			return view('/shop');
+		}else{
+			Session::delete('facebook_auth');
+			Session::delete('old_url');
+			Session::flash('success', 'You have loggedin successfully!');
+			return view($shop_login);
+		}
+	}
+	
+	
+	
+	
+}
+
+
+
+
+
+
+
+// ==================================
+// GOOGLE LOGIN AUTH
+// ==================================
+if(Session::has('google_auth') && Input::exists('get') && Input::get('code'))
 {
 	$google = new Google();
 	
@@ -24,12 +114,15 @@ if(Input::exists('get') && Input::get('code'))
 			$shop_login = Input::shop_google_login($data['email']);
 			if($shop_login == 'deactivated')
 			{
+				Session::delete('google_auth');
 				Session::flash('error', '*This account has been deactivated, please contact the admin.');
                 return view('/shop/login');
 			}else if($shop_login == 'login'){
+				Session::delete('google_auth');
 				Session::flash('success', 'You have loggedin successfully!');
 				return view('/shop');
 			}else{
+				Session::delete('google_auth');
 				Session::delete('old_url');
 				Session::flash('success', 'You have loggedin successfully!');
 				return view($shop_login);
@@ -43,13 +136,16 @@ if(Input::exists('get') && Input::get('code'))
 			$employer_login = Input::employer_google_login($data['email']);
 			if($employer_login == 'deactivated')
 			{
+				Session::delete('google_auth');
 				Session::flash('error', '*This account has been deactivated, please contact the admin.');
                 return view('/employer/login');
 			}else if($employer_login == 'login'){
+				Session::delete('google_auth');
 				Session::flash('success', 'You have loggedin successfully!');
 				return view('/');
 			}else{
 				Session::delete('old_url');
+				Session::delete('google_auth');
 				Session::flash('success', 'You have loggedin successfully!');
 				return view($employer_login);
 			}
@@ -62,13 +158,16 @@ if(Input::exists('get') && Input::get('code'))
 			$employee_login = Input::employee_google_login($data['email']);
 			if($employee_login == 'deactivated')
 			{
+				Session::delete('google_auth');
 				Session::flash('error', '*This account has been deactivated, please contact the admin.');
                 return view('/employee/login');
 			}else if($employee_login == 'login'){
+				Session::delete('google_auth');
 				Session::flash('success', 'You have loggedin successfully!');
 				return view('/');
 			}else{
 				Session::delete('old_url');
+				Session::delete('google_auth');
 				Session::flash('success', 'You have loggedin successfully!');
 				return view($employee_login);
 			}

@@ -7,6 +7,100 @@ if(!Input::exists('get') && !Input::get('wid'))
 }
 
 
+// ===================================================
+// HIRE AN EMPLOYEE
+// ===================================================
+if(Input::post('hire_employee'))
+{
+    $connection = new DB();
+    $result = hire_employee($connection);
+    dd($result);
+}
+
+
+if(Input::post('hire_employee_mobile'))
+{
+    $connection = new DB();
+    $result = hire_employee($connection);
+    dd($result);
+}
+
+
+
+function hire_employee($connection)
+{
+    if(!Auth_employer::is_loggedin())
+    {
+        Session::put('old_url', '/job-detail.php?wid='.Input::get('wid'));
+        Session::flash('error', '*Signup or Login to be able to hire a worker');
+        return view('/employer/login');
+    }
+
+    $subscription = $connection->select('employer_subscriptions')->where('s_employer_id', Auth_employer::employer('id'))->where('is_expire', 0)->first();
+    
+    if(!$subscription)
+    {
+        Session::flash('error', '*Subscribe to be able to hire a worker');
+        return back();
+    }
+
+    $request_worker = $connection->select('request_workers')->where('j_employer_id', Auth_employer::employer('id'))->where('r_worker_id', Input::get('wid'))->where('is_accept', 0)->first();
+    if($request_worker)
+    {
+        Session::flash('error', '*This employee has been hired by you!');
+        return back();
+    }
+
+
+    $employee = $connection->select('workers')->where('worker_id', Input::get('wid'))->first();
+    if(!$employee)
+    {
+        Session::flash('error', '*This employee has no work profile!');
+        return back();
+    }
+
+    $validate = new DB();
+    $validation = $validate->validate([
+        'first_name' => 'required|min:3|max:50',
+        'last_name' => 'required|min:3|max:50',
+        'phone' => 'required|min:11|max:11|number:phone',
+        'amount' => 'required|number:amount',
+        'city' => 'required|min:1|max:50',
+        'state' => 'required|min:1|max:50',
+        'message' => 'min:6|max:5000',
+        'address' => 'min:6|max:400',
+    ]);
+    
+    $message = Input::get('message') ? Input::get('message') : null;
+    $address = Input::get('address') ? Input::get('address') : null;
+
+    $connection = new DB();
+    $create = $connection->create('request_workers', [
+                'j_employer_id' => Auth_employer::employer('id'),
+                'j_employee_id' => $employee->employee_id,
+                'r_worker_id' => Input::get('wid'),
+                'j_first_name' => Input::get('first_name'),
+                'j_last_name' => Input::get('last_name'),
+                'j_phone' => Input::get('phone'),
+                'j_amount' => Input::get('amount'),
+                'j_city' => Input::get('city'),
+                'j_state' => Input::get('state'),
+                'j_message' => $message,
+                'j_address' => $address,
+                'work_detail' => json_encode($employee),
+            ]);
+    if($create)
+    {
+        Session::flash('success', "Employee has been requested successfully!");
+        return back();
+    }
+}
+
+
+
+
+
+
 
 
 // =======================================================
@@ -242,57 +336,73 @@ if($request_worker)
                 <div class="j-body">
                     <div class="row">
                         <div class="col-lg-4" id="apply_now_1">
-                            <form action="" method="" class="p-apply-container">
+                            <form action="<?= current_url() ?>" method="POST" class="p-apply-container">
                                 <div class="apply-h"><h4>Hire worker here</h4></div>
                                 <div class="apply-container">
                                     <div class="row">
                                         <div class="col-lg-12 col-sm-6">
                                             <div class="form-group">
-                                                <div class="all_alert alert_1 text-danger"></div>
-                                                <input type="text" class="first_name_input form-control h50" placeholder="Frist name" required>
+                                                <?php  if(isset($errors['first_name'])) : ?>
+                                                    <div class="text-danger"><?= $errors['first_name']; ?></div>
+                                                <?php endif; ?>
+                                                <input type="text" name="first_name" class="form-control h50" placeholder="Frist name" required>
                                             </div>
                                         </div>
                                         <div class="col-lg-12 col-sm-6">
                                             <div class="form-group">
-                                            <div class="all_alert alert_2 text-danger"></div>
-                                                <input type="text" class="last_name_input form-control h50" placeholder="Last name" required>
+                                                <?php  if(isset($errors['last_name'])) : ?>
+                                                    <div class="text-danger"><?= $errors['last_name']; ?></div>
+                                                <?php endif; ?>
+                                                <input type="text" name="last_name" class="form-control h50" placeholder="Last name" required>
                                             </div>
                                         </div>
                                         <div class="col-lg-12 col-sm-6">
                                             <div class="form-group">
-                                            <div class="all_alert alert_3 text-danger"></div>
-                                                <input type="text" class="phone_input form-control h50" placeholder="Phone number" required>
+                                                <?php  if(isset($errors['phone'])) : ?>
+                                                    <div class="text-danger"><?= $errors['phone']; ?></div>
+                                                <?php endif; ?>
+                                                <input type="text" name="phone" class="form-control h50" placeholder="Phone number" required>
                                             </div>
                                         </div>
                                         <div class="col-lg-12 col-sm-6">
                                             <div class="form-group">
-                                            <div class="all_alert alert_4 text-danger"></div>
-                                                <input type="number" class="amount_input form-control h50" placeholder="Amount" required>
+                                                <?php  if(isset($errors['amount'])) : ?>
+                                                    <div class="text-danger"><?= $errors['amount']; ?></div>
+                                                <?php endif; ?>
+                                                <input type="number" name="amount" class="form-control h50" placeholder="Amount" required>
                                             </div>
                                         </div>
                                         <div class="col-lg-12 col-sm-6">
                                             <div class="form-group">
-                                            <div class="all_alert alert_6 text-danger"></div>
-                                                <input type="text" class="city_input form-control h50" placeholder="City" required>
+                                                <?php  if(isset($errors['city'])) : ?>
+                                                    <div class="text-danger"><?= $errors['city']; ?></div>
+                                                <?php endif; ?>
+                                                <input type="text" name="city" class="form-control h50" placeholder="City" required>
                                             </div>
                                         </div>
                                         <div class="col-lg-12 col-sm-6">
                                             <div class="form-group">
-                                            <div class="all_alert alert_7 text-danger"></div>
-                                                <input type="text" class="state_input form-control h50" placeholder="State" required>
+                                                <?php  if(isset($errors['state'])) : ?>
+                                                    <div class="text-danger"><?= $errors['state']; ?></div>
+                                                <?php endif; ?>
+                                                <input type="text" name="state" class="form-control h50" placeholder="State" required>
                                             </div>
                                         </div>
-                                        <div class="col-lg-12 col-sm-6">
+                                        <div class="col-lg-12">
                                             <div class="form-group">
-                                                <div class="all_alert alert_8 text-danger"></div>
-                                               <textarea  class="address_input form-control h50" cols="30" rows="3" placeholder="Job address" required></textarea>
+                                                <?php  if(isset($errors['address'])) : ?>
+                                                    <div class="text-danger"><?= $errors['address']; ?></div>
+                                                <?php endif; ?>
+                                               <textarea  name="address" class="form-control h50" cols="30" rows="3" placeholder="Job address"></textarea>
                                             </div>
                                         </div>
                                     
                                         <div class="col-lg-12">
                                             <div class="form-group">
-                                                <div class="all_alert alert_9 text-danger"></div>
-                                                <textarea class="message_input form-control h50" cols="30" rows="5" placeholder="Message..."></textarea>
+                                                <?php  if(isset($errors['message'])) : ?>
+                                                    <div class="text-danger"><?= $errors['message']; ?></div>
+                                                <?php endif; ?>
+                                                <textarea name="message" class="form-control h50" cols="30" rows="5" placeholder="Message..."></textarea>
                                                 <label for="" class="cv-label">Max 400 characters</label>
 
                                                 <?php $amount = !$job->amount_to ? money($job->amount_form) : money($job->amount_form).' - '.money($job->amount_to); 
@@ -302,6 +412,15 @@ if($request_worker)
                                                 <?php else: ?>
                                                     <h5 class="text-success text-center"><i class="fa fa-money"></i> <b>Salary: <?= $amount ?></b></h5>
                                                 <?php endif; ?>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-12">
+                                            <div class="form-group">
+                                                <button type="submit" name="hire_employee" class="btn-fill">HIRE NOW</button>
+                                                <p class="text-center pt-2" style="font-size: 12px;">
+                                                    By click <b>Here now</b>, You agree to our <a href="<?= url('/terms') ?>" class="text-primary">terms & conditions</a>
+                                                    and <a href="<?= url('/privacy') ?>" class="text-primary">Privacy policy</a>
+                                                </p>
                                             </div>
                                         </div>
                                     </div>
@@ -540,34 +659,109 @@ if($request_worker)
                                     </p>
                                 </div>
                             <?php endif;?>
-                            <?php if(!Auth_employer::is_loggedin()):?>
-                                <div class="j-apply apply_now_1">
-                                    <div class="all_alert alert_0 text-center text-danger p-2" style="font-size: 13px;"></div>
-                                    <div class="btn-anchor" id="j-apply-btn">
-                                       <form action="<?= current_url()?>" method="POST">
-                                            <button type="submit" name="check_online_employer" class="btn-fill">HIRE NOW</button>
-                                        </form>
-                                    </div>
-                                    <p>
-                                        By click 'Apply now', You agree to our <a href="#" class="text-primary">terms & conditions</a>
-                                        and <a href="#" class="text-primary">Privacy policy</a>
-                                    </p>
-                                </div>
-                             <?php endif;?>
                         </div>
                         <div class="col-lg-3" id="apply_now_2">
-                             <?php include('includes/apply_now.php') ?>
+                            <form action="<?= current_url() ?>" method="POST" class="p-apply-container">
+                                <div class="apply-h"><h4>Hire worker here</h4></div>
+                                <div class="apply-container">
+                                    <div class="row">
+                                        <div class="col-lg-12 col-sm-6">
+                                            <div class="form-group">
+                                                <?php  if(isset($errors['first_name'])) : ?>
+                                                    <div class="text-danger"><?= $errors['first_name']; ?></div>
+                                                <?php endif; ?>
+                                                <input type="text" name="first_name" class="form-control h50" placeholder="Frist name" required>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-12 col-sm-6">
+                                            <div class="form-group">
+                                                <?php  if(isset($errors['last_name'])) : ?>
+                                                    <div class="text-danger"><?= $errors['last_name']; ?></div>
+                                                <?php endif; ?>
+                                                <input type="text" name="last_name" class="form-control h50" placeholder="Last name" required>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-12 col-sm-6">
+                                            <div class="form-group">
+                                                <?php  if(isset($errors['phone'])) : ?>
+                                                    <div class="text-danger"><?= $errors['phone']; ?></div>
+                                                <?php endif; ?>
+                                                <input type="text" name="phone" class="form-control h50" placeholder="Phone number" required>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-12 col-sm-6">
+                                            <div class="form-group">
+                                                <?php  if(isset($errors['amount'])) : ?>
+                                                    <div class="text-danger"><?= $errors['amount']; ?></div>
+                                                <?php endif; ?>
+                                                <input type="number" name="amount" class="form-control h50" placeholder="Amount" required>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-12 col-sm-6">
+                                            <div class="form-group">
+                                                <?php  if(isset($errors['city'])) : ?>
+                                                    <div class="text-danger"><?= $errors['city']; ?></div>
+                                                <?php endif; ?>
+                                                <input type="text" name="city" class="form-control h50" placeholder="City" required>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-12 col-sm-6">
+                                            <div class="form-group">
+                                                <?php  if(isset($errors['state'])) : ?>
+                                                    <div class="text-danger"><?= $errors['state']; ?></div>
+                                                <?php endif; ?>
+                                                <input type="text" name="state" class="form-control h50" placeholder="State" required>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-12">
+                                            <div class="form-group">
+                                                <?php  if(isset($errors['address'])) : ?>
+                                                    <div class="text-danger"><?= $errors['address']; ?></div>
+                                                <?php endif; ?>
+                                               <textarea  name="address" class="form-control h50" cols="30" rows="3" placeholder="Job address"></textarea>
+                                            </div>
+                                        </div>
+                                    
+                                        <div class="col-lg-12">
+                                            <div class="form-group">
+                                                <?php  if(isset($errors['message'])) : ?>
+                                                    <div class="text-danger"><?= $errors['message']; ?></div>
+                                                <?php endif; ?>
+                                                <textarea name="message" class="form-control h50" cols="30" rows="5" placeholder="Message..."></textarea>
+                                                <label for="" class="cv-label">Max 400 characters</label>
+
+                                                <?php $amount = !$job->amount_to ? money($job->amount_form) : money($job->amount_form).' - '.money($job->amount_to); 
+                                                 if($job->amount_to): ?>
+                                                 <p style="font-size: 13px;" class="text-center">Employee salary can be negotiated with the employee before any form of employment</p>
+                                                 <p style="font-size: 13px;" class="text-success text-center"><i class="fa fa-money"></i><b> Salary:</b> <?= $amount ?></p>
+                                                <?php else: ?>
+                                                    <h5 class="text-success text-center"><i class="fa fa-money"></i> <b>Salary: <?= $amount ?></b></h5>
+                                                <?php endif; ?>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-12">
+                                            <div class="form-group">
+                                                <button type="submit" name="hire_employee_mobile" class="btn-fill">HIRE NOW</button>
+                                                <p class="text-center pt-2" style="font-size: 12px;">
+                                                    By click <b>Here now</b>, You agree to our <a href="<?= url('/terms') ?>" class="text-primary">terms & conditions</a>
+                                                    and <a href="<?= url('/privacy') ?>" class="text-primary">Privacy policy</a>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
                         </div>
                         <div class="col-lg-12">
                             <div class="adds-news-small">
                                 <div class="job-alert-banner"><!-- job-alert jobs start-->
-                                    <div class="alert-header">
+                                    <!-- <div class="alert-header">
                                         <h3>Jobs in Nigeria</h3>
                                     </div>
                                     <div class="alert-body">
                                         <p><b>1280</b> jobs found</p>
                                         <a href="#">Create job alert</a>
-                                    </div>
+                                    </div> -->
                                 </div><!-- job-alert jobs start-->
 
                                   <!-- <div class="advert-banner-2">
@@ -663,148 +857,6 @@ function alert_success(){
 }
 
 
-// =====================================
-// MOBILE SCREEN HIRE A WORKER
-// =====================================
-// you can find the mobile hire a worker form in include folder with the file name of apply_now.php
-
-$(".mobile_employer_hire_btn").click(function(e){
-    e.preventDefault();
-    var url = $(this).attr('href');
-    var worker_id = $(this).attr('id');
-
-    $(".all_alert").html('');
-    $(".preloader-container").show(); //preloader
-    mobile_hire_worker(url, worker_id);
-});
-
-
-function mobile_hire_worker(url, worker_id){
-    var first_name = $(".first_name_input_mobile").val();
-    var last_name = $(".last_name_input_mobile").val();
-    var phone = $(".phone_input_mobile").val();
-    var amount = $(".amount_input_mobile").val();
-    var city = $(".city_input_mobile").val();
-    var state = $(".state_input_mobile").val();
-    var message = $(".message_input_mobile").val();
-    var address = $(".address_input_mobile").val();
-
-    $.ajax({
-        url: url,
-        method: 'post',
-        data: {
-            worker_id: worker_id,
-            first_name: first_name,
-            last_name: last_name,
-            phone: phone,
-            amount: amount,
-            city: city,
-            state: state,
-            message: message,
-            address: address,
-            hire_worker: 'hire_worker'
-        },
-        success: function(response){
-            var data = JSON.parse(response);
-            if(data.not_login){
-                location.reload();
-            }else if(data.subscribe){
-                remove_loading(data.subscribe.subscribe);
-            }else if(data.error){
-                get_error(data.error);
-            }else if(data.data){
-                location.reload();
-            }else if(data.hired){
-                remove_loading(data.hired.hired);
-            }else{
-                remove_loading('*Something went wrong, try again later');
-            }
-            remove_preloader(); //remove preloader
-        }
-    });
-}
-
-
-
-
-
-
-
-
-// =====================================
-// HIRE A WORKER
-// =====================================
-
-$(".employer_hire_btn").click(function(e){
-    e.preventDefault();
-    var url = $(this).attr('href');
-    var worker_id = $(this).attr('id');
-
-    $(".all_alert").html('');
-    $(".preloader-container").show(); //preloader
-    hire_worker(url, worker_id);
-});
-
-
-
-function hire_worker(url, worker_id){
-    var first_name = $(".first_name_input").val();
-    var last_name = $(".last_name_input").val();
-    var phone = $(".phone_input").val();
-    var amount = $(".amount_input").val();
-    var city = $(".city_input").val();
-    var state = $(".state_input").val();
-    var message = $(".message_input").val();
-    var address = $(".address_input").val();
-
-    $.ajax({
-        url: url,
-        method: 'post',
-        data: {
-            worker_id: worker_id,
-            first_name: first_name,
-            last_name: last_name,
-            phone: phone,
-            amount: amount,
-            city: city,
-            state: state,
-            message: message,
-            address: address,
-            hire_worker: 'hire_worker'
-        },
-        success: function(response){
-            var data = JSON.parse(response);
-            if(data.not_login){
-                location.reload();
-            }else if(data.subscribe){
-                remove_loading(data.subscribe.subscribe);
-            }else if(data.error){
-                get_error(data.error);
-            }else if(data.data){
-                location.reload();
-            }else if(data.hired){
-                remove_loading(data.hired.hired);
-            }else{
-                remove_loading('*Something went wrong, try again later');
-            }
-            remove_preloader(); //remove preloader
-        }
-    });
-}
-
-
-
-function get_error(error){
-    $(".alert_1").html(error.first_name);
-    $(".alert_2").html(error.last_name);
-    $(".alert_3").html(error.phone);
-    $(".alert_4").html(error.amount);
-    $(".alert_6").html(error.city);
-    $(".alert_7").html(error.state);
-    $(".alert_8").html(error.address);
-    $(".alert_9").html(error.message);
-}
-
 
 
 
@@ -823,39 +875,6 @@ function remove_preloader(){
 
 
 
-
-
-
-
-
-
-// =========================================
-// CHECK IF USER IS LOGGEDIN
-// =========================================
-$(".employer_hire_camo_btn").click(function(e){
-    e.preventDefault();
-    url = $(this).attr('href');
-
-     $.ajax({
-        url: url,
-        method: 'post',
-        data: {
-            check_online_employer: 'check_online_employer'
-        },
-        success: function(response){
-            var data = JSON.parse(response);
-            if(data.data){
-                location.assign(data.location);
-            }
-        }
-    });
-});
-
-
-
-
-
-
 // =========================================
 //SOCIAL MEDIA SHARE BUTTON
 // =========================================
@@ -865,7 +884,7 @@ var linkedin = $(".linkedin_share");
 var whatsapp = $(".whatsapp_share");
 
 var post_url = encodeURI($(location).attr('href'));
-var post_title =encodeURI( "Hire a worker form nigeriananny company");
+var post_title = encodeURI( "Hire a worker form nigeriananny company");
 
 $(facebook).attr('href', `https://www.facebook.com/sharer/sharer.php?u=${post_url}`);
 $(twitter).attr('href', `https://twitter.com/share?url=${post_url}&text=${post_title}`);

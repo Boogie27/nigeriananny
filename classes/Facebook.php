@@ -13,10 +13,31 @@ class Facebook{
 
 
 
-    public function login_url()
+    public function facebook_helper()
     {
-        return $this->_facebook->getRedirectLoginHelper()->getLoginUrl('https://greenhouses-pro.co.uk/demo/', array('email'));
+       return $this->__facebook = $this->_facebook->getRedirectLoginHelper();
     }
 
+
+
+    public function login_url()
+    {
+        return $this->facebook_helper()->getLoginUrl('http://localhost/JOB/nigeriananny/', array('email'));
+    }
+
+
+    public function access_token()
+    {
+        return $this->facebook_helper()->getAccessToken();
+    }
+
+    public function user_data()
+    {
+        $token = $this->access_token();
+        $this->_facebook->setDefaultAccessToken($token);
+        $info = $this->_facebook->get('/me?fields=name,email', $token);
+
+        return $info->getGraphUser();
+    }
 
 }

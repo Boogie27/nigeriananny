@@ -78,8 +78,27 @@ if(Input::post('google_login'))
 {
     Session::delete('shop_login');
     Session::delete('employee_login');
+    Session::put('google_auth', true);
     Session::put('employer_login', true);
     return Redirect::to($google->auth_url());
+}
+
+
+
+
+
+
+//  =============================================
+// FACEBOOK LOGIN AUTH
+// =============================================
+if(Input::post('facebook_login'))
+{
+    $facebook = new Facebook();
+    Session::put('fb_employer_login', true);
+    Session::delete('fb_shop_login');
+    Session::put('facebook_auth', true);
+    Session::delete('fb_employee_login');
+    return Redirect::to($facebook->login_url());
 }
 
 ?>
@@ -122,7 +141,7 @@ if(Input::post('google_login'))
                                 <div class="text-danger"><?= $errors['email']; ?></div>
                             <?php endif; ?>
                             <label for="">Email:</label>
-                            <input type="email" name="email" class="form-control h50" value="<?= old('email')?>" required>
+                            <input type="email" name="email" class="form-control h50" value="<?= old('email')?>">
                         </div>
                     </div>
                     <div class="col-lg-12 col-sm-6">
@@ -131,7 +150,7 @@ if(Input::post('google_login'))
                                 <div class="text-danger"><?= $errors['password']; ?></div>
                             <?php endif; ?>
                             <label for="">Password:</label>
-                            <input type="password" name="password" class="form-control h50" required>
+                            <input type="password" name="password" class="form-control h50">
                         </div>
                     </div>
                    
@@ -152,11 +171,11 @@ if(Input::post('google_login'))
                         <span class="lf_divider ">Or</span>
                         <hr>
                     </div>
-                    <div class="col-lg">
-                        <button type="submit" class="btn btn-block color-white bgc-fb mb0"><i class="fa fa-facebook float-left mt5"></i> Facebook</button>
+                    <div class="col-lg mb-3">
+                        <button type="submit" name="facebook_login" class="btn btn-block color-white bgc-fb"><i class="fa fa-facebook float-left mt5"></i> Facebook</button>
                     </div>
-                    <div class="col-lg">
-                        <button type="submit" name="google_login" class="btn btn2 btn-block color-white bgc-gogle mb0"><i class="fa fa-google float-left mt5"></i> Google</button>
+                    <div class="col-lg mb-3">
+                        <button type="submit" name="google_login" class="btn btn2 btn-block color-white bgc-gogle"><i class="fa fa-google float-left mt5"></i> Google</button>
                     </div>
                 </div>
             </div>

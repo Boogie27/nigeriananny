@@ -95,11 +95,13 @@ if(Session::has('cart')):
 <!-- cart end-->
 
 <?php else: ?>
-	<div class="empty-cart">
-		<!-- <span class="flaticon-shopping-bag pr5 fz20 cart_icon"></span> -->
-		<img src="<?= asset('/shop/images/cart.jpg') ?>" alt="cart" class="shopping-cart-img">
-		<h4>Empty shopping cart</h4>
-		<a href="<?= url('/shop/index.php') ?>" class="app-btn">Continue shopping</a>
+	<div class="empty-cart-container">
+		<div class="empty-cart">
+			<!-- <span class="flaticon-shopping-bag pr5 fz20 cart_icon"></span> -->
+			<img src="<?= asset('/shop/images/cart.jpg') ?>" alt="cart" class="shopping-cart-img">
+			<h4>Empty shopping cart</h4>
+			<a href="<?= url('/shop/index.php') ?>" class="app-btn">Continue shopping</a>
+		</div>
 	</div>
 <?php endif; ?>
 

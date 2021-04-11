@@ -3,7 +3,7 @@
 if(!Auth_employee::is_loggedin())
 {
     Session::put('old_url', '/employee/account');
-    Session::put('error', '*Signup or Login to access that page!');
+    Session::flash('error', '*Signup or Login to access that page!');
     return view('/');
 }
 

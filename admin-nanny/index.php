@@ -1,5 +1,14 @@
 <?php include('../Connection.php');  ?>
 <?php
+if(!Admin_auth::is_loggedin())
+{
+  Session::delete('admin');
+  Session::put('old_url', '/admin-nanny');
+  return view('/admin/login');
+}
+
+
+
 
 // ===========================================
 // GET ALL EMPLOYEES

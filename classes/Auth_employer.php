@@ -33,9 +33,9 @@ class Auth_employer{
                 $login_user['email'] = $employer->email;
                 $login_user['first_name'] = $employer->first_name;
                 $login_user['last_name'] = $employer->last_name;
-                $login_user['image'] = $employer->image;   
-                $login_user['gender'] = $employer->gender;     
-                $login_user['birth_date'] = $employer->birth_date;   
+                $login_user['image'] = $employer->e_image;   
+                $login_user['gender'] = $employer->e_gender;     
+                $login_user['birth_date'] = $employer->dob;   
                 $login_user['address'] = $employer->address;     
                 $login_user['city'] = $employer->city;     
                 $login_user['state'] = $employer->state;   

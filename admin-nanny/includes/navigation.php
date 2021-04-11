@@ -60,8 +60,10 @@ $new_messages = $connection->select('contact_us')->where('is_seen', 0)->get();
 					<li>
 		                <a href="#"><span class="title">Others</span></a>
 		                <ul>
-							<li><a href="<?= url('/admin-nanny/privacy') ?>">Privacy</a></li>
 							<li><a href="<?= url('/admin-nanny/faq') ?>">FAQ</a></li>
+							<li><a href="<?= url('/admin-nanny/privacy') ?>">Privacy</a></li>
+							<li><a href="<?= url('/admin-nanny/terms') ?>">Terms & condition</a></li>
+							
 		                </ul>
 					</li>
 					<li>

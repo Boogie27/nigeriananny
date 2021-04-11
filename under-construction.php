@@ -38,7 +38,10 @@ $connection = DB::instantiate(); //use this instantiated class to make query to 
 // app banner settings
 // ============================================
 $banner =  $connection->select('settings')->where('id', 1)->first();
-
+if($banner->is_active)
+{
+    return view('/');
+}
 ?>
 
 <!DOCTYPE html>
@@ -77,6 +80,13 @@ $banner =  $connection->select('settings')->where('id', 1)->first();
                 <p>We are currently unavailable but we will be back soon!</p>
             </div>
         </div>
+    </div>
+
+    <div class="footer-btn">
+        <ul>
+            <li><?= $banner->info_email; ?></li>
+            <li><?= $banner->alrights; ?></li>
+        </ul>
     </div>
 </body>
 </html>

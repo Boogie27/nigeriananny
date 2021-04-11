@@ -99,7 +99,7 @@ if(Input::post('receive_password'))
                 <div class="breadcrumb_content">
                     <h4 class="page_title">Forgot password</h4>
                     <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="<?= url('/shop/index.php') ?>">Home</a></li>
+                        <li class="breadcrumb-item"><a href="<?= url('/shop') ?>">Home</a></li>
                         <li class="breadcrumb-item active" aria-current="page">Forgot password</li>
                     </ol>
                 </div>

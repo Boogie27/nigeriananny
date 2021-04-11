@@ -1034,6 +1034,10 @@ ul.ability-x li{
     background-color: #fff;
     box-shadow: 0px 2px 0px 0px rgb(197, 197, 197);
 }
+input:focus, select:focus, .apply-container textarea:focus{
+    outline: none;
+    box-shadow: none;
+}
 @media only screen and (max-width: 992px){
     #apply_now_1, .apply_now_1{
         display: none
@@ -2553,8 +2557,8 @@ h3.rh-faq{
     vertical-align: middle;
 }
 .inner-construction img{
-    width: 800px;
-    height: 400px;
+    width: 500px;
+    height: 200px;
 }
 .under-contruction h3{
     color: #555;
@@ -2566,22 +2570,29 @@ h3.rh-faq{
     margin: 0px;
     padding: 0px;
 }
+.footer-btn{
+    text-align: center;
+    width: 100%;
+}
+.footer-btn ul li{
+   font-size: 12px;
+}
 @media only screen and (max-width: 992px){
     .inner-construction img{
-        width: 700px;
-        height: 300px;
+        width: 400px;
+        height: 150px;
     }
 }
 @media only screen and (max-width: 767px){
     .inner-construction img{
-        width: 500px;
-        height: 200px;
+        width: 400px;
+        height: 170px;
     }
 }
 @media only screen and (max-width: 567px){
     .inner-construction img{
         width: 350px;
-        height: 230px;
+        height: 200px;
     }
     .under-contruction p{
         padding: 0px 40px;
@@ -2596,6 +2607,7 @@ h3.rh-faq{
         height: 170px;
     }
     .under-contruction p{
+        font-size: 13px;
         padding: 0px 5px;
     }
 }

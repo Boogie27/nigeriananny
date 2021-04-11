@@ -53,7 +53,15 @@ $banner =  $connection->select('settings')->where('id', 1)->first();
 						<?php endif; ?>
 		            </li>
 		            </li>
-					
+					<li>
+		                <a href="#"><span class="title">Others</span></a>
+		                <ul>
+							<li><a href="<?= url('/admin-nanny/faq') ?>">FAQ</a></li>
+							<li><a href="<?= url('/admin-nanny/privacy') ?>">Privacy</a></li>
+							<li><a href="<?= url('/admin-nanny/terms') ?>">Terms & condition</a></li>
+							
+		                </ul>
+					</li>
 					<li>
 		                <a href="#"><span class="title">Settings</span></a>
 		                <ul>

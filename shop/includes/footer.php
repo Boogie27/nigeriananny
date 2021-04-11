@@ -77,6 +77,7 @@ $settings = $connection->select('settings')->where('id', 1)->first();
 						<ul>
 							<li class="list-inline-item"><a href="<?= url('/shop') ?>">Home</a></li>
 							<li class="list-inline-item"><a href="<?= url('/shop/privacy') ?>">Privacy</a></li>
+							<li class="list-inline-item"><a href="<?= url('/shop/terms') ?>">Terms</a></li>
 							<li class="list-inline-item"><b>Business hours:</b> <?= $settings->business_hours ? $settings->business_hours : '';?></li>
 						</ul>
 					</div>
