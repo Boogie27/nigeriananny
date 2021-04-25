@@ -41,6 +41,7 @@
                     return Redirect::to($old_url);
                 }
 
+                Session::flash('success', 'You have loggedin successfully!');
                 return view('/admin-nanny');
             }
         }

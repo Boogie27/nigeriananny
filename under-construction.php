@@ -64,8 +64,8 @@ if($banner->is_active)
 <!-- Title -->
 <title><?= title() ?></title>
 <!-- Favicon -->
-<link href="<?= url('/images/favicon.ico') ?>" sizes="128x128" rel="shortcut icon" type="image/x-icon" />
-<link href="<?= url('/images/favicon.ico') ?>" sizes="128x128" rel="shortcut icon" />
+<!-- <link href="images/favicon.ico" sizes="128x128" rel="shortcut icon" type="image/x-icon" />
+<link href="images/favicon.ico" sizes="128x128" rel="shortcut icon" /> -->
 
 <!-- main script-->
 <link rel="stylesheet" href="<?= url('/css/main-style.css') ?>">

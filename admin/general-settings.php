@@ -521,6 +521,7 @@ $("#app_img_uploads_input").on('change', function(e){
            }else{
             $('.alert_0').html('*Something went worng!')
            }
+		   console.log(response)
         }
     });
 });

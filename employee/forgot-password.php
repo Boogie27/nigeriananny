@@ -6,6 +6,11 @@
       return view('/');
   }
   
+
+
+//   ==============================================
+// FORGET PASSWORD
+// ================================================
  if(Input::post('forgot_password'))
  {
     $validate = new DB();
@@ -20,7 +25,7 @@
     if(!$emailExists)
     {
         Session::errors('errors', [ 'email' => '*email does not exist']);
-        return Redirect::to('forgot-password');
+        return back();
     }
 
     $oldReset = $connection->select('employer_reset_password')->where('reset_email', Input::get('email'))->first();
@@ -39,7 +44,7 @@
     if(!$createReset)
     {
         Session::flash('success', 'Password reset error, please try again later.');
-        return Redirect::to('forgot-password');
+        return back();
     }
 
     $body = '';
@@ -55,7 +60,7 @@
                         <p>We received a password reset request. The link to reset your password is here below.<br>
                             If you did not make this request please ignore this mail. This token expires after 30 minutes, Thank you.
                         </p>
-                        <p>Here is the password reset link <a href="'.$url.'">Reset passowrd</a></p>
+                        <p>Here is the password reset link <a href="'.$url.'">Reset passoword</a></p>
                     </div>
                 </div>';
 
@@ -75,7 +80,7 @@
     {
         Session::put('get_passsword', true);
         Session::flash('success', 'Password reset token has been sent to your email.');
-        return view('/employee/forgot-password');
+        return back();
     }
  }
 

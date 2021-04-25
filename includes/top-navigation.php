@@ -4,7 +4,7 @@ $settings = $connection->select('settings')->where('id', 1)->first();
 
 
 
-<div class="header_top home2">
+<div class="header_top home2" id="top_navigation_w">
 		<div class="container">
 			<div class="row">
 				<div class="col-xl-12">

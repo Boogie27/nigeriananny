@@ -9,10 +9,6 @@ if(!Input::exists('get') && Input::get('tid'))
    return Redirect::to('login.php');
 }
 
-if(!Session::has('get_passsword'))
-{
-    return view('/shop');
-}
 
 if(Input::post('reset_password'))
 {

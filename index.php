@@ -178,13 +178,24 @@ if(Session::has('google_auth') && Input::exists('get') && Input::get('code'))
 
 
 
+// ===========================================
+// GET FREQUESNTLY ASK QUESTIONS
+// ===========================================
+$faqs = $connection->select('faqs')->where('is_feature', 1)->get();
+
 
 
 
 // ==================================
-// GET EMPLOYERS
+// GET FEATURED EMPLOYERS
 // ==================================
 $employers = $connection->select('employers')->where('e_feature', 1)->where('e_deactivate', 0)->get();
+
+
+// ==================================
+// GET FEATURED EMPLOYEES
+// ==================================
+$employees = $connection->select('employee')->leftJoin('workers', 'employee.e_id', '=', 'workers.employee_id')->where('is_flagged', 0)->where('e_is_deactivate', 0)->where('is_feature', 1)->where('e_approved', 1)->limit(9)->get();
 
 
 
@@ -272,14 +283,14 @@ $testimonials = $connection->select('testimonial')->where('is_featured', 1)->get
 
 
 	<!-- standout start-->
-	<div class="standout-conatiner">
+	<div class="standout-conatiner" style="background-color: #fff;">
 		<div class="standout-banner">
 			<div class="std-head">
 				<h3 class="content-head">Stand out!</h3>
 				<p class="p">How Nigeria nanny helps you</p>
 			</div>
-
-			<div class="standout-body">
+             <br><br>
+			<div class="standout-bodys">
 				<div class="row">
 					<div class="col-lg-4 standout-animate">
 						<div class="std-content">
@@ -312,10 +323,10 @@ $testimonials = $connection->select('testimonial')->where('is_featured', 1)->get
 					</div>
 				</div>
 				<div class="base">
-					<div class="direction" id="direction_x">
+					<div class="direction text-center" id="direction_x">
 					<!-- <i class="fa fa-circle"></i>  this is being appended using jquery at the bottom of this page-->
 					</div>
-					<div class="std-content-a">
+					<div class="std-content-a" style="border: none;">
 						<a href="<?= url('/form') ?>">Create your account</a>
 					</div>
 				</div>
@@ -325,7 +336,7 @@ $testimonials = $connection->select('testimonial')->where('is_featured', 1)->get
 	<!-- standout end-->
 
 
-
+<?php if(count($employers)): ?>
    	<!-- emmployer start-->
     <div class="employer-container">
 	    <div class="std-head feature-x">
@@ -351,34 +362,68 @@ $testimonials = $connection->select('testimonial')->where('is_featured', 1)->get
 								</div>
 							</div>
 							<?php endforeach; ?>
-						<?php else: ?>
-
 						<?php endif; ?>
 					</div>
 				</div>
 			</div>
 			<div class="std-content-a">
-				<a href="#">View more employers</a>
+				<a href="<?= url('/employer/register') ?>">Become an employer</a>
 			</div>
 		</div>
 	</div>
+<?php endif; ?>
 	<!-- emmployer end-->
 
 
-    
+
+	<!-- jobs start-->
+	<?php if(count($employees)):  ?>
+	<div class="top-jobs-container">
+		<div class="job-head">
+			<h3 style="color: #333;">Featured employees</h3>
+		</div>
+		<div class="jobs-body">
+			<div class="row">
+				<?php if(count($employees)): 
+					foreach($employees as $employee):
+						$w_image = $employee->w_image ?  $employee->w_image : '/images/employee/demo.png';
+						$amount = !$employee->amount_to ? money($employee->amount_form) : money($employee->amount_form).' - '.money($employee->amount_to);
+					?>
+					<div class="col-xl-4 col-lg-6 col-md-6">
+						<div class="job-con">
+							<a href="<?= url('/job-detail.php?wid='.$employee->worker_id) ?>"><img src="<?= asset($w_image)?>" alt=""></a>
+							<ul>
+								<li><h4><a href="<?= url('/job-detail.php?wid='.$employee->worker_id) ?>"><?= ucfirst($employee->job_title) ?></a></h4></li>
+								<li><?= ucfirst($employee->first_name.' '.$employee->last_name) ?></li>
+								<li><?= $employee->job_type != 'live in' ? 'Live out' : 'Live in';?>| <span class="text-warning money-amount"><?= $amount ?></span></li>
+								<li>
+									<a href="<?= url('/job-detail.php?wid='.$employee->worker_id) ?>" class="text-primary">view details</a>
+									<span class="float-right"><i class="fa fa-clock-o text-success "></i> <span  style="font-size: 12px;" class="text-success"><?= date('d M Y', strtotime($employee->date_added)) ?></span></span>
+								</li>
+							</ul>
+						</div>
+					</div>
+					<?php endforeach; ?>
+				<?php endif; ?>
+			</div>
+		</div>
+	</div>
+	<?php endif; ?>
+	<!-- jobs end-->
+
+	
+	<?php if(count($testimonials)):?>
 	<!-- Our Testimonials -->
 	<section id="our-testimonials" class="our-testimonial">
 		<div class="container-fluid">
-			<?php if(count($testimonials)):?>
 			<div class="row">
 				<div class="col-lg-6 offset-lg-3">
 					<div class="main-title text-center">
 						<h3 class="mt0">What People Say</h3>
-						<p>Cum doctus civibus efficiantur in imperdiet deterruisset.</p>
+						<p>This is what our top employers had to say about us!</p>
 					</div>
 				</div>
 			</div>
-			<?php endif; ?>
 
 			<!-- testimonial start -->
 			<?php if(count($testimonials)):?>
@@ -408,32 +453,35 @@ $testimonials = $connection->select('testimonial')->where('is_featured', 1)->get
 			</div>
 			<!-- testimonial end -->
 			<?php endif; ?>
-
-			<div class="row mt60">
-				<div class="col-sm-6 col-lg-6 col-xl-6">
-					<div class="becomea_instructor tac-xxsd">
-						<div class="bi_grid text-center">
-							<h3>Signup as a worker</h3>
-							<p>Teach what you love. Dove Schooll gives you the tools to create an <br class="dn-lg"> online course.</p>
-							<a class="btn btn-thm" href="<?= url('/employee/register') ?>">Start working <span class="flaticon-right-arrow-1"></span></a>							
-						</div>
-					</div>
-				</div>
-				<div class="col-sm-6 col-lg-6 col-xl-6">
-					<div class="becomea_instructor style2 text-right tac-xxsd">
-						<div class="bi_grid text-center">
-							<h3>Signup as an employer</h3>
-							<p>Get unlimited access to 2,500 of Udemy’s top courses for <br class="dn-lg"> your team.</p>
-							<a class="btn btn-dark" href="<?= url('/employer/register') ?>">Employ a worker <span class="flaticon-right-arrow-1"></span></a>							
-						</div>
-					</div>
-				</div>
-			</div>
 		</div>
 	</section>
+	<?php endif; ?>
 
+  
 
-
+  <?php if(count($faqs)):?>
+		<!-- FAQS start-->
+		<div class="top-jobs-container">
+		<div class="fags-header">
+			<h3>Frequestly Asked Questions</h3>
+			<p>You can also browse the topic bellow to find what you are loooking for.</p>
+		</div>
+		<div class="faqs-body-x">
+			<ul>
+				<?php foreach($faqs as $faq): ?>
+				<li>
+					<a href="#" class="faq-single-item-x"><?= $faq->faq?> <i class="fa fa-angle-right float-right angle"></a></i>
+                     <div class="inner-faq">
+						<h4><?= $faq->faq?></h4>
+						<?= $faq->content; ?>
+					</div>
+			    </li>
+				<?php endforeach; ?>
+			</ul>
+		</div>
+	</div>
+	<!-- FAQS end-->
+	<?php endif; ?>
 	
 
 </div>
@@ -496,7 +544,14 @@ if($(window).width() < 993){
 
 
 
-
+// ==============================================
+// OPEN FAQS CONTENT DETAILS
+// ==============================================
+$(".faq-single-item-x").click(function(e){
+    e.preventDefault();
+	var content = $(this).parent().children('.inner-faq');
+	$(content).toggle();
+});
 
 
 

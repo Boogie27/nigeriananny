@@ -51,9 +51,7 @@
 		            </li>
 		        </ul>
 		        <ul class="sign_up_btn pull-right dn-smd mt20">
-					<?php if(!Auth_employer::is_loggedin()):?>
-						<li class="list-inline-item"><a href="<?= url('/form') ?>" class="btn btn-md"><i class="flaticon-user"></i> <span class="dn-md">Create account</span></a></li>
-					<?php else: ?>
+					<?php if(Auth_employer::is_loggedin()):?>
 						<li class="list-inline-item"><a href="<?= url('/employer/logout.php') ?>" class="btn btn-md"><i class=""></i> <span class="dn-md">Logout</span></a></li>
 					<?php endif; ?>
 					<?php if(Auth_employee::is_loggedin()): ?>

@@ -27,7 +27,7 @@
 // ===========================================
 // GET ALL JOBS
 // ===========================================
-$jobs = $connection->select('workers')->leftJoin('employee', 'workers.employee_id', '=', 'employee.e_id')->where('employee.e_approved', 1)->where('employee.is_feature', 1)->where('employee.e_approved', 1)->where('is_flagged', 0)->where('employee.e_is_deactivate', 0);
+$jobs = $connection->select('workers')->leftJoin('employee', 'workers.employee_id', '=', 'employee.e_id')->where('employee.e_approved', 1)->where('is_flagged', 0)->where('employee.e_is_deactivate', 0);
 
 
 
@@ -71,7 +71,7 @@ if(Input::exists('get') && Input::get('title'))
 
 
 
-$jobs->paginate(5); 
+$jobs->paginate(15); 
 
 ?>
 

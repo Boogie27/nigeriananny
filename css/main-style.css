@@ -12,6 +12,12 @@ h3, h4, h2, h1, h5{
 .style_one_edited a{
     color: #333;
 }
+#top_navigation_w{
+    /* background-color: #fff; */
+}
+#top_navigation_w form input{
+    border: 1px solid #ccc;
+}
 /* ====================================== */
 /*             PRELOADER                  */
 /* ====================================== */
@@ -385,7 +391,7 @@ h3, h4, h2, h1, h5{
     padding: 20px;
     border-radius: 2px;
     background-color: #fff;
-    box-shadow: 0px 2px 0px 0px rgb(4, 33, 179);
+    /* box-shadow: 0px 2px 0px 0px rgb(4, 33, 179); */
 }
 .standout-banner h3{
     margin: 0px;
@@ -968,9 +974,13 @@ ul.ability-x li{
     }
     .j-summary-detail p{
         margin-left: 0px;
+        padding-left: 10px;
     }
     .j-safety, .j-share{
         padding: 0px 8px;
+    }
+    ul.ability-x{
+        padding: 0px 10px;
     }
 }
 @media only screen and (max-width: 1125px){
@@ -2449,97 +2459,79 @@ ul.ul-message li{
 /* ======================================== */
 /*      FREQUENTLY ASKED QUESTIONM PAGE     */
 /* ======================================== */
-.faq-container{
+.fags-header{
+    text-align: center;
+    margin-bottom: 50px;
+}
+.fags-header h3{
+    color: #333;
+    font-family: Arial,Helvetica Neue,Helvetica,sans-serif;
+}
+.faqs-body-x{
     width: 80%;
     margin: 0 auto;
-    padding: 30px 20px;
     border-radius: 5px;
+    padding: 50px 20px;
     background-color: #fff;
-    box-shadow: 0px 2px 2px 0px rgb(197, 197, 197);
 }
-.faq-form{
-    margin-top: 50px;
+
+.faqs-body-x ul li{
+   margin-bottom: 10px;
 }
-.faq-form input{
-    width: 60%;
-    margin: 0 auto;
-    border-radius: 200px;
+.faqs-body-x ul li a{
+    padding: 10px;
+    display: block;
+    border-radius: 3px;
+    border: 1px solid rgb(237, 237, 237);
 }
-.faq-form input:focus{
-    box-shadow: none;
-    outline: none;
+.faqs-body-x ul li a:hover i, .faqs-body-x ul li a:hover{
+   color: #2441e7;
 }
-.faq-form p{
-    font-size: 13px;
+.faqs-body-x ul li i{
+    top: 4px;
+    position: relative;
 }
-h3.rh-faq{
-    color: #333;
-    text-align: left;
-    font-size: 18px;
+.faqs-body-x .inner-faq{
+    padding: 20px;
+    margin-top: 5px;
+    display: none;
+    border-radius: 5px;
+    background-color: rgba(245, 245, 245, 0.207);
 }
-.faq-container-body{
-    padding: 50px 0px;
-}
-.faq-body .head{
-    font-size: 15px;
-    font-weight: 400;
-    padding: 20px 0px;
-}
-.faq-body ul{
-    padding-left: 30px;
-}
-.faq-body ul li{
-    font-size: 15px;
+.faqs-body-x .inner-faq h4{
     color: #555;
-    list-style: disc;
-    color: blue;
-    padding: 10px 0px;
-}
-.faq-body ul li a:hover{
-   color: blue;
-}
-.inner-faq-answer-body{
-    width: 90%;
-    margin: 0 auto;
-}
-.inner-faq-answer-body p{
-    font-size: 13px;
-}
-.inner-faq-answer-body ul li{
-    list-style: disc;
-}
-.inner-faq-answer-body ul li{
-    list-style-type: decimal;
-}
-@media only screen and (max-width: 1125px){
-    .faq-container{
-        width: 90%;
-    }
 }
 @media only screen and (max-width: 992px){
-    .inner-faq-answer-body{
-        width: 100%;
+    .faqs-body-x{
+        width: 92%;
+    }
+    .fags-header p{
+        padding: 0px 10px;
     }
 }
-@media only screen and (max-width: 767px){
-    .faq-container{
-        width: 100%;
+@media only screen and (max-width: 398px){
+    .fags-header{
+        padding: 10px;
+        margin-bottom: 20px;
     }
-    .faq-form input{
-        width: 80%;
-    }
-}
-@media only screen and (max-width: 567px){
-    .faq-form input{
-        width: 100%;
-    }
-    .faq-form p{
+    .fags-header p{
         font-size: 12px;
     }
+    .faqs-body-x ul li a{
+       font-size: 14px;
+       padding: 10px 5px;
+    }
+    .faqs-body-x{
+        padding: 20px 10px;
+    }
+    .faqs-body-x .inner-faq{
+       font-size: 13px;
+       padding: 10px 5px;
+    }
+    .faqs-body-x .inner-faq h4{
+        font-size: 17px;
+    }
 }
-
-
-
 
 
 /* ============================================== */
@@ -2652,7 +2644,12 @@ h3.rh-faq{
 
 
 
+/* =============================================== */
+/*      INDEX                                     */
+/* ============================================= */
+.standout-banner{
 
+}
 
 
 

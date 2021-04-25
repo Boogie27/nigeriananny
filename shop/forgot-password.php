@@ -18,7 +18,8 @@ if(Input::post('receive_password'))
     $emailExists = $connection->select('users')->where('email', Input::get('email'))->first();
     if(!$emailExists)
     {
-        return Redirect::to('login.php');
+        Session::flash('error', '*email does not exist');
+        return back();
     }
     
     $settings = $connection->select('settings')->where('id', 1)->first();
@@ -56,7 +57,7 @@ if(Input::post('receive_password'))
                     <p>We received a password reset request. The link to reset your password is here below.<br>
                         If you did not make this request please ignore this mail. This token expires after 30 minutes, Thank you.
                     </p>
-                    <p>Here is the password reset link <a href="'.$url.'">Reset passowrd</a></p>
+                    <p>Here is the password reset link <a href="'.$url.'">Reset password</a></p>
                 </div>
             </div>';
 
@@ -76,7 +77,7 @@ if(Input::post('receive_password'))
     {
         Session::put('get_passsword', true);
         Session::flash('success', 'Password reset token has been sent to your email.');
-        return Redirect::to('forgot-password');
+        return back();
     }
 
 }

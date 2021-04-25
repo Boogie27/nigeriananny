@@ -231,7 +231,7 @@ function display_newsletter(){
 		$('.news-dark-layer-js').show();
 	}, 5000);
 }
-// display_newsletter();
+display_newsletter();
 
 
 // ========================================

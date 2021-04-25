@@ -1,10 +1,6 @@
 <?php include('../Connection.php');  ?>
 
 <?php
-if(!Session::has('get_passsword'))
-{
-    return view('/');
-}
 
 if(!Input::exists('get') && Input::get('tid'))
 {

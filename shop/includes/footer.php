@@ -37,6 +37,7 @@ $settings = $connection->select('settings')->where('id', 1)->first();
 							<li><a href="">Categories</a></li>
 							<li><a href="<?= url('/shop/account') ?>">My account</a></li>
 							<li><a href="<?= url('/shop/order') ?>">My order</a></li>
+							<li><a href="<?= url('/contact') ?>">Contact</a></li>
 						</ul>
 					</div>
 				</div>

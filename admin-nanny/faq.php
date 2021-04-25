@@ -3,7 +3,7 @@
 if(!Admin_auth::is_loggedin())
 {
   Session::delete('admin');
-  Session::put('old_url', '/admin-nanny/employees');
+  Session::put('old_url', '/admin-nanny/faq');
   return view('/admin/login');
 }
 
@@ -63,7 +63,6 @@ $banner =  $connection->select('settings')->where('id', 1)->first();
                             <table class="table table-striped">
                                 <thead>
                                     <tr>
-                                    <th scope="col">Faq Type</th>
                                     <th scope="col">Faq</th>
                                     <th scope="col">Date</th>
                                     <th scope="col">Edit</th>
@@ -75,7 +74,6 @@ $banner =  $connection->select('settings')->where('id', 1)->first();
                                 foreach($faqs->result() as $faq):    
                                 ?>
                                     <tr>
-                                        <td><?= ucfirst($faq->faq_type)?></td>
                                         <td><?= $faq->faq ?></td>
                                         <td><?= date('d M Y', strtotime($faq->date)) ?></td>
                                         <td>

@@ -34,8 +34,8 @@ if(!$app_active && !Admin_auth::is_loggedin())
 <!-- Title -->
 <title><?= title() ?></title>
 <!-- Favicon -->
-<link href="<?= url('/shop/images/favicon.ico') ?>" sizes="128x128" rel="shortcut icon" type="image/x-icon" />
-<link href="<?= url('/shop/images/favicon.ico') ?>" sizes="128x128" rel="shortcut icon" />
+<!-- <link href="images/favicon.ico" sizes="128x128" rel="shortcut icon" type="image/x-icon" />
+<link href="images/favicon.ico" sizes="128x128" rel="shortcut icon" /> -->
 
 <!-- main script-->
 <link rel="stylesheet" href="<?= url('/shop/css/main-style.css') ?>">
@@ -50,7 +50,7 @@ if(!$app_active && !Admin_auth::is_loggedin())
 <body>
   
 <div class="wrapper page_wrapper">
-	<!-- <div class="preloader"></div> -->
+	<div class="preloader"></div>
 
 
  <div class="detail_preloader">

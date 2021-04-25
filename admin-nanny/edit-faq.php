@@ -31,7 +31,6 @@ if(Input::post('edit_faq'))
    
     $validation = $validate->validate([
         'faq' => 'required|min:3|max:200',
-        'faq_type' => 'required',
         'faq_content' => 'required|min:6',
     ]);
 
@@ -39,7 +38,6 @@ if(Input::post('edit_faq'))
     {
         $update = $connection->update('faqs', [
             'faq' => Input::get('faq'),
-            'faq_type' => Input::get('faq_type'),
             'content' => Input::get('faq_content'),
         ])->where('id', Input::get('fid'))->save();
     
@@ -108,7 +106,7 @@ $banner =  $connection->select('settings')->where('id', 1)->first();
                             <div class="faq-form">
                                 <form action="<?= current_url() ?>" method="POST">
                                     <div class="row">
-                                        <div class="col-lg-6 col-sm-6">
+                                        <div class="col-lg-12">
                                             <div class="form-group">
                                                 <div class="alert-div">
                                                     <?php  if(isset($errors['faq'])) : ?>
@@ -119,24 +117,6 @@ $banner =  $connection->select('settings')->where('id', 1)->first();
                                                 <input type="text" name="faq" class="form-control h50" value="<?= $faq->faq ?? old('faq') ?>">
                                             </div>    
                                         </div> 
-                                        <div class="col-lg-6 col-sm-6">
-                                            <div class="form-group">
-                                                <div class="alert-div">
-                                                    <?php  if(isset($errors['faq_type'])) : ?>
-                                                        <div class="text-danger"><?= $errors['faq_type']; ?></div>
-                                                    <?php endif; ?>
-                                                </div>
-                                                <label for="">FAQ type</label>
-                                                <div class="ui_kit_select_box">
-                                                    <select name="faq_type" class="selectpicker custom-select-lg mb-3">
-                                                        <option value="">Select</option>
-                                                        <option value="employee" <?= $faq->faq_type == 'employee' ? 'selected' : ''?>>Employee</option>
-                                                        <option value="employer" <?= $faq->faq_type == 'employer' ? 'selected' : ''?>>Employer</option>
-                                                        <option value="others" <?= $faq->faq_type == 'others' ? 'selected' : ''?>>Others</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                        </div>
                                         <div class="col-lg-12">
                                             <div class="form-group">
                                                 <div class="alert-div">

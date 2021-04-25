@@ -82,8 +82,14 @@ if(!$employer)
 }
 
 
+$subscription = $connection->select('employer_subscriptions')->where('s_employer_id', Auth_employer::employer('id'))->where('is_expire', 0)->first();
 
+$date1 = new DateTime($subscription->start_date);
+$date2 = new DateTime($subscription->end_date);
 
+$diff = $date1->diff($date2, true);
+
+echo $diff->format('%a') . ' days';
 
 
 ?>
@@ -255,7 +261,6 @@ if(!$employer)
                                     </form>
                                 </div>
                             </div>
-
                         </div><!-- content end-->
                     </div>
                 </div>

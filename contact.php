@@ -15,20 +15,37 @@ if(Input::post('contact_nanny'))
          'message' => 'required|min:6|max:3000',
      ]);
 
-     $create = $connection->create('contact_us', [
-          'full_name' => Input::get('full_name'),
-          'email' => Input::get('email'),
-          'subject' => Input::get('subject'),
-          'message' => Input::get('message'),
-     ]);
-
-     if($create->passed())
+     if($validation->passed())
      {
-         Session::flash('success', 'Message has been sent and would be attending to shortly!');
-         return back();
+        $create = $connection->create('contact_us', [
+            'full_name' => Input::get('full_name'),
+            'email' => Input::get('email'),
+            'subject' => Input::get('subject'),
+            'message' => Input::get('message'),
+       ]);
+  
+       if($create->passed())
+       {
+           Session::flash('success', 'Message has been sent and would be attended to shortly!');
+           return back();
+       }
      }
-
 }
+
+
+
+
+
+// ===========================================
+// GET FREQUESNTLY ASK QUESTIONS
+// ===========================================
+$faqs = $connection->select('faqs')->where('is_feature', 1)->get();
+
+
+
+
+
+
 ?>
 <?php include('includes/header.php');  ?>
 
@@ -119,9 +136,60 @@ if(Input::post('contact_nanny'))
 
 
 
-
+ <?php if(count($faqs)):?>
+		<!-- FAQS start-->
+		<div class="top-jobs-container">
+		<div class="fags-header">
+			<h3>Frequestly Asked Questions</h3>
+			<p>You can also browse the topic bellow to find what you are loooking for.</p>
+		</div>
+		<div class="faqs-body-x">
+			<ul>
+				<?php foreach($faqs as $faq): ?>
+				<li>
+					<a href="#" class="faq-single-item-x"><?= $faq->faq?> <i class="fa fa-angle-right float-right angle"></a></i>
+                     <div class="inner-faq">
+						<h4><?= $faq->faq?></h4>
+						<?= $faq->content; ?>
+					</div>
+			    </li>
+				<?php endforeach; ?>
+			</ul>
+		</div>
+	</div>
+	<!-- FAQS end-->
+	<?php endif; ?>
 
 
 
     <!-- Our Footer -->
     <?php include('includes/footer.php');  ?>
+
+
+
+
+
+
+
+
+
+<script>
+$(document).ready(function(){
+
+// ==============================================
+// OPEN FAQS CONTENT DETAILS
+// ==============================================
+$(".faq-single-item-x").click(function(e){
+    e.preventDefault();
+	var content = $(this).parent().children('.inner-faq');
+	$(content).toggle();
+});
+
+
+
+
+
+
+// end ready function
+});
+</script>

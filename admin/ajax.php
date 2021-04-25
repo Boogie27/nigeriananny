@@ -922,7 +922,7 @@ if(Input::post('upload_app_logo_image'))
         $file = Image::files('app_logo');
 
         $file_name = Image::name('app_logo', 'logo');
-        $image->resize_image($file, [ 'name' => $file_name, 'width' => 50, 'height' => 56, 'size_allowed' => 1000000,'file_destination' => '../admin/images/']);
+        $image->upload_image($file, [ 'name' => $file_name, 'size_allowed' => 1000000,'file_destination' => '../admin/images/']);
             
         $image_name = '/admin/images/'.$file_name;
 
