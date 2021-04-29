@@ -3,6 +3,11 @@ $settings = $connection->select('settings')->where('id', 1)->first();
 ?>
 
 
+<!-- page alert bottom -->
+<div class="page-aliert-bottom">
+	<div class="page-alert-content">Pending...</div>
+</div>
+
 
 <div class="footer-section"><!-- footer start-->
    <ul class="ul-footer-links">
@@ -139,6 +144,22 @@ if($(window).width() > 1125)
 }
 
 
+
+
+
+
+// ************* CLOSE MODAL ******************
+$(".main-modal-close").click(function(e){
+    e.preventDefault();
+    $(".main-modal-container").hide(150);
+});
+
+
+$(window).click(function(e){
+    if($(e.target).hasClass('modal-inner')){
+        $(".main-modal-container").hide();
+    }
+})
 
 
 

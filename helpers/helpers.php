@@ -205,6 +205,26 @@ function employee_star($ratings)
 
 
 
+function ratings($ratings)
+{
+    if($ratings && is_numeric($ratings))
+    {
+        for($i = 0; $i < 5; $i++)
+        {
+            if($i < $ratings)
+            {
+                echo '<i class="fa fa-star text-warning"></i>';
+            }else{
+                echo '<i class="fa fa-star text-secondary"></i>';
+            }
+        }
+    }
+    return false;
+}
+
+
+
+
 
 function user_star($ratings)
 {

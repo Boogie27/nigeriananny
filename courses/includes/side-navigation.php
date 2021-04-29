@@ -40,7 +40,11 @@
                 <a href="<?= url('/jobs') ?>"><i class="fa fa-briefcase"></i>Find a worker</a>
             </li>
             <li>
-                <a href="#"><i class="fa fa-exit"></i>Login</a>
+                <?php if(Auth_course::is_loggedin()): ?>
+                    <a href="<?= url('/courses/logout') ?>"><i class="fa fa-power-off"></i>Logout</a>
+                <?php else: ?>
+                    <a href="<?= url('/courses/login') ?>"><i class="fa fa-sign-in"></i>Login</a>
+                <?php endif; ?>
             </li>
         </ul>
     </div>

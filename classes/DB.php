@@ -86,7 +86,7 @@ public function where($field, $parameter_1, $parameter_2 = null)
 {
     $query = null;
     $old_query = explode(' ', $this->_query);
-    $operators = ['>', '<', '>=','=' , '<=', 'RLIKE'];
+    $operators = ['>', '<', '>=','=' , '<=', '!=','RLIKE'];
 
     if(!$parameter_2)
     {

@@ -44,7 +44,7 @@ $courses = $connection->select('courses')->where('is_feature', 1)->paginate(24);
                                         <i class="fa fa-star text-warning"></i>
                                         <i class="fa fa-star text-secondary"></i>
                                         <i class="fa fa-star text-secondary"></i>
-                                        <span class="views-course">20 views</span>
+                                        <span class="views-course">20 reviews</span>
                                         <span class="float-right">
                                             <a href="#" title="Save course"><i class="fa fa-heart-o"></i></a>
                                         </span>

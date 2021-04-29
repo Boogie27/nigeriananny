@@ -3,7 +3,7 @@
 
 
 
-class Validator{
+class Validator extends DB{
 
 public $_error = null,
        $_passed = false;

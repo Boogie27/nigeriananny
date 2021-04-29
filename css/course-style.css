@@ -13,9 +13,164 @@ font-family: 'poppins', sans-serif;
     margin: 0px;
     background-color: rgb(246, 244, 244);
 }
+/* ************* MODAL BOX **************** */
+.modal-container{
+    top: 0px;
+    height: 0px;
+    width: 100%;
+    z-index: 100;
+    display: none;
+    position: relative;
+}
+.modal-container .modal-dark-theme{
+    top: 0px;
+    width: 100%;
+    height: 100vh;
+    z-index: 10;
+    position: fixed;
+    display: table;
+    background-color: rgba(0, 0, 0, 0.76);
+}
+.modal-container .modal-inner{
+    padding: 10px;
+    display: table-cell;
+    vertical-align: middle;
+}
+.modal-content-small{
+    width: 50%;
+    margin: 0 auto;
+    padding: 10px;
+    border-radius: 3px;
+    background-color: #fff;
+}
+.modal-inner button.modal-close{
+    border: none;
+    cursor: pointer;
+    background-color: transparent;
+}
+.modal-inner button.modal-close:focus{
+    border: none;
+    outline: none;
+}
+.modal-container textarea:focus{
+    outline: none;
+    box-shadow: none;
+    border: 1px solid rgb(233, 66, 155);
+}
+@media only screen and (max-width: 1125px){
+    .modal-content-small{
+        width: 60%;
+    }
+}
+@media only screen and (max-width: 992px){
+    .modal-content-small{
+        width: 80%;
+    }
+}
+@media only screen and (max-width: 767px){
+    .modal-content-small{
+        width: 90%;
+    }
+}
+@media only screen and (max-width: 567px){
+    .modal-content-small{
+        width: 100%;
+    }
+}
+/* ********* MODAL PRELOADER *************** */
+.little-preloader-container{
+    top: 0px;
+    height: 0px;
+    width: 100%;
+    z-index: 100;
+    display: none;
+    position: relative;
+}
+.little-dark-theme{
+    top: 0px;
+    width: 100%;
+    height: 100vh;
+    z-index: 10;
+    position: fixed;
+    display: table;
+    background-color: rgba(0, 0, 0, 0.76);
+}
+.preloader-back-light{
+    padding: 10px;
+    text-align: center;
+    display: table-cell;
+    vertical-align: middle;
+}
+.little-p-content{
+    width: 150px;
+    height: 80px;
+    border-radius: 3px;
+    margin: 0 auto;
+    background-color: #fff;
+}
+.little-p-content .little-loader{
+    top: 25px;
+    left: 60px;
+    width: 30px;
+    height: 30px;
+    position: relative;
+    border-radius: 50%;
+    border: 3px solid rgb(233, 66, 155);
+    border-right: 3px solid transparent;
+    -webkit-animation: littl-spin 0.4s linear infinite; 
+    animation: littl-spin 0.4s linear infinite; 
+}
+@keyframes littl-spin{
+    0%{
+        transform: rotate(0deg);
+    }
+    100%{
+        transform: rotate(360deg);
+    }
+}
+/* ************** PAGE ALERT BOTTOM ******** */
+.page-aliert-bottom{
+    z-index: 100;
+    width: 100%;
+    height: 0px;
+    position: relative;
+}
+.page-aliert-bottom .page-alert-content{
+    width: 300px;
+    color: #fff;
+    font-size: 12px;
+    right:0px;
+    bottom: -100px;
+    z-index: 100;
+    text-align: center;
+    position: fixed;
+    padding: 10px 0px;
+    border-radius: 2px;
+    background-color: rgb(233, 66, 155);
+    transition: all 0.3s ease;
+}
+@media only screen and (max-width: 567px){
+    .page-aliert-bottom .page-alert-content{
+        width: 100%;
+        bottom: -100px;
+    }
+}
 /* ======================================== */
 /*            COMMON                        */
 /* ======================================== */
+.modal-header-x{
+    position: relative;
+}
+.modal-header-x button{
+    top: 5px;
+    right: 10px;
+    position: absolute;
+    background-color: transparent;
+}
+.modal-header-x button:focus{
+    outline: none;
+    box-shadow: none;
+}
 .button{
     color: #fff;
     transition: all 0.3s ease;
@@ -24,6 +179,32 @@ font-family: 'poppins', sans-serif;
 .button:hover{
     color: #fff;
     background-color:  rgb(228, 89, 163);
+}
+.form-alert{
+    height: 16px;
+    font-size: 11px;
+}
+.main_form_alert{
+    font-size: 11px;
+}
+/* *********** ERROR ALERT ********** */
+.error-alert{
+    width: 100%;
+}
+.error-alert-content{
+    width: 70%;
+    margin: 0 auto;
+    color: #fff;
+    padding: 10px;
+    font-size: 13px;
+    border-radius: 4px;
+    background-color: rgb(250, 170, 213);
+    border-left: 7px solid rgb(228, 89, 163);
+}
+@media only screen and (max-width: 767px){
+    .error-alert-content{
+        width: 100%;
+    }  
 }
 /* ======================================== */
 /*  NAVIGATION                             */
@@ -231,7 +412,7 @@ ul.child-drop-down{
         width: 300px;
         margin-left: 15px;
         position: fixed;
-        overflow-y: scroll;
+        overflow-y: auto;
         transition: all 0.3s ease;
     }
 }
@@ -357,8 +538,26 @@ ul li span.views-course{
     font-size: 20px;
 }
 .video-x{
+    width: 100%;
+    height: 100%;
     position: relative;
     text-align: center;
+}
+.video-x .video-frame{
+    width: 100%;
+    height: 100%;
+    border-radius: 4px;
+    background-color: rgb(233, 233, 233);
+}
+.video-x .video-frame:focus{
+    outline: none;
+}
+.video-x .video-frame::poster{
+    border-radius: 4px;
+}
+.course-div{
+    padding-bottom: 20px;
+    border-bottom: 1px solid #ccc;
 }
 .v-duration{
     color: #fff;
@@ -371,21 +570,6 @@ ul li span.views-course{
     background-color: rgb(233, 66, 155);
 }
 
-.video-x .video-frame{
-    width: 100%;
-    height: 100%;
-    border-radius: 4px;
-}
-.video-x .video-frame:focus{
-    outline: none;
-}
-.video-x .video-frame::poster{
-    border-radius: 4px;
-}
-.course-div{
-    padding-bottom: 20px;
-    border-bottom: 1px solid #ccc;
-}
 ul.ul-share{
     margin-top: 10px;
 }
@@ -399,6 +583,16 @@ ul.ul-share li a{
     border: 1px solid rgb(233, 66, 155);
 }
 ul.ul-share li a i, ul.ul-share li a span{
+    color: rgb(233, 66, 155);
+    font-size: 13px;
+}
+ul.ul-share li span.likes{
+    font-size: 11px;
+}
+ul.ul-share li.other-likes{
+    font-size: 11px;
+}
+ul.ul-share li.other-likes span{
     color: rgb(233, 66, 155);
 }
 #social_share_container{
@@ -440,7 +634,18 @@ ul.course-download li.download a i{
     }
 }
 
-
+/* ********** COURSE PREVIEW ************* */
+.course-preview{
+    width: 100%;
+}
+ul.course-preview li h4{
+    font-size: 15px;
+}
+@media only screen and (max-width: 398px){
+    ul.course-preview li h4{
+        font-size: 13px;
+    }
+}
 /* ********** RELATED COURSES *********** */
 .related-course .title{
     margin-bottom: 20px;
@@ -505,8 +710,20 @@ ul.ul-related li i{
     .related-course{
        padding: 50px 0px;
     }
+    .course-img{
+        width: 50%;
+    }
+    .course-img img{
+        width: 100%;
+        height: 100%;
+    }
     ul.ul-related{
-        width: 70%;
+        width: 50%;
+    }
+     .course-img .duration{
+        top: inherit;
+        bottom: 2px;
+        padding: 0px 10px;
     }
 }
 @media only screen and (max-width: 767px){
@@ -514,17 +731,12 @@ ul.ul-related li i{
         width: 80%;
     }
 }
-@media only screen and (max-width: 398px){
+@media only screen and (max-width: 567px){
     .course-img{
-        width: 90px;
+        width: 50%;
     }
-    .course-item img{
-        width: 90px;
-        height: 50px;
-    }
-    .course-img .duration{
-        top: 30px;
-        padding: 0px 10px;
+    ul.ul-related{
+        width: 50%;
     }
 }
 
@@ -547,8 +759,15 @@ ul.w-y-learn li i{
     margin-right: 10px;
     position: relative;
  }
-
- @media only screen and (max-width: 398px){
+ .course-description p{
+    font-size: 14px;
+}
+ @media only screen and (max-width: 567px){
+    .course-description p{
+        font-size: 13px;
+    }
+}
+@media only screen and (max-width: 398px){
     .course-description{
         padding: 0px;
     }
@@ -559,7 +778,7 @@ ul.w-y-learn li i{
 
 /*************** COURSE AUTHOR ************* */
 .course-author{
-    padding: 30px 0px;
+    padding: 70px 0px;
     margin-bottom: 30px;
     border-top: 1px solid #ccc;
 }
@@ -572,6 +791,9 @@ ul.w-y-learn li i{
     width: 125px;
     height: 125px;
     border-radius: 50%;
+}
+.course-author ul li p{
+    font-size: 14px;
 }
 @media only screen and (max-width: 992px){
     .autho-info{
@@ -586,6 +808,9 @@ ul.w-y-learn li i{
         width: 100px;
         height: 100px;
     }
+    .course-author ul li p{
+        font-size: 13px;
+    }
 }
 @media only screen and (max-width: 398px){
     .autho-info img{
@@ -594,7 +819,10 @@ ul.w-y-learn li i{
     }
 }
 
-/*************** COURSE AUTHOR ************* */
+/*************** STUDENT REVIEWS ************* */
+.start-review .title h4{
+    border-bottom: 1px solid #ccc;
+}
 .review-comments{
     display: flex;
     padding: 10px 0px;
@@ -606,9 +834,8 @@ ul.w-y-learn li i{
     border-radius: 50%;
 }
 .review-comments ul{
-    width: 80%;
-    margin: 0px;
-    padding-left: 10px;
+    width: 100%;
+    margin: 0px 0px 0px 10px;
 }
 .review-comments ul li .review-time{
     font-size: 12px;
@@ -630,7 +857,9 @@ ul.w-y-learn li i{
     color: #fff;
     background-color: rgb(233, 66, 155);
 }
-
+.review-comments ul li p{
+    font-size: 14px;
+}
 
 @media only screen and (max-width: 1125px){
     .review-comments ul{
@@ -646,15 +875,37 @@ ul.w-y-learn li i{
         height: 40px;
     }
 }
-
-/* **************** REVIEW FORM ************ */
+@media only screen and (max-width: 767px){
+    .start-review h4{
+        border-bottom: 1px solid #ccc;
+    }
+    .review-comments{
+        border-bottom: 1px solid transparent;
+    }
+    .review-comments ul li p{
+        font-size: 13px;
+    }
+    .review-comments ul{
+        border-radius: 3px;
+        padding: 5px;
+       background-color: rgb(248, 248, 248);
+    }
+}
+/* **************** FORM REVIEW ************ */
 .review-form{
+    width: 70%;
+    margin: 0 auto;
     padding: 30px 0px;
 }
 .review-form textarea:focus{
    outline: none;
    box-shadow: none;
    border: 1px solid rgb(233, 66, 155);
+}
+@media only screen and (max-width: 767px){
+    .review-form{
+        width: 100%;
+    }
 }
 
 /* ****************MORE COURSE************** */
@@ -731,8 +982,6 @@ ul.w-y-learn li i{
         padding: 0px 5px;
     }
 }
-
-
 /* ======================================= */
 /*         FOOTER                         */
 /* ===================================== */
@@ -815,3 +1064,66 @@ ul li.alrights{
      }
 }
 
+/* ************* SIDE LOGIN **************** */
+
+.side-login-form{
+    margin: 50px 0px;
+}
+.socialBtn{
+    margin-bottom: 10px;
+}
+.side-login-form .login-social-facebook, .side-login-form .login-social-google{
+    border: none;
+    width: 20px;
+    height: 20px;
+    background-color: transparent;
+}
+.side-login-form .login-social-facebook{
+    background-color: #3b5998;
+}
+.side-login-form .login-social-google{
+    background-color: rgb(233, 50, 50);
+}
+.socialBtn-innner{
+    width: 100px;
+    padding: 2px 2px 4px 2px;
+    border-radius: 3px;
+    display: inline-block;
+    border: 1px solid #ccc;
+}
+p.login-detail{
+    font-size: 11px;
+}
+.login-social-facebook i, .login-social-google i{
+    top: -10px;
+    left: -3px;
+    color: #fff;
+    font-size: 10px;
+    position: relative;
+}
+.login-social-facebook i{
+    background-color: #3b5998;
+}
+.login-social-facebook i{
+    left: -2px;
+}
+label.remember-me{
+    top: -2px;
+    font-size: 11px;
+    position: relative;
+}
+.forgortPassword{
+    font-size: 11px;
+}
+@media only screen and (max-width: 1125px){
+    .side-login-form{
+        width: 50%;
+        margin: 0 auto;
+        padding: 50px 0px;
+    }
+}
+@media only screen and (max-width: 567px){
+    .side-login-form{
+        width: 100%;
+    }
+}
