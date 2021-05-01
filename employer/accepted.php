@@ -27,28 +27,20 @@ if(!$employer)
 // ======================================
 // GET REQUESTED OFFERS
 // ======================================
-$requests = $connection->select('request_workers')->leftJoin('employee', 'request_workers.j_employee_id', '=', 'employee.e_id')->where('is_accept', 1)->where('is_cancle', 0)->where('j_employer_id', Auth_employer::employer('id'))->get();
+$requests = $connection->select('request_workers')->leftJoin('workers', 'request_workers.r_worker_id', '=', 'workers.worker_id')->leftJoin('employee', 'request_workers.j_employee_id', '=', 'employee.e_id')->where('is_accept', 1)->where('is_cancle', 0)->where('j_employer_id', Auth_employer::employer('id'))->get();
 
 
 
 ?>
 
 
+<?php include('../includes/header.php');  ?>
 
-<?php include('includes/header.php');  ?>
 
-<!-- top navigation-->
-<?php include('includes/top-navigation.php');  ?>
+<!--  navigation-->
+<?php include('../includes/navigation.php');  ?>
 
-<!-- top navigation-->
-<?php include('includes/navigation.php');  ?>
-
-<!-- images/home/4.jpg -->
-	
-
-<!-- mobile navigation-->
-<?php include('includes/mobile-navigation.php');  ?>
-
+<?php include('../includes/side-navigation.php');  ?>
 
     
 
@@ -110,10 +102,9 @@ $requests = $connection->select('request_workers')->leftJoin('employee', 'reques
                         <h3 class="rh-head">Employer job Offers</h3><br><br>
                     <?php endif; ?>
                         <?php if(count($requests)): 
-                        foreach($requests as $request):
+                         foreach($requests as $request):
                             $profile_image = $request->w_image ? $request->w_image : '/images/employee/demo.png';
-                            $detail = json_decode($request->work_detail, true);
-                            $amount = $detail['amount_to'] ? money($detail['amount_form']).' - '.money($detail['amount_to']) : money($detail['amount_form']);
+                            $amount = !$request->amount_to ? money($request->amount_form) : money($request->amount_form).' - '.money($request->amount_to);
                         ?>
                             <div class="jobs-info accept-x-inner">
                                 <img src="<?= asset($profile_image) ?>" alt="">
@@ -130,17 +121,16 @@ $requests = $connection->select('request_workers')->leftJoin('employee', 'reques
                                         </div>
                                     </li>
                                     <li>
-                                        <h4><a href="<?= url('/employer/employee-detail.php?wid='.$request->request_id) ?>"><?= ucfirst($detail['job_title'])?></a> </h4>
-                                    
+                                        <h4><a href="<?= url('/job-detail.php?wid='.$request->r_worker_id) ?>"> <?= ucfirst($request->job_title)?></a> </h4>
                                     </li>
                                     <li>Name: <?= ucfirst($request->first_name).' '.ucfirst($request->last_name) ?></li>
                                     <li>Email: <?= $request->email ?></li>
                                     <li>
-                                        <?php if($detail['job_type'] != 'live in'):
-                                        $living = json_decode($detail['job_type'], true); ?>
+                                        <?php if($request->job_type != 'live in'):
+                                        $living = json_decode($request->job_type, true); ?>
                                             <b>Job Location: </b><?= ucfirst($living['city'])?> | <?= ucfirst($living['state'])?> 
                                         <?php else: ?>
-                                            <?= $detail['job_type'] ?>
+                                            <?= $request->job_type ?>
                                         <?php endif; ?>
                                         | <span class="text-warning money-amount"><?= $amount ?></span>
                                     </li>

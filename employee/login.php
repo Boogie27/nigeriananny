@@ -108,26 +108,20 @@ if(Input::post('facebook_login'))
 
 
 
-<?php include('includes/header.php');  ?>
+<?php include('../includes/header.php');  ?>
+
 
 <!-- top navigation-->
-<?php include('includes/top-navigation.php');  ?>
+<?php include('../includes/navigation.php');  ?>
 
-<!-- top navigation-->
-<?php include('includes/navigation.php');  ?>
+<?php include('../includes/side-navigation.php');  ?>
 
-<!-- images/home/4.jpg -->
-	
-
-<!-- mobile navigation-->
-<?php include('includes/mobile-navigation.php');  ?>
-    
 
 
 
 <div class="page-content">
     <div class="job-seeker-conatiner">
-        <div class="sr-head"><h4>Employee login</h4></div>
+        <div class="sr-head"><h4>Employee Login</h4></div>
         <form action="<?= current_url() ?>" method="POST">
             <?php if(Session::has('error')): ?>
                 <div class="alert alert-danger text-center p-3 mb-2"><?= Session::flash('error') ?></div>
@@ -165,7 +159,7 @@ if(Input::post('facebook_login'))
                    </div>
                    <div class="col-lg-12">
                         <div class="form-group">
-                            <button type="submit" name="login_employee" class="uppercase btn-fill">Employee login</button>
+                            <button type="submit" name="login_employee" class="uppercase btn-fill">Login</button>
                             <p class="apply-p">Don't have an account? <br><a href="<?= url('/employee/register') ?>" class="text-primary">Register</a></p>
                         </div>
                     </div>

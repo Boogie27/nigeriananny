@@ -63,21 +63,13 @@ if(!$employer)
 ?>
 
 
+<?php include('../includes/header.php');  ?>
 
-<?php include('includes/header.php');  ?>
 
-<!-- top navigation-->
-<?php include('includes/top-navigation.php');  ?>
+<!--  navigation-->
+<?php include('../includes/navigation.php');  ?>
 
-<!-- top navigation-->
-<?php include('includes/navigation.php');  ?>
-
-<!-- images/home/4.jpg -->
-	
-
-<!-- mobile navigation-->
-<?php include('includes/mobile-navigation.php');  ?>
-
+<?php include('../includes/side-navigation.php');  ?>
 
     
 

@@ -89,27 +89,18 @@ $date2 = new DateTime($subscription->end_date);
 
 $diff = $date1->diff($date2, true);
 
-echo $diff->format('%a') . ' days';
+// echo $diff->format('%a') . ' days';
 
 
 ?>
 
-
-<?php include('includes/header.php');  ?>
-
-<!-- top navigation-->
-<?php include('includes/top-navigation.php');  ?>
-
-<!-- top navigation-->
-<?php include('includes/navigation.php');  ?>
-
-<!-- images/home/4.jpg -->
-	
-
-<!-- mobile navigation-->
-<?php include('includes/mobile-navigation.php');  ?>
+<?php include('../includes/header.php');  ?>
 
 
+<!--  navigation-->
+<?php include('../includes/navigation.php');  ?>
+
+<?php include('../includes/side-navigation.php');  ?>
     
 
 <!-- jobs  start-->
@@ -277,8 +268,8 @@ echo $diff->format('%a') . ' days';
 
 
 
-    <!-- Our Footer -->
-    <?php include('../includes/footer.php');  ?>
+<!-- Our Footer -->
+<?php include('../includes/footer.php');  ?>
 
 
 

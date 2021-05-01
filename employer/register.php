@@ -45,26 +45,20 @@
 
     $countries = $connection->select('tbl_country')->where('active', 1)->get();
 ?>
-<?php include('includes/header.php');  ?>
+<?php include('../includes/header.php');  ?>
 
-<!-- top navigation-->
-<?php include('includes/top-navigation.php');  ?>
 
-<!-- top navigation-->
-<?php include('includes/navigation.php');  ?>
+<!--  navigation-->
+<?php include('../includes/navigation.php');  ?>
 
-<!-- images/home/4.jpg -->
-	
+<?php include('../includes/side-navigation.php');  ?>
 
-<!-- mobile navigation-->
-<?php include('includes/mobile-navigation.php');  ?>
-    
 
 
 
 <div class="page-content">
     <div class="job-seeker-conatiner">
-        <div class="sr-head"><h4>Creat an Employer Account</h4></div>
+        <div class="sr-head"><h4>Creat Employer Account</h4></div>
         <form action="<?= current_url() ?>" method="POST">
             <?php if(Session::has('success')): ?>
                 <div class="alert alert-success text-center p-3 mb-2"><?= Session::flash('success') ?></div>
@@ -181,7 +175,7 @@
                     </div>
                     <div class="col-lg-12">
                         <div class="form-group">
-                            <button type="submit" name="create_employer" class="uppercase btn-fill">Create an account</button>
+                            <button type="submit" name="create_employer" class="btn-fill">Create an account</button>
                             <p class="apply-p">Already have an account? <br><a href="<?= url('/employer/login') ?>" class="text-primary">Login</a></p>
                         </div>
                     </div>

@@ -93,21 +93,13 @@ $worker = $connection->select('workers')->where('employee_id', Auth_employee::em
 
 
 
-<?php include('includes/header.php');  ?>
+<?php include('../includes/header.php');  ?>
+
 
 <!-- top navigation-->
-<?php include('includes/top-navigation.php');  ?>
+<?php include('../includes/navigation.php');  ?>
 
-<!-- top navigation-->
-<?php include('includes/navigation.php');  ?>
-
-<!-- images/home/4.jpg -->
-	
-
-<!-- mobile navigation-->
-<?php include('includes/mobile-navigation.php');  ?>
-
-
+<?php include('../includes/side-navigation.php');  ?>
     
 
 <!-- jobs  start-->
@@ -330,28 +322,7 @@ $worker = $connection->select('workers')->where('employee_id', Auth_employee::em
                             </div>
                             <!-- inner content end -->
 
-                            <!-- inner content start -->
-                            <div class="account-h">
-                                <div class="inner-content-x">
-                                   <div class="inner-h">
-                                        <h5 class="">Job summary</h5>
-                                   </div>
-                                   <?php if(!$worker->summary): ?>
-                                   <ul>
-                                       <li><p class="inner-p">Give a short overview of what you can do relating to the job position</p></li>
-                                       <li class="text-right"><a href="<?= url('/employee/update.php?page=summary') ?>" class="text-primary">Add</a></li>
-                                   </ul>
-                                    <?php else: ?>
-                                   <div class="inner-body">
-                                        <p class="inner-p"><?= ucfirst($worker->summary) ?></p>
-                                       <ul>
-                                           <li class="text-right"><a href="<?= url('/employee/update.php?page=summary') ?>" class="text-primary">Update</a></li>
-                                       </ul>
-                                   </div>
-                                    <?php endif; ?>
-                                </div>
-                            </div>
-                            <!-- inner content end -->
+                           
 
                               <!-- inner content start -->
                               <div class="account-h">
@@ -361,13 +332,12 @@ $worker = $connection->select('workers')->where('employee_id', Auth_employee::em
                                    </div>
                                     <?php if(!$worker->education): ?>
                                     <ul>
-                                        <li><p class="inner-p">List your qualification here</p></li>
+                                        <li><p class="inner-p">Add highest qualification here</p></li>
                                         <li class="text-right"><a href="<?= url('/employee/update.php?page=education') ?>" class="text-primary">Add</a></li>
                                     </ul>
                                     <?php else: ?>
                                    <div class="inner-body">
-                                        <?php  $educations = json_decode($worker->education, true); 
-                                        foreach($educations as $key => $education): 
+                                        <?php  $education = json_decode($worker->education, true); 
                 
                                         ?>
                                        <ul class="inner_ul">
@@ -389,13 +359,9 @@ $worker = $connection->select('workers')->where('employee_id', Auth_employee::em
                                                 </div>
                                             </li>
                                            <li class="text-right li-link">
-                                               <a href="<?= url('/employee/update.php?page=edu_edit&eid='.$key) ?>" class="text-primary">Edit</a>
-                                               <a href="<?= url('/employee/update.php?page=edu_delete&eid='.$key) ?>" class="text-danger">Delete</a>
+                                               <a href="<?= url('/employee/update.php?page=edu_edit&eid='.$worker->employee_id) ?>" class="text-primary">Edit</a>
+                                               <a href="#"  data-toggle="modal"  data-target="#employee_delete_education_btn" class="text-danger">Delete</a>
                                            </li>
-                                       </ul>
-                                        <?php endforeach; ?>
-                                       <ul>
-                                           <li class="text-right"> <a href="<?= url('/employee/update.php?page=education') ?>" class="text-primary">Add more</a></li>
                                        </ul>
                                    </div>
                                     <?php endif; ?>
@@ -416,10 +382,7 @@ $worker = $connection->select('workers')->where('employee_id', Auth_employee::em
                                    </ul> 
                                     <?php else: ?>
                                    <div class="inner-body">
-                                       <?php  $experiences = json_decode($worker->work_experience, true); 
-                                        foreach($experiences as $key => $experience): 
-                
-                                        ?>
+                                       <?php  $experience = json_decode($worker->work_experience, true); ?>
                                        <ul class="inner_ul">
                                             <li><b>Job title:</b> <?= ucfirst($experience['job_title']) ?></li>
                                             <li><b>Job function:</b> <?= $experience['job_function'] ?></li>
@@ -440,13 +403,9 @@ $worker = $connection->select('workers')->where('employee_id', Auth_employee::em
                                                 </div>
                                             </li>
                                            <li class="text-right li-link">
-                                               <a href="<?= url('/employee/update.php?page=edit_work&eid='.$key) ?>" class="text-primary">Edit</a>
-                                               <a href="<?= url('/employee/update.php?page=delete_work&eid='.$key) ?>" class="text-danger">Delete</a>
+                                               <a href="<?= url('/employee/update.php?page=edit_work&eid='.$worker->employee_id) ?>" class="text-primary">Edit</a>
+                                               <a href="#" data-toggle="modal"  data-target="#employee_delete_work_btn" class="text-danger">Delete</a>
                                            </li>
-                                       </ul>
-                                        <?php endforeach; ?>
-                                       <ul>
-                                           <li class="text-right"> <a href="<?= url('/employee/update.php?page=work') ?>" class="text-primary">Add more</a></li>
                                        </ul>
                                    </div>
                                    <?php endif; ?>
@@ -653,13 +612,78 @@ $worker = $connection->select('workers')->where('employee_id', Auth_employee::em
 
 
 
+
+
+
+
+
+
+
+<!-- Modal delete education -->
+<div class="sign_up_modal modal fade" id="employee_delete_education_btn" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close close_cancle_request_btn" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="tab-content" id="myTabContent">
+                <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                    <div class="login_form">
+                        <form action="<?= current_url()?>" method="POST">
+                            <div class="heading">
+                                <div class="alert-delete-review text-danger text-center"></div>
+                                <p class="text-center">Do you wish to delete education?</p>
+                            </div>
+                            <button type="submit"  name="subscribe" class="subcribe_now_btn" style="display: none;"></button>
+                            <button type="submit" class="btn btn-log btn-block bg-danger" id="delete_education_modal_btn" style="color: #fff">Delete education</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+<!-- Modal delete work -->
+<div class="sign_up_modal modal fade" id="employee_delete_work_btn" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close close_cancle_request_btn" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="tab-content" id="myTabContent">
+                <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                    <div class="login_form">
+                        <form action="<?= current_url()?>" method="POST">
+                            <div class="heading">
+                                <div class="alert-delete-review text-danger text-center"></div>
+                                <p class="text-center">Do you wish to delete work experience?</p>
+                            </div>
+                            <button type="submit"  name="subscribe" class="subcribe_now_btn" style="display: none;"></button>
+                            <button type="submit" class="btn btn-log btn-block bg-danger" id="delete_experience_btn" style="color: #fff">Delete work experience</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
 <a href="<?= url('/ajax.php') ?>" class="ajax_url_page" style="display: none;"></a>
 
 
 
 
-    <!-- Our Footer -->
-    <?php include('../includes/footer.php');  ?>
+<!-- Our Footer -->
+<?php include('../includes/footer.php');  ?>
 
 
 
@@ -1247,6 +1271,86 @@ $("#employee_delete_cv_btn").click(function(e){
 
 
 
+// ===================================
+// DELETE EDUCATION 
+// ===================================
+$("#delete_education_modal_btn").click(function(e){
+    e.preventDefault();
+    var url = $(".ajax_url_page").attr('href');
+    var education_key = $(this).attr('id');
+
+    $(".close_cancle_request_btn").click()
+    $(".preloader-container").show() //show preloader
+
+     $.ajax({
+        url: url,
+        method: "post",
+        data: {
+            delete_education_action: 'delete_education_action'
+        },
+        success: function (response){
+            var data = JSON.parse(response);
+            if(data.error){
+                location.reload();
+            }else if(data.url){
+                location.assign(data.url);
+            }else{
+                location.reload();
+            }
+            remove_dark_preloader();
+        }
+    });
+});
+
+
+
+
+
+// ===========================================
+// DELETE EXPERIENCE
+// ===========================================
+$("#delete_experience_btn").click(function(e){
+    e.preventDefault();
+    var url = $(".ajax_url_page").attr('href');
+    var experience_key = $(this).attr('id');
+
+    $(".close_cancle_request_btn").click()
+    $(".preloader-container").show() //show preloader
+
+     $.ajax({
+        url: url,
+        method: "post",
+        data: {
+            delete_experience_action: 'delete_experience_action'
+        },
+        success: function (response){
+            var data = JSON.parse(response);
+            if(data.error){
+                location.reload();
+            }else if(data.url){
+                location.assign(data.url);
+            }else{
+                location.reload();
+            }
+            remove_dark_preloader();
+        }
+    });
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -1255,3 +1359,16 @@ $("#employee_delete_cv_btn").click(function(e){
 
 });
 </script>
+
+
+
+
+
+
+
+
+
+
+
+
+

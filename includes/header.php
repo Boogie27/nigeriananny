@@ -35,11 +35,14 @@ if(!$app_active && !Admin_auth::is_loggedin())
 
 <!-- main script-->
 <link rel="stylesheet" href="<?= url('/css/main-style.css') ?>">
+
+<!-- main script-->
+<link rel="stylesheet" href="<?= url('/css/navigation.css') ?>">
 </head>
 <body>
-  
+
 <div class="wrapper page_wrapper">
-	<div class="preloader"></div>
+	<!-- <div class="preloader"></div> -->
 
 
 <!-- ajax preloader-->

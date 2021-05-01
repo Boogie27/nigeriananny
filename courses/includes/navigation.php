@@ -7,8 +7,10 @@ $settings = $connection->select('settings')->where('id', 1)->first();
    <div class="inner-navigation">
 		<div class="nav-left"> <!-- nav left start-->
 			<i class="fa fa-bars toggle-side-navigation"></i>
-			<img src="<?= asset($settings->logo) ?>" alt="<?= $settings->app_name ?>" class="nav-img">
-		    <span class="nav-app-name"><?= $settings->app_name ?></span>
+			<a href="<?= url('/') ?>">
+			   <img src="<?= asset($settings->logo) ?>" alt="<?= $settings->app_name ?>" class="nav-img">
+			   <span class="nav-app-name"><?= $settings->app_name ?></span>
+			</a>
 		</div><!-- nav left end-->
 		<div class="navigation-search">
 	        <form action="<?= current_url()?>" method="" class="nav-form">

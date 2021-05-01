@@ -87,7 +87,6 @@ function hire_employee($connection)
                 'j_state' => Input::get('state'),
                 'j_message' => $message,
                 'j_address' => $address,
-                'work_detail' => json_encode($employee),
             ]);
     if($create)
     {
@@ -305,17 +304,12 @@ if($request_worker)
 
 <?php include('includes/header.php');  ?>
 
-<!-- top navigation-->
-<?php include('includes/top-navigation.php');  ?>
-
-<!-- top navigation-->
+<!-- navigation-->
 <?php include('includes/navigation.php');  ?>
 
-<!-- images/home/4.jpg -->
+<?php include('includes/side-navigation.php');  ?>
 	
 
-<!-- mobile navigation-->
-<?php include('includes/mobile-navigation.php');  ?>
 
 
 
@@ -327,17 +321,17 @@ if($request_worker)
                 <div class="j-header" id="job_h_v">
                     <b>Job seeker</b> 
                     <?php if($daily_view && $daily_view->is_complete && !$viewed && !$is_requested): ?>
-                        <div class="alert-daily_v text-danger"><i class="fa fa-bell"></i> You have exceeded your maximum view chances</div>
+                        <div class="alert-daily_v text-danger"><i class="fa fa-bell text-danger"></i> You have exceeded your maximum view chances</div>
                     <?php endif; ?>
                     <?php if($is_requested): ?>
-                        <div class="alert-daily_v text-warning"><i class="fa fa-bell"></i> You have requested for this worker!</div>
+                        <div class="alert-daily_v text-warning"><i class="fa fa-bell text-warning"></i> You have requested for this worker!</div>
                     <?php endif; ?>
                 </div>
                 <div class="j-body">
                     <div class="row">
                         <div class="col-lg-4" id="apply_now_1">
                             <form action="<?= current_url() ?>" method="POST" class="p-apply-container">
-                                <div class="apply-h"><h4>Hire worker here</h4></div>
+                                <div class="apply-h"><h4>HIRE WORKER HERE</h4></div>
                                 <div class="apply-container">
                                     <div class="row">
                                         <div class="col-lg-12 col-sm-6">
@@ -491,31 +485,30 @@ if($request_worker)
                                         </li>
                                     </ul>
                                 </div>
+
                                 <?php if($job->education): 
-                                $educations = json_decode($job->education, true); ?>
+                                $education = json_decode($job->education, true); ?>
                                 <div class="j-expirience">
                                     <div class="js-head">Education:</div>
-                                    <?php foreach($educations as $education): ?>
-                                    <ul class="inner-ex">
-                                        <li><b>Qualification:</b> <?= ucfirst($education['qualification']) ?></li>
-                                        <li><b>Institution: </b> <?= ucfirst($education['institution']) ?></li>
-                                        <li><b>City: </b><?= ucfirst($education['city']) ?></li>
-                                        <li><b>State: </b><?= ucfirst($education['state']) ?></li>
-                                        <li><b>Country: </b><?= ucfirst($education['country']) ?></li>
+                                    <ul class="inner-ex" id="inner-ex">
+                                        <li><b>Qualification:</b> <span> <?= ucfirst($education['qualification']) ?></span></li>
+                                        <li><b>Institution: </b> <span> <?= ucfirst($education['institution']) ?></span></li>
+                                        <li><b>City: </b> <span><?= ucfirst($education['city']) ?></span></li>
+                                        <li><b>State: </b> <span><?= ucfirst($education['state']) ?></span></li>
+                                        <li><b>Country: </b> <span><?= ucfirst($education['country']) ?></span></li>
                                         <li>
-                                                <div class="row">
-                                                    <div class="col-lg-6 col-md-6 col-sm-6"><b>Start date: </b><?= $education['start_date'] ?></div>
-                                                    <div class="col-lg-6 col-md-6 col-sm-6">
-                                                        <?php if(!$education['inview']): ?>
-                                                            <b>End date: </b><?= $education['end_date'] ?>
-                                                        <?php else: ?>
-                                                        <b>End date: </b><span class="inview-x">inview</span>
-                                                        <?php endif; ?>
-                                                    </div>
+                                            <div class="row">
+                                                <div class="col-lg-6 col-md-6 col-sm-6"><b>Start date: </b> <span><?= $education['start_date'] ?></span></div>
+                                                <div class="col-lg-6 col-md-6 col-sm-6">
+                                                    <?php if(!$education['inview']): ?></span>
+                                                        <b>End date: </b> <span><?= $education['end_date'] ?></span>
+                                                    <?php else: ?>
+                                                    <b>End date: </b> <span><span class="inview-x">inview</span>
+                                                    <?php endif; ?>
                                                 </div>
-                                            </li>
+                                            </div>
+                                        </li>
                                     </ul>
-                                <?php endforeach; ?>
                                 </div>
                                 <?php endif; ?>
                                 
@@ -523,9 +516,9 @@ if($request_worker)
                                 <div class="j-bio">
                                     <div class="js-head">Bio:</div>
                                      <p><?= $job->bio ?></p>
-                                     <ul class="ability-x">
-                                         <li><b>Reading: </b><?= $job->reading ? 'Yes' : 'No'?></li>
-                                         <li><b>Writing: </b><?= $job->writing ? 'Yes' : 'No'?></li>
+                                     <ul class="ability-x" id="inner-ex">
+                                         <li><b>Reading: </b> <span><?= $job->reading ? 'Yes' : 'No'?></span></li>
+                                         <li><b>Writing: </b> <span><?= $job->writing ? 'Yes' : 'No'?></span></li>
                                          <li></li>
                                      </ul>
                                 </div>
@@ -534,18 +527,17 @@ if($request_worker)
 
                                 <!-- WORK EXPERIENCE START -->
                                 <?php if($job->work_experience): 
-                                $experiences = json_decode($job->work_experience, true); ?>
+                                $experience = json_decode($job->work_experience, true); ?>
                                 <div class="j-summary">
                                     <div class="j-summary-h">Work expirience:</div>
-                                    <?php foreach($experiences as $experience): ?>
-                                    <div class="experience-x">
-                                        <ul>
-                                            <li><b>Job title:</b> <?= ucfirst($experience['job_title']) ?></li>
-                                            <li><b>Job function:</b> <?= $experience['job_function'] ?></li>
-                                            <li><b>Employer:</b> <?= $experience['employer_name'] ?></li>
-                                            <li><b>Employer phone:</b> <?= $experience['employer_phone'] ?></li>
-                                            <li><b>Employer email:</b> <?= $experience['employer_email'] ?></li>
-                                            <li><b>Description: </b></li>
+                                    <div class="experience-x" >
+                                        <ul id="inner-ex">
+                                            <li><b>Job title:</b> <span> <?= ucfirst($experience['job_title']) ?></span></li>
+                                            <li><b>Job function:</b> <span> <?= $experience['job_function'] ?></span></li>
+                                            <li><b>Employer:</b> <span> <?= $experience['employer_name'] ?></span></li>
+                                            <li><b>Employer phone:</b> <span> <?= $experience['employer_phone'] ?></span></li>
+                                            <li><b>Employer email:</b> <span> <?= $experience['employer_email'] ?></span></li>
+                                            <li><b>Description: </b> <span></li>
                                         </ul>
                                         <div class="j-summary-detail">
                                             <img src="<?= asset('/images/icons/1.svg')?>" alt="">
@@ -566,7 +558,6 @@ if($request_worker)
                                             </li>
                                         </ul>
                                     </div>
-                                    <?php endforeach; ?>
                                 </div>
                                 <?php endif; ?>
                                 <!-- WORK EXPERIENCE END -->
@@ -575,13 +566,13 @@ if($request_worker)
                                 <div class="j-contact">
                                     <div class="js-head">Contact info:</div>
                                         <?php if($subscription && $viewed):?>
-                                        <ul>
-                                            <li><i class="fa fa-phone text-success"></i> <b>Phone:</b> <?= $job->phone ?></li>
-                                            <li><i class="fa fa-envelope text-success"></i> <b>Email:</b> <?= $job->email ?></li>
-                                            <li><i class="fa fa-home text-success"></i> <b>Address:</b> <?= $job->address ?></li>
-                                            <li><i class="fa fa-circle text-success"></i> <b>City:</b> <?= $job->city ?></li>
-                                            <li><i class="fa fa-users text-success"></i> <b>state:</b> <?= $job->state ?></li>
-                                            <li><i class="fa fa-flag text-success"></i> <b>Country:</b> <?= $job->country ?></li>
+                                        <ul id="inner-ex">
+                                            <li><i class="fa fa-phone text-success"></i> <b>Phone:</b> <span> <?= $job->phone ?><span></li>
+                                            <li><i class="fa fa-envelope text-success"></i> <b>Email:</b> <span> <?= $job->email ?><span></li>
+                                            <li><i class="fa fa-home text-success"></i> <b>Address:</b> <span> <?= $job->address ?><span></li>
+                                            <li><i class="fa fa-circle text-success"></i> <b>City:</b> <span> <?= $job->city ?><span></li>
+                                            <li><i class="fa fa-users text-success"></i> <b>state:</b> <span> <?= $job->state ?><span></li>
+                                            <li><i class="fa fa-flag text-success"></i> <b>Country:</b> <span> <?= $job->country ?><span></li>
                                         </ul>
                                         <?php endif;?>
                                      <div class="unsub">
@@ -598,22 +589,6 @@ if($request_worker)
                                 </div>
                                 <!-- CONTACT END-->
 
-                                <!-- SUMMARY START-->
-                                <div class="j-bio">
-                                    <div class="js-head">Summary:</div>
-                                     <p><?= $job->summary ?></p>
-                                </div>
-                                <!-- SUMMARY END -->
-
-                                 <!-- SAFTY START-->
-                                 <div class="j-safety">
-                                    <div class="js-head">Important saftey tips:</div>
-                                    <ul>
-                                        <li>1. Do not make any payment without confirming with the nigeria nanny Customer Support Team.</li>
-                                        <li>2. If you think this advert is not genuine, please report via this <a href="<?= url('/contact') ?>" class="text-primary">link</a></li>
-                                    </ul>
-                                </div>
-                                <!-- SAFETY END-->
 
                                  <!-- CV START-->
                                  <?php if($subscription && $viewed):
@@ -646,23 +621,10 @@ if($request_worker)
                                
                             </div>
                             <!-- featured jobs end-->
-                            <?php if($subscription && $viewed && !$request_worker):?>
-                                <div class="j-apply apply_now_1">
-                                    <div class="loading_container text-center" style="display: none;">Loading...</div>
-                                    <div class="all_alert alert_0 text-center text-danger p-2" style="font-size: 13px;"></div>
-                                    <div class="btn-anchor" id="j-apply-btn">
-                                        <a href="<?= url('/ajax.php') ?>" class="employer_hire_btn" id="<?= Input::get('wid') ?>">Hire now</a>
-                                    </div>
-                                    <p>
-                                        By click 'Apply now', You agree to our <a href="#" class="text-primary">terms & conditions</a>
-                                        and <a href="#" class="text-primary">Privacy policy</a>
-                                    </p>
-                                </div>
-                            <?php endif;?>
                         </div>
                         <div class="col-lg-3" id="apply_now_2">
                             <form action="<?= current_url() ?>" method="POST" class="p-apply-container">
-                                <div class="apply-h"><h4>Hire worker here</h4></div>
+                                <div class="apply-h"><h4>HIRE WORKER HERE</h4></div>
                                 <div class="apply-container">
                                     <div class="row">
                                         <div class="col-lg-12 col-sm-6">

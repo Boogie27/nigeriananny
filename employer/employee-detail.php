@@ -74,8 +74,8 @@ if(Input::post('check_online_employer'))
 // =========================================
 // GET EMPLOYEE
 // =========================================
-$job = $connection->select('request_workers')->leftJoin('workers', 'request_workers.j_employee_id', '=','workers.employee_id')->leftJoin('employee', 'request_workers.j_employee_id', '=', 'employee.e_id')->where('request_id ', Input::get('wid'))->where('is_accept', 1)->where('j_employer_id', Auth_employer::employer('id'))->first(); 
-if(!$job)
+$worker = $connection->select('request_workers')->leftJoin('workers', 'request_workers.j_employee_id', '=','workers.employee_id')->leftJoin('employee', 'request_workers.j_employee_id', '=', 'employee.e_id')->where('request_id ', Input::get('wid'))->where('is_accept', 1)->where('j_employer_id', Auth_employer::employer('id'))->first(); 
+if(!$worker)
 {
     return view('/jobs');
 }
@@ -87,7 +87,7 @@ if(!$job)
 // =========================================
 // GET EMPLOYEE REVIEW
 // =========================================
-$reviews = $connection->select('employee_reviews')->leftJoin('employers', 'employee_reviews.r_employer_id', '=', 'employers.id')->where('r_employee_id', $job->worker_id)->get();
+$reviews = $connection->select('employee_reviews')->leftJoin('employers', 'employee_reviews.r_employer_id', '=', 'employers.id')->where('r_employee_id', $worker->worker_id)->get();
 
 
 
@@ -100,20 +100,13 @@ $reports =  $connection->select('reports')->where('is_feature', 1)->get();
 ?>
 
 
-<?php include('includes/header.php');  ?>
+<?php include('../includes/header.php');  ?>
 
-<!-- top navigation-->
-<?php include('includes/top-navigation.php');  ?>
 
-<!-- top navigation-->
-<?php include('includes/navigation.php');  ?>
+<!--  navigation-->
+<?php include('../includes/navigation.php');  ?>
 
-<!-- images/home/4.jpg -->
-	
-
-<!-- mobile navigation-->
-<?php include('includes/mobile-navigation.php');  ?>
-
+<?php include('../includes/side-navigation.php');  ?>
 
 
 
@@ -121,7 +114,7 @@ $reports =  $connection->select('reports')->where('is_feature', 1)->get();
 	   <!-- jobs  start-->
        <div class="page-content">
            <div class="inner-job-detail" >
-                <div class="j-header" id="job_h_v"><b><?= ucfirst($job->last_name.' '.$job->first_name) ?> details</b> </div>
+                <div class="j-header" id="job_h_v"><b><?= ucfirst($worker->last_name.' '.$worker->first_name) ?> details</b> </div>
                 <div class="j-body">
                     <div class="row">
                         <div class="col-lg-7">
@@ -133,27 +126,26 @@ $reports =  $connection->select('reports')->where('is_feature', 1)->get();
                                 <div class="alert alert-success text-center p-3 mb-2"><?= Session::flash('success') ?></div>
                             <?php endif; ?>
                            <?php 
-                                $w_image = $job->w_image ? $job->w_image : '/employee/images/demo.png'; 
-                                $detail = json_decode($job->work_detail, true);
-                                $amount = $detail['amount_to'] ? money($detail['amount_form']).' - '.money($detail['amount_to']) : money($detail['amount_form']); ?>
+                            $profile_image = $worker->w_image ? $worker->w_image : '/images/employee/demo.png';
+                            $amount = !$worker->amount_to ? money($worker->amount_form) : money($worker->amount_form).' - '.money($worker->amount_to); ?>
                             <div class="job-body">
                                 <div class="jobs-info">
-                                    <img src="<?= asset($w_image)?>" alt="">
+                                    <img src="<?= asset($profile_image)?>" alt="<?= $worker->first_name ?>">
                                     <ul class="ul">
                                         <li>
                                             <h4>
-                                                <?= ucfirst($detail['job_title'])?>
-                                                <span class="date text-success float-right"><i class="fa fa-clock-o text-success "></i> <?= date('d M Y', strtotime($detail['date_added'])) ?></span>
+                                                <?= ucfirst($worker->job_title)?>
+                                                <span class="date text-success float-right"><i class="fa fa-clock-o text-success "></i> <?= date('d M Y', strtotime($worker->date_added)) ?></span>
                                             </h4>
                                         </li>
-                                        <li><?= stars($job->ratings, $job->rating_count) ?></li>
-                                        <li> <?= ucfirst($job->first_name.' '.$job->last_name)?></li>
+                                        <li><?= stars($worker->ratings, $worker->rating_count) ?></li>
+                                        <li> <?= ucfirst($worker->first_name.' '.$worker->last_name)?></li>
                                         <li>
-                                            <?php if($detail['job_type'] != 'live in'):
-                                            $living = json_decode($detail['job_type'], true); ?>
+                                            <?php if($worker->job_type != 'live in'):
+                                                 $living = json_decode($worker->job_type, true); ?>
                                                 <b>Job Location: </b><?= ucfirst($living['city'])?> | <?= ucfirst($living['state'])?> 
                                             <?php else: ?>
-                                                <?= $detail['job_type'] ?>
+                                                <?= $worker->job_type ?>
                                             <?php endif; ?>
                                             | <span class="text-warning money-amount"><?= $amount ?></span>
                                         </li>
@@ -164,11 +156,10 @@ $reports =  $connection->select('reports')->where('is_feature', 1)->get();
                                 </div>
 
                                  <!-- EDUCATION START--> 
-                                <?php if($job->education): 
-                                $educations = json_decode($job->education, true); ?>
+                                <?php if($worker->education): 
+                                $education = json_decode($worker->education, true); ?>
                                 <div class="j-expirience">
                                     <div class="js-head">Education:</div>
-                                    <?php foreach($educations as $education): ?>
                                     <ul class="inner-ex">
                                         <li><b>Qualification:</b> <?= ucfirst($education['qualification']) ?></li>
                                         <li><b>Institution: </b> <?= ucfirst($education['institution']) ?></li>
@@ -188,7 +179,6 @@ $reports =  $connection->select('reports')->where('is_feature', 1)->get();
                                                 </div>
                                             </li>
                                     </ul>
-                                <?php endforeach; ?>
                                 </div>
                                 <?php endif; ?>
                                 <!-- EDUCATION START--> 
@@ -196,10 +186,10 @@ $reports =  $connection->select('reports')->where('is_feature', 1)->get();
                                 <!-- ABILITY START-->
                                 <div class="j-bio">
                                     <div class="js-head">Bio:</div>
-                                     <p><?= $job->bio ?></p>
+                                     <p><?= $worker->bio ?></p>
                                      <ul class="ability-x">
-                                         <li><b>Reading: </b><?= $job->reading ? 'Yes' : 'No'?></li>
-                                         <li><b>Writing: </b><?= $job->writing ? 'Yes' : 'No'?></li>
+                                         <li><b>Reading: </b><?= $worker->reading ? 'Yes' : 'No'?></li>
+                                         <li><b>Writing: </b><?= $worker->writing ? 'Yes' : 'No'?></li>
                                          <li></li>
                                      </ul>
                                 </div>
@@ -208,21 +198,20 @@ $reports =  $connection->select('reports')->where('is_feature', 1)->get();
                                 <div class="j-contact">
                                     <div class="js-head">Contact info:</div>
                                     <ul>
-                                        <li><i class="fa fa-phone text-success"></i> <b>Phone:</b> <?= $job->phone ?></li>
-                                        <li><i class="fa fa-envelope text-success"></i> <b>Email:</b> <?= $job->email ?></li>
-                                        <li><i class="fa fa-home text-success"></i> <b>Address:</b> <?= $job->address ?></li>
-                                        <li><i class="fa fa-circle text-success"></i> <b>City:</b> <?= $job->city ?></li>
-                                        <li><i class="fa fa-users text-success"></i> <b>state:</b> <?= $job->state ?></li>
-                                        <li><i class="fa fa-flag text-success"></i> <b>Country:</b> <?= $job->country ?></li>
+                                        <li><i class="fa fa-phone text-success"></i> <b>Phone:</b> <?= $worker->phone ?></li>
+                                        <li><i class="fa fa-envelope text-success"></i> <b>Email:</b> <?= $worker->email ?></li>
+                                        <li><i class="fa fa-home text-success"></i> <b>Address:</b> <?= $worker->address ?></li>
+                                        <li><i class="fa fa-circle text-success"></i> <b>City:</b> <?= $worker->city ?></li>
+                                        <li><i class="fa fa-users text-success"></i> <b>state:</b> <?= $worker->state ?></li>
+                                        <li><i class="fa fa-flag text-success"></i> <b>Country:</b> <?= $worker->country ?></li>
                                     </ul>
                                 </div>
                                 
                                 <!-- WORK EXPERIENCE START -->
-                                <?php if($job->work_experience): 
-                                $experiences = json_decode($job->work_experience, true); ?>
+                                <?php if($worker->work_experience): 
+                                $experience = json_decode($worker->work_experience, true); ?>
                                 <div class="j-summary">
                                     <div class="j-summary-h">Work expirience:</div>
-                                    <?php foreach($experiences as $experience): ?>
                                     <div class="experience-x">
                                         <ul>
                                             <li><b>Job title:</b> <?= ucfirst($experience['job_title']) ?></li>
@@ -251,22 +240,14 @@ $reports =  $connection->select('reports')->where('is_feature', 1)->get();
                                             </li>
                                         </ul>
                                     </div>
-                                    <?php endforeach; ?>
                                 </div>
                                 <?php endif; ?>
                                 <!-- WORK EXPERIENCE END -->
 
-                                 <!-- SUMMARY START-->
-                                 <div class="j-bio">
-                                    <div class="js-head">Summary:</div>
-                                     <p><?= $job->summary ?></p>
-                                </div>
-                                <!-- SUMMARY END -->
-
                                  <!-- CV START-->
                             
-                                <?php if($job->cv): 
-                                $cv = json_decode($job->cv, true);  
+                                <?php if($worker->cv): 
+                                $cv = json_decode($worker->cv, true);  
                                 ?>
                                 <div class="j-safety">
                                     <div class="js-head">CV, Resume:</div>
@@ -353,7 +334,7 @@ $reports =  $connection->select('reports')->where('is_feature', 1)->get();
                                             <input type="hidden" name="star_rate" class="star_rate_input" value="">
 
                                             
-                                            <input type="hidden" name="worker_id" value="<?= $job->worker_id ?>">
+                                            <input type="hidden" name="worker_id" value="<?= $worker->worker_id ?>">
                                           <textarea  name="comment" class="form-control" cols="30" rows="3" placeholder="Write something..." required><?= old('comment') ?></textarea>
                                         </div>
                                     </div>
@@ -477,7 +458,7 @@ $reports =  $connection->select('reports')->where('is_feature', 1)->get();
                 <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
                     <div class="login_form">
                         <form action="<?= current_url()?>" method="POST">
-                            <div class="report-head"><h4 style="color: #555"><i class="fa fa-thumbs-down text-danger"></i> Report <?= ucfirst($job->first_name)?></h4></div>
+                            <div class="report-head"><h4 style="color: #555"><i class="fa fa-thumbs-down text-danger"></i> Report <?= ucfirst($worker->first_name)?></h4></div>
                             <div class="row">
                                 <div class="col-lg-12 p-3"><div class="all_alert text-danger x_alert_0" style="font-size: 13px;"></div></div>
                                 <?php if(count($reports)): 
@@ -511,7 +492,7 @@ $reports =  $connection->select('reports')->where('is_feature', 1)->get();
 
 
 
-<input type="hidden" class="emplpoyee_id_input" id="<?= $job->worker_id ?>" data-id="<?= $job->request_id ?>" value="<?= $job->e_id ?>">
+<input type="hidden" class="emplpoyee_id_input" id="<?= $worker->worker_id ?>" data-id="<?= $worker->request_id ?>" value="<?= $worker->e_id ?>">
 <a href="<?= url('/ajax.php') ?>" class="ajax_url_page" style="display: none;"></a>
 
 

@@ -390,7 +390,6 @@ if(Cookie::has('saved_course'))
 
 
 <!-- *********** EDIT REVIEW MODAL ************** -->
-<?php if($user_review): ?>
 <div class="modal-container main-modal-container">
     <div class="modal-dark-theme">
       <div class="modal-inner">
@@ -432,7 +431,6 @@ if(Cookie::has('saved_course'))
       </div>
     </div>
 </div>
-<?php  endif; ?>
 
 
 
@@ -445,7 +443,6 @@ if(Cookie::has('saved_course'))
 
 
 <!-- *********** DELETE REVIEW MODAL ************** -->
-<?php if($user_review): ?>
 <div class="sign_up_modal modal fade" id="exampleModal_delete_course_review" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
@@ -469,7 +466,6 @@ if(Cookie::has('saved_course'))
         </div>
     </div>
 </div>
-<?php  endif; ?>
 
 
 

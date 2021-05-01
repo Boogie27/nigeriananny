@@ -105,20 +105,14 @@ if(Input::post('facebook_login'))
 
 
 
+<?php include('../includes/header.php');  ?>
 
-<?php include('includes/header.php');  ?>
-
-<!-- top navigation-->
-<?php include('includes/top-navigation.php');  ?>
 
 <!-- top navigation-->
-<?php include('includes/navigation.php');  ?>
+<?php include('../includes/navigation.php');  ?>
 
-<!-- images/home/4.jpg -->
-	
+<?php include('../includes/side-navigation.php');  ?>
 
-<!-- mobile navigation-->
-<?php include('includes/mobile-navigation.php');  ?>
     
 
 
@@ -163,7 +157,7 @@ if(Input::post('facebook_login'))
                    </div>
                    <div class="col-lg-12">
                         <div class="form-group">
-                            <button type="submit" name="login_employer" class="uppercase btn-fill">Employer login</button>
+                            <button type="submit" name="login_employer" class="btn-fill">Employer login</button>
                             <p class="apply-p">Don't have an account? <br><a href="<?= url('/employer/register') ?>" class="text-primary">Register</a></p>
                         </div>
                     </div>

@@ -26,18 +26,12 @@ $subscription_pans = $connection->select('subscription_pan')->where('is_feature'
 ?>
 <?php include('includes/header.php');  ?>
 
-<!-- top navigation-->
-<?php include('includes/top-navigation.php');  ?>
 
-<!-- top navigation-->
+<!--  navigation-->
 <?php include('includes/navigation.php');  ?>
 
-<!-- images/home/4.jpg -->
-	
+<?php include('includes/side-navigation.php');  ?>
 
-	<!-- mobile navigation-->
-    <?php include('includes/mobile-navigation.php');  ?>
-    
 
     
    <!-- jobs  start-->
@@ -59,7 +53,7 @@ $subscription_pans = $connection->select('subscription_pan')->where('is_feature'
                                 <!-- <li><i class="fa fa-user employee-icon"></i></li> -->
                                 <li class='plan'><h1><?= ucfirst($subscription->type) ?></h1></li>
                                 <li><h1  class=""> <?= $subscription->duration ?></h1></li>
-                                <li><h4 class="text-primary"> <?= money($subscription->amount) ?></h4></li>
+                                <li><h4 class="text-warning"> <?= money($subscription->amount) ?></h4></li>
                                 <li>
                                     <p>
                                         <b>Employee daily views (<?= $subscription->access ?>)</b><br>

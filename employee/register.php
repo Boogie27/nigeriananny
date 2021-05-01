@@ -48,27 +48,20 @@
 
 
 
+<?php include('../includes/header.php');  ?>
 
-<?php include('includes/header.php');  ?>
-
-<!-- top navigation-->
-<?php include('includes/top-navigation.php');  ?>
 
 <!-- top navigation-->
-<?php include('includes/navigation.php');  ?>
+<?php include('../includes/navigation.php');  ?>
 
-<!-- images/home/4.jpg -->
-	
+<?php include('../includes/side-navigation.php');  ?>
 
-<!-- mobile navigation-->
-<?php include('includes/mobile-navigation.php');  ?>
-    
 
 
 
 <div class="page-content">
     <div class="job-seeker-conatiner">
-        <div class="sr-head"><h4>Create an Employee Account</h4></div>
+        <div class="sr-head"><h4>Create Employee Account</h4></div>
         <form action="<?= current_url() ?>" method="POST">
             <?php if(Session::has('error')): ?>
                 <div class="alert alert-danger text-center p-3 mb-2"><?= Session::flash('error') ?></div>
@@ -139,7 +132,7 @@
                     </div>
                     <div class="col-lg-12">
                         <div class="form-group">
-                            <button type="submit" name="create_employee" class="uppercase btn-fill">REGISTER <i class="fa fa-angle-right"></i><i class="fa fa-angle-right"></i></button>
+                            <button type="submit" name="create_employee" class="uppercase btn-fill">REGISTER</button>
                             <p class="apply-p">Already have an account? <br><a href="<?= url('/employee/login') ?>" class="text-primary">Login</a></p>
                         </div>
                     </div>

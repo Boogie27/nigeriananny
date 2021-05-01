@@ -498,7 +498,7 @@ if(Input::post('employee_delete_request'))
 
 
 // =========================================
-// UPDATE EDUCATION
+// ADD EDUCATION
 // =========================================
 if(Input::post('update_institution'))
 {
@@ -568,15 +568,15 @@ if(Input::post('update_institution'))
                     'e_year' => Input::get('end_year'),
                     "inview" => $inview ]; 
 
-    $worker = $connection->select('workers')->where('employee_id', Auth_employee::employee('id'))->first();
-    if(!$worker->education)
-    {
-        $education_array[1] = $educate;
-    }else{
-        $education_array = json_decode($worker->education, true);
-        array_push($education_array, $educate);
-    }
-    $education = json_encode($education_array);
+    // $worker = $connection->select('workers')->where('employee_id', Auth_employee::employee('id'))->first();
+    // if(!$worker->education)
+    // {
+    //     $education_array[1] = $educate;
+    // }else{
+    //     $education_array = json_decode($worker->education, true);
+    //     array_push($education_array, $educate);
+    // }
+    $education = json_encode($educate);
 
     $update = $connection->update('workers', [
         'education' => $education
@@ -659,30 +659,24 @@ if(Input::post('edit_update_institution'))
     $worker = $connection->select('workers')->where('employee_id', Auth_employee::employee('id'))->first();
     if($worker->education)
     {
-        $stored_education = json_decode($worker->education, true);
-        if(array_key_exists(Input::get('key'), $stored_education))
-        {
-            $educate = $stored_education[Input::get('key')];
-            $educate['qualification'] = Input::get('qualification');
-            $educate['institution'] = Input::get('institution');
-            $educate['city'] = Input::get('city');
-            $educate['state'] = Input::get('state');
-            $educate['country'] = Input::get('country');
-            $educate['start_date'] = $start_date;
-            $educate['s_day'] = Input::get('start_day');
-            $educate['s_month'] = Input::get('start_month');
-            $educate['s_year'] = Input::get('start_year');
-            $educate['end_date'] = $end_date;
-            $educate['e_day'] = Input::get('end_day');
-            $educate['e_month'] = Input::get('end_month');
-            $educate['e_year'] = Input::get('end_year');
-            $educate['inview'] = $inview;
-
-            $stored_education[Input::get('key')] = $educate;
-        }
+        $educate = json_decode($worker->education, true);
+        $educate['qualification'] = Input::get('qualification');
+        $educate['institution'] = Input::get('institution');
+        $educate['city'] = Input::get('city');
+        $educate['state'] = Input::get('state');
+        $educate['country'] = Input::get('country');
+        $educate['start_date'] = $start_date;
+        $educate['s_day'] = Input::get('start_day');
+        $educate['s_month'] = Input::get('start_month');
+        $educate['s_year'] = Input::get('start_year');
+        $educate['end_date'] = $end_date;
+        $educate['e_day'] = Input::get('end_day');
+        $educate['e_month'] = Input::get('end_month');
+        $educate['e_year'] = Input::get('end_year');
+        $educate['inview'] = $inview;
     }
 
-    $education = json_encode($stored_education);
+    $education = json_encode($educate);
 
     $update = $connection->update('workers', [
         'education' => $education
@@ -722,29 +716,15 @@ if(Input::post('delete_education_action'))
         return response(['error' => ['error' => true]]);
     }
 
-    $stored_education = json_decode($worker->education, true);
-    if(!array_key_exists(Input::get('key'), $stored_education))
-    {
-        Session::flash('error', '*Education does not exist!');
-        Session::flash('error-m', '*Education does not exist!');
-        return response(['error' => ['error' => true]]);
-    }
-
-    unset($stored_education[Input::get('key')]);
-   
-    $education = count($stored_education) ? json_encode($stored_education) : null;
-
     $update = $connection->update('workers', [
-        'education' => $education
+        'education' => null
     ])->where('employee_id', Auth_employee::employee('id'))->save();
     
     if($update)
     {
         Session::flash('success', 'Education updated successfully!');
         Session::flash('success-m', 'Education updated successfully!');
-        $url = url('/employee/account');
-
-        return response(['url' => $url]);
+        return true;
     }
 
     if(!$data)
@@ -837,15 +817,15 @@ if(Input::post('update_job_experience'))
     $experience['e_year'] = Input::get('end_year');
     $experience['inview'] = $inview;
 
-    if(!$worker->work_experience)
-    {
-        $stored_experience[1] = $experience;
-    }else{
-        $stored_experience = json_decode($worker->work_experience, true);
-        array_push($stored_experience, $experience);
-    }
+    // if(!$worker->work_experience)
+    // {
+    //     $stored_experience[1] = $experience;
+    // }else{
+    //     $stored_experience = json_decode($worker->work_experience, true);
+    //     array_push($stored_experience, $experience);
+    // }
 
-    $store_experience = json_encode($stored_experience);
+    $store_experience = json_encode($experience);
 
     $update = $connection->update('workers', [
         'work_experience' => $store_experience
@@ -935,13 +915,8 @@ if(Input::post('edit_job_experience'))
         $url = url('/employee/account');
 
         return response(['not_exist' => $url]);
-    }else{
-        $old_experience = json_decode($worker->work_experience, true);
-        if(array_key_exists(Input::get('key'), $old_experience))
-        {
-            $experience = $old_experience[Input::get('key')];
-        }
     }
+
     $experience['job_title'] = Input::get('job_title');
     $experience['job_function'] = Input::get('job_function');
     $experience['employer_name'] = Input::get('employer_name');
@@ -958,10 +933,7 @@ if(Input::post('edit_job_experience'))
     $experience['e_year'] = Input::get('end_year');
     $experience['inview'] = $inview;
 
-    $old_experience[Input::get('key')] = $experience;
-    
-
-    $store_experience = json_encode($old_experience);
+    $store_experience = json_encode($experience);
 
     $update = $connection->update('workers', [
         'work_experience' => $store_experience
@@ -1000,20 +972,8 @@ if(Input::post('delete_experience_action'))
         return response(['error' => ['error' => true]]);
     }
 
-    $stored_experience = json_decode($worker->work_experience, true);
-    if(!array_key_exists(Input::get('key'), $stored_experience))
-    {
-        Session::flash('error', '*Work experience does not exist!');
-        Session::flash('error-m', '*Work experience does not exist!');
-        return response(['error' => ['error' => true]]);
-    }
-
-    unset($stored_experience[Input::get('key')]);
-   
-    $experience = count($stored_experience) ? json_encode($stored_experience) : null;
-
     $update = $connection->update('workers', [
-        'work_experience' => $experience
+        'work_experience' => null
     ])->where('employee_id', Auth_employee::employee('id'))->save();
     
     if($update)

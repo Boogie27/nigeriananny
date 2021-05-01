@@ -7,10 +7,10 @@
     <div class="side-navigation">
         <ul class="parent-ul">
             <li>
-                <a href="#"><i class="fa fa-home"></i>Home</a>
+                <a href="<?= url('/') ?>"><i class="fa fa-home"></i>Home</a>
             </li>
             <li>
-                <a href="<?= url('/courses') ?>"><i class="fa fa-camera"></i>All courses</a>
+                <a href="<?= url('/courses') ?>"><i class="fa fa-video-camera"></i>All courses</a>
             </li>
             <li>
                 <a href="#" class="nav-drop-down"><i class="fa fa-cubes"></i>Categories <i class="fa fa-angle-right float-right angle"></i></a>
@@ -34,10 +34,13 @@
                 <a href="#"><i class="fa fa-user"></i>Account</a>
             </li>
             <li>
-                <a href="#"><i class="fa fa-shopping-cart"></i>Market place</a>
+                <a href="<?= url('/jobs') ?>"><i class="fa fa-briefcase"></i>Find a worker</a>
             </li>
             <li>
-                <a href="<?= url('/jobs') ?>"><i class="fa fa-briefcase"></i>Find a worker</a>
+                <a href="<?= url('/shop') ?>"><i class="fa fa-shopping-cart"></i>Market place</a>
+            </li>
+            <li>
+                <a href="<?= url('/contact') ?>"><i class="fa fa-phone"></i>Contact us</a>
             </li>
             <li>
                 <?php if(Auth_course::is_loggedin()): ?>

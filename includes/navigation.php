@@ -1,68 +1,32 @@
-<!-- navbar-scrolltofixed -->
 
-<!-- Main Header Nav -->
-	<header class="header-nav home2 style_one  main-menu">
-		<div class="container">
-		    <!-- Ace Responsive Menu -->
-		    <nav>
-		        <!-- Menu Toggle btn-->
-		        <div class="menu-toggle">
-		            <button type="button" id="menu-btn">
-		                <span class="icon-bar"></span>
-		                <span class="icon-bar"></span>
-		                <span class="icon-bar"></span>
-		            </button>
-		        </div>
-		        <!-- Responsive Menu Structure-->
-		        <!--Note: declare the Menu style in the data-menu-style="horizontal" (options: horizontal, vertical, accordion) -->
-		        <ul id="respMenu" class="ace-responsive-menu" data-menu-style="horizontal">
-		            <li><a href="<?= url('/') ?>"><span class="title">Home</span></a></li>
-					<li><a href="<?= url('/jobs') ?>"><span class="title">Find employee</span></a></li>
-					<li>
-		                <a href="#"><span class="title">My account</span></a>
-		                <ul>
-							<?php if(Auth_employer::is_loggedin()):?>
-								<li><a href="<?= url('/employer/account') ?>">Account</a></li>
-							<?php endif; ?>
-							<?php if(Auth_employee::is_loggedin()):?>
-								<li><a href="<?= url('/employee/account') ?>">Account</a></li>
-							<?php endif; ?>
-							<?php if(!Auth_employee::is_loggedin()): ?>
-								<li><a href="<?= url('/subscription') ?>">Subscription plan</a></li>
-								<li><a href="<?= url('/employee/login') ?>">Job seeker login</a></li>
-							<?php endif; ?>
-							<?php if(!Auth_employer::is_loggedin()):?>
-								<li><a href="<?= url('/employer/login') ?>">Employer login</a></li>
-								<li><a href="<?= url('/form') ?>">Create account</a></li>
-							<?php else: ?>
-								<li><a href="<?= url('/employer/logout') ?>">Logout</a></li>
-							<?php endif; ?>
-							<?php if(Auth_employee::is_loggedin()): ?>
-								<li><a href="<?= url('/employee/logout') ?>">Logout</a></li>
-							<?php endif; ?>
-		                </ul>
-					</li>
-					<li><a href="<?= url('/flagged') ?>"><span class="title">Flagged</span></a></li>
-					<li class="last">
-		                <a href="<?= url('/contact') ?>"><span class="title">Contact us</span></a>
-					</li>
-					<li class="last">
-		                <a href="#" class="news_letter_open_btn"><span class="title">News letter</span></a>
-		            </li>
-		        </ul>
-		        <ul class="sign_up_btn pull-right dn-smd mt20">
-					<?php if(Auth_employer::is_loggedin()):?>
-						<li class="list-inline-item"><a href="<?= url('/employer/logout.php') ?>" class="btn btn-md"><i class=""></i> <span class="dn-md">Logout</span></a></li>
-					<?php endif; ?>
-					<?php if(Auth_employee::is_loggedin()): ?>
-					<li class="list-inline-item"><a href="<?= url('/employee/logout.php') ?>" class="btn btn-md"><i class=""></i> <span class="dn-md">Logout</span></a></li>
-					<?php endif; ?>
-					<li class="list-inline-item"><a href="<?= url('/shop') ?>" class="btn btn-md"><i class=""></i> <span class="dn-md">Market place</span></a></li>
-				</ul><!-- Button trigger modal -->
-		    </nav>
-		    <!-- End of Responsive Menu -->
+
+
+<?php
+$settings = $connection->select('settings')->where('id', 1)->first();
+?>
+
+<!-- NAVIGATION-->
+<div class="navigation">
+   <div class="inner-navigation">
+		<div class="nav-left"> <!-- nav left start-->
+			<i class="fa fa-bars toggle-side-navigation"></i>
+			<a href="<?= url('/') ?>">
+			   <img src="<?= asset($settings->logo) ?>" alt="<?= $settings->app_name ?>" class="nav-img">
+			   <span class="nav-app-name"><?= $settings->app_name ?></span>
+			</a>
+		</div><!-- nav left end-->
+		<div class="navigation-search">
+	        <form action="<?= current_url()?>" method="" class="nav-form">
+				<input type="text" name="search" class="nav-search" placeholder="search for...">
+				<button class="search-btn"><i class="fa fa-search"></i></button>
+		    </form>
 		</div>
-	</header>
-
-
-
+		<div class="nav-right"><!-- nav right start-->
+			<div class="img-right">
+				<i class="fa fa-bars toggle-side-navigation"></i>
+				<i class="fa fa-heart text-danger"></i>
+				<img src="<?= asset('/employee/images/demo.png') ?>" alt="name" class="nav-img"></span>
+			</div>
+		</div><!-- nav right end-->
+   </div>
+</div>

@@ -9,19 +9,15 @@ $privacy_policy = $connection->select('settings')->where('id', 1)->first();
 ?>
 <?php include('includes/header.php');  ?>
 
-<!-- top navigation-->
-<?php include('includes/top-navigation.php');  ?>
+<?php include('includes/header.php');  ?>
 
-<!-- top navigation-->
+
+<!--  navigation-->
 <?php include('includes/navigation.php');  ?>
 
-<!-- images/home/4.jpg -->
-	
+<?php include('includes/side-navigation.php');  ?>
 
-	<!-- mobile navigation-->
-    <?php include('includes/mobile-navigation.php');  ?>
     
-
     
    <!-- jobs  start-->
    <div class="privacy-policy">

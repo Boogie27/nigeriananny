@@ -350,7 +350,7 @@ span.nav-app-name{
 .side-navigation{
     top: 0px;
     width: 100%;
-    height: 530px;
+    height: 100vh;
     border: 5px;
     padding-top: 20px;
     overflow-y: auto;
@@ -360,7 +360,7 @@ span.nav-app-name{
     box-shadow: 5px 0px 0px 0px rgba(216, 216, 216, 0.3);
 }
 .side-navigation.activate{
-    width: 223px;
+    width: 247px;
     position: fixed;
     height: 100vh;
     border-top: 1px solid transparent;

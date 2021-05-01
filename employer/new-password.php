@@ -2,7 +2,7 @@
 
 <?php
 
-if(!Input::exists('get') && Input::get('tid'))
+if(!Input::exists('get') && !Input::get('tid'))
 {
    return view('/');
 }
@@ -33,20 +33,14 @@ if(!Input::exists('get') && Input::get('tid'))
  }
 
 ?>
-<?php include('includes/header.php');  ?>
+<?php include('../includes/header.php');  ?>
 
-<!-- top navigation-->
-<?php include('includes/top-navigation.php');  ?>
 
-<!-- top navigation-->
-<?php include('includes/navigation.php');  ?>
+<!--  navigation-->
+<?php include('../includes/navigation.php');  ?>
 
-<!-- images/home/4.jpg -->
-	
+<?php include('../includes/side-navigation.php');  ?>
 
-<!-- mobile navigation-->
-<?php include('includes/mobile-navigation.php');  ?>
-    
 
 
 
@@ -80,7 +74,7 @@ if(!Input::exists('get') && Input::get('tid'))
                    <div class="col-lg-12">
                         <div class="form-group">
                             <input type="hidden" name="reset_token" value="<?= Input::get('tid') ?>">
-                            <button type="submit" name="new_password_btn" class="uppercase btn-fill">Reset password</button>
+                            <button type="submit" name="new_password_btn" class="btn-fill">Reset password</button>
                             <p class="apply-p"><a href="<?= url('/') ?>" class="text-primary">Back</a></p>
                         </div>
                     </div>

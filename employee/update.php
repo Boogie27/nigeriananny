@@ -40,37 +40,6 @@ if(Input::post('update_profile'))
 
 
 
-
-// ============================================
-//  UPDATE EMPLOYEE SUMMARY
-// ============================================
-if(Input::post('update_summary'))
-{
-        $validate = new DB();
-        $validation = $validate->validate([
-            'summary' => 'required|min:3|max:3000',
-        ]);
-
-        if($validation->passed())
-        {
-            $update = $connection->update('workers', [
-                'summary' => Input::get('summary')
-            ])->where('employee_id', Auth_employee::employee('id'))->save();
-            if($update)
-            {
-                Session::flash('success', 'Summary updated successufully!');
-                Session::flash('success-m', 'Summary updated successufully!');
-            }
-        }
-    return view('/employee/account');
-}
-
-
-
-
-
-
-
 // ======================================
 // GET EMPLOYEE DETAILS
 // ======================================
@@ -99,8 +68,7 @@ $worker = $connection->select('workers')->where('employee_id', Auth_employee::em
 // =====================================
 if(Input::exists('get') && Input::get('page') == 'edu_edit' && Input::get('eid'))
 {
-    $old_edu = json_decode($worker->education, true);
-    if(!array_key_exists(Input::get('eid'), $old_edu))
+    if($worker->employee_id != Input::get('eid'))
     {
         return view('/employee/account');
     }
@@ -113,8 +81,7 @@ if(Input::exists('get') && Input::get('page') == 'edu_edit' && Input::get('eid')
 // =====================================
 if(Input::exists('get') && Input::get('page') == 'edit_work' && Input::get('eid'))
 {
-    $experience = json_decode($worker->work_experience, true);
-    if(!array_key_exists(Input::get('eid'), $experience))
+    if($worker->employee_id != Input::get('eid'))
     {
         return view('/employee/account');
     }
@@ -125,21 +92,13 @@ if(Input::exists('get') && Input::get('page') == 'edit_work' && Input::get('eid'
 
 
 
-<?php include('includes/header.php');  ?>
+<?php include('../includes/header.php');  ?>
+
 
 <!-- top navigation-->
-<?php include('includes/top-navigation.php');  ?>
+<?php include('../includes/navigation.php');  ?>
 
-<!-- top navigation-->
-<?php include('includes/navigation.php');  ?>
-
-<!-- images/home/4.jpg -->
-	
-
-<!-- mobile navigation-->
-<?php include('includes/mobile-navigation.php');  ?>
-
-
+<?php include('../includes/side-navigation.php');  ?>
     
 
 <!-- jobs  start-->
@@ -218,36 +177,6 @@ if(Input::exists('get') && Input::get('page') == 'edit_work' && Input::get('eid'
                                                 <div class="form-group text-right">
                                                     <a href="<?= url('/employee/account') ?>" class="pr-2"><i class="fa fa-angle-left"></i><i class="fa fa-angle-left"></i> BACK</a>
                                                     <button type="submit" name="update_profile" class="btn view-btn-fill">UPDATE...</button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-                            <!-- about end -->
-                            <?php endif; ?>
-
-
-                             <?php if(Input::exists('get') && Input::get('page') == 'summary'): ?>
-                            <!-- about start -->
-                            <div class="account-x">
-                                <div class="account-x-body" id="account-x-body">
-                                    <h3 class="rh-head">Summary information</h3><br><br>
-                                    <form action="<?= current_url()?>" method="POST" class="account-profile-form">
-                                        <div class="row">
-                                            <div class="col-lg-12 col-sm-6">
-                                                <div class="form-group">
-                                                    <?php  if(isset($errors['summary'])) : ?>
-                                                        <div class="text-danger"><?= $errors['summary']; ?></div>
-                                                    <?php endif; ?>
-                                                    <label for="">Summary:</label>
-                                                     <textarea name="summary" class="form-control h50" cols="30" rows="10" placeholder="Write something about what you can do about the job"><?= $worker->summary ?? old('summary') ?></textarea>
-                                                </div>
-                                            </div>
-                                            <div class="col-lg-12">
-                                                <div class="form-group text-right">
-                                                    <a href="<?= url('/employee/account') ?>" class="pr-2"><i class="fa fa-angle-left"></i><i class="fa fa-angle-left"></i> BACK</a>
-                                                    <button type="submit" name="update_summary" class="btn view-btn-fill">UPDATE</button>
                                                 </div>
                                             </div>
                                         </div>
@@ -413,7 +342,7 @@ if(Input::exists('get') && Input::get('page') == 'edit_work' && Input::get('eid'
 
 
                             <?php if(Input::exists('get') && Input::get('page') == 'edu_edit' && Input::get('eid')): 
-                            $old_edu = json_decode($worker->education, true)[Input::get('eid')];  ?>
+                            $old_edu = json_decode($worker->education, true);  ?>
                             <!-- edit education start -->
                             <div class="account-x">
                                 <div class="account-x-body" id="account-x-body">
@@ -569,7 +498,7 @@ if(Input::exists('get') && Input::get('page') == 'edit_work' && Input::get('eid'
 
 
                             <?php if(Input::exists('get') && Input::get('page') == 'edu_delete' && Input::get('eid')): 
-                            $education = json_decode($worker->education, true)[Input::get('eid')];  ?>
+                            $education = json_decode($worker->education, true) ?>
                             <!-- delete education start -->
                             <div class="account-x">
                                 <div class="account-x-body" id="account-x-body">
@@ -771,7 +700,7 @@ if(Input::exists('get') && Input::get('page') == 'edit_work' && Input::get('eid'
 
 
                             <?php if(Input::exists('get') && Input::get('page') == 'edit_work' && Input::get('eid')): 
-                                $experience = json_decode($worker->work_experience, true)[Input::get('eid')];
+                            $experience = json_decode($worker->work_experience, true);    
                             ?>
                             <!-- edit work start -->
                             <div class="account-x">
@@ -931,48 +860,6 @@ if(Input::exists('get') && Input::get('page') == 'edit_work' && Input::get('eid'
                             </div>
                             <!-- edit work end -->
                             <?php endif; ?>
-
-
-
-                             <?php if(Input::exists('get') && Input::get('page') == 'delete_work' && Input::get('eid')): 
-                            $experience = json_decode($worker->work_experience, true)[Input::get('eid')];  ?>
-                            <!-- delete education start -->
-                            <div class="account-x">
-                                <div class="account-x-body" id="account-x-body">
-                                    <h3 class="rh-head">Delete Education information</h3><br><br>
-                                    <div class="inner-body">
-                                       <ul class="inner_ul">
-                                            <li><b>Job title: </b><?= ucfirst($experience['job_title'])?></li>
-                                            <li><b>Job function: </b><?= $experience['job_function']?></li>
-                                            <li><b>Employer: </b><?= ucfirst($experience['employer_name']) ?></li>
-                                            <li><b>Employer phone: </b><?= $experience['employer_phone']?></li>
-                                            <li><b>Employer email: </b><?= $experience['employer_email']?></li>
-                                            <li><b>Description: </b><?= $experience['description'] ?></li>
-                                            <li>
-                                                <div class="row">
-                                                    <div class="col-lg-6 col-md-6 col-sm-6"><b>Start date: </b><?= $experience['start_date'] ?></div>
-                                                    <div class="col-lg-6 col-md-6 col-sm-6">
-                                                        <?php if(!$experience['inview']): ?>
-                                                            <b>End date: </b><?= $experience['end_date'] ?>
-                                                        <?php else: ?>
-                                                        <b>End date: </b><span class="inview-x">inview</span>
-                                                        <?php endif; ?>
-                                                    </div>
-                                                </div>
-                                            </li>
-                                       </ul>
-                                       <ul>
-                                           <li class="text-right"> 
-                                                <a href="<?= url('/employee/account') ?>" class="pr-2"><i class="fa fa-angle-left"></i><i class="fa fa-angle-left"></i> back</a>
-                                                <a href="#" id="<?= Input::get('eid') ?>" class="delete_experience_btn text-danger">Delete</a>
-                                            </li>
-                                       </ul>
-                                   </div>
-                                </div>
-                            </div>
-                            <!-- delete education end -->
-                            <?php endif; ?>
-
 
                         </div><!-- content end-->
                     </div>
@@ -1286,45 +1173,13 @@ $("#update_education_edit_btn").click(function(e){
 
 
 
-// ===================================
-// DELETE EDUCATION 
-// ===================================
-$(".delete_education_btn").click(function(e){
-    e.preventDefault();
-    var url = $(".ajax_url_page").attr('href');
-    var education_key = $(this).attr('id');
-
-    $(".preloader-container").show() //show preloader
-
-     $.ajax({
-        url: url,
-        method: "post",
-        data: {
-            key: education_key,
-            delete_education_action: 'delete_education_action'
-        },
-        success: function (response){
-            var data = JSON.parse(response);
-            if(data.error){
-                location.reload();
-            }else if(data.url){
-                location.assign(data.url);
-            }else{
-                location.reload();
-            }
-            remove_dark_preloader();
-        }
-    });
-});
-
-
 
 
 
 
 
 // ====================================
-// UPDATE JOB EXPERIENCE
+// ADD JOB EXPERIENCE
 // ====================================
 $("#update_job_info_btn").click(function(e){
     e.preventDefault();
@@ -1485,37 +1340,6 @@ function edit_work_experience(){
 
 
 
-
-// ===========================================
-// DELETE EXPERIENCE
-// ===========================================
-$(".delete_experience_btn").click(function(e){
-    e.preventDefault();
-    var url = $(".ajax_url_page").attr('href');
-    var experience_key = $(this).attr('id');
-
-    $(".preloader-container").show() //show preloader
-
-     $.ajax({
-        url: url,
-        method: "post",
-        data: {
-            key: experience_key,
-            delete_experience_action: 'delete_experience_action'
-        },
-        success: function (response){
-            var data = JSON.parse(response);
-            if(data.error){
-                location.reload();
-            }else if(data.url){
-                location.assign(data.url);
-            }else{
-                location.reload();
-            }
-            remove_dark_preloader();
-        }
-    });
-});
 
 
 

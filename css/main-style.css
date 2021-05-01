@@ -89,6 +89,10 @@ h3, h4, h2, h1, h5{
 .desktop-alert{
     display: none;
 }
+.page-alert-x{
+    width: 70%;
+    margin: 0 auto;
+}
 @media only screen and (max-width: 992px){
     .desktop-alert{
         display: block;
@@ -97,7 +101,11 @@ h3, h4, h2, h1, h5{
         display: none;
     }
 }
-
+@media only screen and (max-width: 767px){
+    .page-alert-x{
+        width: 90%;
+    }
+}
 @media only screen and (max-width: 567px){
     .success-container img{
         width: 70px;
@@ -105,6 +113,9 @@ h3, h4, h2, h1, h5{
     }
     .success-container h4{
         font-size: 15px;
+    }
+    .page-alert-x{
+        width: 100%;
     }
 }
 .all_alert{
@@ -141,8 +152,8 @@ h3, h4, h2, h1, h5{
     border-radius: 3px;
     padding: 10px 0px;
     cursor: pointer;
-    border: 2px solid#2441e7;
-    background-color: #2441e7;
+    border: 2px solid rgb(248, 179, 50);
+    background-color: rgb(248, 179, 50);
     transition: all 0.3s ease;
 }
 .btn-anchor a{
@@ -151,19 +162,19 @@ h3, h4, h2, h1, h5{
     text-align: center;
     cursor: pointer;
     padding: 10px 0px;
-    border: 2px solid#2441e7;
-    background-color: #2441e7;
+    border: 2px solid rgb(248, 179, 50);
+    background-color: rgb(248, 179, 50);
     transition: all 0.3s ease;
 }
 .btn-anchor a:hover{
-    color: #2441e7;
-    color: #2441e7;
-    border: 2px solid #071fa2;
+    color: rgb(248, 179, 50);
+    color: rgb(248, 179, 50);
+    border: 2px solid rgb(248, 179, 50);
     background-color: #fff;
 }
 .btn-fill:hover{
-    color: #2441e7;
-    border: 2px solid #071fa2;
+    color: rgb(248, 179, 50);
+    border: 2px solid rgb(248, 179, 50);
     background-color: #fff;
 }
 .view-btn-fill{
@@ -171,13 +182,13 @@ h3, h4, h2, h1, h5{
     border-radius: 3px;
     padding: 5px 30px;
     cursor: pointer;
-    border: 2px solid#2441e7;
-    background-color: #2441e7;
+    border: 2px solid rgb(248, 179, 50);
+    background-color: rgb(248, 179, 50);
     transition: all 0.3s ease;
 }
 .view-btn-fill:hover{
-    color: #2441e7;
-    border: 2px solid #071fa2;
+    color: rgb(248, 179, 50);
+    border: 2px solid rgb(248, 179, 50);
     background-color: #fff;
 }
 .content-head{
@@ -307,13 +318,13 @@ h3, h4, h2, h1, h5{
     color: #fff;
     padding: 10px 30px;
     border-radius: 4px;
-    border: 2px solid#2441e7;
-    background-color: #2441e7;
+    border: 2px solid rgb(248, 179, 50);
+    background-color: rgb(248, 179, 50);
     transition: all 0.3s ease;
 }
 .all-jobs a:hover{
-    color: #2441e7;
-    border: 2px solid #071fa2;
+    color: rgb(248, 179, 50);
+    border: 2px solid rgb(248, 179, 50);
     background-color: #fff;
 }
 /* ====================================== */
@@ -383,7 +394,7 @@ h3, h4, h2, h1, h5{
 /* ====================================== */
 .standout-conatiner{
     padding: 50px 0px;
-    background-color: #2441e7;
+    background-color: rgb(248, 179, 50);
 }
 .standout-banner{
     width: 80%;
@@ -415,7 +426,7 @@ h3, h4, h2, h1, h5{
     padding: 20px;
     border-radius: 5px;
     margin-bottom: 10px;
-    background-color: #2441e7;
+    background-color: rgb(248, 179, 50);
 }
 .std-content h5{
     font-weight: 300;
@@ -430,13 +441,13 @@ h3, h4, h2, h1, h5{
     padding: 10px 30px;
     border-radius: 3px;
     text-transform: uppercase;
-    border: 2px solid#2441e7;
-    background-color: #2441e7;
+    border: 2px solid rgb(248, 179, 50);
+    background-color: rgb(248, 179, 50);
     transition: all 0.3s ease;
 }
 .std-content-a a:hover{
-    color: #2441e7;
-    border: 2px solid #071fa2;
+    color: rgb(248, 179, 50);
+    border: 2px solid rgb(248, 179, 50);
     background-color: #fff;
 }
 .standout-body .direction{
@@ -448,7 +459,7 @@ h3, h4, h2, h1, h5{
     color: rgb(214, 214, 214);
 }
 .direction i.active{
-    color: #2441e7;
+    color: rgb(248, 179, 50);
 }
 @media only screen and (max-width: 992px){
     .standout-animate{
@@ -545,7 +556,7 @@ h3, h4, h2, h1, h5{
 }
 .jobs-info{
     display: flex;
-    border-bottom: 1px solid #ccc;
+    border-bottom: 1px solid rgba(221, 221, 221, 0.829);
 }
 .jobs-info img{
     width: 60px;
@@ -693,7 +704,7 @@ h3, h4, h2, h1, h5{
     display: block;
     text-align: center;
     text-transform: uppercase;
-    background-color: #2441e7;
+    background-color: rgb(248, 179, 50);
     transition: background-color 0.5s ease;
 }
 .alert-body a:hover{
@@ -755,7 +766,7 @@ h3, h4, h2, h1, h5{
 }
 .alternative-login p{
     font-size: 17px;
-    border-bottom: 1px solid #ccc;
+    border-bottom: 1px solid rgba(221, 221, 221, 0.829);
 }
 .alternative-login a{
     font-size: 12px;
@@ -825,7 +836,7 @@ h3, h4, h2, h1, h5{
     padding: 10px;
     border-radius: 3px 0px 0px 3px;
     display: inline-block;
-    background-color: #2441e7;
+    background-color: rgb(248, 179, 50);
 }
 .j-action a {
     padding: 0px 10px;
@@ -855,13 +866,22 @@ h3, h4, h2, h1, h5{
 .j-expirience{
     padding-top: 20px;
 }
-.inner-ex{
-    border-bottom: 1px solid #ccc;
+ul.inner-ex{
+    border-bottom: 1px solid rgba(221, 221, 221, 0.829);
 }
+ul#inner-ex li{
+   font-size: 13px;
+}
+ul#inner-ex li span{
+    font-size: 11px;
+ }
 .experience-x{
     padding: 10px 0px;
     padding-left: 25px;
-    border-bottom: 1px solid #ccc;
+    border-bottom: 1px solid rgba(221, 221, 221, 0.829);
+}
+.experience-x ul li{
+    margin: 10px 0px;
 }
 .j-expirience ul li{
     font-size: 13px;
@@ -898,17 +918,17 @@ h3, h4, h2, h1, h5{
    padding-left: 30px;
 }
 .j-bio{
-   border-bottom: 1px solid #ccc;
+   border-bottom: 1px solid rgba(221, 221, 221, 0.829);
 }
 .j-bio, .j-contact{ 
     padding-bottom: 10px;
 }
 .j-contact{ 
-    border-bottom: 1px solid #ccc;
+    border-bottom: 1px solid rgba(221, 221, 221, 0.829);
 }
 .j-safety{
     padding: 10px 0px;
-    border-bottom: 1px solid #ccc;
+    border-bottom: 1px solid rgba(221, 221, 221, 0.829);
 }
 .j-safety ul li{
     font-size: 13px;
@@ -941,6 +961,9 @@ i.share-icon{
 .j-share .js-head{
     padding-bottom: 8px;
 }
+ul.ability-x{
+    padding-left: 30px;
+}
 ul.ability-x li{
     font-size: 13px;
 }
@@ -954,7 +977,7 @@ ul.ability-x li{
         text-align: center;
     }
     .j-bio, .j-contact{ 
-        border-bottom: 1px solid #ccc;
+        border-bottom: 1px solid rgba(221, 221, 221, 0.829);
     }
     
     .j-bio .js-head, .j-contact .js-head{
@@ -975,6 +998,7 @@ ul.ability-x li{
     .j-summary-detail p{
         margin-left: 0px;
         padding-left: 10px;
+        font-size: 11px;
     }
     .j-safety, .j-share{
         padding: 0px 8px;
@@ -1044,9 +1068,10 @@ ul.ability-x li{
     background-color: #fff;
     box-shadow: 0px 2px 0px 0px rgb(197, 197, 197);
 }
-input:focus, select:focus, .apply-container textarea:focus{
+.apply-container input:focus, select:focus, .apply-container textarea:focus{
     outline: none;
     box-shadow: none;
+    border:  1px solid  rgb(248, 179, 50);
 }
 @media only screen and (max-width: 992px){
     #apply_now_1, .apply_now_1{
@@ -1074,7 +1099,7 @@ input:focus, select:focus, .apply-container textarea:focus{
     padding: 10px;
     font-size: 15px;
     border-radius: 3px 3px 0px 0px;
-    background-color: #2441e7;
+    background-color: rgb(248, 179, 50);
 }
 .apply-container input:focus{
     outline: none;
@@ -1147,7 +1172,7 @@ input:focus, select:focus, .apply-container textarea:focus{
     padding: 5px;
     margin-bottom: 10px;
     border-radius: 3px 3px 0px 0px;
-    background-color: #2441e7;
+    background-color: rgb(248, 179, 50);
 }
 .sr-head h4{
     color: #fff;
@@ -1425,7 +1450,7 @@ input:focus, select:focus, .apply-container textarea:focus{
 }
 .account-h-body{
     padding: 15px 0px;
-    border-bottom: 1px solid #ccc;
+    border-bottom: 1px solid rgba(221, 221, 221, 0.829);
 }
 .account-h-body .em-img{
     width: 50px;
@@ -1442,7 +1467,7 @@ input:focus, select:focus, .apply-container textarea:focus{
 }
 .account-h-body .info li span.is_accept{
     color: #fff;
-    background-color: #2441e7;
+    background-color: rgb(248, 179, 50);
 }
 .account-h-body .em-img img{
     width: 50px;
@@ -1630,7 +1655,7 @@ input:focus, select:focus, .apply-container textarea:focus{
 }
 /* subscription */
 .subscription-x .btn-fill a:hover{
-    color: #2441e7;
+    color: rgb(248, 179, 50);
 }
 
 
@@ -1666,7 +1691,7 @@ input:focus, select:focus, .apply-container textarea:focus{
 #employer_review_form .review-h h4{
     color: #555;
     margin-bottom: 30px;
-    border-bottom: 1px solid #ccc;
+    border-bottom: 1px solid rgba(221, 221, 221, 0.829);
 }
 .check-x-report{
     top: -5px;
@@ -1816,7 +1841,7 @@ input:focus, select:focus, .apply-container textarea:focus{
     padding: 10px;
     display: inline-block;
     border-radius: 3px 0px 0px 3px;
-    background-color: #2441e7;
+    background-color: rgb(248, 179, 50);
 }
 .post-body{
     margin-bottom: 40px;
@@ -1856,7 +1881,7 @@ ul.anchor-acc{
 @media only screen and (max-width: 567px){
     ul.anchor-acc{
         padding-bottom: 20px;
-        border-bottom: 1px solid #ccc;
+        border-bottom: 1px solid rgba(221, 221, 221, 0.829);
     }
 }
 ul.anchor-acc li{
@@ -1936,7 +1961,7 @@ ul.anchor-acc li a:hover{
 .request-img{
     margin-top: 50px;
     padding-bottom: 20px;
-    border-bottom: 1px solid #ccc;
+    border-bottom: 1px solid rgba(221, 221, 221, 0.829);
 }
 .request-img img.rid-img{
     width: 100px;
@@ -1971,7 +1996,7 @@ ul.request-ul li{
 .information-x{
     margin-top: 20px;
     padding-bottom: 10px;
-    border-bottom: 1px solid #ccc;
+    border-bottom: 1px solid rgba(221, 221, 221, 0.829);
 }
 .information-x ul{
     padding: 0px 20px;
@@ -2126,7 +2151,6 @@ ul.drop-down-ul li a:hover{
 }
 ul.inner_ul{
     padding-bottom: 10px;
-    border-bottom: 1px solid #ccc;
 }
 ul.inner_ul li{
     padding: 3px 0px;
@@ -2285,7 +2309,7 @@ ul.ul-flagg{
     box-shadow: 2px 2px 2px 0px rgb(197, 197, 197);
 }
 .ul-flagg{
-    border-bottom: 1px solid #ccc;
+    border-bottom: 1px solid rgba(221, 221, 221, 0.829);
 }
 @media only screen and (max-width: 1125px){
     .employee-flag{
@@ -2385,10 +2409,6 @@ ul.ul-message li{
     display: table;
     text-align: center;
 }
-.update-content{
-    display: table-cell;
-    vertical-align: middle;
-}
 .newsletter-cancle-btn{
     position: relative;
     height: 10px;
@@ -2485,7 +2505,7 @@ ul.ul-message li{
     border: 1px solid rgb(237, 237, 237);
 }
 .faqs-body-x ul li a:hover i, .faqs-body-x ul li a:hover{
-   color: #2441e7;
+   color: rgb(248, 179, 50);
 }
 .faqs-body-x ul li i{
     top: 4px;
@@ -2645,15 +2665,68 @@ ul.ul-message li{
 
 
 /* =============================================== */
-/*      INDEX                                     */
+/*      JOBS PAGE                                 */
 /* ============================================= */
-.standout-banner{
-
+.jobs-container{
+    padding: 50px 0px;
+    background-color: rgb(246, 246, 246);
 }
-
-
-
-
+.expand-grid{
+    padding: 0px 5px;
+}
+.jobs-body{
+    width: 90%;
+    margin: 0 auto;
+}
+.search_input_x{
+    padding: 10px;
+    background-color: #fff;
+}
+.job-side{
+    /* padding: 10px; */
+    /* background-color: #fff; */
+}
+ul.ul-job-side {
+    margin-top: 10px;
+    background-color: #fff;
+}
+.ul-job-side .title h4{
+    padding: 10px;
+    text-align: center;
+    border-bottom: 1px solid rgb(235, 235, 235);
+}
+ul.ul-job-side li a{
+    display: block;
+    padding: 10px 10px;
+    transition: all 0.3s ease;
+}
+ul.ul-job-side li a:hover{
+    color: #fff;
+    background-color: rgb(248, 179, 50);
+}
+.paginate{
+    margin-top: 50px;
+}
+.newsletter{
+    margin-top: 70px;
+}
+.page-alert{
+    padding: 10px;
+    font-size: 12px;
+    margin-bottom: 20px;
+    border-radius: 3px 0px 0px 3px;
+    background-color: #fff;
+    border-left: 4px solid rgb(248, 179, 50);
+}
+@media only screen and (max-width: 992px){
+    .main-jobs-body{
+        margin-top: 50px;
+    }
+    .jobs-body{
+        width: 100%;
+        padding: 0px 20px;
+    }
+}
 
 
 
