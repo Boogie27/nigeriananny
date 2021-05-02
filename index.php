@@ -210,7 +210,7 @@ $workers = $connection->select('workers')->leftJoin('employee', 'workers.employe
                 <div class="alert alert-success text-center p-3"><?= Session::flash('success') ?></div>
             <?php endif; ?>
 		</div>
-        <div class="text-center title"><h3>Top Employee in Nigeria Nanny</h3></div>
+        <div class="text-center title home-title"><h3>Top Employee in Nigeria <span>Nanny</span></h3></div>
         <div class="content-body"> 
            <div class="row">
                <?php foreach($workers as $worker): 

@@ -371,6 +371,9 @@ span.nav-app-name{
         display: inline-block;
         position: relative;
     }
+    .nav-right .saved-workers{
+        display: none;
+    }
 }
 
 

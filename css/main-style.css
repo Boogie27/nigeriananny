@@ -376,6 +376,9 @@ h3, h4, h2, h1, h5{
 .job-con ul li{
     font-size: 15px;
 }
+.home-title h3 span{
+    display: block;
+}
 @media only screen and (max-width: 398px){
     .job-con img{
         width: 40px;
@@ -2669,6 +2672,10 @@ ul.ul-job-side {
     padding: 10px;
     text-align: center;
     border-bottom: 1px solid rgb(235, 235, 235);
+}
+
+.title span{
+    color: black;
 }
 ul.ul-job-side li a{
     display: block;
