@@ -44,7 +44,7 @@
             </li>
             <li>
                 <?php if(Auth_course::is_loggedin()): ?>
-                    <a href="<?= url('/courses/logout') ?>"><i class="fa fa-power-off"></i>Logout</a>
+                    <a href="<?= url('/courses/logout') ?>" id="course_user_logout_btn"><i class="fa fa-power-off"></i>Logout</a>
                 <?php else: ?>
                     <a href="<?= url('/courses/login') ?>"><i class="fa fa-sign-in"></i>Login</a>
                 <?php endif; ?>

@@ -97,7 +97,6 @@ $client_type = Session::has('employee_type') ? Session::get('employee_type') : n
                             <table class="table table-striped">
                                 <thead>
                                     <tr>
-                                    <th scope="col">Full name</th>
                                     <th scope="col">Email</th>
                                     <th scope="col">Client type</th>
                                     <th scope="col">Select</th>
@@ -109,7 +108,6 @@ $client_type = Session::has('employee_type') ? Session::get('employee_type') : n
                                 foreach($subscribers->result() as $subscriber):    
                                 ?>
                                     <tr>
-                                        <td><?= ucfirst($subscriber->full_name)?></td>
                                         <td><?= $subscriber->email ?></td>
                                         <td><?= ucfirst($subscriber->client_type) ?></td>
                                         <td>

@@ -3,6 +3,27 @@ $settings = $connection->select('settings')->where('id', 1)->first();
 ?>
 
 
+
+ <!-- little preloader start-->
+ <div class="little-preloader-container">
+    <div class="little-dark-theme">
+        <div class="preloader-back-light">
+          <div class="little-p-content">
+                <div class="little-loader"></div>
+          </div>
+        </div>
+    </div>
+ </div>
+<!-- littl preloader end -->
+
+
+
+<!-- page alert bottom -->
+<div class="page-aliert-bottom">
+	<div class="page-alert-content">Pending...</div>
+</div>
+
+
 <div class="bottom-footer">
     <ul class="ul-footer">
         <li><a href="<?= url('/') ?>">Find a worker</a></li>
@@ -19,7 +40,7 @@ $settings = $connection->select('settings')->where('id', 1)->first();
 <a class="scrollToHome" href="#"><i class="flaticon-up-arrow-1"></i></a>
 
 
-<a href="<?= url('/ajax.php') ?>" class="ajax_url_page_news_letter" style="display: none;"></a> <!-- ajax url-->
+<a href="<?= url('/ajax.php') ?>" id="ajax_url_page" style="display: none;"></a> <!-- ajax url-->
 
 
 
@@ -155,7 +176,169 @@ if($(window).width() > 1125)
 
 
 
+// ************** EMPLOYEE LOGOUT ***********//
+$("#employee_logout_btn").click(function(e){
+    e.preventDefault();
+    $(".little-preloader-container").show();
+    var url = $("#ajax_url_page").attr('href');
 
+    $.ajax({
+        url: url,
+        method: 'post',
+        data: {
+            employee_logout_action: 'employee_logout_action'
+        },
+        success: function(response){
+            var data = JSON.parse(response);
+            location.reload()
+        }
+    });
+})
+
+
+
+
+
+// ************** EMPLOYER LOGOUT ***********//
+$("#employer_logout_btn").click(function(e){
+    e.preventDefault();
+    $(".little-preloader-container").show();
+    var url = $("#ajax_url_page").attr('href');
+
+    $.ajax({
+        url: url,
+        method: 'post',
+        data: {
+            employer_logout_action: 'employer_logout_action'
+        },
+        success: function(response){
+            var data = JSON.parse(response);
+            location.reload()
+        }
+    });
+})
+
+
+
+
+// ************ ASSIGN GENDER FIELD *************//
+var client = $(".news-letter-checker");
+$.each($(".news-letter-checker"), function(index, current){
+    $(this).click(function(){
+        for(var i = 0; i < client.length; i++){
+            if(index != i)
+            {
+               $($(client)[i]).prop('checked', false);
+            }else{
+                $($(client)[i]).prop('checked', true);
+            }
+        }
+    });
+});
+
+
+$(client).click(function(){
+    $("#client_type_input").val($(this).val());
+});
+
+
+
+
+
+// *********** SUBSCRIBE TO NEWS LETTER **************//
+$("#submit_newsletter_request_btn").click(function(e){
+	e.preventDefault();
+	$(".alert_news").html('');
+	var url = $("#ajax_url_page").attr('href');
+	var email = $("#news_letter_email").val();
+	var client_type = $("#client_type_input").val();
+	$(".news-letter-sub").html('Please wait...');
+
+    if(get_validation(email, client_type)){
+        $(".news-letter-sub").html('SUBSCRIBE');
+        return;
+    }
+
+
+	$.ajax({
+        url: url,
+        method: 'post',
+        data: {
+			email: email,
+			client_type: client_type,
+            subscribe_news_letter: 'subscribe_news_letter'
+        },
+        success: function(response){
+            var data = JSON.parse(response);
+            if(data.error){
+				get_newsletter_error(data.error)
+			}else if(data.data){
+                clear_fields();
+                get_bottom_alert('Newsletter subscribed successfully!')
+			}
+            $(".news-letter-sub").html('SUBSCRIBE');
+        },
+		error: function(){
+            $(".news-letter-sub").html('SUBSCRIBE');
+            get_bottom_alert('*Nework error, try again later!')
+		}
+    });
+});
+
+
+
+
+function get_validation(email, client_type){
+    var state = false;
+    if(email == ''){
+        state = true;
+        $(".alert_news_1").html('*Email field is required')
+    }
+    if(client_type == ''){
+        state = true;
+        $(".alert_news_2").html('*Client field is required')
+    }
+    return  state;
+}
+
+
+
+// ********* CLEAR FIELDS ************//
+function clear_fields(){
+	$("#client_type_input").val('');
+	$("#news_letter_email").val('');
+	$(".news-letter-checker").prop('checked', false);
+}
+
+
+
+
+// ******** NEWS LETTER ERROR ***********//
+function get_newsletter_error(error){
+	$(".alert_news_1").html(error.email)
+	$(".alert_news_2").html(error.client_type)
+}
+
+
+
+
+// ******** PAGE BOTTOM ALERT ***********//
+function get_bottom_alert(string){
+    var bottom = '10px';
+    if($(window).width() < 567){
+        bottom = '0px';
+    }
+    $(".page-aliert-bottom .page-alert-content").css({
+        bottom: bottom
+    })
+    $(".page-aliert-bottom .page-alert-content").html(string)
+    setTimeout(function(){
+        get_bottom_alert(string)
+            $(".page-aliert-bottom .page-alert-content").css({
+            bottom: '-100px'
+        })
+    }, 3000)
+}
 
 
 

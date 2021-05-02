@@ -207,7 +207,7 @@ $workers = $connection->select('workers')->leftJoin('employee', 'workers.employe
 	<div class="content-one"> <!-- top content start -->
 	    <div class="page-alert-x">
 		    <?php if(Session::has('success')): ?>
-                <div class="alert-success text-center p-3"><?= Session::flash('success') ?></div>
+                <div class="alert alert-success text-center p-3"><?= Session::flash('success') ?></div>
             <?php endif; ?>
 		</div>
         <div class="text-center title"><h3>Top Employee in Nigeria Nanny</h3></div>

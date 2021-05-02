@@ -69,12 +69,12 @@ $categories = $connection->select('job_categories')->where('is_category_featured
             </li>
             <li>
                 <?php if(Auth_employer::is_loggedin()):?>
-                    <a href="<?= url('/employer/logout') ?>"><i class="fa fa-power-off"></i> Logout</a>
+                    <a href="<?= url('/employer/logout') ?>" id="employer_logout_btn"><i class="fa fa-power-off"></i> Logout</a>
                 <?php endif; ?>
             </li>
             <li>
                 <?php if(Auth_employee::is_loggedin()):?>
-                    <a href="<?= url('/employee/logout') ?>"><i class="fa fa-power-off"></i> Logout</a>
+                    <a href="<?= url('/employee/logout') ?>" id="employee_logout_btn"><i class="fa fa-power-off"></i> Logout</a>
                 <?php endif; ?>
             </li>
         </ul>

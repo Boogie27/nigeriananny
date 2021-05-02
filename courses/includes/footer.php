@@ -9,6 +9,9 @@ $settings = $connection->select('settings')->where('id', 1)->first();
 </div>
 
 
+
+
+
 <div class="footer-section"><!-- footer start-->
    <ul class="ul-footer-links">
       <li><a href="#">Privacy policy</a></li>
@@ -37,7 +40,7 @@ $settings = $connection->select('settings')->where('id', 1)->first();
 <a class="scrollToHome" href="#"><i class="flaticon-up-arrow-1"></i></a>
 
 
-<a href="<?= url('/ajax.php') ?>" class="ajax_url_page_news_letter" style="display: none;"></a> <!-- ajax url-->
+<a href="<?= url('/courses/ajax.php') ?>" id="ajax_url_page" style="display: none;"></a> <!-- ajax url-->
 
 
 
@@ -162,6 +165,28 @@ $(window).click(function(e){
 })
 
 
+
+
+
+
+// ************** COURSE USERS LOGOUT ***********//
+$("#course_user_logout_btn").click(function(e){
+    e.preventDefault();
+    $(".little-preloader-container").show();
+    var url = $("#ajax_url_page").attr('href');
+
+    $.ajax({
+        url: url,
+        method: 'post',
+        data: {
+            course_user_logout_action: 'course_user_logout_action'
+        },
+        success: function(response){
+            var data = JSON.parse(response);
+            location.reload()
+        }
+    });
+})
 
 
 // end

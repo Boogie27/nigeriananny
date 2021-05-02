@@ -473,17 +473,6 @@ if(Cookie::has('saved_course'))
 
 
 
- <!-- little preloader start-->
-<div class="little-preloader-container">
-    <div class="little-dark-theme">
-        <div class="preloader-back-light">
-          <div class="little-p-content">
-                <div class="little-loader"></div>
-          </div>
-        </div>
-    </div>
- </div>
-<!-- littl preloader end -->
 
 
 

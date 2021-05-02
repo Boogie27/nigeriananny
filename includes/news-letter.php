@@ -37,9 +37,9 @@
                         
                         <div class="col-lg-12">
                             <input type="hidden" id="client_type_input" value="">
-                            <button type="submit" name="submit_letter" class="btn btn-button">
+                            <button type="submit" id="submit_newsletter_request_btn" class="btn btn-button">
                                 <i class="fa fa-envelope mt5"></i> 
-                                SUBSCRIBE
+                                <span class="news-letter-sub">SUBSCRIBE</span>
                             </button>
                         </div>
                     </div>

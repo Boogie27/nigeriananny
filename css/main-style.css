@@ -2366,33 +2366,8 @@ ul.ul-message li{
 /* ============================================= */
 /* NEWS LETTER                                  */
 /* =========================================== */
-.news-dark-layer{
-    top: 0px;
-    z-index: 1000;
-    position: absolute;
-    display: table;
-    height: 100vh;
-    width: 100vw;
-    text-align: center;
-    position: fixed;
-    display: none;
-    background-color: rgba(12, 12, 12, 0.624);
-}
-.news-letter-container{
-    position: relative;
-    display: table-cell;
-    vertical-align: middle;
-}
-.news-letter-form{
-    width: 70%;
-    padding: 20px;
-    border-radius: 5px;
-    margin: 0 auto;
-    background-color: #fff;
-}
-.news-letter-form input:focus{
-    outline: none;
-    box-shadow: none;
+.news-letter-sub{
+    color: #fff;
 }
 .alert_news{
     top: -10px;

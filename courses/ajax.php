@@ -365,6 +365,19 @@ if(Input::post('save_course_action'))
 
 
 
+// ************** COURSE USERS  LOGOUT **************//
+if(Input::post('course_user_logout_action'))
+{
+    $data = false;
+    if(Auth_course::is_loggedin())
+    {
+        $data = true;
+        Auth_course::logout();
+    }
+
+    return response(['data' => $data]);
+}
+
 
 
 

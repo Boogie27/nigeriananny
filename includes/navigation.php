@@ -3,6 +3,18 @@
 
 <?php
 $settings = $connection->select('settings')->where('id', 1)->first();
+
+$profile_image = '/employee/images/demo.png';
+if(Auth_employee::is_loggedin())
+{
+	$profile_image = Auth_employee::employee('w_image') ? Auth_employee::employee('w_image') : '/employee/images/demo.png';
+}else if(Auth_employer::is_loggedin())
+{
+	$profile_image = Auth_employer::employer('image') ? Auth_employer::employer('image') : '/employer/images/demo.png';
+}
+
+
+
 ?>
 
 <!-- NAVIGATION-->
@@ -25,7 +37,7 @@ $settings = $connection->select('settings')->where('id', 1)->first();
 			<div class="img-right">
 				<i class="fa fa-bars toggle-side-navigation"></i>
 				<i class="fa fa-heart text-danger"></i>
-				<img src="<?= asset('/employee/images/demo.png') ?>" alt="name" class="nav-img"></span>
+				<img src="<?= asset($profile_image) ?>" alt="name" class="nav-img"></span>
 			</div>
 		</div><!-- nav right end-->
    </div>

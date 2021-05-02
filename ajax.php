@@ -1315,7 +1315,6 @@ if(Input::post('subscribe_news_letter'))
 {
     $validate = new Validator();
     $validation = $validate->validate([
-        'full_name' => 'required|min:3|max:50',
         'email' => 'required|email|unique:newsletters_subscriptions',
         'client_type' => 'required',
     ]);
@@ -1327,7 +1326,6 @@ if(Input::post('subscribe_news_letter'))
 
 
     $create = $connection->create('newsletters_subscriptions', [
-            'full_name' => Input::get('full_name'),
             'email' => Input::get('email'),
             'client_type' => Input::get('client_type'),
     ]);
@@ -1370,11 +1368,33 @@ if(Input::post('stop_news_letter'))
 
 
 
+// ************** EMPLOYEE LOGOUT **************//
+if(Input::post('employee_logout_action'))
+{
+    $data = false;
+    if(Auth_employee::is_loggedin())
+    {
+        $data = true;
+        Auth_employee::logout();
+    }
+
+    return response(['data' => $data]);
+}
 
 
 
+// ************** EMPLOYEE LOGOUT **************//
+if(Input::post('employer_logout_action'))
+{
+    $data = false;
+    if(Auth_employer::is_loggedin())
+    {
+        $data = true;
+        Auth_employer::logout();
+    }
 
-
+    return response(['data' => $data]);
+}
 
 
 

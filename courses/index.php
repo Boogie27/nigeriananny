@@ -18,7 +18,7 @@ $courses = $connection->select('courses')->where('is_feature', 1)->paginate(24);
             <?php include('includes/side-navigation.php');  ?>
         </div>
         <div class="col-lg-9 body-expand">
-            <div class="body-content">
+            <div class="body-content home-body-content">
                 <div class="parent-container">
                     <?php if(count($courses->result())): ?>
                     <div class="row">
