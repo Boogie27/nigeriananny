@@ -11,22 +11,15 @@ $flags = $connection->select('employee')->where('is_flagged', 1)->paginate(12);
 
 
 
+
 <?php include('includes/header.php');  ?>
 
-<!-- top navigation-->
-<?php include('includes/top-navigation.php');  ?>
 
-<!-- top navigation-->
+<!--  navigation-->
 <?php include('includes/navigation.php');  ?>
 
+<?php include('includes/side-navigation.php');  ?>
 
-
-
-	
-
-	<!-- mobile navigation-->
-    <?php include('includes/mobile-navigation.php');  ?>
-    
 
     
    <!-- flagged  start-->

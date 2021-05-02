@@ -5,20 +5,20 @@
             <div class="col-lg-12">
                 <div class="main-banner-wrapper">
                     <div class="banner-style-one owl-theme owl-carousel">
-                        <div class="slide slide-one sh2" style="background-image: url(images/slider/1.jpg);">
+                        <div class="slide slide-one sh2" style="background-image: url(images/slider/3.jpg);">
                             <div class="container">
                                 <div class="row">
                                     <div class="col-lg-12 text-center">
-                                        <h3 class="banner-title">Start Investing in You</h3>
-                                        <p>Technology is brining a massive wave of evolution on learning things on different ways</p>
+                                        <h3 class="banner-title">Find amazing employees</h3>
+                                        <p>Explore from the list of amazing employees we provide</p>
                                         <div class="btn-block">
-                                            <a href="#" class="banner-btn">Ready to get Started?</a>
+                                            <a href="<?= url('/jobs') ?>" class="banner-btn">Ready to get Started?</a>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="slide slide-one sh2" style="background-image: url(images/slider/5.jpg);">
+                        <div class="slide slide-one sh2" style="background-image: url(images/slider/1.jpg);">
                             <div class="container">
                                 <div class="row">
                                     <div class="col-lg-12 text-center">
@@ -31,7 +31,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="slide slide-one sh2" style="background-image: url(images/slider/6.jpg);">
+                        <div class="slide slide-one sh2" style="background-image: url(images/slider/4.jpg);">
                             <div class="container">
                                 <div class="row">
                                     <div class="col-lg-12 text-center">

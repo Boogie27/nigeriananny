@@ -4,6 +4,13 @@
 // ===========================================
 $categories = $connection->select('job_categories')->where('is_category_featured', 1)->get(); 
 
+
+// ************ CHECK IF WORKERS IS SAVED ***************//
+$savedSides = false;
+if(Cookie::has('saved_worker'))
+{
+    $savedSides = json_decode(Cookie::get('saved_worker'), true);
+}
 ?>
 
 
@@ -29,12 +36,14 @@ $categories = $connection->select('job_categories')->where('is_category_featured
                 <?php endif; ?>
             </li>
             <li>
-                <a href="#" class="nav-drop-down"><i class="fa fa-heart"></i>Saved jobs <i class="fa fa-angle-right float-right angle"></i></a>
+                <a href="#" class="nav-drop-down"><i class="fa fa-heart"></i>Saved jobs <span class="text-danger side-saved-workers"><?= $savedSides ? '('.count($savedSides).')' : ''?></span><i class="fa fa-angle-right float-right angle"></i></a>
+                <?php if($savedSides):?>
                 <ul class="child-drop-down">
-                    <li><a href="#">course 1</a></li>
-                    <li><a href="#">course 2</a></li>
-                    <li><a href="#">course 3</a></li>
+                    <?php foreach($savedSides as $savedSide): ?>
+                    <li><a href="<?= url('/job-detail.php?wid='.$savedSide['worker_id']) ?>"><?= $savedSide['title']?></a></li>
+                    <?php endforeach; ?>
                 </ul>
+                <?php endif; ?>
             </li>
             <li>
                 <?php if(Auth_employer::is_loggedin()):?>

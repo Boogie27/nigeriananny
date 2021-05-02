@@ -288,6 +288,9 @@ span.nav-app-name{
     font-size: 20px;
     position: relative;
 }
+.nav-right span.saved-workers{
+    font-size: 12px;
+}
 .navigation-search{
     margin-left: 200px;
 }
@@ -300,6 +303,10 @@ span.nav-app-name{
 .navigation-search input{
     width: 93%;
     padding-right: 10px;
+}
+.navigation-search input:focus{
+    outline: none;
+    box-shadow: none;
 }
 .navigation-search .search-btn, .navigation-search .nav-search{
     border: none;
@@ -393,6 +400,9 @@ span.nav-app-name{
     background-color: #fff;
     transition: all 0.2s ease;
     border-right: 1px solid #ccc;
+}
+.side-saved-workers{
+    font-size: 12px;
 }
 .side-nav-cancle {
     padding: 0px 10px;

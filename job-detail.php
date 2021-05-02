@@ -299,6 +299,19 @@ if($request_worker)
 
 
 
+// ************ CHECK IF WORKERS IS SAVED ***************//
+$savedJob = false;
+if(Cookie::has('saved_worker'))
+{
+    $saved_worker = json_decode(Cookie::get('saved_worker'), true);
+    if(array_key_exists(Input::get('wid'), $saved_worker))
+    {
+        $savedJob = true;
+    }
+}
+
+
+
 ?>
 
 
@@ -450,7 +463,6 @@ if($request_worker)
                                 <div class="alert alert-success text-center p-3 mb-2"><?= Session::flash('success') ?></div>
                             <?php endif; ?>
                            <?php 
-                                $savedJob = saved_jobs($job->worker_id);
                                 $w_image = $job->w_image ? $job->w_image : '/employee/images/demo.png'; 
                                 $amount = !$job->amount_to ? money($job->amount_form) : money($job->amount_form).' - '.money($job->amount_to);?>
                             <div class="job-body">
@@ -742,6 +754,10 @@ if($request_worker)
 
 
 
+
+<a href="<?= url('/ajax.php') ?>" id="ajax_url_page" style="display: none;"></a>
+
+
 <!-- Our Footer -->
 <?php include('includes/footer.php');  ?>
 
@@ -800,13 +816,28 @@ function save_for_later(url, worker_id){
             },
             success: function(response){
                 var data = JSON.parse(response);
-                if(data.error){
-                    console.log(data.error);
-                }else if(data.data){
-                    console.log('job saved');
-                }
+                get_saved_workers();
             }
         });
+}
+
+
+
+function get_saved_workers(){
+    var url = $("#ajax_url_page").attr('href')
+    $.ajax({
+        url: url,
+        method: 'post',
+        data: {
+            get_save_job: 'get_save_job'
+        },
+        success: function(response){
+            var data = JSON.parse(response);
+            var count = data.data ? `(${data.data})` : '';
+            $(".nav-right .saved-workers").html(count)
+            $(".side-navigation .side-saved-workers").html(count)
+        }
+    });
 }
 
 // =====================================

@@ -27,6 +27,15 @@ if(Input::exists('get') && Input::get('state'))
 
 
 
+
+//************ GET EMPLOYEES BY SEARCH **************//
+if(Input::exists('get') && Input::get('search'))
+{
+    $workers->where('job_title', 'RLIKE', Input::get('search'));
+}
+
+
+
 $workers->paginate(15); 
 
 // dd($workers->result());
@@ -35,12 +44,17 @@ $page_alert = null;
 $job_title = 'Featured Employees';
 if(Input::get('category') && !count($workers->result()))
 {
-    
     $job_title = implode(' ', explode('-', Input::get('category')));
     $page_alert = 'There are no employees in <b>'.$job_title.'</b> category!';
     $workers = $connection->select('workers')->leftJoin('employee', 'workers.employee_id', '=', 'employee.e_id')->where('employee.e_approved', 1)->where('is_flagged', 0)->where('employee.e_is_deactivate', 0)->paginate(15);
 }
 
+
+if(Input::get('search') && !count($workers->result()))
+{
+    $page_alert = 'There are no employees under <b>'.Input::get('search').'</b> !';
+    $workers = $connection->select('workers')->leftJoin('employee', 'workers.employee_id', '=', 'employee.e_id')->where('employee.e_approved', 1)->where('is_flagged', 0)->where('employee.e_is_deactivate', 0)->paginate(15);
+}
 
 
 ?>
@@ -66,7 +80,7 @@ if(Input::get('category') && !count($workers->result()))
                     <div class="search_input_x">
                         <form action="<?= current_url() ?>" method="GET">
                             <div class="form-group">
-                                <input type="text" class="form-control h50" name="title" value="" placeholder="Search by title" required>
+                                <input type="text" class="form-control h50" name="search" value="" placeholder="Search by title" required>
                                 <button type="submit" class="btn btn-fill mt-1">Search jobs</button>
                             </div>
                         </form>

@@ -8,39 +8,59 @@
 if(Input::post('save_job'))
 {
     $data = false;
-    $worker_id = Input::get('worker_id');
+    $expiry = 3153600;
     $employer_id = Auth_employer::employer('id');
     $connection = new DB();
      
-    $worker = $connection->select('workers')->where('worker_id', $worker_id)->first();
+    $worker = $connection->select('workers')->where('worker_id', Input::get('worker_id'))->first();
     if(!$worker)
     {
         return response(['error' => ['error' => 'Something went wrong']]);
     }
 
-    $oldSaveJob = $connection->select('save_jobs')->where('s_employer_id', $employer_id)->where('s_worker_id', $worker_id)->first();
-    if(!$oldSaveJob)
+    $stored_workers = array();
+    $stored_workers = ["worker_id" => Input::get('worker_id'), "title" => $worker->job_title];
+    if(Cookie::has('saved_worker'))
     {
-        $Insert = $connection->create('save_jobs', [
-            's_employer_id' => $employer_id,
-            's_worker_id' => $worker_id,
-        ]);
-        if($Insert)
+        $old_save = json_decode(Cookie::get('saved_worker'), true);
+        if(array_key_exists(Input::get('worker_id'), $old_save))
         {
-            $data = true;
+            unset($old_save[Input::get('worker_id')]);
+            $save_workers = json_encode($old_save);
+            Cookie::delete('saved_worker');
+
+            if(Cookie::put('saved_worker', $save_workers, $expiry))
+            {
+                return response(['unsaved' => 'worker unsaved']);
+            }
+
         }
-    }else{
-        $delete = $connection->delete('save_jobs')->where('s_employer_id', $employer_id)->where('s_worker_id', $worker_id)->save();
-        if($delete)
-        {
-            $data = true;
-        }
+        Cookie::delete('saved_worker');
     }
+
+    $old_save[Input::get('worker_id')] = $stored_workers;
+    $save_workers = json_encode($old_save);
+    if(Cookie::put('saved_worker', $save_workers, $expiry))
+    {
+        $data = true;
+    }
+
     return response(['data' => $data]);
 }
 
 
-
+// ********** GET ALL SAVED WORKERS ***********//
+if(Input::post('get_save_job'))
+{
+    $data = 0;
+    if(Cookie::has('saved_worker'))
+    {
+        $data = count(json_decode(Cookie::get('saved_worker'), true));
+        
+    }
+    return response(['data' => $data]);
+}
+    
 
 
 
