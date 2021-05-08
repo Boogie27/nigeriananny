@@ -115,3 +115,13 @@ if($banner->is_active)
 <script type="text/javascript" src="<?= SITE_URL ?>/js/timepicker.js"></script>
 <!-- Custom script for all pages --> 
 <script type="text/javascript" src="<?= SITE_URL ?>/js/script.js"></script>
+
+
+
+
+
+
+
+
+
+

@@ -48,7 +48,7 @@ $banner =  $connection->select('settings')->where('id', 1)->first();
                     <?php if(Session::has('success')): ?>
                         <div class="alert alert-success text-center p-3 mb-2"><?= Session::flash('success') ?></div>
                     <?php endif; ?>
-                    <div class="alert-danger text-center p-3 mb-2 page_alert_danger" style="display: none;"></div>
+                    <div class="alert alert-danger text-center p-3 mb-2 page_alert_danger" style="display: none;"></div>
                         <nav class="breadcrumb_widgets" aria-label="breadcrumb mb30">
                             <h4 class="title float-left">Manage employees</h4>
                             <ol class="breadcrumb float-right">
@@ -98,7 +98,7 @@ $banner =  $connection->select('settings')->where('id', 1)->first();
                                         <td>
                                             <a href="<?= url('/admin-nanny/employee-detail?wid='.$employee->e_id) ?>" title="Edit employee"><i class="fa fa-edit"></i></a>
                                            <span class="expand"></span>
-                                           <a href="#"  data-toggle="modal"  data-target="#exampleModal_employee_delete" id="<?= $employee->e_id ?>" class="delete_employee_btn" title="Delete customer"><i class="fa fa-trash"></i></a>
+                                           <a href="#"  data-toggle="modal"  data-target="#exampleModal_employee_delete" id="<?= $employee->e_id ?>" class="delete_employee_btn" title="Delete employee"><i class="fa fa-trash"></i></a>
                                         </td>
                                     </tr>
                                 <?php endforeach; ?>
@@ -209,7 +209,7 @@ $(".employee_feature_btn").click(function(e){
         },
         error: function(){
             $(".page_alert_danger").show();
-            $(".page_alert_danger").html('^Network error, try again later!');
+            $(".page_alert_danger").html('*Network error, try again later!');
         }
     });
     

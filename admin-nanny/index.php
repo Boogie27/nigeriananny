@@ -229,7 +229,7 @@ if(count($today_subs))
 													<?php if($employer->e_image): ?>
 														<img src="<?= asset($employer->e_image) ?>" alt="" class="table-img <?= $employer->e_active ? 'online' : 'offline' ?>">
 														<?php else: ?>
-														<img src="<?= asset('/employer/images/employer/demo.png') ?>" alt="" class="table-img <?= $employer->e_active ? 'online' : 'offline' ?>">
+														<img src="<?= asset('/employer/images/demo.png') ?>" alt="" class="table-img <?= $employer->e_active ? 'online' : 'offline' ?>">
 														<?php endif; ?>
 													</td>
 													<td><?= ucfirst($employer->last_name).' '.ucfirst($employer->first_name)?></td>

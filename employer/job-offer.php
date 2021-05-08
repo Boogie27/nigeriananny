@@ -2,8 +2,6 @@
 <?php
 if(!Auth_employer::is_loggedin())
 {
-    Session::put('old_url', '/employer/account');
-    Session::put('error', '*Signup or Login to access that page!');
     return view('/');
 }
 
@@ -27,7 +25,7 @@ if(!$employer)
 // ======================================
 // GET REQUESTED OFFERS
 // ======================================
-$requests = $connection->select('request_workers')->leftJoin('workers', 'request_workers.r_worker_id', '=', 'workers.worker_id')->leftJoin('employee', 'request_workers.j_employee_id', '=', 'employee.e_id')->where('is_accept', 0)->where('is_cancle', 0)->where('j_employer_id', Auth_employer::employer('id'))->get();
+$requests = $connection->select('request_workers')->leftJoin('workers', 'request_workers.r_worker_id', '=', 'workers.worker_id')->leftJoin('employee', 'request_workers.j_employee_id', '=', 'employee.e_id')->where('is_accept', 0)->where('is_cancle', 0)->where('is_employer_delete', 0)->where('j_employer_id', Auth_employer::employer('id'))->get();
 
 
 
@@ -64,7 +62,7 @@ $requests = $connection->select('request_workers')->leftJoin('workers', 'request
                         <div class="account-x-body">
                             <div class="img-conatiner-x">
                                 <div class="em-img">
-                                    <?php $profile_image = $employer->e_image ? $employer->e_image : '/images/employer/demo.png' ?>
+                                    <?php $profile_image = $employer->e_image ? $employer->e_image : '/employee/images/demo.png' ?>
                                     <img src="<?= asset($profile_image) ?>" alt="<?= $employer->first_name ?>" class="acc-img" id="profile_image_img">
                                     <i class="fa fa-camera" id="profile_img_open"></i>
                                     <input type="file" class="profile_img_input" style="display: none;">
@@ -104,12 +102,21 @@ $requests = $connection->select('request_workers')->leftJoin('workers', 'request
                         <?php endif; ?>
                         <?php if(count($requests)): 
                         foreach($requests as $request):
-                            $profile_image = $request->w_image ? $request->w_image : '/images/employee/demo.png';
+                            $profile_image = $request->w_image ? $request->w_image : '/employee/images/demo.png';
                             $amount = !$request->amount_to ? money($request->amount_form) : money($request->amount_form).' - '.money($request->amount_to);
                         ?>
                             <div class="jobs-info accept-x-inner">
                                 <img src="<?= asset($profile_image) ?>" alt="">
                                 <ul class="ul">
+                                    <li class="text-right lupe-x">
+                                        <div class="drop-down">
+                                            <i class="fa fa-ellipsis-h dot-icon"></i>
+                                            <ul class="drop-down-ul">
+                                                <li><a href="<?= url('/job-detail.php?wid='.$request->worker_id ) ?>">Detail</a></li>
+                                                <li><a href="#" class="request_delete_btn" id="<?= $request->request_id?>">Delete offer</a></li>
+                                            </ul>
+                                        </div>
+                                    </li>
                                     <li>
                                         <h4><a href="<?= url('/job-detail.php?wid='.$request->r_worker_id) ?>"> <?= ucfirst($request->job_title)?></a> </h4>
                                     </li>
@@ -185,18 +192,18 @@ $('.img-conatiner-x').on('click', '#profile_img_open', function(){
 
 
 // ============================================
-//  ADD PROFILE IMAGE
+//  ADD EMPLOYER PROFILE IMAGE
 // ============================================
 $('.img-conatiner-x').on('change', '.profile_img_input', function(){
     var url = $(".ajax_url_page").attr('href');
     var image = $(".profile_img_input");
     $(".e-loader-kamo").show();
-    
+
     var data = new FormData();
     var image = $(image)[0].files[0];
 
     data.append('image', image);
-    data.append('upload_employee_image', true);
+    data.append('upload_employer_image', true);
 
     $.ajax({
         url: url,
@@ -209,7 +216,9 @@ $('.img-conatiner-x').on('change', '.profile_img_input', function(){
             if(data.error){
                 error_preloader(data.error.image);
             }else if(data.data){
-                img_preloader();
+                $(".nav-profile-img").attr('src', data.data)
+                $("#profile_image_img").attr('src', data.data)
+                img_preloader()
             }
         }
     });
@@ -219,41 +228,14 @@ $('.img-conatiner-x').on('change', '.profile_img_input', function(){
 
 
 
-
-
-// ========================================
-//     GET EMPLOYER IMAGE
-// ========================================
-function get_employer_img(){
-    var url = $(".ajax_url_page").attr('href');
-
-    $.ajax({
-        url: url,
-        method: "post",
-        data: {
-            get_employee_img: 'get_employee_img'
-        },
-        success: function (response){
-            $(".img-conatiner-x .em-img").html(response)
-        }
-    });
-}
-
-
-
-
-
 // ========================================
 //     GET ERROR PRELOADER
 // ========================================
 function img_preloader(string){
-    $(".e-loader-kamo").show();
     setTimeout(function(){
-        get_employer_img()
         $(".e-loader-kamo").hide();
-    }, 5000);
+    }, 1000);
 }
-
 
 
 
@@ -338,6 +320,7 @@ $(".request_cancle_btn").click(function(e){
 
 
 
+
 // ========================================
 // DELETE JOB OFFER
 // ========================================
@@ -352,7 +335,7 @@ $(".request_delete_btn").click(function(e){
         method: "post",
         data: {
             request_id: request_id,
-            employee_delete_request: 'employee_delete_request'
+            employer_delete_request: 'employer_delete_request'
         },
         success: function (response){
             var data = JSON.parse(response);
@@ -364,6 +347,7 @@ $(".request_delete_btn").click(function(e){
         }
     });
 });
+
 
 
 

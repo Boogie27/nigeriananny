@@ -2,9 +2,7 @@
 <?php
 if(!Auth_employee::is_loggedin())
 {
-    Session::put('old_url', '/employee/account');
-    Session::put('error', '*Signup or Login to access that page!');
-    return view('/');
+    return view('/employee/login');
 }
 
 
@@ -122,7 +120,7 @@ if(Input::exists('get') && Input::get('page') == 'edit_work' && Input::get('eid'
                                 <div class="account-x-body">
                                     <div class="img-conatiner-x">
                                         <div class="em-img">
-                                            <?php $profile_image = $employee->w_image ? $employee->w_image : '/images/employee/demo.png' ?>
+                                            <?php $profile_image = $employee->w_image ? $employee->w_image : '/employee/images/demo.png' ?>
                                             <img src="<?= asset($profile_image) ?>" alt="<?= $employee->first_name ?>" class="acc-img" id="profile_image_img">
                                             <i class="fa fa-camera" id="profile_img_open"></i>
                                             <input type="file" class="profile_img_input" style="display: none;">
@@ -935,7 +933,9 @@ $('.img-conatiner-x').on('change', '.profile_img_input', function(){
             if(data.error){
                 error_preloader(data.error.image);
             }else if(data.data){
-                img_preloader();
+                $(".nav-profile-img").attr('src', data.data)
+                $("#profile_image_img").attr('src', data.data)
+                img_preloader()
             }
         }
     });
@@ -948,36 +948,12 @@ $('.img-conatiner-x').on('change', '.profile_img_input', function(){
 
 
 // ========================================
-//     GET EMPLOYER IMAGE
-// ========================================
-function get_employer_img(){
-    var url = $(".ajax_url_page").attr('href');
-
-    $.ajax({
-        url: url,
-        method: "post",
-        data: {
-            get_employee_img: 'get_employee_img'
-        },
-        success: function (response){
-            $(".img-conatiner-x .em-img").html(response)
-        }
-    });
-}
-
-
-
-
-
-// ========================================
 //     GET ERROR PRELOADER
 // ========================================
 function img_preloader(string){
-    $(".e-loader-kamo").show();
     setTimeout(function(){
-        get_employer_img()
         $(".e-loader-kamo").hide();
-    }, 5000);
+    }, 1000);
 }
 
 

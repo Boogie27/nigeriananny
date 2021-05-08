@@ -52,7 +52,7 @@
     
     $body .=    '<div class="password_reset-forms">
                     <div class="col-lg-12">
-                        <div style="text-align: center;"><img src="'.asset($settings->logo).'" alt="'.$settings->app_name.'"></div>
+                        <div style="text-align: center;"><img src="'.asset($settings->logo).'" style="width: 50px; height: 50px; border-radius: 50%;" alt="'.$settings->app_name.'"></div>
                     </div>
                     <h4 style="text-align: center;">'.$settings->app_name.'</h4>
                     <h3 style="text-align: center;">Reset password</h3>
@@ -85,20 +85,15 @@
  }
 
 ?>
-<?php include('includes/header.php');  ?>
+<?php include('../includes/header.php');  ?>
 
-<!-- top navigation-->
-<?php include('includes/top-navigation.php');  ?>
 
-<!-- top navigation-->
-<?php include('includes/navigation.php');  ?>
+<!--  navigation-->
+<?php include('../includes/navigation.php');  ?>
 
-<!-- images/home/4.jpg -->
-	
+<?php include('../includes/side-navigation.php');  ?>
 
-<!-- mobile navigation-->
-<?php include('includes/mobile-navigation.php');  ?>
-    
+
 
 
 
@@ -125,7 +120,7 @@
                     </div>
                    <div class="col-lg-12">
                         <div class="form-group">
-                            <button type="submit" name="forgot_password" class="uppercase btn-fill">Receive password</button>
+                            <button type="submit" name="forgot_password" class="btn-fill">Receive password</button>
                             <p class="apply-p">Don't have an account? <br><a href="<?= url('/employee/register') ?>" class="text-primary">Register</a></p>
                         </div>
                     </div>

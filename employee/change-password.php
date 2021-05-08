@@ -2,9 +2,7 @@
 <?php
 if(!Auth_employee::is_loggedin())
 {
-    Session::put('old_url', '/employee/account');
-    Session::put('error', '*Signup or Login to access that page!');
-    return view('/');
+    return view('/employee/login');
 }
 
 
@@ -197,7 +195,6 @@ if(!$employee)
 
     <script>
 $(document).ready(function(){
-
 // ===========================================
 //      OPEN PROFILE IMAGE
 // ===========================================
@@ -232,7 +229,9 @@ $('.img-conatiner-x').on('change', '.profile_img_input', function(){
             if(data.error){
                 error_preloader(data.error.image);
             }else if(data.data){
-                img_preloader();
+                $(".nav-profile-img").attr('src', data.data)
+                $("#profile_image_img").attr('src', data.data)
+                img_preloader()
             }
         }
     });
@@ -245,38 +244,13 @@ $('.img-conatiner-x').on('change', '.profile_img_input', function(){
 
 
 // ========================================
-//     GET EMPLOYER IMAGE
-// ========================================
-function get_employer_img(){
-    var url = $(".ajax_url_page").attr('href');
-
-    $.ajax({
-        url: url,
-        method: "post",
-        data: {
-            get_employee_img: 'get_employee_img'
-        },
-        success: function (response){
-            $(".img-conatiner-x .em-img").html(response)
-        }
-    });
-}
-
-
-
-
-
-// ========================================
 //     GET ERROR PRELOADER
 // ========================================
 function img_preloader(string){
-    $(".e-loader-kamo").show();
     setTimeout(function(){
-        get_employer_img()
         $(".e-loader-kamo").hide();
-    }, 5000);
+    }, 1000);
 }
-
 
 
 

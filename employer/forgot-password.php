@@ -46,7 +46,7 @@
     
     $body .=    '<div class="password_reset-forms">
                     <div class="col-lg-12">
-                        <div style="text-align: center;"><img src="'.asset($settings->logo).'" alt="'.$settings->app_name.'"></div>
+                        <div style="text-align: center;"><img src="'.asset($settings->logo).'" style="width: 50px; height: 50px; border-radius: 50%;" alt="'.$settings->app_name.'"></div>
                     </div>
                     <h4 style="text-align: center;">'.$settings->app_name.'</h4>
                     <h3 style="text-align: center;">Reset password</h3>

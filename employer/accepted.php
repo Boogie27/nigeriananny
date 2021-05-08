@@ -63,7 +63,7 @@ $requests = $connection->select('request_workers')->leftJoin('workers', 'request
                         <div class="account-x-body">
                             <div class="img-conatiner-x">
                                 <div class="em-img">
-                                    <?php $profile_image = $employer->e_image ? $employer->e_image : '/images/employer/demo.png' ?>
+                                    <?php $profile_image = $employer->e_image ? $employer->e_image : '/employee/images/demo.png' ?>
                                     <img src="<?= asset($profile_image) ?>" alt="<?= $employer->first_name ?>" class="acc-img" id="profile_image_img">
                                     <i class="fa fa-camera" id="profile_img_open"></i>
                                     <input type="file" class="profile_img_input" style="display: none;">
@@ -103,7 +103,7 @@ $requests = $connection->select('request_workers')->leftJoin('workers', 'request
                     <?php endif; ?>
                         <?php if(count($requests)): 
                          foreach($requests as $request):
-                            $profile_image = $request->w_image ? $request->w_image : '/images/employee/demo.png';
+                            $profile_image = $request->w_image ? $request->w_image : '/employee/images/demo.png';
                             $amount = !$request->amount_to ? money($request->amount_form) : money($request->amount_form).' - '.money($request->amount_to);
                         ?>
                             <div class="jobs-info accept-x-inner">
@@ -114,9 +114,9 @@ $requests = $connection->select('request_workers')->leftJoin('workers', 'request
                                             <i class="fa fa-ellipsis-h dot-icon"></i>
                                             <ul class="drop-down-ul">
                                                 <li><a href="<?= url('/employer/employee-detail.php?wid='.$request->request_id ) ?>">Detail</a></li>
-                                                <li><a href="#" class="request_accept_btn" id="<?= $request->request_id?>">Accept offer</a></li>
-                                                <li><a href="#" class="request_cancle_btn" id="<?= $request->request_id?>">Cancle offer</a></li>
-                                                <li><a href="#" class="request_delete_btn" id="<?= $request->request_id?>">Delete offer</a></li>
+                                                <?php if($request->is_completed): ?>
+                                                    <li><a href="#" class="request_delete_btn" id="<?= $request->request_id?>">Delete offer</a></li>
+                                                <?php endif; ?>
                                             </ul>
                                         </div>
                                     </li>
@@ -195,18 +195,18 @@ $('.img-conatiner-x').on('click', '#profile_img_open', function(){
 
 
 // ============================================
-//  ADD PROFILE IMAGE
+//  ADD EMPLOYER PROFILE IMAGE
 // ============================================
 $('.img-conatiner-x').on('change', '.profile_img_input', function(){
     var url = $(".ajax_url_page").attr('href');
     var image = $(".profile_img_input");
     $(".e-loader-kamo").show();
-    
+
     var data = new FormData();
     var image = $(image)[0].files[0];
 
     data.append('image', image);
-    data.append('upload_employee_image', true);
+    data.append('upload_employer_image', true);
 
     $.ajax({
         url: url,
@@ -219,7 +219,9 @@ $('.img-conatiner-x').on('change', '.profile_img_input', function(){
             if(data.error){
                 error_preloader(data.error.image);
             }else if(data.data){
-                img_preloader();
+                $(".nav-profile-img").attr('src', data.data)
+                $("#profile_image_img").attr('src', data.data)
+                img_preloader()
             }
         }
     });
@@ -229,41 +231,14 @@ $('.img-conatiner-x').on('change', '.profile_img_input', function(){
 
 
 
-
-
-// ========================================
-//     GET EMPLOYER IMAGE
-// ========================================
-function get_employer_img(){
-    var url = $(".ajax_url_page").attr('href');
-
-    $.ajax({
-        url: url,
-        method: "post",
-        data: {
-            get_employee_img: 'get_employee_img'
-        },
-        success: function (response){
-            $(".img-conatiner-x .em-img").html(response)
-        }
-    });
-}
-
-
-
-
-
 // ========================================
 //     GET ERROR PRELOADER
 // ========================================
 function img_preloader(string){
-    $(".e-loader-kamo").show();
     setTimeout(function(){
-        get_employer_img()
         $(".e-loader-kamo").hide();
-    }, 5000);
+    }, 1000);
 }
-
 
 
 
@@ -283,65 +258,35 @@ function error_preloader(string){
 
 
 
-// ========================================
-// ACCPET OFFER
-// ========================================
-$(".request_accept_btn").click(function(e){
-    e.preventDefault();
-    var url = $(".ajax_url_page").attr('href');
-    var request_id = $(this).attr('id');
-    $(".preloader-container").show() //show preloader
-    
-    $.ajax({
-        url: url,
-        method: "post",
-        data: {
-            request_id: request_id,
-            employee_accept_offer: 'employee_accept_offer'
-        },
-        success: function (response){
-            var data = JSON.parse(response);
-            if(data.error){
-                location.reload();
-            }else if(data.data){
-                location.reload();
-            }
-        }
-    });
-});
-
-
-
-
 
 
 
 // ========================================
 // CANCLE JOB OFFER
 // ========================================
-$(".request_cancle_btn").click(function(e){
-    e.preventDefault();
-    var url = $(".ajax_url_page").attr('href');
-    var request_id = $(this).attr('id');
-    $(".preloader-container").show() //show preloader
+// $(".request_cancle_btn").click(function(e){
+//     e.preventDefault();
+//     var url = $(".ajax_url_page").attr('href');
+//     var request_id = $(this).attr('id');
+//     $(".preloader-container").show() //show preloader
     
-    $.ajax({
-        url: url,
-        method: "post",
-        data: {
-            request_id: request_id,
-            employee_cancle_action: 'employee_cancle_action'
-        },
-        success: function (response){
-            var data = JSON.parse(response);
-            if(data.error){
-                location.reload();
-            }else if(data.data){
-                location.reload();
-            }
-        }
-    });
-});
+//     $.ajax({
+//         url: url,
+//         method: "post",
+//         data: {
+//             request_id: request_id,
+//             employee_cancle_action: 'employee_cancle_action'
+//         },
+//         success: function (response){
+//             var data = JSON.parse(response);
+//             if(data.error){
+//                 location.reload();
+//             }else if(data.data){
+//                 location.reload();
+//             }
+//         }
+//     });
+// });
 
 
 
@@ -362,7 +307,7 @@ $(".request_delete_btn").click(function(e){
         method: "post",
         data: {
             request_id: request_id,
-            employee_delete_request: 'employee_delete_request'
+            employer_delete_request: 'employer_delete_request'
         },
         success: function (response){
             var data = JSON.parse(response);

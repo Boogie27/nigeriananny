@@ -97,7 +97,8 @@ if(!$employer)
 // ======================================
 // GET REQUESTED OFFERS
 // ======================================
-$requests = $connection->select('request_workers')->leftJoin('employee', 'request_workers.j_employee_id', '=', 'employee.e_id')->where('j_employer_id', Input::get('wid'))->get();
+$requests = $connection->select('request_workers')->leftJoin('employee', 'request_workers.j_employee_id', '=', 'employee.e_id')
+                       ->leftJoin('workers', 'request_workers.r_worker_id', '=', 'workers.worker_id')->where('j_employer_id', Input::get('wid'))->get();
 
 
 
@@ -136,7 +137,7 @@ $banner =  $connection->select('settings')->where('id', 1)->first();
                         <?php include('includes/mobile-drop-nav.php') ?><!-- mobile-navigation -->
                     </div>
                     <div class="col-lg-12">
-                    <div class="alert-danger text-center p-3 mb-2 page_alert_danger" style="display: none;"></div>
+                    <div class="alert alert-danger text-center p-3 mb-2 page_alert_danger" style="display: none;"></div>
                         <nav class="breadcrumb_widgets" aria-label="breadcrumb mb30">
                             <h4 class="title float-left">Employee infomation</h4>
                             <ol class="breadcrumb float-right">
@@ -149,17 +150,17 @@ $banner =  $connection->select('settings')->where('id', 1)->first();
                     <div class="col-lg-12"><!-- content start-->
                             <div class="mobile-alert">
                                 <?php if(Session::has('error')): ?>
-                                    <div class="alert-danger text-center p-3 mb-2"><?= Session::flash('error') ?></div>
+                                    <div class="alert alert-danger text-center p-3 mb-2"><?= Session::flash('error') ?></div>
                                 <?php endif; ?>
                                 <?php if(Session::has('success')): ?>
-                                    <div class="alert-success text-center p-3 mb-2"><?= Session::flash('success') ?></div>
+                                    <div class="alert alert-success text-center p-3 mb-2"><?= Session::flash('success') ?></div>
                                 <?php endif; ?>
                             </div>
                             <div class="account-x">
                                 <div class="account-x-body" id="account-x-body"><br>
                                     <div class="img-conatiner-x">
                                         <div class="em-img">
-                                            <?php $profile_image = $employer->e_image ? $employer->e_image : '/employer/images/employer/demo.png' ?>
+                                            <?php $profile_image = $employer->e_image ? $employer->e_image : '/employer/images/demo.png' ?>
                                             <img src="<?= asset($profile_image) ?>" alt="<?= $employer->first_name ?>" class="acc-img" id="profile_image_img">
                                             <i class="fa fa-camera" id="profile_img_open"></i>
                                             <input type="file" class="profile_img_input" style="display: none;">
@@ -272,16 +273,15 @@ $banner =  $connection->select('settings')->where('id', 1)->first();
                             <?php endif; ?>
                                 <?php if(count($requests)): 
                             foreach($requests as $request):
-                                $profile_image = $request->w_image ? $request->w_image : '/images/employee/demo.png';
-                                $detail = json_decode($request->work_detail, true);
-                                $amount = $detail['amount_to'] ? money($detail['amount_form']).' - '.money($detail['amount_to']) : money($detail['amount_form']);
+                                $profile_image = $request->w_image ? $request->w_image : '/employee/images/demo.png';
+                                $amount = !$request->amount_to ? money($request->amount_form) : money($request->amount_form).' - '.money($request->amount_to);
                             ?>
                             <div class="jobs-info accept-x-inner">
                                 <img src="<?= asset($profile_image) ?>" alt="">
                                 <ul class="ul">
                                     <li>
                                         <h4>
-                                            <a href="<?= url('/job-detail.php?wid='.$request->r_worker_id) ?>"><?= ucfirst($detail['job_title'])?></a> 
+                                            <a href="<?= url('/job-detail.php?wid='.$request->r_worker_id) ?>"><?= ucfirst($request->job_title)?></a> 
                                             <span class="date text-success float-right" style="font-size: 12px;"><i class="fa fa-clock-o text-success" style="font-size: 12px;"></i> <?= date('d M Y', strtotime($request->request_date)) ?></span>
                                         </h4>
                                     </li>
@@ -289,15 +289,20 @@ $banner =  $connection->select('settings')->where('id', 1)->first();
                                     <li>Email: <?= $request->email ?></li>
                                     <div class="row">
                                         <div class="col-lg-6 col-md-6 col-sm-6">
-                                            <li>
-                                                <?php if($detail['job_type'] != 'live in'):
-                                                $living = json_decode($detail['job_type'], true); ?>
-                                                    <b>Location: </b><?= ucfirst($living['city'])?> | <?= ucfirst($living['state'])?> 
+                                        <li>
+                                            <?php 
+                                            if($request->job_type):
+                                                if($request->job_type != 'live in'):
+                                                $living = json_decode($request->job_type, true); ?>
+                                                    <b>Job Location: </b><?= ucfirst($living['city'])?> | <?= ucfirst($living['state'])?> 
                                                 <?php else: ?>
-                                                    <?= $detail['job_type'] ?>
+                                                    <?= $request->job_type ?>
                                                 <?php endif; ?>
-                                                | <span class="text-warning money-amount"><?= $amount ?></span>
-                                            </li>
+                                            <?php else: ?>
+                                                <span class="money-amount">No job type</span>
+                                            <?php endif; ?>
+                                            | <span class="text-warning money-amount"><?= $amount ?></span>
+                                        </li>
                                         </div>
                                         <div class="col-lg-6 col-md-6 col-sm-6">
                                             <?php if(!$request->is_cancle) :?>

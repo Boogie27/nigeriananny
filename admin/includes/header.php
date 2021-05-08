@@ -1,3 +1,24 @@
+<?php
+
+// ********** SUBSCRIPTION EXPIRE ON DUE MONTH ************//
+$employer_subs = $connection->select('employer_subscriptions')->where('is_expire', 0)->get();
+if(count($employer_subs))
+{
+	$today = date('Y-m-d H:i:s', strtotime('+4months'));
+	foreach($employer_subs as $subs)
+	{
+		if($today > $subs->end_date)
+		{
+		    $update = $connection->update('employer_subscriptions', [
+		               'is_expire' => 1,
+		               'is_expire_date' => $today
+			        ])->where('is_expire', 0)->where('subscription_id', $subs->subscription_id )->save();
+		}
+	}
+}
+
+?>
+
 <!DOCTYPE html>
 <html dir="ltr" lang="en">
 
@@ -47,7 +68,7 @@
 <div class="preloader-container">
 	<div class="ajax-preloader-x">
 		<div class="loader-y">
-			<div class="ajax-loader-x"></div> loading...
+			<div class="ajax-loader-x"></div> Please wait...
 		</div>
 	</div>
 </div>

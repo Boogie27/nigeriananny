@@ -5,7 +5,7 @@
             <div class="col-lg-7 col-md-7">
                 <div class="update-content">
                     <h4>Stay updated</h4>
-                    <p>Join our and get the latest information, listings and career insights delivered straight to your inbox.</p>
+                    <p>Subscribe to our newsletter and get the latest information, listings and career <br>insights delivered straight to your inbox.</p>
                 </div>
             </div>
             <div class="col-lg-5 col-md-5">

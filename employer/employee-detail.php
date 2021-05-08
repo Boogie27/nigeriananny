@@ -1,6 +1,11 @@
 <?php include('../Connection.php');  ?>
 
 <?php 
+if(!Auth_employer::is_loggedin())
+{
+    return view('/');
+}
+
 if(!Input::exists('get') && !Input::get('wid'))
 {
     return view('/');
@@ -126,7 +131,7 @@ $reports =  $connection->select('reports')->where('is_feature', 1)->get();
                                 <div class="alert alert-success text-center p-3 mb-2"><?= Session::flash('success') ?></div>
                             <?php endif; ?>
                            <?php 
-                            $profile_image = $worker->w_image ? $worker->w_image : '/images/employee/demo.png';
+                            $profile_image = $worker->w_image ? $worker->w_image : '/employee/images/demo.png';
                             $amount = !$worker->amount_to ? money($worker->amount_form) : money($worker->amount_form).' - '.money($worker->amount_to); ?>
                             <div class="job-body">
                                 <div class="jobs-info">
@@ -272,7 +277,7 @@ $reports =  $connection->select('reports')->where('is_feature', 1)->get();
                                         foreach($reviews as $review):
                                         ?>
                                         <div class="emp-rev flex-item">
-                                            <?php $review_image = $review->e_image ? $review->e_image : '/employer/images/employer/demo.png';  ?>
+                                            <?php $review_image = $review->e_image ? $review->e_image : '/employee/images/demo.png';  ?>
                                             <img src="<?= asset($review_image) ?>" alt="<?= $review->first_name ?>" class="review-img">
                                             <ul class="info">
                                                 <ul>

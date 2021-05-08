@@ -125,7 +125,12 @@ class Auth_employee{
                         'is_active' => 0,
                         'last_login' => date('Y-m-d H:i:s')
                 ])->where('e_id', $employee->e_id)->save();
-                Session::delete('employee');
+               
+                if(Auth_employer::is_loggedin())
+                {
+                    Session::delete('employer');
+                }
+                Session::delete('employee'); 
                 return true;
             }
         }

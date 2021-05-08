@@ -27,7 +27,7 @@ $flags = $connection->select('employee')->where('is_flagged', 1)->paginate(12);
         <div class="flagged-container">
             <div class="flagged-h">
                 <h3>Flagged employees</h3>
-                <p>Employees who are appear here has been flagged based on their misdeeds</p>
+                <p>Employees who appear here has been flagged based on their misdeeds</p>
             </div>
             <br><br>
             <div class="row">
@@ -61,7 +61,7 @@ $flags = $connection->select('employee')->where('is_flagged', 1)->paginate(12);
                         <div class="inner-flag">
                             <h4>FLag empty</h4>
                             <p>There are no flagged employees yet!</p>
-                            <a href="<?= url('/') ?>" class="text-primary"><i class="fa fa-angle-left"></i><i class="fa fa-angle-left"></i> back</a>
+                            <a href="<?= url('/') ?>" class="text-warning"><i class="fa fa-angle-left text-warning"></i><i class="fa fa-angle-left text-warning"></i> back</a>
                         </div>
                     </div>
                 <?php endif; ?>

@@ -661,6 +661,13 @@ public function validate($parameters = array())
                                     $this->_validate_error[$key] = '*'.$field_name.' must be of numbers';
                                 }
                             break;
+
+                            case 'file_required':
+                                if(!Image::exists($key))
+                                {
+                                    $this->_validate_error[$key] = '*'.$field_name.' is required';
+                                }
+                            break;
                         }
                     }
                 }

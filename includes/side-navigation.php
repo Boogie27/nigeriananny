@@ -46,22 +46,31 @@ if(Cookie::has('saved_worker'))
                 <?php endif; ?>
             </li>
             <li>
+                <?php if(Auth_employee::is_loggedin()):?>
+                    <a href="#" class="nav-drop-down"><i class="fa fa-user"></i>Account <i class="fa fa-angle-right float-right angle"></i></a>
+                    <ul class="child-drop-down">
+                        <li> <a href="<?= url('/employee/account') ?>">Account</a></li>
+                        <li><a href="<?= url('/job-detail.php?wid='.$employee_profile->worker_id) ?>">My profile</a></li>
+                    </ul>
+                <?php endif; ?>
+            </li>
+            <li>
                 <?php if(Auth_employer::is_loggedin()):?>
                     <a href="<?= url('/employer/account') ?>"><i class="fa fa-user"></i> Account</a>
-                    <a href="<?= url('/subscription') ?>"><i class="fa fa-money"></i> Subscription plan</a>
                 <?php endif; ?>
-                <?php if(Auth_employee::is_loggedin()):?>
-                    <a href="<?= url('/employee/account') ?>"><i class="fa fa-user"></i> Account</a>
-                <?php endif; ?>
+                <a href="<?= url('/subscription') ?>"><i class="fa fa-money"></i> Subscription plan</a>
             </li>
             <li>
                 <a href="<?= url('/jobs') ?>"><i class="fa fa-briefcase"></i>Find a worker</a>
             </li>
             <li>
+                <a href="<?= url('/flagged') ?>"><i class="fa fa-flag"></i>Flagged </a>
+            </li>
+            <li>
                 <a href="<?= url('/shop') ?>"><i class="fa fa-shopping-cart"></i>Market place</a>
             </li>
             <li>
-                <a href="<?= url('/courses') ?>"><i class="fa fa-video-camera"></i>All courses</a>
+                <a href="<?= url('/courses') ?>"><i class="fa fa-camera"></i>All courses</a>
             </li>
             <li>
                 <a href="<?= url('/contact') ?>"><i class="fa fa-phone"></i>Contact us</a>

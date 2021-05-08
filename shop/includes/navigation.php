@@ -10,7 +10,7 @@ $settings = $connection->select('settings')->where('id', 1)->first();
 		    <nav>
 		        <!-- Menu Toggle btn-->
 		        <div class="menu-toggle">
-		            <img class="nav_logo_img img-fluid" src="<?= asset($settings->logo)?>" alt="<?=$settings->app_name ?>">
+		            <img class="nav_logo_img img-fluid navi-top-img" src="<?= asset($settings->logo)?>" alt="<?=$settings->app_name ?>">
 		            <button type="button" id="menu-btn">
 		                <span class="icon-bar"></span>
 		                <span class="icon-bar"></span>
@@ -18,16 +18,13 @@ $settings = $connection->select('settings')->where('id', 1)->first();
 		            </button>
 		        </div>
 		        <a href="<?= url('/shop'); ?>" class="navbar_brand float-left dn-smd">
-		            <img class="logo1 img-fluid" src="<?= asset($settings->logo)?>" alt="<?=$settings->app_name ?>">
-		            <img class="logo2 img-fluid" src="<?= asset($settings->logo)?>" alt="<?=$settings->app_name ?>">
+		            <img class="logo1 img-fluid navi-top-img" src="<?= asset($settings->logo)?>" alt="<?=$settings->app_name ?>">
+		            <img class="logo2 img-fluid navi-top-img" src="<?= asset($settings->logo)?>" alt="<?=$settings->app_name ?>">
 		            <span><?= $settings->app_name ? $settings->app_name : '' ?></span>
 		        </a>
 		        <!-- Responsive Menu Structure-->
 		        <!--Note: declare the Menu style in the data-menu-style="horizontal" (options: horizontal, vertical, accordion) -->
 		        <ul id="respMenu" class="ace-responsive-menu" data-menu-style="horizontal">
-		            <li>
-		                <a href="<?= url('/shop') ?>"><span class="title">Home</span></a>
-		            </li>
 		            <li>
 		                <a href="#"><span class="title">Categories</span></a>
 						<!-- Level Two-->
@@ -67,7 +64,9 @@ $settings = $connection->select('settings')->where('id', 1)->first();
 					<li>
 		                <a href="<?= url('/') ?>"><span class="title">Find a worker</span></a>
 		            </li>
-					
+					<li>
+		                <a href="<?= url('/courses') ?>"><span class="title">Courses</span></a>
+		            </li>
 		        </ul>
 		        <ul class="sign_up_btn pull-right dn-smd mt20">
 	                <li class="list-inline-item list_s">

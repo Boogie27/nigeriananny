@@ -214,7 +214,7 @@ $workers = $connection->select('workers')->leftJoin('employee', 'workers.employe
         <div class="content-body"> 
            <div class="row">
                <?php foreach($workers as $worker): 
-                $w_image = $worker->w_image ?  $worker->w_image : '/images/employee/demo.png';
+                $w_image = $worker->w_image ?  $worker->w_image : '/employee/images/demo.png';
                 $amount = !$worker->amount_to ? money($worker->amount_form) : money($worker->amount_form).' - '.money($worker->amount_to);
                 $location = $worker->job_type != 'live in' ? json_decode($worker->job_type, true) : null;
                 ?>
@@ -245,11 +245,8 @@ $workers = $connection->select('workers')->leftJoin('employee', 'workers.employe
                 <img src="<?= asset('/images/banner/4.png')?>" alt="" class="one-image-left">
             </div>
             <ul class="ul-content-two">
-                <li><h3>Find the Right Employee <span>in Nigeria</span></h3></li>
-                <li>
-                    <p>as quality of CVs. Jobberman seems to get us what we need, at the right time - so there’s
-                        and most times you don’t get the best from that. I will definitely use Jobberman</p>
-                </li>
+                <li><h3>Find the right domestic staff <span>in Nigeria</span></h3></li>
+                <li>NNC offers what you need</li>
                 <li class="text-center create-btn">
                     <a href="<?= url('/employer/register')?>" class="btn-fill">Create account</a>
                 </li>
@@ -288,7 +285,7 @@ $workers = $connection->select('workers')->leftJoin('employee', 'workers.employe
         <div class="content-body"> 
            <div class="row">
                <?php foreach($employees as $employee): 
-                $w_image = $employee->w_image ?  $employee->w_image : '/images/employee/demo.png';
+                $w_image = $employee->w_image ?  $employee->w_image : '/employee/images/demo.png';
                 $amount = !$employee->amount_to ? money($employee->amount_form) : money($employee->amount_form).' - '.money($employee->amount_to);
                 $location = $employee->job_type != 'live in' ? json_decode($employee->job_type, true) : null;
                 ?>
@@ -330,7 +327,10 @@ $workers = $connection->select('workers')->leftJoin('employee', 'workers.employe
             </div>
         </div>
     </div>
-    <!-- content two start -->
+	<!-- content two start -->
+	
+
+	
 
     <!-- news letter -->
     <?php include('includes/news-letter.php') ?>

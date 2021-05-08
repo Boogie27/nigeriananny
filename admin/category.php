@@ -83,7 +83,7 @@ $banner =  $connection->select('settings')->where('id', 1)->first();
                                         </td>
                                         <td><?= date('d M Y', strtotime($category->category_date_added)) ?></td>
                                         <td>
-                                            <a href="<?= url('/admin/edit-category.php?eid='.$category->category_id) ?>" title="Edit product"><i class="fa fa-edit"></i></a>
+                                            <a href="<?= url('/admin/edit-category.php?eid='.$category->category_id) ?>" title="Edit category"><i class="fa fa-edit"></i></a>
                                            <span class="expand"></span>
                                            <a href="#"  data-toggle="modal" data-target="#modal_category_delete" class="delete_category_btn" id="<?= $category->category_id ?>" title="Delete"><i class="fa fa-trash"></i></a>
                                            <span class="expand"></span>

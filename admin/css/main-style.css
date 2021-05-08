@@ -133,6 +133,26 @@ img.table-img{
     background-color: #fff;
     border: 1px solid rgb(23, 23, 138);
 }
+
+.form-group input:focus, .form-group textarea:focus, select:focus{
+    outline: none;
+    box-shadow: none;
+    border: 1px solid rgb(224, 224, 224);
+}
+/* *********** DASHBOARD ************ */
+.media-body-anchor a{
+    margin: 0px 5px;
+    padding: 2px 10px;
+    border-radius: 3px;
+    border: 1px solid #ccc;
+    transition: all 0.3s ease;
+}
+.media-body-anchor a:hover{
+    color: #fff;
+    border: 1px solid #333;
+    background-color: #333;
+}
+
 /* ============================================ */
 /*           EDIT PRODUCT                      */
 /* ========================================== */
@@ -479,7 +499,14 @@ img.msg_img{
 }
 
 
-
+/* ************ NAV IMAGE *************** */
+img.navi-top-img{
+    top: 7px;
+    width: 40px;
+    height: 40px;
+    position: relative;
+    border-radius: 3px;
+}
 
 
 

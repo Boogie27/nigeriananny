@@ -43,7 +43,7 @@ $banner =  $connection->select('settings')->where('id', 1)->first();
                     <?php if(Session::has('success')): ?>
                         <div class="alert-success text-center p-3 mb-2"><?= Session::flash('success') ?></div>
                     <?php endif; ?>
-                    <div class="alert-danger text-center p-3 mb-2 page_alert_danger" style="display: none;"></div>
+                    <div class="alert alert-danger text-center p-3 mb-2 page_alert_danger" style="display: none;"></div>
                         <nav class="breadcrumb_widgets" aria-label="breadcrumb mb30">
                             <h4 class="title float-left">Manage categories</h4>
                             <ol class="breadcrumb float-right">
@@ -82,9 +82,9 @@ $banner =  $connection->select('settings')->where('id', 1)->first();
                                         </td>
                                         <td><?= date('d M Y', strtotime($category->date_added)) ?></td>
                                         <td>
-                                            <a href="#" data-toggle="modal" data-target="#exampleModal_category_edit" id="<?= $category->job_category_id  ?>" data-category="<?= $category->category_name ?>" class="edit_category_btn" title="Edit employee"><i class="fa fa-edit"></i></a>
+                                            <a href="#" data-toggle="modal" data-target="#exampleModal_category_edit" id="<?= $category->job_category_id  ?>" data-category="<?= $category->category_name ?>" class="edit_category_btn" title="Edit category"><i class="fa fa-edit"></i></a>
                                            <span class="expand"></span>
-                                           <a href="#"  data-toggle="modal" id="<?= $category->job_category_id  ?>" data-target="#exampleModal_category_delete" class="delete_category_btn" title="Delete customer"><i class="fa fa-trash"></i></a>
+                                           <a href="#"  data-toggle="modal" id="<?= $category->job_category_id  ?>" data-target="#exampleModal_category_delete" class="delete_category_btn" title="Delete category"><i class="fa fa-trash"></i></a>
                                         </td>
                                     </tr>
                                 <?php endforeach; ?>
@@ -364,6 +364,7 @@ $(".edit_category_btn").click(function(e){
 // PRESS ENTER BUTTON TO EDIT CATEGORY
 // =========================================
 $("#category_name_input").keypress(function(e){
+    e.preventDefault();
     if(e.keyCode == 13 || e.which == 13){
         edit_category();
     }
@@ -425,17 +426,18 @@ function edit_category(){
 
 
 // =========================================
-// PRESS ENTER BUTTON TO EDIT CATEGORY
+// PRESS ENTER BUTTON TO ADD CATEGORY
 // =========================================
 $("#category_category_name_input").keypress(function(e){
     if(e.keyCode == 13 || e.which == 13){
+        e.preventDefault();
         add_category();
     }
 });
 
 
 // ==========================================
-// EDIT CATEGORY
+// ADD CATEGORY
 // ==========================================
 $("#submit_category_add_btn").click(function(e){
     e.preventDefault();

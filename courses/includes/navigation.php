@@ -22,7 +22,7 @@ $settings = $connection->select('settings')->where('id', 1)->first();
 			<div class="img-right">
 				<i class="fa fa-bars toggle-side-navigation"></i>
 				<i class="fa fa-heart text-danger"></i>
-				<img src="<?= asset('/employee/images/demo.png') ?>" alt="name" class="nav-img"></span>
+				<img src="<?= asset('/employee/images/demo.png') ?>" alt="name" class="nav-profile-img"></span>
 			</div>
 		</div><!-- nav right end-->
    </div>

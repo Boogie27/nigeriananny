@@ -47,9 +47,9 @@ $banner =  $connection->select('settings')->where('id', 1)->first();
                     <?php if(Session::has('success')): ?>
                         <div class="alert-success text-center p-3 mb-2"><?= Session::flash('success') ?></div>
                     <?php endif; ?>
-                    <div class="alert-danger text-center p-3 mb-2 page_alert_danger" style="display: none;"></div>
+                    <div class="alert alert-danger text-center p-3 mb-2 page_alert_danger" style="display: none;"></div>
                         <nav class="breadcrumb_widgets" aria-label="breadcrumb mb30">
-                            <h4 class="title float-left">Manage employees</h4>
+                            <h4 class="title float-left">Manage employers</h4>
                             <ol class="breadcrumb float-right">
                                 <li class="breadcrumb-item active" aria-current="page"><a href="<?= url('/admin-nanny/add-employers') ?>" class="view-btn-fill">Add employer</a></li>
                             </ol>
@@ -76,9 +76,9 @@ $banner =  $connection->select('settings')->where('id', 1)->first();
                                     <tr>
                                         <td>
                                            <?php if($employer->e_image): ?>
-                                            <img src="<?= asset($employer->e_image) ?>" alt="" class="table-img <?= $employer->e_active ? 'online' : 'offline' ?>">
+                                            <img src="<?= asset($employer->e_image) ?>" alt="<?= $employer->first_name ?>" class="table-img <?= $employer->e_active ? 'online' : 'offline' ?>">
                                             <?php else: ?>
-                                            <img src="<?= asset('/employer/images/employer/demo.png') ?>" alt="" class="table-img <?= $employer->e_active ? 'online' : 'offline' ?>">
+                                            <img src="<?= asset('/employer/images/demo.png') ?>" alt="<?= $employer->first_name ?>" class="table-img <?= $employer->e_active ? 'online' : 'offline' ?>">
                                             <?php endif; ?>
                                         </td>
                                         <td><?= ucfirst($employer->last_name).' '.ucfirst($employer->first_name)?></td>
@@ -95,9 +95,9 @@ $banner =  $connection->select('settings')->where('id', 1)->first();
                                         <td><?= date('d M Y', strtotime($employer->e_last_login)) ?></td>
                                         <td><?= date('d M Y', strtotime($employer->e_date_joined)) ?></td>
                                         <td>
-                                            <a href="<?= url('/admin-nanny/employer-detail?wid='.$employer->id) ?>" title="Edit employee"><i class="fa fa-edit"></i></a>
+                                            <a href="<?= url('/admin-nanny/employer-detail?wid='.$employer->id) ?>" title="Edit employer"><i class="fa fa-edit"></i></a>
                                            <span class="expand"></span>
-                                           <a href="#"  data-toggle="modal" id="<?= $employer->id ?>" data-target="#exampleModal_employer_delete" class="delete_employee_btn" title="Delete customer"><i class="fa fa-trash"></i></a>
+                                           <a href="#"  data-toggle="modal" id="<?= $employer->id ?>" data-target="#exampleModal_employer_delete" class="delete_employee_btn" title="Delete employer"><i class="fa fa-trash"></i></a>
                                         </td>
                                     </tr>
                                 <?php endforeach; ?>

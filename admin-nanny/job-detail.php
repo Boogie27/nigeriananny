@@ -68,7 +68,7 @@ $reviews = $connection->select('employee_reviews')->leftJoin('employers', 'emplo
                         <?php include('includes/mobile-drop-nav.php') ?><!-- mobile-navigation -->
                     </div>
                     <div class="col-lg-12">
-                        <div class="alert-danger text-center p-3 mb-2 page_alert_danger" style="display: none;"></div>
+                        <div class="alert alert-danger text-center p-3 mb-2 page_alert_danger" style="display: none;"></div>
                             <nav class="breadcrumb_widgets" aria-label="breadcrumb mb30">
                                 <h4 class="title float-left">Job information</h4>
                                 <ol class="breadcrumb float-right">
@@ -88,41 +88,44 @@ $reviews = $connection->select('employee_reviews')->leftJoin('employers', 'emplo
                                 <?php endif; ?>
                                 <?php 
                                     $w_image = $job->w_image ? $job->w_image : '/employee/images/demo.png'; 
-                                    $detail = json_decode($job->work_detail, true);
-                                    $amount = $detail['amount_to'] ? money($detail['amount_form']).' - '.money($detail['amount_to']) : money($detail['amount_form']); ?>
+                                    $amount = !$job->amount_to ? money($job->amount_form) : money($job->amount_form).' - '.money($job->amount_to); ?>
                                 <div class="job-body">
                                     <div class="jobs-info">
-                                        <img src="<?= asset($w_image)?>" alt="">
+                                        <img src="<?= asset($w_image)?>" alt="<?= $job->first_name ?>">
                                         <ul class="ul">
                                             <li>
                                                 <h4>
-                                                    <?= ucfirst($detail['job_title'])?>
-                                                    <span class="date text-success float-right"><i class="fa fa-clock-o text-success "></i> <?= date('d M Y', strtotime($detail['date_added'])) ?></span>
+                                                    <?= ucfirst($job->job_title)?>
+                                                    <span class="date text-success float-right"><i class="fa fa-clock-o text-success "></i> <?= date('d M Y', strtotime($job->request_date)) ?></span>
                                                 </h4>
                                             </li>
                                             <li><?= stars($job->ratings, $job->rating_count) ?></li>
                                             <li> <?= ucfirst($job->first_name.' '.$job->last_name)?></li>
                                             <li>
-                                                <?php if($detail['job_type'] != 'live in'):
-                                                $living = json_decode($detail['job_type'], true); ?>
-                                                    <b>Job Location: </b><?= ucfirst($living['city'])?> | <?= ucfirst($living['state'])?> 
+                                                <?php 
+                                                if($job->job_type):
+                                                    if($job->job_type != 'live in'):
+                                                    $living = json_decode($job->job_type, true); ?>
+                                                        <b>Job Location: </b><?= ucfirst($living['city'])?> | <?= ucfirst($living['state'])?> 
+                                                    <?php else: ?>
+                                                        <?= $job->job_type ?>
+                                                    <?php endif; ?>
                                                 <?php else: ?>
-                                                    <?= $detail['job_type'] ?>
+                                                    <span class="money-amount">No job type</span>
                                                 <?php endif; ?>
                                                 | <span class="text-warning money-amount"><?= $amount ?></span>
                                             </li>
                                             <li class="text-right j-action">
-                                                <a href="#" class="text-danger" style="font-size: 12px;" data-toggle="modal" data-target="#employee_report_form" >Report</a>
+                                                <a href="<?= url('/admin-nanny/report-detail?eid='.$job->employee_id) ?>" class="text-danger" style="font-size: 12px;">Report</a>
                                             </li>
                                         </ul>
                                     </div>
 
                                     <!-- EDUCATION START--> 
                                     <?php if($job->education): 
-                                    $educations = json_decode($job->education, true); ?>
+                                    $education = json_decode($job->education, true); ?>
                                     <div class="j-expirience">
                                         <div class="js-head">Education:</div>
-                                        <?php foreach($educations as $education): ?>
                                         <ul class="inner-ex">
                                             <li><b>Qualification:</b> <?= ucfirst($education['qualification']) ?></li>
                                             <li><b>Institution: </b> <?= ucfirst($education['institution']) ?></li>
@@ -142,7 +145,6 @@ $reviews = $connection->select('employee_reviews')->leftJoin('employers', 'emplo
                                                     </div>
                                                 </li>
                                         </ul>
-                                    <?php endforeach; ?>
                                     </div>
                                     <?php endif; ?>
                                     <!-- EDUCATION START--> 
@@ -173,10 +175,9 @@ $reviews = $connection->select('employee_reviews')->leftJoin('employers', 'emplo
                                     
                                     <!-- WORK EXPERIENCE START -->
                                     <?php if($job->work_experience): 
-                                    $experiences = json_decode($job->work_experience, true); ?>
+                                    $experience = json_decode($job->work_experience, true); ?>
                                     <div class="j-summary">
                                         <div class="j-summary-h">Work expirience:</div>
-                                        <?php foreach($experiences as $experience): ?>
                                         <div class="experience-x">
                                             <ul>
                                                 <li><b>Job title:</b> <?= ucfirst($experience['job_title']) ?></li>
@@ -205,17 +206,22 @@ $reviews = $connection->select('employee_reviews')->leftJoin('employers', 'emplo
                                                 </li>
                                             </ul>
                                         </div>
-                                        <?php endforeach; ?>
                                     </div>
                                     <?php endif; ?>
                                     <!-- WORK EXPERIENCE END -->
 
-                                    <!-- SUMMARY START-->
-                                    <div class="j-bio">
-                                        <div class="js-head">Summary:</div>
-                                        <p><?= $job->summary ?></p>
-                                    </div>
-                                    <!-- SUMMARY END -->
+                                     <!-- CV START-->
+                                        <?php if(!$job->cv): 
+                                        $cv = json_decode($job->cv, true);  
+                                        ?>
+                                        <div class="j-safety">
+                                            <div class="js-head">CV, Resume:</div>
+                                            <ul>
+                                                <li class=""><a href="<?= url($cv['cv']) ?>" class="btn btn-success" download>Download CV</a></li>
+                                            </ul>
+                                        </div>
+                                        <?php endif; ?>
+                                    <!-- CV END-->
                                 
                                 </div>
                                 <!-- featured jobs end-->

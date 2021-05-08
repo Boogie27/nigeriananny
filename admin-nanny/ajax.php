@@ -293,30 +293,22 @@ if(Input::post('update_institution'))
  
     $inview = Input::get('inview') == 'true' ? true : false;
     $educate = [
-                    "qualification" => Input::get('qualification'), 
-                    "institution" => Input::get('institution'), 
-                    "city" => Input::get('city'), 
-                    "state" => Input::get('state'), 
-                    "country" => Input::get('country'), 
-                    "start_date" => $start_date,
-                    's_day' => Input::get('start_day'),
-                    's_month' => Input::get('start_month'),
-                    's_year' => Input::get('start_year'),
-                    "end_date" => $end_date,
-                    'e_day' => Input::get('end_day'),
-                    'e_month' => Input::get('end_month'),
-                    'e_year' => Input::get('end_year'),
-                    "inview" => $inview ]; 
-
-    $worker = $connection->select('workers')->where('employee_id', Input::get('employee_id'))->first();
-    if(!$worker->education)
-    {
-        $education_array[1] = $educate;
-    }else{
-        $education_array = json_decode($worker->education, true);
-        array_push($education_array, $educate);
-    }
-    $education = json_encode($education_array);
+                "qualification" => Input::get('qualification'), 
+                "institution" => Input::get('institution'), 
+                "city" => Input::get('city'), 
+                "state" => Input::get('state'), 
+                "country" => Input::get('country'), 
+                "start_date" => $start_date,
+                's_day' => Input::get('start_day'),
+                's_month' => Input::get('start_month'),
+                's_year' => Input::get('start_year'),
+                "end_date" => $end_date,
+                'e_day' => Input::get('end_day'),
+                'e_month' => Input::get('end_month'),
+                'e_year' => Input::get('end_year'),
+                "inview" => $inview ]; 
+    
+    $education = json_encode($educate);
 
     $update = $connection->update('workers', [
         'education' => $education
@@ -396,30 +388,24 @@ if(Input::post('edit_update_institution'))
     $worker = $connection->select('workers')->where('employee_id', Input::get('employee_id'))->first();
     if($worker->education)
     {
-        $stored_education = json_decode($worker->education, true);
-        if(array_key_exists(Input::get('key'), $stored_education))
-        {
-            $educate = $stored_education[Input::get('key')];
-            $educate['qualification'] = Input::get('qualification');
-            $educate['institution'] = Input::get('institution');
-            $educate['city'] = Input::get('city');
-            $educate['state'] = Input::get('state');
-            $educate['country'] = Input::get('country');
-            $educate['start_date'] = $start_date;
-            $educate['s_day'] = Input::get('start_day');
-            $educate['s_month'] = Input::get('start_month');
-            $educate['s_year'] = Input::get('start_year');
-            $educate['end_date'] = $end_date;
-            $educate['e_day'] = Input::get('end_day');
-            $educate['e_month'] = Input::get('end_month');
-            $educate['e_year'] = Input::get('end_year');
-            $educate['inview'] = $inview;
-
-            $stored_education[Input::get('key')] = $educate;
-        }
+        $educate = json_decode($worker->education, true);
+        $educate['qualification'] = Input::get('qualification');
+        $educate['institution'] = Input::get('institution');
+        $educate['city'] = Input::get('city');
+        $educate['state'] = Input::get('state');
+        $educate['country'] = Input::get('country');
+        $educate['start_date'] = $start_date;
+        $educate['s_day'] = Input::get('start_day');
+        $educate['s_month'] = Input::get('start_month');
+        $educate['s_year'] = Input::get('start_year');
+        $educate['end_date'] = $end_date;
+        $educate['e_day'] = Input::get('end_day');
+        $educate['e_month'] = Input::get('end_month');
+        $educate['e_year'] = Input::get('end_year');
+        $educate['inview'] = $inview;
     }
 
-    $education = json_encode($stored_education);
+    $education = json_encode($educate);
 
     $update = $connection->update('workers', [
         'education' => $education
@@ -457,19 +443,8 @@ if(Input::post('delete_education_action'))
         return response(['error' => ['error' => true]]);
     }
 
-    $stored_education = json_decode($worker->education, true);
-    if(!array_key_exists(Input::get('key'), $stored_education))
-    {
-        Session::flash('error', '*Education does not exist!');
-        return response(['error' => ['error' => true]]);
-    }
-
-    unset($stored_education[Input::get('key')]);
-   
-    $education = count($stored_education) ? json_encode($stored_education) : null;
-
     $update = $connection->update('workers', [
-        'education' => $education
+        'education' => null
     ])->where('employee_id', Input::get('employee_id'))->save();
     
     if($update)
@@ -569,15 +544,7 @@ if(Input::post('update_job_experience'))
     $experience['e_year'] = Input::get('end_year');
     $experience['inview'] = $inview;
 
-    if(!$worker->work_experience)
-    {
-        $stored_experience[1] = $experience;
-    }else{
-        $stored_experience = json_decode($worker->work_experience, true);
-        array_push($stored_experience, $experience);
-    }
-
-    $store_experience = json_encode($stored_experience);
+    $store_experience = json_encode($experience);
 
     $update = $connection->update('workers', [
         'work_experience' => $store_experience
@@ -667,13 +634,8 @@ if(Input::post('edit_job_experience'))
         $url = url('/admin-nanny/employee-detail?wid='.Input::get('employee_id'));
 
         return response(['not_exist' => $url]);
-    }else{
-        $old_experience = json_decode($worker->work_experience, true);
-        if(array_key_exists(Input::get('key'), $old_experience))
-        {
-            $experience = $old_experience[Input::get('key')];
-        }
     }
+
     $experience['job_title'] = Input::get('job_title');
     $experience['job_function'] = Input::get('job_function');
     $experience['employer_name'] = Input::get('employer_name');
@@ -690,10 +652,7 @@ if(Input::post('edit_job_experience'))
     $experience['e_year'] = Input::get('end_year');
     $experience['inview'] = $inview;
 
-    $old_experience[Input::get('key')] = $experience;
-    
-
-    $store_experience = json_encode($old_experience);
+    $store_experience = json_encode($experience);
 
     $update = $connection->update('workers', [
         'work_experience' => $store_experience
@@ -732,19 +691,8 @@ if(Input::post('delete_experience_action'))
         return response(['error' => ['error' => true]]);
     }
 
-    $stored_experience = json_decode($worker->work_experience, true);
-    if(!array_key_exists(Input::get('key'), $stored_experience))
-    {
-        Session::flash('error', '*Work experience does not exist!');
-        return response(['error' => ['error' => true]]);
-    }
-
-    unset($stored_experience[Input::get('key')]);
-   
-    $experience = count($stored_experience) ? json_encode($stored_experience) : null;
-
     $update = $connection->update('workers', [
-        'work_experience' => $experience
+        'work_experience' => null
     ])->where('employee_id', Input::get('employee_id'))->save();
     
     if($update)
@@ -1192,9 +1140,9 @@ if(Input::post('upload_employer_image'))
         $file = Image::files('image');
 
         $file_name = Image::name('image', 'employer');
-        $image->resize_image($file, ['name' => $file_name, 'width' => 200, 'height' => 200, 'size_allowed' => 1000000,'file_destination' => '../employer/images/employer/']);
+        $image->resize_image($file, ['name' => $file_name, 'width' => 200, 'height' => 200, 'size_allowed' => 1000000,'file_destination' => '../employer/images/']);
             
-        $image_name = '/employer/images/employer/'.$file_name;
+        $image_name = '/employer/images/'.$file_name;
 
         if(!$image->passed())
         {
@@ -1459,6 +1407,10 @@ if(Input::post('category_edit_action'))
                 $data = true;
                 Session::flash('success', 'Category updated successfully!');
             }
+        }
+        if($category)
+        {
+            $data = true;
         }
     }
     return response(['data' => $data]);
@@ -2289,6 +2241,7 @@ if(Input::post('add_testimonial_image'))
         if(Cookie::has('testimoial_image'))
         {
             Image::delete('../'.Cookie::get('testimoial_image'));
+            Cookie::delete('testimoial_image');
         }
         Cookie::put('testimoial_image', $image_name, $expiry);
         
@@ -2947,73 +2900,6 @@ if(Input::post('calculate_subscription_income'))
 
 
 
-
-
-
-
-
-// ============================================
-// UPDATE HOME BANNER IMAGE
-// ============================================
-if(Input::post('update_home_banner_image'))
-{
-    $data = false;
-    if(Image::exists('home_banner'))
-    {
-        $image = new Image();
-        $file = Image::files('home_banner');
-
-        $file_name = Image::name('home_banner', 'home_banner');
-        $image->resize_image($file, [ 'name' => $file_name, 'width' => 1920, 'height' => 1000, 'size_allowed' => 1000000,'file_destination' => '../images/banner/']);
-            
-        $image_name = '/images/banner/'.$file_name;
-
-        if(!$image->passed())
-        {
-            return response(['error' => ['home_banner' => $image->error()]]);
-        }
-        
-        $connection = new DB();
-        $settings = $connection->select('settings')->where('id', 1)->first();
-        if($settings->job_banner)
-        {
-            Image::delete('../'.$settings->job_banner);
-        }
-        
-        $update = $connection->update('settings', [
-            'job_banner' => $image_name
-        ])->where('id', 1)->save();
-
-        if($update)
-        {
-            $data =  true;
-        }
-    }
-    return response(['data' => $data]);
-}
-
-
-
-
-
-
-// ========================================
-// GET HOME BANNER IMAGE
-// ========================================
-if(Input::post('get_home_banner_img'))
-{
-    $data = false;
-    $connection = new DB();
-    $settings = $connection->select('settings')->where('id', 1)->first();
-    return require_once('common/ajax-job-banner.php');
-}
-
-
-
-
-
-
-
 // ========================================
 // DELETE HOME BANNER IMAGE
 // ========================================
@@ -3138,6 +3024,190 @@ if(Input::post('delete_construction_banner_img'))
 
 
 
+// ********** COMPLETE EMPLOYEE EMPLOYMENT ************//
+if(Input::post('complete_employee_employment'))
+{
+    $data = false;
+    $date = date('Y-m-d H:i:s');
+    $update = $connection->update('request_workers', [
+                    'is_completed' => 1,
+                    'completed_date' => $date
+            ])->where('request_id', Input::get('request_id'))->save();
+  
+    if($update)
+    {
+        $data = true;
+        Session::flash('success', 'Employment status completed!');
+    }
+    return response(['data' => $data]);
+}
+
+
+
+
+
+
+
+// ********** UNCOMPLETE EMPLOYEE EMPLOYMENT ************//
+if(Input::post('uncomplete_employee_employment'))
+{
+    $data = false;
+    $date = date('Y-m-d H:i:s');
+    $update = $connection->update('request_workers', [
+                    'is_completed' => 0,
+                    'completed_date' => null
+            ])->where('request_id', Input::get('request_id'))->save();
+  
+    if($update)
+    {
+        $data = true;
+        Session::flash('success', 'Employment status updated!');
+    }
+    return response(['data' => $data]);
+}
+
+
+
+
+
+
+// ************* DELETE EMPLOYER REVIEW *************//
+if(Input::post('delete_employer_review'))
+{
+    $data = false;
+    $delete = $connection->delete('employee_reviews')->where('review_id', Input::get('review_id'))->save();
+    if($delete)
+    {
+        $data = true;
+    }
+    return response(['data' => $data]);
+}
+
+
+
+
+// ************* DELETE ALL EMPLOYEE REVIEW *************//
+if(Input::post('get_all_employee_review'))
+{
+    $reviews = $connection->select('employee_reviews')->leftJoin('employers', 'employee_reviews.r_employer_id', '=', 'employers.id')->where('r_employee_id', Input::get('employee_id'))->get();
+
+    return require_once('common/ajax-employer_review.php');
+}
+
+
+
+
+
+
+
+// *********** UPLOAD SLIDER IMAGE **********//
+if(Input::post('upload_slide_image'))
+{
+    $data = false;
+    $validate = new Validator();
+    $validation = $validate->validate([
+        'header' => 'required|min:6|max:50',  
+        'link' => 'max:50',  
+        'button' => 'max:50',  
+        'paragraph' => 'required|min:10|max:200',  
+    ]);
+
+    if(!$validation->passed())
+    {
+        return response(['error' => $validation->error()]);
+    }
+
+    if(Image::exists('image'))
+    {
+        $image = new Image();
+        $file = Image::files('image');
+
+        $file_name = Image::name('image', 'slider');
+        $image->upload_image($file, [ 'name' => $file_name, 'size_allowed' => 1000000,'file_destination' => '../images/slider/']);
+            
+        $image_name = '/images/slider/'.$file_name;
+
+        if(!$image->passed())
+        {
+            return response(['img_error' => ['image' => $image->error()]]);
+        }
+        
+    }else{
+        return response(['img_error' => ['image' => '*Select an image']]);
+    }
+
+    $slider = ["title" => Input::get('header'), "body" => Input::get('paragraph'), "link" => Input::get('link'), "button" => Input::get('button'), "image" => $image_name];
+    
+    $stored = $connection->select('settings')->where('id', 1)->first();
+    if($stored->sliders){
+        $old_slider = json_decode($stored->sliders, true);
+    }
+    $old_slider[] = $slider;
+
+    $update = $connection->update('settings', [
+                     'sliders' => json_encode($old_slider)
+                ])->where('id', 1)->save();
+    if($update)
+    {
+        $data = true;
+    }
+
+    return response(['data' => $data]);
+}
+
+
+
+
+
+
+// ******** GET ALL SLIDERS *****//
+if(Input::post('get_all_slider_banner'))
+{
+    $settings = $connection->select('settings')->where('id', 1)->first();
+
+    return require_once('common/ajax-slider-image.php');
+}
+
+
+
+
+// ************* DELETE SLIDER ***************//
+if(Input::post('delete_slider_banner_action'))
+{
+    $data = false;
+    $slider = null;
+    if(Input::get('key'))
+    {
+        $key = Input::get('key');
+        $settings = $connection->select('settings')->where('id', 1)->first();
+        if($settings->sliders){
+            $stored = json_decode($settings->sliders, true);
+           
+            if(array_key_exists($key, $stored))
+            {
+                $image = $stored[$key]['image'];
+                unset($stored[$key]);
+
+                Image::delete('../'.$image);
+            }
+            
+            if(count($stored))
+            {
+                $slider = json_encode($stored);
+            }
+
+            $update = $connection->update('settings', [
+                     'sliders' => $slider
+                ])->where('id', 1)->save();
+            if($update)
+            {
+                $data = true;
+            }
+        }
+    }
+
+    return response(['data' => $data]);
+}
 
 
 
@@ -3148,37 +3218,5 @@ if(Input::post('delete_construction_banner_img'))
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+// [{"title":"Find amazing employees","body":"Explore from the list of amazing employees we provide","link":"\/jobs","button":"Ready to get Started?","image":"\/images\/slider\/3.jpg"},{"title":"Are you looking for your dream job?","body":"Technology is brining a massive wave of evolution create a new career with us.","link":"\/employee\/register","button":"Employee register","image":"\/images\/slider\/1.jpg"},{"title":"Are you looking for your dream job?","body":"i love to code all the time dear i know its cool though","link":"\/jobs","button":"click here","image":"\/images\/slider\/slider_6096ebffc8596.jpg"}]
 

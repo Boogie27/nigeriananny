@@ -102,10 +102,10 @@ $banner =  $connection->select('settings')->where('id', 1)->first();
 						    	<p><?= Admin_auth::admin('first_name') ?><br><span class="address"></span></p>
 					    	</div>
 					    	<div class="user_setting_content">
-								<a class="dropdown-item active" href="<?= url('/admin/profile.php') ?>">My Profile</a>
+								<a class="dropdown-item active" href="<?= url('/admin/profile') ?>">My Profile</a>
 								<a class="dropdown-item" href="#">Messages</a>
-								<a class="dropdown-item" href="<?= url('/admin/settings.php') ?>">Settings</a>
-								<a class="dropdown-item" href="<?= url('/admin/logout.php') ?>">Log out</a>
+								<a class="dropdown-item" href="<?= url('/admin/settings') ?>">Settings</a>
+								<a class="dropdown-item" href="<?= url('/admin/logout') ?>">Log out</a>
 					    	</div>
 					    </div>
 					</div>
@@ -113,7 +113,7 @@ $banner =  $connection->select('settings')->where('id', 1)->first();
             </ul>
 			<div class="header stylehome1 dashbord_mobile_logo dashbord_pages">
 				<div class="main_logo_home2">
-		            <img class="nav_logo_img img-fluid float-left mt20" src="<?=asset($banner->logo) ?>" alt="<?= $banner->app_name ?>">
+		            <img class="nav_logo_img img-fluid float-left mt20 navi-top-img" src="<?=asset($banner->logo) ?>" alt="<?= $banner->app_name ?>">
 		            <span><?= $banner->app_name ?></span>
 				</div>
 				<ul class="menu_bar_home2">
@@ -125,7 +125,7 @@ $banner =  $connection->select('settings')->where('id', 1)->first();
 		<nav id="menu" class="stylehome1">
 			<ul>
 			    <li>
-	              <a href="<?= url('/shop/index.php') ?>"><span>Home</span></a>
+	              <a href="<?= url('/shop') ?>"><span>Home</span></a>
 				</li>
 				<li><span>Categories</span>
 					<ul>
@@ -157,10 +157,18 @@ $banner =  $connection->select('settings')->where('id', 1)->first();
 					</ul>
 				</li> -->
 				<li>
-	              <a href="<?= url('/admin/transactions.php') ?>"><span>Transactions</span></a>
+	              <a href="<?= url('/admin/transactions') ?>"><span>Transactions</span></a>
 				</li>
-				<li><a href="<?= url('/admin/settings.php'); ?>"><span class="fa fa-cog"></span> Settings</a></li>
-				<li><a href="<?= url('/admin/logout.php') ?>"><span class="fa fa-sign-out"></span> Logout</a></li>
+				<li><span>Others</span>
+					<ul>
+					    <li><a href="<?= url('/admin-nanny/faq') ?>">FAQ</a></li>
+						<li><a href="<?= url('/admin-nanny/about') ?>">About us</a></li>
+						<li><a href="<?= url('/admin-nanny/privacy') ?>">Privacy</a></li>
+						<li><a href="<?= url('/admin-nanny/terms') ?>">Terms & condition</a></li>
+					</ul>
+				</li>
+				<li><a href="<?= url('/admin/settings'); ?>"><span class="fa fa-cog"></span> Settings</a></li>
+				<li><a href="<?= url('/admin/logout') ?>"><span class="fa fa-sign-out"></span> Logout</a></li>
 			</ul>
 		</nav>
 	</div>

@@ -55,18 +55,22 @@ if(!Input::exists('get') && !Input::get('tid'))
                 <div class="row">
                     <div class="col-lg-12 col-sm-6">
                         <div class="form-group">
-                            <?php  if(isset($errors['new_password'])) : ?>
-                                <div class="text-danger"><?= $errors['new_password']; ?></div>
-                            <?php endif; ?>
+                            <div class="alert_label">
+                                <?php  if(isset($errors['new_password'])) : ?>
+                                    <div class="text-danger"><?= $errors['new_password']; ?></div>
+                                <?php endif; ?>
+                            </div>
                             <label for="">New password:</label>
                             <input type="password" name="new_password" class="form-control h50" value="<?= old('new_password')?>" required>
                         </div>
                     </div>
                     <div class="col-lg-12 col-sm-6">
                         <div class="form-group">
-                            <?php  if(isset($errors['confirm_password'])) : ?>
-                                <div class="text-danger"><?= $errors['confirm_password']; ?></div>
-                            <?php endif; ?>
+                            <div class="alert_label">
+                                <?php  if(isset($errors['confirm_password'])) : ?>
+                                    <div class="text-danger"><?= $errors['confirm_password']; ?></div>
+                                <?php endif; ?>
+                            </div>
                             <label for="">Confirm password:</label>
                             <input type="password" name="confirm_password" class="form-control h50" value="<?= old('confirm_password')?>" required>
                         </div>

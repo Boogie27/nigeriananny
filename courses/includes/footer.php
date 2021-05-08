@@ -12,27 +12,32 @@ $settings = $connection->select('settings')->where('id', 1)->first();
 
 
 
-<div class="footer-section"><!-- footer start-->
-   <ul class="ul-footer-links">
-      <li><a href="#">Privacy policy</a></li>
-      <li><a href="#">Terms & Conditions</a></li>
-      <li><a href="#">Find a worker</a></li>
-      <li><a href="#">Market place</a></li>
-      <li><a href="#">Online courses</a></li>
-      <li><a href="#">News letter</a></li>
-      <li><a href="#">News letter</a></li>
-   </ul>
-   <ul class="ul-social-media">
-       <li><a href="#"><i class="fa fa-facebook"></i></a></li>
-       <li><a href="#"><i class="fa fa-twitter"></i></a></li>
-       <li><a href="#"><i class="fa fa-linkedin"></i></a></li>
-       <li><a href="#"><i class="fa fa-whatsapp"></i></a></li>
-   </ul>
-   <ul class="footer-bottom">
-       <li class="footer-logo"><img src="<?= asset($settings->footer_logo) ?>" alt="<?= $settings->app_name?>"></li>
-       <li class="alrights"><p><?= $settings->alrights?></p></li>
-   </ul>
-</div><!-- footer end-->
+<div class="bottom-footer">
+    <ul class="ul-footer">
+        <li><a href="<?= url('/') ?>">Find a worker</a></li>
+        <li><a href="<?= url('/privacy') ?>">Privacy Policy</a></li>
+        <li><a href="<?= url('/terms') ?>">Terms & Conditions</a></li>
+        <li><a href="<?= url('/shop') ?>">Market place</a></li>
+        <li><a href="<?= url('/courses') ?>">Download courses</a></li>
+        <li><a href="<?= url('/contact') ?>">Contact</a></li>
+    </ul>
+    <ul class="ul-social-media">
+        <?php if($settings->facebook): ?>
+       <li><a href="<?= $settings->facebook ?>"><i class="fa fa-facebook"></i></a></li>
+        <?php endif; ?>
+        <?php if($settings->twitter): ?>
+       <li><a href="<?=$settings->twitter ?>"><i class="fa fa-twitter"></i></a></li>
+       <?php endif; ?>
+        <?php if($settings->linkedin): ?>
+       <li><a href="<?= $settings->linkedin ?>"><i class="fa fa-linkedin"></i></a></li>
+       <?php endif; ?>
+        <?php if($settings->instagram): ?>
+       <li><a href="<?= $settings->instagram ?>"><i class="fa fa-instagram"></i></a></li>
+       <?php endif; ?>
+    </ul>
+    <div class="rights"><?= $settings->alrights?></div>
+</div>
+
 
 
 

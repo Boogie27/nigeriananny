@@ -18,7 +18,7 @@ $new_messages = $connection->select('contact_us')->where('is_seen', 0)->get();
 		    <nav>
 		        <!-- Menu Toggle btn-->
 		        <div class="menu-toggle">
-		            <img class="nav_logo_img img-fluid" src="<?= asset($banner->logo) ?>" alt="<?= $banner->app_name ?>">
+		            <img class="nav_logo_img img-fluid navi-top-img" src="<?= asset($banner->logo) ?>" alt="<?= $banner->app_name ?>">
 		            <button type="button" id="menu-btn">
 		                <span class="icon-bar"></span>
 		                <span class="icon-bar"></span>
@@ -26,8 +26,8 @@ $new_messages = $connection->select('contact_us')->where('is_seen', 0)->get();
 		            </button>
 		        </div>
 		        <a href="<?= url('/') ?>" class="navbar_brand float-left dn-smd">
-		            <img class="logo1 img-fluid" src="<?= asset($banner->logo) ?>" alt="<?= $banner->app_name ?>">
-		            <img class="logo2 img-fluid" src="<?= asset($banner->logo) ?>" alt="<?= $banner->app_name ?>">
+		            <img class="logo1 img-fluid navi-top-img" src="<?= asset($banner->logo) ?>" alt="<?= $banner->app_name ?>">
+		            <img class="logo2 img-fluid navi-top-img" src="<?= asset($banner->logo) ?>" alt="<?= $banner->app_name ?>">
 		            <span><?= $banner->app_name ?></span>
 		        </a>
 		        <!-- Responsive Menu Structure-->
@@ -61,9 +61,9 @@ $new_messages = $connection->select('contact_us')->where('is_seen', 0)->get();
 		                <a href="#"><span class="title">Others</span></a>
 		                <ul>
 							<li><a href="<?= url('/admin-nanny/faq') ?>">FAQ</a></li>
+							<li><a href="<?= url('/admin-nanny/about') ?>">About us</a></li>
 							<li><a href="<?= url('/admin-nanny/privacy') ?>">Privacy</a></li>
 							<li><a href="<?= url('/admin-nanny/terms') ?>">Terms & condition</a></li>
-							
 		                </ul>
 					</li>
 					<li>

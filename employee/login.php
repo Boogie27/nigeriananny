@@ -133,18 +133,22 @@ if(Input::post('facebook_login'))
                 <div class="row">
                     <div class="col-lg-12 col-sm-6">
                         <div class="form-group">
-                            <?php  if(isset($errors['email'])) : ?>
-                                <div class="text-danger"><?= $errors['email']; ?></div>
-                            <?php endif; ?>
+                            <div class="alert_label">
+                                <?php  if(isset($errors['email'])) : ?>
+                                    <div class="text-danger"><?= $errors['email']; ?></div>
+                                <?php endif; ?>
+                            </div>
                             <label for="">Email:</label>
                             <input type="email" name="email" class="form-control h50" value="<?= old('email')?>">
                         </div>
                     </div>
                     <div class="col-lg-12 col-sm-6">
                         <div class="form-group">
-                            <?php  if(isset($errors['password'])) : ?>
-                                <div class="text-danger"><?= $errors['password']; ?></div>
-                            <?php endif; ?>
+                            <div class="alert_label">
+                                <?php  if(isset($errors['password'])) : ?>
+                                    <div class="text-danger"><?= $errors['password']; ?></div>
+                                <?php endif; ?>
+                            </div>
                             <label for="">Password:</label>
                             <input type="password" name="password" class="form-control h50">
                         </div>

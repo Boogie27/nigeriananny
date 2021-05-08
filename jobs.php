@@ -52,7 +52,7 @@ if(Input::get('category') && !count($workers->result()))
 
 if(Input::get('search') && !count($workers->result()))
 {
-    $page_alert = 'There are no employees under <b>'.Input::get('search').'</b> !';
+    $page_alert = 'There are no employees under <b>'.Input::get('search').'</b>!';
     $workers = $connection->select('workers')->leftJoin('employee', 'workers.employee_id', '=', 'employee.e_id')->where('employee.e_approved', 1)->where('is_flagged', 0)->where('employee.e_is_deactivate', 0)->paginate(15);
 }
 
@@ -104,11 +104,14 @@ if(Input::get('search') && !count($workers->result()))
                     <?php if($page_alert): ?>
                     <div class="page-alert"><?= $page_alert ?></div>
                     <?php endif; ?>
+                    <?php if(Session::has('success')): ?>
+                        <div class="page-alert"><?= Session::flash('success') ?></div>
+                    <?php endif; ?>
                     <div class="title"><h3><?= $job_title ?></h3></div>
                     <div class="jobs-jobs">
                         <div class="row">
                             <?php foreach($workers->result() as $worker): 
-                            $w_image = $worker->w_image ?  $worker->w_image : '/images/employee/demo.png';
+                            $w_image = $worker->w_image ?  $worker->w_image : '/employee/images/demo.png';
                             $amount = !$worker->amount_to ? money($worker->amount_form) : money($worker->amount_form).' - '.money($worker->amount_to);
                             $location = $worker->job_type != 'live in' ? json_decode($worker->job_type, true) : null;
                             ?>
@@ -120,7 +123,9 @@ if(Input::get('search') && !count($workers->result()))
                                     <ul class="ul-content">
                                             <li><h4><a href="<?= url('/job-detail.php?wid='.$worker->worker_id) ?>"><?= ucfirst($worker->job_title) ?></a></h4></li>
                                             <li><?= ucfirst($worker->first_name.' '.$worker->last_name) ?></li>
+                                            <?php if($worker->job_type):?>
                                             <li><?= $worker->job_type != 'live in' ? 'Live out | '.$location['state'] : 'Live in';?></li>
+                                            <?php endif; ?>
                                             <li><span class="text-warning"><?= $amount ?></span> <span class="float-right"><?= date('d M Y', strtotime($worker->date_added)) ?></span></li>
                                         </ul>
                                 </div>

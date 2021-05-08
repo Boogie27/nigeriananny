@@ -15,8 +15,21 @@
             'city' => 'required|min:3|max:50',
             'state' => 'required|min:3|max:50',
             'country' => 'required|min:3|max:50',
-            'e_gender' => 'required'
+            'gender' => 'required',
+            'image' => 'file_required|img_min:10000'
         ]);
+
+        $image = new Image();
+        $file = Image::files('image');
+        $fileName = Image::name('image', 'employer');
+        $image_name = '/employer/images/'.$fileName;
+        $images = $image->upload_image($file, [ 'name' => $fileName, 'size_allowed' => 1000000,'file_destination' => '../employer/images/' ]);
+           
+        if(!$images->passed())
+        {
+            Session::errors('errors', ['image' => $images->error()]);
+            return back();
+        }
 
         if($validation->passed())
         {
@@ -31,11 +44,12 @@
                     'state' => Input::get('state'),
                     'country' => Input::get('country'),
                     'e_gender' => Input::get('gender'),
+                    'e_image' => $image_name,
                 ]);
     
             if($create->passed())
             {
-                Session::flash('success', 'You have Signedup successfully!');
+                Session::flash('success', 'Account created successfully!');
                 Auth_employer::login(Input::get('email'));
                 return view('/jobs');
             }
@@ -59,90 +73,108 @@
 <div class="page-content">
     <div class="job-seeker-conatiner">
         <div class="sr-head"><h4>Creat Employer Account</h4></div>
-        <form action="<?= current_url() ?>" method="POST">
-            <?php if(Session::has('success')): ?>
-                <div class="alert alert-success text-center p-3 mb-2"><?= Session::flash('success') ?></div>
+        <form action="<?= current_url() ?>" method="POST" enctype="multipart/form-data">
+            <?php if(Session::has('error')): ?>
+                <div class="alert alert-danger text-center p-3 mb-2"><?= Session::flash('error') ?></div>
             <?php endif; ?>
             <div class="form-seeker form-employer-container">
                 <h4 class="pb-3"><i class="fa fa-user"></i> Personal information</h4>
                 <div class="row">
                     <div class="col-lg-6 col-sm-6">
                         <div class="form-group">
-                            <?php  if(isset($errors['first_name'])) : ?>
-                                <div class="text-danger"><?= $errors['first_name']; ?></div>
-                            <?php endif; ?>
+                            <div class="alert_label">
+                                <?php  if(isset($errors['first_name'])) : ?>
+                                    <div class="text-danger"><?= $errors['first_name']; ?></div>
+                                <?php endif; ?>
+                            </div>
                             <label for="">First name:</label>
                             <input type="text" name="first_name" class="form-control h50" value="<?= old('first_name')?>">
                         </div>
                     </div>
                     <div class="col-lg-6 col-sm-6">
                         <div class="form-group">
-                            <?php  if(isset($errors['last_name'])) : ?>
-                                <div class="text-danger"><?= $errors['last_name']; ?></div>
-                            <?php endif; ?>
+                            <div class="alert_label">
+                                <?php  if(isset($errors['last_name'])) : ?>
+                                    <div class="text-danger"><?= $errors['last_name']; ?></div>
+                                <?php endif; ?>
+                            </div>
                             <label for="">Last name:</label>
                             <input type="text" name="last_name" class="form-control h50" value="<?= old('last_name')?>">
                         </div>
                     </div>
                     <div class="col-lg-12 col-sm-6">
                         <div class="form-group">
-                            <?php  if(isset($errors['email'])) : ?>
-                                <div class="text-danger"><?= $errors['email']; ?></div>
-                            <?php endif; ?>
+                            <div class="alert_label">
+                                <?php  if(isset($errors['email'])) : ?>
+                                    <div class="text-danger"><?= $errors['email']; ?></div>
+                                <?php endif; ?>
+                            </div>
                             <label for="">Email:</label>
                             <input type="email" name="email" class="form-control h50" value="<?= old('email')?>">
                         </div>
                     </div>
                     <div class="col-lg-12 col-sm-6">
                         <div class="form-group">
-                            <?php  if(isset($errors['password'])) : ?>
-                                <div class="text-danger"><?= $errors['password']; ?></div>
-                            <?php endif; ?>
+                            <div class="alert_label">
+                                <?php  if(isset($errors['password'])) : ?>
+                                    <div class="text-danger"><?= $errors['password']; ?></div>
+                                <?php endif; ?>
+                            </div>
                             <label for="">Password:</label>
                             <input type="password" name="password" class="form-control h50" required>
                         </div>
                     </div>
                     <div class="col-lg-12 col-sm-6">
                         <div class="form-group">
-                            <?php  if(isset($errors['confirm_password'])) : ?>
-                                <div class="text-danger"><?= $errors['confirm_password']; ?></div>
-                            <?php endif; ?>
+                            <div class="alert_label">
+                                <?php  if(isset($errors['confirm_password'])) : ?>
+                                    <div class="text-danger"><?= $errors['confirm_password']; ?></div>
+                                <?php endif; ?>
+                            </div>
                             <label for="">Confirm password:</label>
                             <input type="password" name="confirm_password" class="form-control h50" required>
                         </div>
                     </div>
                     <div class="col-lg-6 col-sm-6">
                         <div class="form-group">
-                            <?php  if(isset($errors['phone'])) : ?>
-                                <div class="text-danger"><?= $errors['phone']; ?></div>
-                            <?php endif; ?>
+                            <div class="alert_label">
+                                <?php  if(isset($errors['phone'])) : ?>
+                                    <div class="text-danger"><?= $errors['phone']; ?></div>
+                                <?php endif; ?>
+                            </div>
                             <label for="">Phone</label>
                             <input type="text" name="phone" class="form-control h50" value="<?= old('phone')?>">
                         </div>
                     </div>
                     <div class="col-lg-6 col-sm-6">
                         <div class="form-group">
-                            <?php  if(isset($errors['city'])) : ?>
-                                <div class="text-danger"><?= $errors['city']; ?></div>
-                            <?php endif; ?>
+                            <div class="alert_label">
+                                <?php  if(isset($errors['city'])) : ?>
+                                    <div class="text-danger"><?= $errors['city']; ?></div>
+                                <?php endif; ?>
+                            </div>
                             <label for="">City:</label>
                             <input type="city" name="city" class="form-control h50" value="<?= old('city')?>">
                         </div>
                     </div>
                     <div class="col-lg-6 col-sm-6">
                         <div class="form-group">
-                            <?php  if(isset($errors['state'])) : ?>
-                            <div class="text-danger"><?= $errors['state']; ?></div>
-                        <?php endif; ?>
+                            <div class="alert_label">
+                                <?php  if(isset($errors['state'])) : ?>
+                                    <div class="text-danger"><?= $errors['state']; ?></div>
+                                <?php endif; ?>
+                            </div>
                             <label for="">State:</label>
                             <input type="text" name="state" class="form-control h50" value="<?= old('state')?>">
                         </div>
                     </div>
                     <div class="col-lg-6 col-sm-6">
                         <div class="form-group">
-                            <?php  if(isset($errors['country'])) : ?>
-                                <div class="text-danger"><?= $errors['country']; ?></div>
-                            <?php endif; ?>
+                            <div class="alert_label">
+                                <?php  if(isset($errors['country'])) : ?>
+                                    <div class="text-danger"><?= $errors['country']; ?></div>
+                                <?php endif; ?>
+                            </div>
                             <label for="">Country</label>
                             <div class="ui_kit_select_box">
                                 <select name="country" class="selectpicker custom-select-lg mb-3">
@@ -157,11 +189,24 @@
                             </div>
                         </div>
                     </div>
+                    <div class="col-xl-12">
+                        <div class="form-group">
+                            <div class="alert_label">
+                                <?php  if(isset($errors['image'])) : ?>
+                                    <div class="text-danger"><?= $errors['image']; ?></div>
+                                <?php endif; ?>
+                            </div>
+                            <label for="">Image:</label><br>
+                            <input type="file" name="image" class="" >
+                        </div>
+                    </div>
                     <div class="col-lg-6">
                         <div class="form-group">
-                            <?php  if(isset($errors['gender'])) : ?>
-                                <div class="text-danger"><?= $errors['gender']; ?></div>
-                            <?php endif; ?>
+                            <div class="alert_label">
+                                <?php  if(isset($errors['gender'])) : ?>
+                                    <div class="text-danger"><?= $errors['gender']; ?></div>
+                                <?php endif; ?>
+                            </div>
                             <div class="apply_checkbox_d">
                                 <input type="checkbox" class="gender_checkbox_input" value="male" <?= old('gender') == 'male' ? 'checked' : ''?>>
                                 <label class="cover_letter_btn" for="cover_letter_btn" style="font-size: 13px;">Male</label>

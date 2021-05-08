@@ -32,16 +32,13 @@ $banner =  $connection->select('settings')->where('id', 1)->first();
 		            </button>
 		        </div>
 		        <a href="<?= url('/shop'); ?>" class="navbar_brand float-left dn-smd">
-		            <img class="logo1 img-fluid" src="<?= asset($banner->logo) ?>" alt="<?= $banner->app_name ?>">
-		            <img class="logo2 img-fluid" src="<?= asset($banner->logo) ?>" alt="<?= $banner->app_name ?>">
+		            <img class="logo1 img-fluid navi-top-img" src="<?= asset($banner->logo) ?>" alt="<?= $banner->app_name ?>">
+		            <img class="logo2 img-fluid navi-top-img" src="<?= asset($banner->logo) ?>" alt="<?= $banner->app_name ?>">
 		            <span></span>
 		        </a>
 		        <!-- Responsive Menu Structure-->
 		        <!--Note: declare the Menu style in the data-menu-style="horizontal" (options: horizontal, vertical, accordion) -->
 		        <ul id="respMenu" class="ace-responsive-menu" data-menu-style="horizontal">
-		            <li>
-                    <a href="<?= url('/shop') ?>"><span class="title">Home</span></a>
-		            </li>
 		            <li>
 		                <a href="#"><span class="title">Categories</span></a>
 						<!-- Level Two-->
@@ -77,6 +74,9 @@ $banner =  $connection->select('settings')->where('id', 1)->first();
 		            </li>
 					<li>
 		                <a href="<?= url('/') ?>"><span class="title"> Find a worker</span></a>
+					</li>
+					<li>
+						<a href="<?= url('/courses') ?>"><span class="title">Courses</span></a>
 		            </li>
 		        </ul>
 		        <ul class="header_user_notif pull-right dn-smd">

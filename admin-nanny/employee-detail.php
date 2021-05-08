@@ -173,7 +173,7 @@ $worker = $connection->select('workers')->where('employee_id', Input::get('wid')
                                         </div>
                                     </div>
                                     <div class="approved text-center">
-                                        <span class="text-<?= $employee->e_approved ? 'success' : 'danger'?>"><?= $employee->e_approved ? 'Approved' : 'Not approved'?></span>
+                                        <span class="text-<?= $employee->is_active ? 'success' : 'danger'?>"><?= $employee->is_active ? 'online' : 'offline'?></span>
                                     </div>
                                 </div>
                                 <form action="<?= current_url()?>" method="POST" class="account-profile-form">
@@ -338,28 +338,7 @@ $worker = $connection->select('workers')->where('employee_id', Input::get('wid')
                             </div>
                             <!-- inner content end -->
 
-                            <!-- inner content start -->
-                            <div class="account-h">
-                                <div class="inner-content-x">
-                                   <div class="inner-h">
-                                        <h5 class="">Job summary</h5>
-                                   </div>
-                                   <?php if(!$worker->summary): ?>
-                                   <ul>
-                                       <li><p class="inner-p">Give a short overview of what you can do relating to the job position</p></li>
-                                       <li class="text-right"><a href="<?= url('/admin-nanny/employee-update.php?page=summary&wid='.$worker->employee_id) ?>" class="text-primary">Add</a></li>
-                                   </ul>
-                                    <?php else: ?>
-                                   <div class="inner-body">
-                                        <p class="inner-p"><?= ucfirst($worker->summary) ?></p>
-                                       <ul>
-                                           <li class="text-right"><a href="<?= url('/admin-nanny/employee-update.php?page=summary&wid='.$worker->employee_id) ?>" class="text-primary">Update</a></li>
-                                       </ul>
-                                   </div>
-                                    <?php endif; ?>
-                                </div>
-                            </div>
-                            <!-- inner content end -->
+                           
 
                               <!-- inner content start -->
                               <div class="account-h">
@@ -374,10 +353,7 @@ $worker = $connection->select('workers')->where('employee_id', Input::get('wid')
                                     </ul>
                                     <?php else: ?>
                                    <div class="inner-body">
-                                        <?php  $educations = json_decode($worker->education, true); 
-                                        foreach($educations as $key => $education): 
-                
-                                        ?>
+                                        <?php  $education = json_decode($worker->education, true); ?>
                                        <ul class="inner_ul">
                                             <li><b>Qualification: </b><?= $education['qualification']?></li>
                                             <li><b>Institution: </b><?= $education['institution']?></li>
@@ -397,13 +373,9 @@ $worker = $connection->select('workers')->where('employee_id', Input::get('wid')
                                                 </div>
                                             </li>
                                            <li class="text-right li-link">
-                                               <a href="<?= url('/admin-nanny/employee-update.php?page=edu_edit&eid='.$key.'&wid='.$worker->employee_id) ?>" class="text-primary">Edit</a>
-                                               <a href="<?= url('/admin-nanny/employee-update.php?page=edu_delete&eid='.$key.'&wid='.$worker->employee_id) ?>" class="text-danger">Delete</a>
+                                               <a href="<?= url('/admin-nanny/employee-update.php?page=edu_edit&&wid='.$worker->employee_id) ?>" class="text-primary">Edit</a>
+                                               <a href="#" data-toggle="modal"  data-target="#employee_delete_education_btn" class="text-danger">Delete</a>
                                            </li>
-                                       </ul>
-                                        <?php endforeach; ?>
-                                       <ul>
-                                           <li class="text-right"> <a href="<?= url('/admin-nanny/employee-update.php?page=education&wid='.$worker->employee_id) ?>" class="text-primary">Add more</a></li>
                                        </ul>
                                    </div>
                                     <?php endif; ?>
@@ -424,10 +396,7 @@ $worker = $connection->select('workers')->where('employee_id', Input::get('wid')
                                    </ul> 
                                     <?php else: ?>
                                    <div class="inner-body">
-                                       <?php  $experiences = json_decode($worker->work_experience, true); 
-                                        foreach($experiences as $key => $experience): 
-                
-                                        ?>
+                                       <?php  $experience = json_decode($worker->work_experience, true); ?>
                                        <ul class="inner_ul">
                                             <li><b>Job title:</b> <?= ucfirst($experience['job_title']) ?></li>
                                             <li><b>Job function:</b> <?= $experience['job_function'] ?></li>
@@ -448,13 +417,9 @@ $worker = $connection->select('workers')->where('employee_id', Input::get('wid')
                                                 </div>
                                             </li>
                                            <li class="text-right li-link">
-                                               <a href="<?= url('/admin-nanny/employee-update.php?page=edit_work&eid='.$key.'&wid='.$worker->employee_id) ?>" class="text-primary">Edit</a>
-                                               <a href="<?= url('/admin-nanny/employee-update.php?page=delete_work&eid='.$key.'&wid='.$worker->employee_id) ?>" class="text-danger">Delete</a>
+                                               <a href="<?= url('/admin-nanny/employee-update.php?page=edit_work&wid='.$worker->employee_id) ?>" class="text-primary">Edit</a>
+                                               <a href="#" data-toggle="modal"  data-target="#employee_delete_work_btn" class="text-danger">Delete</a>
                                            </li>
-                                       </ul>
-                                        <?php endforeach; ?>
-                                       <ul>
-                                           <li class="text-right"> <a href="<?= url('/admin-nanny/employee-update.php?page=work&wid='.$worker->employee_id) ?>" class="text-primary">Add more</a></li>
                                        </ul>
                                    </div>
                                    <?php endif; ?>
@@ -672,6 +637,73 @@ $worker = $connection->select('workers')->where('employee_id', Input::get('wid')
 
 
 
+
+
+<!-- Modal delete education -->
+<div class="sign_up_modal modal fade" id="employee_delete_education_btn" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close close_cancle_request_btn" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="tab-content" id="myTabContent">
+                <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                    <div class="login_form">
+                        <form action="<?= current_url()?>" method="POST">
+                            <div class="heading">
+                                <div class="alert-delete-review text-danger text-center"></div>
+                                <p class="text-center">Do you wish to delete education?</p>
+                            </div>
+                            <button type="submit"  name="subscribe" class="subcribe_now_btn" style="display: none;"></button>
+                            <button type="submit" class="btn btn-log btn-block bg-danger" id="delete_education_modal_btn" style="color: #fff">Delete education</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+<!-- Modal delete work -->
+<div class="sign_up_modal modal fade" id="employee_delete_work_btn" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close close_cancle_request_btn" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="tab-content" id="myTabContent">
+                <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                    <div class="login_form">
+                        <form action="<?= current_url()?>" method="POST">
+                            <div class="heading">
+                                <div class="alert-delete-review text-danger text-center"></div>
+                                <p class="text-center">Do you wish to delete work experience?</p>
+                            </div>
+                            <button type="submit"  name="subscribe" class="subcribe_now_btn" style="display: none;"></button>
+                            <button type="submit" class="btn btn-log btn-block bg-danger" id="delete_experience_btn" style="color: #fff">Delete work experience</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
 <a href="<?= url('/admin-nanny/ajax.php') ?>" class="ajax_url_page" style="display: none;"></a>
 <a href="#" id="<?= Input::get('wid') ?>" class="employee_id_input" style="display: none;"></a>
 
@@ -716,7 +748,7 @@ $(".employee_feature_btn").click(function(e){
         },
         error: function(){
             $(".page_alert_danger").show();
-            $(".page_alert_danger").html('^Network error, try again later!');
+            $(".page_alert_danger").html('*Network error, try again later!');
         }
     });
     
@@ -796,7 +828,7 @@ $(".employee_add_top_btn").click(function(e){
         },
         error: function(){
             $(".page_alert_danger").show();
-            $(".page_alert_danger").html('^Network error, try again later!');
+            $(".page_alert_danger").html('*Network error, try again later!');
         }
     });
     
@@ -837,7 +869,7 @@ $(".employee_approve_btn").click(function(e){
         },
         error: function(){
             $(".page_alert_danger").show();
-            $(".page_alert_danger").html('^Network error, try again later!');
+            $(".page_alert_danger").html('*Network error, try again later!');
         }
     });
     
@@ -1406,6 +1438,36 @@ $("#employee_upload_cv_input").on('change', function(){
 
 
 
+// ===========================================
+// DELETE EXPERIENCE
+// ===========================================
+$("#delete_experience_btn").click(function(e){
+    e.preventDefault();
+    var url = $(".ajax_url_page").attr('href');
+    var employee_id = $(".employee_id_input").attr('id');
+
+    $(".preloader-container").show() //show preloader
+
+     $.ajax({
+        url: url,
+        method: "post",
+        data: {
+            employee_id: employee_id,
+            delete_experience_action: 'delete_experience_action'
+        },
+        success: function (response){
+            var data = JSON.parse(response);
+            if(data.error){
+                location.reload();
+            }else if(data.url){
+                location.assign(data.url);
+            }else{
+                location.reload();
+            }
+            remove_dark_preloader();
+        }
+    });
+});
 
 
 
@@ -1446,6 +1508,39 @@ $("#employee_delete_cv_btn").click(function(e){
 
 
 
+
+
+
+
+// ===================================
+// DELETE EDUCATION 
+// ===================================
+$("#delete_education_modal_btn").click(function(e){
+    e.preventDefault();
+    var url = $(".ajax_url_page").attr('href');
+    var employee_id = $(".employee_id_input").attr('id');
+
+    $(".close_cancle_request_btn").click()
+    $(".preloader-container").show() //show preloader
+
+     $.ajax({
+        url: url,
+        method: "post",
+        data: {
+            employee_id: employee_id,
+            delete_education_action: 'delete_education_action'
+        },
+        success: function (response){
+            var data = JSON.parse(response);
+            if(data.url){
+                location.assign(data.url);
+            }else{
+                location.reload();
+            }
+            remove_dark_preloader();
+        }
+    });
+});
 
 
 

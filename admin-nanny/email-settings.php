@@ -84,7 +84,7 @@ $settings =  $connection->select('settings')->where('id', 1)->first();
                     <?php if(Session::has('success')): ?>
                         <div class="alert-success text-center p-3 mb-2"><?= Session::flash('success') ?></div>
                     <?php endif; ?>
-                    <div class="alert-danger text-center p-3 mb-2 page_alert_danger" style="display: none;"></div>
+                    <div class="alert alert-danger text-center p-3 mb-2 page_alert_danger" style="display: none;"></div>
                         <nav class="breadcrumb_widgets" aria-label="breadcrumb mb30">
                             <h4 class="title float-left">Email settings</h4>
 							<ol class="breadcrumb float-right">

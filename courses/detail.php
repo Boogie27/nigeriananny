@@ -92,8 +92,8 @@ if(Cookie::has('saved_course'))
                                     <li>Ratings: <?= stars($course->ratings, $course->rating_count) ?></li>
                                     <li class="c-font"><i class="fa fa-comment-o"></i> (<?= $course->rating_count ?>) Reviews </li>
                                 </ul>
-                                <div class="video-x">
-                                    <img src="<?= asset($course->course_poster)?>" id="video_input_tag" class="video-frame" >
+                                <div class="course-iframe">
+                                    <iframe width="560" height="315" src="<?= $course->video_link ?>" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                                 </div>
                                 <ul class="ul-share">
                                     <li>
@@ -109,7 +109,7 @@ if(Cookie::has('saved_course'))
                                         <a href="#" class="<?= Auth_course::is_loggedin() ? 'course_disLike_btn' : ''?>"><i class="fa fa-thumbs-down"></i><span class="likes">(<?= count($course_dislike) ?>) likes</span></a>
                                     </li>
                                     <li class="other-likes float-right">
-                                        <?php if(count($course_like)): ?>
+                                        <?php if(count($course_like) && Auth_course::is_loggedin()): ?>
                                             you and <span><?= count($course_like) ?></span> other like this
                                         <?php endif; ?>
                                     </li>
@@ -145,6 +145,14 @@ if(Cookie::has('saved_course'))
                                     <p><?= $course->course_for?></p>
                                 </div><!-- course who the course for end -->
                                 
+                                <div class="course-description"><!-- course size start -->
+                                    <div class="title"><h4>Course detail</h4></div>
+                                    <ul class="course-download">
+                                        <li>Size: <?= $course->course_size?></li>
+                                        <li>Duration: <?= $course->duration?></li>
+                                        <li>Uploaded: <?= date('d M Y', strtotime($course->date_posted))?></li>
+                                    </ul>
+                                </div><!-- course size end -->
                             </div>
                        </div><!-- video body end -->
                        <div class="col-xl-4 col-lg-12"><!-- related video start -->
@@ -154,7 +162,7 @@ if(Cookie::has('saved_course'))
                                     <?php if(count($related_courses)):?>
                                     <div class="row">
                                         <?php foreach($related_courses as $related):?>
-                                        <div class="col-lg-12 col-md-6 col-sm-12"><!-- related item start -->
+                                        <div class="col-xl-12 col-lg-6 col-md-6 col-sm-12"><!-- related item start -->
                                             <div class="course-item"> 
                                                 <div class="course-img">
                                                     <a href="<?= url('/courses/detail.php?cid='.$related->course_id) ?>"><img src="<?= asset($related->course_poster) ?>" alt="<?= $related->title?>"></img></a>
@@ -173,7 +181,9 @@ if(Cookie::has('saved_course'))
                                         <?php endforeach; ?>
                                     </div>
                                     <?php else: ?>
-                                    <div class="alert alert-warning text-center">There are no related courses</div>
+                                   <div class="related-error">
+                                        <div class="alert alert-warning text-center">There are no related courses</div>
+                                   </div>
                                     <?php endif; ?>
                                 </div>
                             </div>
@@ -250,29 +260,6 @@ if(Cookie::has('saved_course'))
                             </div>
                         </div><!-- instructor end -->
                         <?php endif; ?>
-                            <div class="col-lg-12">
-                                <?php if($course->preview_link): ?>
-                                    <div class="course-description"><!-- course preview start -->
-                                        <div class="title"><h4>Course preview</h4></div>
-                                        <ul class="course-preview">
-                                            <li class="course-iframe">
-                                                <iframe width="560" height="315" src="<?= $course->preview_link ?>" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                                            </li>
-                                        </ul>
-                                    </div><!-- course preview end -->
-                                <?php endif; ?>
-                                <div class="course-description"><!-- course size start -->
-                                    <div class="title"><h4>Course size</h4></div>
-                                    <ul class="course-download">
-                                        <li><?= $course->course_size?></li>
-                                        <li>Uploaded: <?= date('d M Y', strtotime($course->date_posted))?></li>
-                                        <?php if($course->video): ?>
-                                        <li class="download"><a href="<?= url($course->video)?>" download><i class="fa fa-arrow-down"></i> Download course</a></li>
-                                        <?php endif; ?>
-                                    </ul>
-                                </div><!-- course size end -->
-                                <br>
-                            </div>
                         
                         <div class="col-lg-12"><!-- review start -->
                             <div class="start-review">
@@ -1103,7 +1090,7 @@ function set_preloader(string){
 function get_bottom_alert(string){
     var bottom = '10px';
     if($(window).width() < 567){
-        bottom = '0px';
+        bottom = '5px';
     }
     $(".page-aliert-bottom .page-alert-content").css({
         bottom: bottom
@@ -1140,3 +1127,9 @@ function get_bottom_alert(string){
 // end
 });
 </script>
+
+
+
+
+
+

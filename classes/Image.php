@@ -283,13 +283,17 @@ class Image {
 
     public static function name($image, $name = null)
     {
-        $fileExt = explode('.', $_FILES[$image]['name']);
-        $fileExt = end($fileExt);
-        if($name)
+        if($image)
         {
-            return $fileName = $name.'_'.uniqid().'.'.$fileExt;
+            $fileExt = explode('.', $_FILES[$image]['name']);
+            $fileExt = end($fileExt);
+            if($name)
+            {
+                return $fileName = $name.'_'.uniqid().'.'.$fileExt;
+            }
+            return $_FILES[$image]['name'].'.'.$fileExt;
         }
-        return $_FILES[$image]['name'].'.'.$fileExt;
+        return  false;
     }
 
 

@@ -2,9 +2,7 @@
 <?php
 if(!Auth_employee::is_loggedin())
 {
-    Session::put('old_url', '/employee/account');
-    Session::put('error', '*Signup or Login to access that page!');
-    return view('/');
+    return view('/employee/login');
 }
 
 
@@ -116,8 +114,9 @@ $requests = $connection->select('request_workers')->leftJoin('employers', 'reque
                                             <ul class="drop-down-ul">
                                                 <li><a href="<?= url('/employee/job-detail.php?rid='.$request->request_id ) ?>">Detail</a></li>
                                                 <li><a href="#" class="request_accept_btn" id="<?= $request->request_id?>">Accept offer</a></li>
-                                                <li><a href="#" class="request_cancle_btn" id="<?= $request->request_id?>">Cancle offer</a></li>
+                                                <?php if($request->is_completed): ?>
                                                 <li><a href="#" class="request_delete_btn" id="<?= $request->request_id?>">Delete offer</a></li>
+                                                <?php endif; ?>
                                             </ul>
                                         </div>
                                     </li>
@@ -214,7 +213,6 @@ $requests = $connection->select('request_workers')->leftJoin('employers', 'reque
 
     <script>
 $(document).ready(function(){
-
 // ===========================================
 //      OPEN PROFILE IMAGE
 // ===========================================
@@ -249,7 +247,9 @@ $('.img-conatiner-x').on('change', '.profile_img_input', function(){
             if(data.error){
                 error_preloader(data.error.image);
             }else if(data.data){
-                img_preloader();
+                $(".nav-profile-img").attr('src', data.data)
+                $("#profile_image_img").attr('src', data.data)
+                img_preloader()
             }
         }
     });
@@ -262,38 +262,13 @@ $('.img-conatiner-x').on('change', '.profile_img_input', function(){
 
 
 // ========================================
-//     GET EMPLOYER IMAGE
-// ========================================
-function get_employer_img(){
-    var url = $(".ajax_url_page").attr('href');
-
-    $.ajax({
-        url: url,
-        method: "post",
-        data: {
-            get_employee_img: 'get_employee_img'
-        },
-        success: function (response){
-            $(".img-conatiner-x .em-img").html(response)
-        }
-    });
-}
-
-
-
-
-
-// ========================================
 //     GET ERROR PRELOADER
 // ========================================
 function img_preloader(string){
-    $(".e-loader-kamo").show();
     setTimeout(function(){
-        get_employer_img()
         $(".e-loader-kamo").hide();
-    }, 5000);
+    }, 1000);
 }
-
 
 
 
@@ -351,29 +326,29 @@ $(".request_accept_btn").click(function(e){
 // ========================================
 // CANCLE JOB OFFER
 // ========================================
-$(".request_cancle_btn").click(function(e){
-    e.preventDefault();
-    var url = $(".ajax_url_page").attr('href');
-    var request_id = $(this).attr('id');
-    $(".preloader-container").show() //show preloader
+// $(".request_cancle_btn").click(function(e){
+//     e.preventDefault();
+//     var url = $(".ajax_url_page").attr('href');
+//     var request_id = $(this).attr('id');
+//     $(".preloader-container").show() //show preloader
     
-    $.ajax({
-        url: url,
-        method: "post",
-        data: {
-            request_id: request_id,
-            employee_cancle_action: 'employee_cancle_action'
-        },
-        success: function (response){
-            var data = JSON.parse(response);
-            if(data.error){
-                location.reload();
-            }else if(data.data){
-                location.reload();
-            }
-        }
-    });
-});
+//     $.ajax({
+//         url: url,
+//         method: "post",
+//         data: {
+//             request_id: request_id,
+//             employee_cancle_action: 'employee_cancle_action'
+//         },
+//         success: function (response){
+//             var data = JSON.parse(response);
+//             if(data.error){
+//                 location.reload();
+//             }else if(data.data){
+//                 location.reload();
+//             }
+//         }
+//     });
+// });
 
 
 

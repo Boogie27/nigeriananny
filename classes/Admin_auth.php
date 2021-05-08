@@ -45,6 +45,23 @@ class Admin_auth{
 
                 if($connection->passed())
                 {
+                    if(Auth_course::is_loggedin())
+                    {
+                        Session::delete('course_users');
+                    }
+                    if(Auth_employee::is_loggedin())
+                    {
+                        Session::delete('employee');
+                    }
+                    if(Auth_employer::is_loggedin())
+                    {
+                        Session::delete('employer');
+                    }
+                    if(Auth::is_loggedin())
+                    {
+                        Session::delete('user');
+                    }
+                    Session::delete('old_url');
                     Session::put('admin', $login_user);
                     return true;
                 }

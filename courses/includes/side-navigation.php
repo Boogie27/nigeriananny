@@ -10,7 +10,7 @@
                 <a href="<?= url('/') ?>"><i class="fa fa-home"></i>Home</a>
             </li>
             <li>
-                <a href="<?= url('/courses') ?>"><i class="fa fa-video-camera"></i>All courses</a>
+                <a href="<?= url('/courses') ?>"><i class="fa fa-camera"></i>All courses</a>
             </li>
             <li>
                 <a href="#" class="nav-drop-down"><i class="fa fa-cubes"></i>Categories <i class="fa fa-angle-right float-right angle"></i></a>

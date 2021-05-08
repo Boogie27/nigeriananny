@@ -118,9 +118,9 @@ if(Input::post('upload_employer_image'))
         $file = Image::files('image');
 
         $file_name = Image::name('image', 'employer');
-        $image->resize_image($file, ['name' => $file_name, 'width' => 200, 'height' => 200, 'size_allowed' => 1000000,'file_destination' => './employer/images/employer/']);
+        $image->resize_image($file, ['name' => $file_name, 'width' => 200, 'height' => 200, 'size_allowed' => 1000000,'file_destination' => './employer/images/']);
             
-        $image_name = '/employer/images/employer/'.$file_name;
+        $image_name = '/employer/images/'.$file_name;
 
         if(!$image->passed())
         {
@@ -137,35 +137,15 @@ if(Input::post('upload_employer_image'))
         $update = $connection->update('employers', [
             'e_image' => $image_name
         ])->where('id', Auth_employer::employer('id'))->save();
-
+       
         if($update)
         {
-            $data = true;
+            $employer_image = $connection->select('employers')->where('id', Auth_employer::employer('id'))->first();
+            $data = asset($employer_image->e_image);
         }
     }
     return response(['data' => $data]);
 }
-
-
-
-
-
-
-
-
-
-// ========================================
-//     GET EMPLOYER IMAGE
-// ========================================
-if(Input::post('get_employer_img'))
-{
-    $data = false;
-    $employer = $connection->select('employers')->where('id', Auth_employer::employer('id'))->first();
-    return include('employer/common/ajax-employer.php');
-}
-
-
-
 
 
 
@@ -377,34 +357,15 @@ if(Input::post('upload_employee_image'))
             'w_image' => $image_name
         ])->where('e_id', Auth_employee::employee('id'))->save();
 
+        $image = $connection->select('employee')->where('e_id', Auth_employee::employee('id'))->first();
+
         if($update)
         {
-            $data = true;
+            $data = asset($image->w_image);
         }
     }
     return response(['data' => $data]);
 }
-
-
-
-
-
-
-
-
-
-// ========================================
-//     GET EMPLOYER IMAGE
-// ========================================
-if(Input::post('get_employee_img'))
-{
-    $data = false;
-    $employee = $connection->select('employee')->where('e_id', Auth_employee::employee('id'))->first();
-    return include('employee/common/ajax-employee.php');
-}
-
-
-
 
 
 
@@ -424,15 +385,13 @@ if(Input::post('employee_accept_offer'))
 
     $update = $connection->update('request_workers', [
         'is_accept' => 1,
-        'is_cancle' => 0,
-        'cancled_date' => null,
         'accepted_date' => date('Y-m-d H:i:s')
     ])->where('request_id', Input::get('request_id'))->save();
 
     if($update)
     {
-        Session::flash('success', 'Job offer has been accepted successfully!');
-        Session::flash('success-m', 'Job offer has been accepted successfully!');
+        Session::flash('success', 'Job offer has been accepted successfully, you will be contacted be the employee soon');
+        Session::flash('success-m', 'Job offer has been accepted successfully, you will be contacted be the employee soon');
         $data = true;
     }
    
@@ -458,16 +417,14 @@ if(Input::post('employee_cancle_action'))
     }
 
     $update = $connection->update('request_workers', [
-        'is_accept' => 0,
         'is_cancle' => 1,
-        'accepted_date' => null,
         'cancled_date' => date('Y-m-d H:i:s')
     ])->where('request_id', Input::get('request_id'))->save();
 
     if($update)
     {
-        Session::flash('error', 'Job offer has been cancled successfully!');
-        Session::flash('error-m', 'Job offer has been cancled successfully!');
+        Session::flash('error', 'Job offer has been cancled!');
+        Session::flash('error-m', 'Job offer has been cancled!');
         $data = true;
     }
    
@@ -496,13 +453,12 @@ if(Input::post('employee_delete_request'))
 
     $update = $connection->update('request_workers', [
         'is_employee_delete' => 1,
-        'is_cancle' => 1,
     ])->where('request_id', Input::get('request_id'))->save();
 
     if($update)
     {
-        Session::flash('error', 'Job offer has been deleted successfully!');
-        Session::flash('error-m', 'Job offer has been deleted successfully!');
+        Session::flash('error', 'Deleted successfully!');
+        Session::flash('error-m', 'Deleted successfully!');
         $data = true;
     }
    
@@ -512,6 +468,35 @@ if(Input::post('employee_delete_request'))
 
 
 
+
+
+// ========================================
+// DELETE JOB OFFER
+// ========================================
+if(Input::post('employer_delete_request'))
+{
+    $data = false;
+    $requests = $connection->select('request_workers')->where('request_id', Input::get('request_id'))->first();    
+    if(!$requests){
+        Session::flash('error', 'Something went wrong, try again later!');
+        return response(['error' => ['error' => true]]);
+    }
+
+    $update = $connection->update('request_workers', [
+        'is_employer_delete' => 1,
+        'is_employee_delete' => 1,
+    ])->where('request_id', Input::get('request_id'))->save();
+
+    if($update)
+    {
+        Session::flash('error', 'Deleted successfully!');
+        Session::flash('error-m', 'Deleted successfully!');
+        $data = true;
+    }
+   
+   
+    return response(['data' => $data]);
+}
 
 
 
@@ -1419,13 +1404,36 @@ if(Input::post('employer_logout_action'))
 
 
 
+// ************* DELETE SUBSCRIPTION*********//
+if(Input::post('delete_subscription_btn'))
+{
+    $data = false;
+    $update = $connection->update('employer_subscriptions', [
+               'is_employer_delete' => 1
+            ])->where('subscription_id', Input::get('sub_id'))->where('is_expire', 1)->save();
+    if($update)
+    {
+        $data = true;
+    }
+    return response(['data' => $data]);
+}
 
 
 
-
-
-
-
+// *********** GET VERIFY ALERT **************//
+if(Input::post('check_account_verify'))
+{
+    $data = false;
+    if(Auth_employee::is_loggedin())
+    {
+        $employee = $connection->select('employee')->where('e_id', Auth_employee::employee('id'))->where('e_is_deactivate', 0)->first();
+        if(!$employee->e_approved)
+        {
+            $data = asset('/employee/account');
+        }
+    }
+    return response(['data' => $data]);
+}
 
 
 

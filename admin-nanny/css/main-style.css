@@ -1,3 +1,6 @@
+body{
+    font-family: 'poppins', sans-serif;
+}
 /* ================================= */
 /*     SUCCESS ALERT                */
 /* ================================ */
@@ -14,9 +17,17 @@
 .alert-div{
     height: 20px;
 }
+.alert_label, .all_alert{
+    font-size: 13px;
+    line-height: 10px;
+    height: 10px;
+}
 /* ================================== */
 /*        COMMON                    */
 /* =============================== */
+.flex{
+    display: flex;
+}
 .none{
     display: none;
 }
@@ -116,12 +127,31 @@ img.table-img{
     border: 2px solid #071fa2;
     background-color: #fff;
 }
+.account-x form input:focus, .account-x form textarea:focus, select:focus{
+    outline: none;
+    box-shadow: none;
+    border: 1px solid rgb(224, 224, 224);
+}
 /* ============================================ */
 /*            NAVIGATIION                      */
 /* ========================================== */
 .nav_logo_img, .navbar_brand img{
     width: 55px;
     height: 55px;
+}
+
+/* *********** DASHBOARD ************ */
+.media-body-anchor a{
+    margin: 0px 5px;
+    padding: 2px 10px;
+    border-radius: 3px;
+    border: 1px solid #ccc;
+    transition: all 0.3s ease;
+}
+.media-body-anchor a:hover{
+    color: #fff;
+    border: 1px solid #333;
+    background-color: #333;
 }
 /* ============================================ */
 /*           EDIT PRODUCT                      */
@@ -442,7 +472,6 @@ img.table-img{
 .content-head{
     color: #333;
     font-size: 40px;
-    font-family: ui-serif;
     text-align: center;
     margin: 0px;
 }
@@ -475,6 +504,7 @@ img.table-img{
     border-radius: 3px;
     margin-bottom: 30px;
     background-color: #fff;
+    border-top: 3px solid rgb(248, 179, 50);
     box-shadow: 4px 2px 4px 0px rgb(220, 220, 220);
 }
 p.inner-p{
@@ -486,9 +516,7 @@ p.inner-p{
 p.inner-p, ul.inner_ul li{
     font-size: 14px;
 }
-ul.inner_ul{
-    border-bottom: 1px solid rgb(232, 232, 232);
-}
+
 .inner_ul li b{
     margin-right: 10px;
 }
@@ -776,7 +804,7 @@ ul.inner_ul .li-link a{
     height: 0px;
 }
 ul.drop-down-ul{
-    bottom: 0px;
+    top: 0px;
     z-index: 100;
     right: 0px;
     width: 200px;
@@ -880,7 +908,9 @@ ul.drop-down-ul li a:hover{
 .experience-x{
     padding: 10px 0px;
     padding-left: 25px;
-    border-bottom: 1px solid #ccc;
+}
+.ability-x{
+    padding-left: 30px;
 }
 .j-expirience ul li{
     font-size: 13px;
@@ -927,7 +957,7 @@ ul.drop-down-ul li a:hover{
 }
 .j-safety{
     padding: 10px 0px;
-    border-bottom: 1px solid #ccc;
+    border-top: 1px solid #ccc;
 }
 .j-safety ul li{
     font-size: 13px;
@@ -998,6 +1028,9 @@ ul.ability-x li{
     }
     .account-z{
         padding: 20px 5px;
+    }
+    .ability-x{
+        padding-left: 10px;
     }
 }
 @media only screen and (max-width: 1125px){
@@ -1254,7 +1287,6 @@ ul.ability-x li{
 .dash-amount h3{
     color: black;
     font-size: 23px;
-    font-family: Times New Roman;
 }
 
 
@@ -1281,20 +1313,68 @@ ul.ability-x li{
     background-color: #fff;
     box-shadow: 2px 2px 4px 1px rgb(220, 220, 220);
 }
+.home-slider-body img.slider-img{
+    width: 100%;
+}
+.icon-camera{
+    width: 100%;
+    display: table;
+    text-align: center;
+    height: 200px;
+    background-color: rgb(224, 224, 224);
+}
+.slider-banner-icon i{
+    font-size: 150px;
+    color: #fff;
+}
+.icon-camera a{
+    display: table-cell;
+    vertical-align: middle;
+}
+.home-slider-body{
+    position: relative;
+    margin-bottom: 20px;
+}
+.home-slider-body ul li{
+    font-size: 12px;
+}
+.slider-modal-icon i{
+    font-size: 30px;
+    cursor: pointer;
+    color: rgb(180, 180, 180);
+}
+a.slider-banner-delete-btn{
+    top: 5px;
+    right: 5px;
+    color: rgb(246, 55, 55);
+    position: absolute;
+    border-radius: 10px;
+    padding: 5px 10px;
+    background-color: #fff;
+}
 @media only screen and (max-width: 992px){
     .form-sm{
         width: 80%;
+    }
+    .slider-banner-icon i{
+        font-size: 150px;
     }
 }
 @media only screen and (max-width: 767px){
     .form-sm{
         width: 90%;
     }
+    .slider-banner-icon i{
+        font-size: 100px;
+    }
 }
 @media only screen and (max-width: 567px){
     .form-sm{
         width: 100%;
         padding: 5px;
+    }
+    .slider-banner-icon i{
+        font-size: 100px;
     }
 }
 .h3{
@@ -1496,15 +1576,94 @@ ul.ul-message p{
 }
 
 
+/* ************ NAV IMAGE *************** */
+img.navi-top-img{
+    top: 7px;
+    width: 40px;
+    height: 40px;
+    position: relative;
+    border-radius: 3px;
+}
 
 
+/* ************ EMPLOYEMNTS DETAILS ********** */
+.inner-detail-content{
+    margin-top: 20px;
+}
+.img-item-img{
+    margin-right: 15px;
+}
+.img-item-img img{
+    border-radius: 50%;
+}
+ul.ul-inner-detail{
+    top: 20px;
+    width: 80%;
+    position: relative;
+}
+ul.ul-inner-detail li{
+    font-size: 13px;
+}
+@media only screen and (max-width: 767px){
+    .img-item-img img{
+        width: 100px;
+        height: 100px;
+    }
+    ul.ul-inner-detail{
+        top: 0px;
+    }
+}
+@media only screen and (max-width: 567px){
+    .inner-detail-content{
+        display: block;
+    }
+    .img-item-img{
+        margin-bottom: 20px;
+    }
+    ul.ul-inner-detail li, ul.ul-inner-detail li p{
+        font-size: 12px;
+    }
+    ul.ul-inner-detail{
+        width: 100%;
+    }
+}
 
-
-
-
-
-
-
+/* ************ EMPLOYEE RATINGS PAGE ********** */
+.employee-reviews{
+    padding: 20px 0px;
+}
+.review-body img{
+    width: 70px;
+    height: 70px;
+    margin-right: 10px;
+    border-radius: 50%;
+}
+ul.ul-review-comment span{
+    font-size: 13px;
+}
+ul.ul-review-comment{
+    top: 8px;
+    width: 100%;
+    position: relative;
+    border-radius: 4px;
+    padding: 5px;
+    background-color: rgb(245, 245, 245);
+}
+ul .date{
+    font-size: 11px;
+}
+@media only screen and (max-width: 567px){
+    .review-body img{
+        width: 50px;
+        height: 50px;
+    }
+    ul.ul-review-comment{
+        top: 0px;
+    }
+    ul.ul-review-comment li {
+        font-size: 12px;
+    }
+}
 
 
 

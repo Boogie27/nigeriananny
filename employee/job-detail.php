@@ -78,7 +78,7 @@ if(!$request)
                                 <div class="account-x-body">
                                    <div class="img-conatiner-x">
                                         <div class="em-img">
-                                            <?php $profile_image = $employee->w_image ? $employee->w_image : '/images/employee/demo.png' ?>
+                                            <?php $profile_image = $employee->w_image ? $employee->w_image : '/employee/images/demo.png' ?>
                                             <img src="<?= asset($profile_image) ?>" alt="<?= $employee->first_name ?>" class="acc-img" id="profile_image_img">
                                             <i class="fa fa-camera" id="profile_img_open"></i>
                                             <input type="file" class="profile_img_input" style="display: none;">
@@ -118,7 +118,7 @@ if(!$request)
                                         <a href="<?= url('/employee/job-offer') ?>" class="float-left pl-2"><i class="fa fa-angle-left text-primary"></i><i class="fa fa-angle-left text-primary"></i></a> 
                                         Employer job information</h3>
                                     <div class="request-img text-center">
-                                        <?php $profile_image = $request->e_image ? $request->e_image : '/images/employer/demo.png' ?>
+                                        <?php $profile_image = $request->e_image ? $request->e_image : '/employee/images/demo.png' ?>
                                         <img src="<?= asset($profile_image) ?>" alt="<?= $request->first_name ?>" class="rid-img">
                                         <ul class="request-ul">
                                             <li><b><?= ucfirst($request->first_name.' '.$request->last_name) ?></b></li>
@@ -177,9 +177,6 @@ if(!$request)
                                     <div class="accpt-conatiner">
                                         <?php if(!$request->is_accept):?>
                                             <a href="#" data-toggle="modal"  data-target="#employee_request_accept_btn" class="bg-success">Accept job offer</a>
-                                        <?php endif; ?>
-                                        <?php if(!$request->is_cancle):?>
-                                            <a href="#" data-toggle="modal"  data-target="#employee_request_cancle_btn" class="text-secondary">Cancle offer</a>
                                         <?php endif; ?>
                                     </div>
                                 </div>
@@ -248,7 +245,7 @@ if(!$request)
 
 
 <!-- Modal cancle request -->
-<div class="sign_up_modal modal fade" id="employee_request_cancle_btn" tabindex="-1" role="dialog" aria-hidden="true">
+<div class="sign_up_modal modal fade" id="employee_request_delete_btn" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -260,11 +257,11 @@ if(!$request)
                         <form action="<?= current_url()?>" method="POST">
                             <div class="heading">
                                 <div class="alert-delete-review text-danger text-center"></div>
-                                <p class="text-center">Do you wish to cancle this offer?</p>
+                                <p class="text-center">Do you wish to delete this offer?</p>
                             </div>
                             <input type="hidden" class="request_cancle_input" value="<?= Input::get('rid') ?>">
                             <button type="submit"  name="subscribe" class="subcribe_now_btn" style="display: none;"></button>
-                            <button type="submit" class="btn btn-log btn-block bg-danger" id="request_cancle_modal_btn" style="color: #fff">Cancle offer</button>
+                            <button type="submit" class="btn btn-log btn-block bg-danger" id="request_delete_modal_btn" style="color: #fff">Cancle offer</button>
                         </form>
                     </div>
                 </div>
@@ -320,7 +317,9 @@ $('.img-conatiner-x').on('change', '.profile_img_input', function(){
             if(data.error){
                 error_preloader(data.error.image);
             }else if(data.data){
-                img_preloader();
+                $(".nav-profile-img").attr('src', data.data)
+                $("#profile_image_img").attr('src', data.data)
+                img_preloader()
             }
         }
     });
@@ -333,36 +332,12 @@ $('.img-conatiner-x').on('change', '.profile_img_input', function(){
 
 
 // ========================================
-//     GET EMPLOYER IMAGE
-// ========================================
-function get_employer_img(){
-    var url = $(".ajax_url_page").attr('href');
-
-    $.ajax({
-        url: url,
-        method: "post",
-        data: {
-            get_employee_img: 'get_employee_img'
-        },
-        success: function (response){
-            $(".img-conatiner-x .em-img").html(response)
-        }
-    });
-}
-
-
-
-
-
-// ========================================
 //     GET ERROR PRELOADER
 // ========================================
 function img_preloader(string){
-    $(".e-loader-kamo").show();
     setTimeout(function(){
-        get_employer_img()
         $(".e-loader-kamo").hide();
-    }, 5000);
+    }, 1000);
 }
 
 
@@ -428,35 +403,6 @@ $("#request_accept_modal_btn").click(function(e){
 
 
 
-
-
-// ========================================
-// CANCLE JOB OFFER
-// ========================================
-$("#request_cancle_modal_btn").click(function(e){
-    e.preventDefault();
-    var url = $(".ajax_url_page").attr('href');
-    var request_id = $(".request_cancle_input").val();
-    $(".preloader-container").show() //show preloader
-    $(".close_cancle_request_btn").click();
-    
-    $.ajax({
-        url: url,
-        method: "post",
-        data: {
-            request_id: request_id,
-            employee_cancle_action: 'employee_cancle_action'
-        },
-        success: function (response){
-            var data = JSON.parse(response);
-            if(data.error){
-                location.reload();
-            }else if(data.data){
-                location.reload();
-            }
-        }
-    });
-});
 
 
 

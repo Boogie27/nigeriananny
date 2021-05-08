@@ -6,8 +6,10 @@
         <div class="user_board">
             <div class="user_profile">
                 <div class="media">
-                    <div class="media-body text-center">
-                        <a href="<?= url('/admin-nanny') ?>">Work place</a> | <a href="<?= url('/admin') ?>">Shop</a>
+                    <div class="media-body media-body-anchor text-center">
+                        <a href="<?= url('/admin-nanny') ?>" title="Work place"><i class="fa fa-briefcase"></i></a> |
+                        <a href="<?= url('/admin') ?>" title="Market place"><i class="fa fa-shopping-cart"></i></a> |
+                        <a href="<?= url('/admin-course') ?>" title="Course"><i class="fa fa-video-camera"></i></a>
                     </div>
                 </div>
             </div>

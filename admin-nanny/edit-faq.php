@@ -92,7 +92,7 @@ $banner =  $connection->select('settings')->where('id', 1)->first();
                     <?php if(Session::has('error')): ?>
                         <div class="alert alert-danger text-center p-3 mb-2"><?= Session::flash('error') ?></div>
                     <?php endif; ?>
-                    <div class="alert-danger text-center p-3 mb-2 page_alert_danger" style="display: none;"></div>
+                    <div class="alert alert-danger text-center p-3 mb-2 page_alert_danger" style="display: none;"></div>
                         <nav class="breadcrumb_widgets" aria-label="breadcrumb mb30">
                             <h4 class="title float-left">Edit FAQ</h4>
                             <ol class="breadcrumb float-right">

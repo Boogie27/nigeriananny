@@ -2,13 +2,17 @@
 <?php
 if(!Admin_auth::is_loggedin())
 {
-  Session::delete('admin');
-  return Redirect::to('login.php');
+    Session::delete('admin');
+    Session::put('old_url', '/admin/add-product');
+    return view('/admin/login');
 }
 
-
+    // ******* GET CATEGORIES ******************//
     $categories = $connection->select('shop_categories')->get();
 
+
+
+    
     if(Input::post('add_product'))
     {
         $validate = new DB();

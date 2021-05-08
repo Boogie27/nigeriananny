@@ -2,7 +2,7 @@
     foreach($reviews as $review):
     ?>
     <div class="emp-rev flex-item">
-        <?php $review_image = $review->e_image ? $review->e_image : '/employer/images/employer/demo.png';  ?>
+        <?php $review_image = $review->e_image ? $review->e_image : '/employee/images/demo.png';  ?>
         <img src="<?= asset($review_image) ?>" alt="<?= $review->first_name ?>" class="review-img">
         <ul class="info">
             <ul>

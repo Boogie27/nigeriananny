@@ -68,7 +68,7 @@ $settings = $connection->select('settings')->where('id', 1)->first();
 				<div class="col-sm-4 col-md-3 col-lg-3 col-xl-2 pb15 pt15">
 					<div class="logo-widget home2">
 					   <?php if($settings->footer_logo): ?>
-						<img class="img-fluid" src="<?= asset($settings->footer_logo)?>" alt="logo.png">
+						<img class="footer-img img-fluid" src="<?= asset($settings->footer_logo)?>" alt="logo.png">
 						 <?php endif;?>
 						<span><?= $settings->app_name ? $settings->app_name : '' ?></span>
 					</div>
@@ -79,6 +79,7 @@ $settings = $connection->select('settings')->where('id', 1)->first();
 							<li class="list-inline-item"><a href="<?= url('/shop') ?>">Home</a></li>
 							<li class="list-inline-item"><a href="<?= url('/shop/privacy') ?>">Privacy</a></li>
 							<li class="list-inline-item"><a href="<?= url('/shop/terms') ?>">Terms</a></li>
+							<li class="list-inline-item"><a href="<?= url('/shop/about') ?>">About us</a></li>
 							<li class="list-inline-item"><b>Business hours:</b> <?= $settings->business_hours ? $settings->business_hours : '';?></li>
 						</ul>
 					</div>

@@ -9,7 +9,7 @@ $settings = $connection->select('settings')->where('id', 1)->first();
 		<div class="mobile-menu">
 			<div class="header stylehome1">
 				<div class="main_logo_home2">
-		            <img class="nav_logo_img img-fluid float-left mt20" src="<?= asset($settings->logo) ?>" alt="<?= $settings->app_name ?>">
+		            <img class="nav_logo_img img-fluid float-left mt20 navi-top-img" src="<?= asset($settings->logo) ?>" alt="<?= $settings->app_name ?>">
 		            <span><?= $settings->app_name ?></span>
 				</div>
 			
@@ -75,6 +75,7 @@ $settings = $connection->select('settings')->where('id', 1)->first();
 				    </a>
 				</li>
 				<li><a href="<?= url('/'); ?>"><span class="fa fa-briefcase"></span> Find a worker</a></li>
+				<li><a href="<?= url('/courses'); ?>"><span class="fa fa-video-camera"></span> Courses</a></li>
 					<?php if(Auth::is_loggedIn()): ?>
 					<li><a href="<?= url('/shop/logout') ?>"><span class="fa fa-sign-out"></span> Logout</a></li>
 				<?php else: ?>

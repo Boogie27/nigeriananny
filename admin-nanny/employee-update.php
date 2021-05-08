@@ -129,7 +129,7 @@ $worker = $connection->select('workers')->where('employee_id', Input::get('wid')
                         <?php include('includes/mobile-drop-nav.php') ?><!-- mobile-navigation -->
                     </div>
                     <div class="col-lg-12">
-                    <div class="alert-danger text-center p-3 mb-2 page_alert_danger" style="display: none;"></div>
+                    <div class="alert alert-danger text-center p-3 mb-2 page_alert_danger" style="display: none;"></div>
                         <nav class="breadcrumb_widgets" aria-label="breadcrumb mb30">
                             <h4 class="title float-left">Employee Update</h4>
                             <ol class="breadcrumb float-right">
@@ -171,35 +171,6 @@ $worker = $connection->select('workers')->where('employee_id', Input::get('wid')
                         <?php endif; ?>
 
 
-
-                            <?php if(Input::exists('get') && Input::get('page') == 'summary'): ?>
-                            <!-- about start -->
-                            <div class="account-x">
-                                <div class="account-x-body" id="account-x-body">
-                                    <h3 class="rh-head">Summary information</h3><br><br>
-                                    <form action="<?= current_url()?>" method="POST" class="account-profile-form">
-                                        <div class="row">
-                                            <div class="col-lg-12 col-sm-6">
-                                                <div class="form-group">
-                                                    <?php  if(isset($errors['summary'])) : ?>
-                                                        <div class="text-danger"><?= $errors['summary']; ?></div>
-                                                    <?php endif; ?>
-                                                    <label for="">Summary:</label>
-                                                     <textarea name="summary" class="form-control h50" cols="30" rows="10" placeholder="Write something about what you can do about the job"><?= $worker->summary ?? old('summary') ?></textarea>
-                                                </div>
-                                            </div>
-                                            <div class="col-lg-12">
-                                                <div class="form-group text-right">
-                                                    <a href="<?= url('/admin-nanny/employee-detail.php?wid='.Input::get('wid')) ?>" class="pr-2"><i class="fa fa-angle-left"></i><i class="fa fa-angle-left"></i> BACK</a>
-                                                    <button type="submit" name="update_summary" class="btn view-btn-fill">UPDATE</button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-                            <!-- about end -->
-                            <?php endif; ?>
 
                              <?php if(Input::exists('get') && Input::get('page') == 'education'): ?>
                             <!-- about start -->
@@ -355,8 +326,8 @@ $worker = $connection->select('workers')->where('employee_id', Input::get('wid')
                             <?php endif; ?>
 
 
-                            <?php if(Input::exists('get') && Input::get('page') == 'edu_edit' && Input::get('eid')): 
-                            $old_edu = json_decode($worker->education, true)[Input::get('eid')];  ?>
+                            <?php if(Input::exists('get') && Input::get('page') == 'edu_edit' && Input::get('wid')): 
+                            $old_edu = json_decode($worker->education, true) ?>
                             <!-- edit education start -->
                             <div class="account-x">
                                 <div class="account-x-body" id="account-x-body">
@@ -499,7 +470,6 @@ $worker = $connection->select('workers')->where('employee_id', Input::get('wid')
                                             <div class="col-lg-12">
                                                 <div class="form-group text-right">
                                                     <a href="<?= url('/admin-nanny/employee-detail.php?wid='.Input::get('wid')) ?>" class="pr-2"><i class="fa fa-angle-left"></i><i class="fa fa-angle-left"></i> BACK</a>
-                                                    <input type="hidden" id="education_key_input" value="<?= Input::get('eid')?>">
                                                     <button type="button" id="update_education_edit_btn" class="btn view-btn-fill">SUBMIT</button>
                                                 </div>
                                             </div>
@@ -508,45 +478,6 @@ $worker = $connection->select('workers')->where('employee_id', Input::get('wid')
                                 </div>
                             </div>
                             <!-- edit education end -->
-                            <?php endif; ?>
-
-
-                        <?php if(Input::exists('get') && Input::get('page') == 'edu_delete' && Input::get('eid')): 
-                            $education = json_decode($worker->education, true)[Input::get('eid')];  ?>
-                            <!-- delete education start -->
-                            <div class="account-x">
-                                <div class="account-x-body" id="account-x-body">
-                                    <h3 class="rh-head">Delete Education information</h3><br><br>
-                                    <div class="inner-body">
-                                       <ul class="inner_ul">
-                                            <li><b>Qualification: </b><?= $education['qualification']?></li>
-                                            <li><b>Institution: </b><?= $education['institution']?></li>
-                                            <li><b>City: </b><?= $education['city']?></li>
-                                            <li><b>State: </b><?= $education['state']?></li>
-                                            <li><b>Country: </b><?= $education['country']?></li>
-                                            <li>
-                                                <div class="row">
-                                                    <div class="col-lg-6 col-md-6 col-sm-6"><b>Start date: </b><?= $education['start_date'] ?></div>
-                                                    <div class="col-lg-6 col-md-6 col-sm-6">
-                                                        <?php if(!$education['inview']): ?>
-                                                            <b>End date: </b><?= $education['end_date'] ?>
-                                                        <?php else: ?>
-                                                        <b>End date: </b><span class="inview-x">inview</span>
-                                                        <?php endif; ?>
-                                                    </div>
-                                                </div>
-                                            </li>
-                                       </ul>
-                                       <ul>
-                                           <li class="text-right"> 
-                                                <a href="<?= url('/admin-nanny/employee-detail.php?wid='.Input::get('wid')) ?>" class="pr-2"><i class="fa fa-angle-left"></i><i class="fa fa-angle-left"></i> back</a>
-                                                <a href="#" id="<?= Input::get('eid') ?>" class="delete_education_btn text-danger">Delete</a>
-                                            </li>
-                                       </ul>
-                                   </div>
-                                </div>
-                            </div>
-                            <!-- delete education end -->
                             <?php endif; ?>
 
 
@@ -710,9 +641,8 @@ $worker = $connection->select('workers')->where('employee_id', Input::get('wid')
                             <?php endif; ?>
 
 
-                            <?php if(Input::exists('get') && Input::get('page') == 'edit_work' && Input::get('eid')): 
-                                $experience = json_decode($worker->work_experience, true)[Input::get('eid')];
-                            ?>
+                            <?php if(Input::exists('get') && Input::get('page') == 'edit_work' && Input::get('wid')): 
+                                $experience = json_decode($worker->work_experience, true); ?>
                             <!-- edit work start -->
                             <div class="account-x">
                                 <div class="account-x-body" id="account-x-body">
@@ -871,49 +801,6 @@ $worker = $connection->select('workers')->where('employee_id', Input::get('wid')
                             </div>
                             <!-- edit work end -->
                             <?php endif; ?>
-
-
-                             <?php if(Input::exists('get') && Input::get('page') == 'delete_work' && Input::get('eid')): 
-                            $experience = json_decode($worker->work_experience, true)[Input::get('eid')];  ?>
-                            <!-- delete education start -->
-                            <div class="account-x">
-                                <div class="account-x-body" id="account-x-body">
-                                    <h3 class="rh-head">Delete Education information</h3><br><br>
-                                    <div class="inner-body">
-                                       <ul class="inner_ul">
-                                            <li><b>Job title: </b><?= ucfirst($experience['job_title'])?></li>
-                                            <li><b>Job function: </b><?= $experience['job_function']?></li>
-                                            <li><b>Employer: </b><?= ucfirst($experience['employer_name']) ?></li>
-                                            <li><b>Employer phone: </b><?= $experience['employer_phone']?></li>
-                                            <li><b>Employer email: </b><?= $experience['employer_email']?></li>
-                                            <li><b>Description: </b><?= $experience['description'] ?></li>
-                                            <li>
-                                                <div class="row">
-                                                    <div class="col-lg-6 col-md-6 col-sm-6"><b>Start date: </b><?= $experience['start_date'] ?></div>
-                                                    <div class="col-lg-6 col-md-6 col-sm-6">
-                                                        <?php if(!$experience['inview']): ?>
-                                                            <b>End date: </b><?= $experience['end_date'] ?>
-                                                        <?php else: ?>
-                                                        <b>End date: </b><span class="inview-x">inview</span>
-                                                        <?php endif; ?>
-                                                    </div>
-                                                </div>
-                                            </li>
-                                       </ul>
-                                       <ul>
-                                           <li class="text-right"> 
-                                                <a href="<?= url('/admin-nanny/employee-detail.php?wid='.Input::get('wid')) ?>" class="pr-2"><i class="fa fa-angle-left"></i><i class="fa fa-angle-left"></i> back</a>
-                                                <a href="#" id="<?= Input::get('eid') ?>" class="delete_experience_btn text-danger">Delete</a>
-                                            </li>
-                                       </ul>
-                                   </div>
-                                </div>
-                            </div>
-                            <!-- delete education end -->
-                            <?php endif; ?>
-
-
-
                     </div>
                     <!-- INNER CONTENT END-->
 
@@ -1078,7 +965,6 @@ $("#update_education_edit_btn").click(function(e){
 
     var url = $(".ajax_url_page").attr('href');
     var employee_id = $(".employee_id_input").attr('id');
-    var education_key = $("#education_key_input").val();
     var qualification = $("#input_qualification").val();
     var institution = $("#input_institution").val();
     var city = $("#input_city_institution").val();
@@ -1099,7 +985,6 @@ $("#update_education_edit_btn").click(function(e){
         method: "post",
         data: {
             employee_id: employee_id,
-            key: education_key,
             qualification: qualification,
             institution: institution,
             city: city,
@@ -1127,46 +1012,6 @@ $("#update_education_edit_btn").click(function(e){
         }
     });
 });
-
-
-
-
-
-
-
-// ===================================
-// DELETE EDUCATION 
-// ===================================
-$(".delete_education_btn").click(function(e){
-    e.preventDefault();
-    var url = $(".ajax_url_page").attr('href');
-    var education_key = $(this).attr('id');
-    var employee_id = $(".employee_id_input").attr('id');
-
-    $(".preloader-container").show() //show preloader
-
-     $.ajax({
-        url: url,
-        method: "post",
-        data: {
-            key: education_key,
-            employee_id: employee_id,
-            delete_education_action: 'delete_education_action'
-        },
-        success: function (response){
-            var data = JSON.parse(response);
-            if(data.error){
-                location.reload();
-            }else if(data.url){
-                location.assign(data.url);
-            }else{
-                location.reload();
-            }
-            remove_dark_preloader();
-        }
-    });
-});
-
 
 
 
@@ -1341,38 +1186,6 @@ function edit_work_experience(){
 
 
 
-// ===========================================
-// DELETE EXPERIENCE
-// ===========================================
-$(".delete_experience_btn").click(function(e){
-    e.preventDefault();
-    var url = $(".ajax_url_page").attr('href');
-    var experience_key = $(this).attr('id');
-    var employee_id = $(".employee_id_input").attr('id');
-
-    $(".preloader-container").show() //show preloader
-
-     $.ajax({
-        url: url,
-        method: "post",
-        data: {
-            key: experience_key,
-            employee_id: employee_id,
-            delete_experience_action: 'delete_experience_action'
-        },
-        success: function (response){
-            var data = JSON.parse(response);
-            if(data.error){
-                location.reload();
-            }else if(data.url){
-                location.assign(data.url);
-            }else{
-                location.reload();
-            }
-            remove_dark_preloader();
-        }
-    });
-});
 
 
 

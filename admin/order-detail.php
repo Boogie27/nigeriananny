@@ -5,13 +5,13 @@
 if(!Admin_auth::is_loggedin())
 {
   Session::delete('admin');
-  return Redirect::to('login.php');
+  return view('/admin/login');
 }
 
 
 if(!Input::exists('get') || empty(Input::get('pid')) || !is_numeric(Input::get('pid')))
 {
-    return Redirect::to('transactions.php');
+    return view('/admin/transactions');
 }
 
 $connection = new DB();
@@ -57,8 +57,8 @@ $banner =  $connection->select('settings')->where('id', 1)->first();
                         <nav class="breadcrumb_widgets" aria-label="breadcrumb mb30">
                             <h4 class="title float-left">Order Details</h4>
                             <ol class="breadcrumb float-right">
-                                <li class="breadcrumb-item"><a href="<?= url('/admin/index.php') ?>">Home</a></li>
-                                <li class="breadcrumb-item active" aria-current="page"><a href="<?= url('/admin/transaction-orders.php') ?>"> Transaction order</a></li>
+                                <li class="breadcrumb-item"><a href="<?= url('/admin') ?>">Home</a></li>
+                                <li class="breadcrumb-item active" aria-current="page"><a href="<?= url('/admin/transaction-orders') ?>"> Transaction order</a></li>
                             </ol>
                         </nav>
                     </div>

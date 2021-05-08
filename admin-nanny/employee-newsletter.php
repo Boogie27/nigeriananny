@@ -75,12 +75,12 @@ $client_type = Session::has('employee_type') ? Session::get('employee_type') : n
                     <?php if(!Input::exists('get') || !Input::get('nid')): ?>
                         <div class="text-warning text-center p-3"><i class="fa fa-bell"></i> Click <a href="<?= url('/admin-nanny/news-letters') ?>" class="text-primary">here</a> to select message to send to employees</div>
                     <?php endif; ?>
-                    <div class="alert-danger text-center p-3 mb-2 page_alert_danger" style="display: none;"></div>
+                    <div class="alert alert-danger text-center p-3 mb-2 page_alert_danger" style="display: none;"></div>
                         <nav class="breadcrumb_widgets" aria-label="breadcrumb mb30">
                             <h4 class="title float-left">Manage news letter</h4>
                             <ol class="breadcrumb float-right">
                             <?php if(Input::exists('get') && Input::get('nid')):?>
-                                <li class="breadcrumb-item active" aria-current="page"><a href="#" id="#" data-toggle="modal" data-target="#employee_send_news_letter_btn"class="view-btn-fill">Send</a></li>
+                                <li class="breadcrumb-item active" aria-current="page"><a href="#" id="#" data-toggle="modal" data-target="#employee_send_news_letter_btn" class="view-btn-fill">Send</a></li>
                             <?php endif; ?>
                             </ol>
                             

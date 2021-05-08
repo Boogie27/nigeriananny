@@ -4,6 +4,10 @@ $settings = $connection->select('settings')->where('id', 1)->first();
 
 
 
+
+
+
+
  <!-- little preloader start-->
  <div class="little-preloader-container">
     <div class="little-dark-theme">
@@ -24,17 +28,40 @@ $settings = $connection->select('settings')->where('id', 1)->first();
 </div>
 
 
+
+
+
 <div class="bottom-footer">
     <ul class="ul-footer">
         <li><a href="<?= url('/') ?>">Find a worker</a></li>
         <li><a href="<?= url('/privacy') ?>">Privacy Policy</a></li>
         <li><a href="<?= url('/terms') ?>">Terms & Conditions</a></li>
+        <li><a href="<?= url('/about') ?>">About us</a></li>
         <li><a href="<?= url('/shop') ?>">Market place</a></li>
         <li><a href="<?= url('/courses') ?>">Download courses</a></li>
         <li><a href="<?= url('/contact') ?>">Contact</a></li>
     </ul>
+    <ul class="ul-social-media">
+        <?php if($settings->facebook): ?>
+       <li><a href="<?= $settings->facebook ?>"><i class="fa fa-facebook"></i></a></li>
+        <?php endif; ?>
+        <?php if($settings->twitter): ?>
+       <li><a href="<?=$settings->twitter ?>"><i class="fa fa-twitter"></i></a></li>
+       <?php endif; ?>
+        <?php if($settings->linkedin): ?>
+       <li><a href="<?= $settings->linkedin ?>"><i class="fa fa-linkedin"></i></a></li>
+       <?php endif; ?>
+        <?php if($settings->instagram): ?>
+       <li><a href="<?= $settings->instagram ?>"><i class="fa fa-instagram"></i></a></li>
+       <?php endif; ?>
+    </ul>
     <div class="rights"><?= $settings->alrights?></div>
 </div>
+
+
+
+
+
 
 	
 <a class="scrollToHome" href="#"><i class="flaticon-up-arrow-1"></i></a>
@@ -340,6 +367,32 @@ function get_bottom_alert(string){
     }, 3000)
 }
 
+
+
+
+
+
+// *********** GET VERIFY ALERT **************//
+function account_verify_alert(){
+    var url = $("#ajax_url_page").attr('href');
+
+    $.ajax({
+        url: url,
+        method: 'post',
+        data: {
+            check_account_verify: 'check_account_verify'
+        },
+        success: function(response){
+            var data = JSON.parse(response);
+            if(data.data){
+                $(".nav-alert-badge span").html(1)
+                $(".nav-alert-badge").attr('href', data.data)
+                $(".nav-alert-badge span").addClass('badge bg-danger')
+            }
+        }
+    });
+}
+account_verify_alert()
 
 
 

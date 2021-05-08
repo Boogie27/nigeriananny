@@ -100,38 +100,50 @@ function hire_employee($connection)
 
 
 
+// ************ LOCK THE EMPLOYEE IF EMPLOYEMENT REQUEST ACCEPTED *******//
+$job_is_accepted = false;
+$employer_requests = $connection->select('request_workers')->where('r_worker_id', Input::get('wid'))->get();
+if(count($employer_requests))
+{
+    foreach($employer_requests as $employer_request)
+    {
+        if($employer_request->is_accept == 0 && $employer_request->is_completed == 0)
+        {
+            $job_is_accepted = false;
+        }else if($employer_request->is_accept && $employer_request->is_completed)
+        {
+            $job_is_accepted = false;
+        }else if($employer_request->is_accept && $employer_request->is_completed == 0)
+        {
+            $job_is_accepted = true;
+        }
+    }
+}
+
+
+
+
+
+
+
 
 
 // =======================================================
-// DELETE EMPLOYER WORKER VIEWS EVERY NEW DAY
+// REMOVE EMPLOYER WORKER VIEWS EVERY MONTH
 // =======================================================
 $dailyViews = $connection->select('worker_daily_view')->where('wdv_employer_id', Auth_employer::employer('id'))->first();
 if($dailyViews)
 {
-    $today = date('Y-m-d', strtotime('+ 1day'));
+    $today = date('Y-m-d', strtotime('+ 1month'));
     if($today >= $dailyViews->expire_date)
     {
-        $connection->delete('worker_daily_view')->where('wdv_employer_id', Auth_employer::employer('id'))->save();
+        $connection->update('worker_daily_view', [
+            'worker_id' => null,
+            'count' => 0,
+            'is_complete' => 0
+        ])->where('wdv_employer_id', Auth_employer::employer('id'))->save();
     }
 }
-
-
-
-
-// =========================================
-// CHECK IF USER IS LOGGEDIN
-// =========================================
-if(Input::post('check_online_employer'))
-{
-    if(!Auth_employer::is_loggedin())
-    {
-        $old_url = current_page();
-        Session::put('old_url', $old_url);
-        return view('/form');
-    }
-}
-
-
 
 
 
@@ -193,11 +205,12 @@ if(Auth_employer::is_loggedin())
 // ============================================
 // GET WORK DETAILS
 // ============================================
-$job = $connection->select('workers')->leftJoin('employee', 'workers.employee_id', '=', 'employee.e_id')->where('worker_id', Input::get('wid'))->where('employee.e_approved', 1)->where('is_deactivate', 0)->where('is_job_feature', 1)->first(); 
+$job = $connection->select('workers')->leftJoin('employee', 'workers.employee_id', '=', 'employee.e_id')->where('worker_id', Input::get('wid'))->where('is_deactivate', 0)->where('is_job_feature', 1)->first(); 
 if(!$job)
 {
     return view('/jobs');
 }
+
 
 
 
@@ -208,14 +221,14 @@ if(!$job)
 $daily_view = null;
 $subscription = $connection->select('employer_subscriptions')->where('s_employer_id', Auth_employer::employer('id'))->where('is_expire', 0)->first();
 
-if($subscription)
+if($subscription && !$job_is_accepted)
 {
-    $is_requested = $connection->select('request_workers')->where('j_employer_id', Auth_employer::employer('id'))->where('r_worker_id', Input::get('wid'))->where('is_completed', 0)->first();
+    $is_requested = $connection->select('request_workers')->where('j_employer_id', Auth_employer::employer('id'))->where('r_worker_id', Input::get('wid'))->where('is_accept', 0)->first();
     $daily_view = $connection->select('worker_daily_view')->where('s_reference', $subscription->reference)->where('wdv_employer_id', Auth_employer::employer('id'))->first();
   
     if(!$daily_view && $is_requested == null)
     {
-        $expire_date = date('Y-m-d', strtotime('+ 1day'));
+        $expire_date = date('Y-m-d', strtotime('+ 1month'));
         $worker[$job->worker_id] = ['woker_id' => $job->worker_id];
         $worker_ids = json_encode($worker);
 
@@ -230,15 +243,25 @@ if($subscription)
         $currntCount = $daily_view->count + 1;
         if($daily_view->count < $subscription->s_access)
         {
-            $old_workerID = json_decode($daily_view->worker_id, true);
-            if(!array_key_exists($job->worker_id, $old_workerID))
+            if(!$daily_view->worker_id)
             {
                 $old_workerID[$job->worker_id] = ['woker_id' => $job->worker_id];
                 $workerID = json_encode($old_workerID);
                 $connection->update('worker_daily_view', [
                     'worker_id' => $workerID,
-                    'count' => $daily_view->count + 1
+                    'count' => 1
                 ])->where('wdv_employer_id', Auth_employer::employer('id'))->save(); 
+            }else{
+                $old_workerID = json_decode($daily_view->worker_id, true);
+                if(!array_key_exists($job->worker_id, $old_workerID))
+                {
+                    $old_workerID[$job->worker_id] = ['woker_id' => $job->worker_id];
+                    $workerID = json_encode($old_workerID);
+                    $connection->update('worker_daily_view', [
+                        'worker_id' => $workerID,
+                        'count' => $daily_view->count + 1
+                    ])->where('wdv_employer_id', Auth_employer::employer('id'))->save(); 
+                }
             }
         }
         if($currntCount == $subscription->s_access){
@@ -250,6 +273,8 @@ if($subscription)
             }
         }
     }
+}else{
+   
 }
 
 
@@ -258,10 +283,10 @@ if($subscription)
 
 
 // ======================================================
-//      CHECK AND GET WORK THAT HAS BEEN VIEWED
+//      CHECK AND GET EMPLOYEE THAT HAS BEEN VIEWED
 // ======================================================
 $viewed = false;
-if($subscription)
+if($subscription && !$job_is_accepted)
 {
     $is_requested = $connection->select('request_workers')->where('j_employer_id', Auth_employer::employer('id'))->where('r_worker_id', Input::get('wid'))->where('is_completed', 0)->first();
     if($is_requested)
@@ -312,6 +337,16 @@ if(Cookie::has('saved_worker'))
 
 
 
+// *********** SHOW EMPLOYEE CONTACT IF LOGGED IN *********//
+$is_employee = false;
+if(Auth_employee::is_loggedin())
+{
+    if(Auth_employee::employee('id') == $job->employee_id)
+    {
+        $is_employee = true;
+    }
+}
+
 ?>
 
 
@@ -336,12 +371,26 @@ if(Cookie::has('saved_worker'))
                     <?php if($daily_view && $daily_view->is_complete && !$viewed && !$is_requested): ?>
                         <div class="alert-daily_v text-danger"><i class="fa fa-bell text-danger"></i> You have exceeded your maximum view chances</div>
                     <?php endif; ?>
+
+                    <?php if($job_is_accepted && !Auth_employee::is_loggedin()): ?>
+                        <div class="alert-daily_v text-danger"><i class="fa fa-bell text-danger"></i> This employee has been hired</div>
+                    <?php endif; ?>
+
+                    <?php if($job_is_accepted && Auth_employee::is_loggedin()): ?>
+                        <div class="alert-daily_v text-warning"><i class="fa fa-bell text-warning"></i> You accepted this offer</div>
+                    <?php endif; ?>
+
+                    <?php if(!$job->e_approved && Auth_employee::is_loggedin()): ?>
+                        <div class="alert-daily_v text-warning"><i class="fa fa-bell text-warning"></i> Complete account details to be approved! <a href="<?= url('/employee/account') ?>" class="text-primary">click here</a></div>
+                    <?php endif; ?>
+
                     <?php if($is_requested): ?>
                         <div class="alert-daily_v text-warning"><i class="fa fa-bell text-warning"></i> You have requested for this worker!</div>
                     <?php endif; ?>
                 </div>
                 <div class="j-body">
-                    <div class="row">
+                    <div class="row"> 
+                        <?php if(!$job_is_accepted):?>
                         <div class="col-lg-4" id="apply_now_1">
                             <form action="<?= current_url() ?>" method="POST" class="p-apply-container">
                                 <div class="apply-h"><h4>HIRE WORKER HERE</h4></div>
@@ -454,7 +503,8 @@ if(Cookie::has('saved_worker'))
                                 </div>
                             </div>
                         </div>
-                        <div class="col-lg-8">
+                        <?php endif; ?>
+                        <div class="col-lg-<?= $job_is_accepted ? '12' : '8'?>">
                             <!-- featured jobs start-->
                             <?php if(Session::has('error')): ?>
                                 <div class="alert alert-danger text-center p-3 mb-2"><?= Session::flash('error') ?></div>
@@ -467,7 +517,7 @@ if(Cookie::has('saved_worker'))
                                 $amount = !$job->amount_to ? money($job->amount_form) : money($job->amount_form).' - '.money($job->amount_to);?>
                             <div class="job-body">
                                 <div class="jobs-info">
-                                    <img src="<?= asset($w_image)?>" alt="">
+                                    <img src="<?= asset($w_image)?>" alt="<?= $job->first_name ?>">
                                     <ul class="ul">
                                         <li>
                                             <h4>
@@ -478,11 +528,16 @@ if(Cookie::has('saved_worker'))
                                         <li><?= stars($job->ratings, $job->rating_count) ?></li>
                                         <li> <?= ucfirst($job->first_name.' '.$job->last_name)?></li>
                                         <li>
-                                            <?php if($job->job_type != 'live in'):
-                                            $living = json_decode($job->job_type, true); ?>
-                                                <b>Job Location: </b><?= ucfirst($living['city'])?> | <?= ucfirst($living['state'])?> 
+                                            <?php 
+                                            if($job->job_type):
+                                                if($job->job_type != 'live in'):
+                                                $living = json_decode($job->job_type, true); ?>
+                                                    <b>Job Location: </b><?= ucfirst($living['city'])?> | <?= ucfirst($living['state'])?> 
+                                                <?php else: ?>
+                                                    <?= $job->job_type ?>
+                                                <?php endif; ?>
                                             <?php else: ?>
-                                                <?= $job->job_type ?>
+                                            <span class="money-amount">No job type</span>
                                             <?php endif; ?>
                                             | <span class="text-warning money-amount"><?= $amount ?></span>
                                         </li>
@@ -577,21 +632,20 @@ if(Cookie::has('saved_worker'))
                                 <!-- CONTACT START-->
                                 <div class="j-contact">
                                     <div class="js-head">Contact info:</div>
-                                        <?php if($subscription && $viewed):?>
+                                        <?php if($is_employee || $subscription && $viewed):?>
                                         <ul id="inner-ex">
                                             <li><i class="fa fa-phone text-success"></i> <b>Phone:</b> <span> <?= $job->phone ?><span></li>
                                             <li><i class="fa fa-envelope text-success"></i> <b>Email:</b> <span> <?= $job->email ?><span></li>
-                                            <li><i class="fa fa-home text-success"></i> <b>Address:</b> <span> <?= $job->address ?><span></li>
                                             <li><i class="fa fa-circle text-success"></i> <b>City:</b> <span> <?= $job->city ?><span></li>
                                             <li><i class="fa fa-users text-success"></i> <b>state:</b> <span> <?= $job->state ?><span></li>
                                             <li><i class="fa fa-flag text-success"></i> <b>Country:</b> <span> <?= $job->country ?><span></li>
                                         </ul>
                                         <?php endif;?>
                                      <div class="unsub">
-                                        <?php if($daily_view && $daily_view->is_complete && !$viewed):?>
-                                            <p class="text-center alert-danger p-2"><i class="fa fa-bell"></i> You have exceeded your maximum view chances for the day</p>
+                                        <?php if(!$is_employee && $daily_view && $daily_view->is_complete && !$viewed):?>
+                                            <p class="text-center alert-danger p-2"><i class="fa fa-bell"></i> You have exceeded your maximum view chances for the month!</p>
                                         <?php endif; ?>
-                                        <?php if(!$subscription):?>
+                                        <?php if(!$is_employee && !$subscription):?>
                                             <p class="text-danger">
                                                 Employer signup, Login or Subscribe to view contact information
                                                 <span class="float-right"><a href="<?= url('/subscription') ?>" class="text-primary">Subscribe</a></span>
@@ -603,7 +657,7 @@ if(Cookie::has('saved_worker'))
 
 
                                  <!-- CV START-->
-                                 <?php if($subscription && $viewed):
+                                 <?php if($is_employee || $subscription && $viewed):
                                     if($job->cv): 
                                     $cv = json_decode($job->cv, true);  
                                     ?>
@@ -634,6 +688,7 @@ if(Cookie::has('saved_worker'))
                             </div>
                             <!-- featured jobs end-->
                         </div>
+                        <?php if(!$job_is_accepted):?>
                         <div class="col-lg-3" id="apply_now_2">
                             <form action="<?= current_url() ?>" method="POST" class="p-apply-container">
                                 <div class="apply-h"><h4>HIRE WORKER HERE</h4></div>
@@ -726,6 +781,7 @@ if(Cookie::has('saved_worker'))
                                 </div>
                             </form>
                         </div>
+                        <?php endif; ?>
                         <div class="col-lg-12">
                             <div class="adds-news-small">
                                 <div class="job-alert-banner"><!-- job-alert jobs start-->
@@ -834,7 +890,7 @@ function get_saved_workers(){
         success: function(response){
             var data = JSON.parse(response);
             var count = data.data ? `(${data.data})` : '';
-            $(".nav-right .saved-workers").html(count)
+            // $(".nav-right .saved-workers").html(count)
             $(".side-navigation .side-saved-workers").html(count)
         }
     });

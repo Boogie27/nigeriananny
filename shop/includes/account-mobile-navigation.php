@@ -47,7 +47,7 @@ $banner =  $connection->select('settings')->where('id', 1)->first();
             </ul>
 			<div class="header stylehome1 dashbord_mobile_logo dashbord_pages">
 				<div class="main_logo_home2">
-		            <img class="nav_logo_img img-fluid float-left mt20" src="<?= asset($banner->logo) ?>" alt="<?= $banner->app_name ?>">
+		            <img class="nav_logo_img img-fluid float-left mt20 navi-top-img" src="<?= asset($banner->logo) ?>" alt="<?= $banner->app_name ?>">
 		            <span><?= $banner->app_name ?></span>
 				</div>
 				<ul class="menu_bar_home2">
@@ -92,6 +92,7 @@ $banner =  $connection->select('settings')->where('id', 1)->first();
 				</li>
 				<li><a href="<?= url('/shop/cart'); ?>"><span class="fa fa-shopping-cart"></span> Cart</a></li>
 				<li><a href="<?= url('/'); ?>"><span class="fa fa-briefcase"></span> Find a worker</a></li>
+				<li><a href="<?= url('/courses'); ?>"><span class="fa fa-video-camera"></span> Courses</a></li>
 					<?php if(Auth::is_loggedIn()): ?>
 					<li><a href="<?= url('/shop/logout') ?>"><span class="fa fa-sign-out"></span> Logout</a></li>
 				<?php else: ?>

@@ -47,7 +47,7 @@ if(!$app_active && !Admin_auth::is_loggedin())
 <div class="preloader-container">
 	<div class="ajax-preloader-x">
 		<div class="loader-y">
-			<div class="ajax-loader-x"></div> loading...
+			<div class="ajax-loader-x"></div> Please wait...
 		</div>
 	</div>
 </div>

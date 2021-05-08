@@ -8,8 +8,10 @@ $new_messages = $connection->select('contact_us')->where('is_seen', 0)->get();
         <div class="user_board">
             <div class="user_profile">
                 <div class="media">
-                    <div class="media-body text-center">
-                        <a href="<?= url('/admin-nanny') ?>">Work place</a> | <a href="<?= url('/admin') ?>">Shop</a>
+                    <div class="media-body media-body-anchor text-center">
+                        <a href="<?= url('/admin-nanny') ?>" title="Work place"><i class="fa fa-briefcase"></i></a> |
+                        <a href="<?= url('/admin') ?>" title="Market place"><i class="fa fa-shopping-cart"></i></a> |
+                        <a href="<?= url('/admin-course') ?>" title="Course"><i class="fa fa-video-camera"></i></a>
                     </div>
                 </div>
             </div>
@@ -20,6 +22,7 @@ $new_messages = $connection->select('contact_us')->where('is_seen', 0)->get();
                     <li class="<?= path('categories') ? 'active' : ''?>"><a href="<?= url('/admin-nanny/categories') ?>"><span class="fa fa-cubes"></span>Categories</a></li>
                     <li class="<?= path('employees') ? 'active' : ''?>"><a href="<?= url('/admin-nanny/employees') ?>"><span class="fa fa-briefcase"></span>Employees</a></li>
                     <li class="<?= path('employers') ? 'active' : ''?>"><a href="<?= url('/admin-nanny/employers') ?>"><span class="fa fa-users"></span>Employers</a></li>
+                    <li class="<?= path('employers') ? 'active' : ''?>"><a href="<?= url('/admin-nanny/employments') ?>"><span class="fa fa-money"></span>Employments</a></li>
                     <li class="<?= path('subscriptions') ? 'active' : ''?>"><a href="<?= url('/admin-nanny/subscriptions') ?>"><span class="flaticon-speech-bubble"></span>Subscriptions</a></li>
                     <li class="<?= path('subscription') ? 'active' : ''?>"><a href="<?= url('/admin-nanny/subscription') ?>"><span class="flaticon-speech-bubble"></span>Employer subscription</a></li>
                     <li class="<?= path('report-employee') ? 'active' : ''?>"><a href="<?= url('/admin-nanny/report-employee') ?>"><span class="flaticon-add-contact"></span> Reported employee</a></li>
