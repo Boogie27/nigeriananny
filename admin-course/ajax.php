@@ -625,6 +625,7 @@ if(Input::post('update_course_user_deactivate'))
         ])->where('id', Input::get('user_id'))->save();
     if($update)
     {
+        Session::flash('success', 'User status updated successfully!');
         $data = true;
     }
 
@@ -655,6 +656,16 @@ if(Input::get('delete_course_user_action'))
             }
 
             $delete = $connection->delete('course_users')->where('id', Input::get('user_id'))->save();
+            
+            $cours_reviews =  $connection->select('course_reviews')->where('course_user_id', Input::get('user_id'))->get();
+            if(count($cours_reviews))
+            {
+                foreach($cours_reviews as $cours_review)
+                {
+                    $connection->delete('course_reviews')->where('course_user_id', Input::get('user_id'))->save();
+                }
+            }
+
             if($delete)
             {
                $data = true;
@@ -670,6 +681,18 @@ if(Input::get('delete_course_user_action'))
 
 
 
+// ************ DELETE COURSE REVIEW ***************//
+if(Input::get('delete_course_user_review'))
+{
+    $data = false;
+    $delete = $connection->delete('course_reviews')->where('course_id', Input::get('course_id'))->where('course_user_id', Input::get('user_id'))->save();
+    if($delete)
+    {
+        $data = true;
+        Session::flash('success', 'User review deleted successfully!');
+    }
+    return response(['data' => $data]);
+}
 
 
 

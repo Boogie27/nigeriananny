@@ -14,21 +14,26 @@ if(!Input::exists('get') && !Input::get('tid'))
         'confirm_password' => 'required|min:6|max:12|match:new_password'
     ]);
 
-    $reset = $connection->select('employer_reset_password')->where('reset_token', Input::get('reset_token'))->first();
+    if(!$validation->passed())
+    {
+        return back();
+    }
+
+    $reset = $connection->select('employee_reset_password')->where('reset_token', Input::get('reset_token'))->first();
     if($reset)
     {
-        $update_passowrd = $connection->update('employee', [
+        $update_password = $connection->update('employee', [
             'password' => password_hash(Input::get('new_password'), PASSWORD_DEFAULT)
         ])->where('email', $reset->reset_email)->save();
 
-       if($update_passowrd)
+       if($update_password)
        {
-           $connection->delete('employer_reset_password')->where('reset_token', Input::get('reset_token'))->save();
+           $connection->delete('employee_reset_password')->where('reset_token', Input::get('reset_token'))->save();
            Session::delete('get_passsword');
            return Redirect::to('login.php', ['success', 'Password reset successfully, you can now login!']);
        }
-    
     }
+    return back();
  }
 
 ?>
@@ -40,7 +45,7 @@ if(!Input::exists('get') && !Input::get('tid'))
 
 <?php include('../includes/side-navigation.php');  ?>
 
-
+<!-- $2y$10$vDZHHARX1/ASbjb/Tjn.heU8Aj1.7G62po1c8ILC7qusDt7zUlvE6 -->
 
 
 <div class="page-content">

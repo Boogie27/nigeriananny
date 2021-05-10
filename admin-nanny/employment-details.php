@@ -4,6 +4,7 @@
 <?php
 if(!Admin_auth::is_loggedin())
 {
+    Session::delete('admin');
     return view('/admin/login');
 }
 

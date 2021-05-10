@@ -4,7 +4,7 @@
 if(!Admin_auth::is_loggedin())
 {
   Session::delete('admin');
-  Session::put('old_url', current_url());
+  Session::put('old_url', '/admin');
   return view('/admin/login');
 }
 

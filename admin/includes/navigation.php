@@ -86,7 +86,7 @@ $banner =  $connection->select('settings')->where('id', 1)->first();
 						    	</div>
 						    	<div class="user_setting_content">
 									<a class="dropdown-item active" href="<?= url('/admin/profile') ?>">My Profile</a>
-									<a class="dropdown-item" href="#">Messages</a>
+									<a class="dropdown-item" href="<?= url('/admin-nanny/change-password') ?>">Change password</a>
 									<a class="dropdown-item" href="<?= url('/admin/transactions') ?>">Transactions</a>
 									<a class="dropdown-item" href="<?= url('/admin/general-settings') ?>">Settings</a>
 									<a class="dropdown-item" href="<?= url('/admin/logout') ?>">Log out</a>

@@ -143,6 +143,15 @@ $banner =  $connection->select('settings')->where('id', 1)->first();
                             </div>
                             <div class="account-x">
                                 <div class="account-x-body" id="account-x-body"><br>
+                                <div class="options-x text-right">
+                                    <div class="drop-down">
+                                        <i class="fa fa-ellipsis-h dot-icon"></i>
+                                        <ul class="drop-down-ul">
+                                            <li><a href="#" data-toggle="modal"  data-target="#exampleModal_deactivate_user_delete"><?= $user->is_deactivate ? 'Deactivate' : 'Activate'?></a></li>                                        
+                                            <li><a href="#"  data-toggle="modal"  data-target="#exampleModal_course_user_delete" id="<?= $user->id ?>" class="delete_course_user_btn">Delete</a></li>                                        
+                                        </ul>
+                                    </div>
+                                </div>
                                     <div class="img-conatiner-x">
                                         <div class="em-img">
                                             <?php $profile_image = $user->image ? $user->image : '/courses/images/user/demo.png' ?>
@@ -254,6 +263,66 @@ $banner =  $connection->select('settings')->where('id', 1)->first();
 
 
 
+
+
+<!-- Modal -->
+<div class="sign_up_modal modal fade" id="exampleModal_course_user_delete" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" id="modal_delete_close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="tab-content" id="myTabContent">
+                <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                    <div class="login_form">
+                        <form action="#">
+                            <div class="heading">
+                                <p class="text-center">Do you wish to delete this user?</p>
+                                <input type="hidden" id="course_user_delete_id" value="<?= Input::get('uid')?>">
+                            </div>
+                            <button type="button" data-url="<?= url('/admin-course/ajax.php') ?>" id="submit_course_user_delete_btn" class="btn bg-danger btn-log btn-block" style="color: #fff;">Delete</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<!-- Modal deactivate-->
+<div class="sign_up_modal modal fade" id="exampleModal_deactivate_user_delete" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close modal_dropdown_close" id="modal_delete_close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="tab-content" id="myTabContent">
+                <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                    <div class="login_form">
+                        <form action="#">
+                            <div class="heading">
+                                <p class="text-center">Do you wish to updated this user's status?</p>
+                                <input type="hidden" id="course_user_deactivate_id" value="<?= Input::get('uid')?>">
+                            </div>
+                            <button type="button" data-url="<?= url('/admin-course/ajax.php') ?>" id="submit_course_user_deactivate_btn" class="btn bg-danger btn-log btn-block" style="color: #fff;">Delete</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
 <a href="<?= url('/admin-course/ajax.php') ?>" class="ajax_url_page" style="display: none;"></a>
 <a href="#" id="<?= Input::get('uid') ?>" class="employer_id_input" style="display: none;"></a>
 
@@ -348,6 +417,76 @@ function error_preloader(string){
 
 
 
+// ===========================================
+// DEACTIVATE USERS
+// ===========================================
+$("#submit_course_user_deactivate_btn").click(function(e){
+    e.preventDefault();
+    var url = $(".ajax_url_page").attr('href');
+    var user_id =  $("#course_user_deactivate_id").val()
+    $(".preloader-container").show() //show preloader
+    $(".modal_dropdown_close").click();
+
+    $.ajax({
+        url: url,
+        method: "post",
+        data: {
+            user_id: user_id,
+            update_course_user_deactivate: 'update_course_user_deactivate'
+        },
+        success: function (response){
+            var data = JSON.parse(response);
+            location.reload();
+        },
+        error: function(){
+            $(".page_alert_danger").show();
+            $(".page_alert_danger").html('*Network error, try again later!');
+        }
+    });
+    
+});
+
+
+
+
+
+
+
+
+// ========================================
+// DELETE USER
+// ========================================
+$("#submit_course_user_delete_btn").click(function(e){
+    e.preventDefault();
+     var id = $("#course_user_delete_id").val();
+     var url = $(this).attr('data-url');
+     $(".preloader-container").show() //show preloader
+     $("#modal_delete_close").click();
+     
+
+    $.ajax({
+		url: url,
+		method: 'post',
+		data: {
+			user_id: id,
+			delete_course_user_action: 'delete_course_user_action'
+		},
+		success: function(response){
+            var data = JSON.parse(response);
+            if(data.data){
+                location.reload();
+            }else{
+                remove_preloader();
+                $('.page_alert_danger').show();
+                $('.page_alert_danger').html('*Network error, try again later');
+            }
+		},
+        error: function(){
+            $(".page_alert_danger").show();
+            $(".page_alert_danger").html('*Network error, try again later!');
+        }
+	});
+});
 
 
 

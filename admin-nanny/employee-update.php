@@ -3,7 +3,6 @@
 if(!Admin_auth::is_loggedin())
 {
   Session::delete('admin');
-  Session::put('old_url', '/admin-nanny/employees');
   return view('/admin/login');
 }
 

@@ -1670,6 +1670,187 @@ label.upload-course-img-btn:hover{
 
 
 
+/*************** COURSE DETAIL **************** */
+.course-img{
+    width: 70%;
+    position: relative;
+}
+.course-img img{
+    width: 100%;
+}
+.course-duration{
+    position: absolute;
+    color: #fff;
+    right: 5px;
+    bottom: 5px;
+    font-size: 11px;
+    position: absolute;
+    border-radius: 2px;
+    padding: 0px 10px;
+    background-color:   rgb(248, 179, 50);
+}
+li.course-thumb-likes{
+    margin-top: 10px;
+    margin-bottom: 40px;
+}
+li.course-thumb-likes span{
+    color: rgb(248, 179, 50);
+    font-size: 15px;
+    margin-right: 10px;
+    padding: 5px 20px;
+    border-radius: 2px;
+    border: 1px solid  rgb(248, 179, 50);
+}
+li.course-content{
+    margin-bottom: 40px;
+}
+ul.w-y-learn{
+    padding-left: 15px;
+}
+ul.w-y-learn li{
+    display: flex;
+    margin: 3px 0px;
+    padding: 5px 0px;
+}
+ul.w-y-learn li i{
+    top: 3px;
+    font-size: 18px;
+    color:   rgb(248, 179, 50);
+    margin-right: 10px;
+    position: relative;
+ }
+ @media only screen and (max-width: 567px){
+    .course-img{
+        width: 100%;
+    }
+}
+@media only screen and (max-width: 567px){
+    ul.ul-course-detail{
+        padding:0px 10px;
+    }
+    li.course-thumb-likes span{
+        font-size: 12px;
+        padding: 5px 20px;
+    }
+}
+.autho-info{
+    width: 50%;
+    margin: 0 auto;
+    text-align: center;
+}
+.autho-info img{
+    width: 125px;
+    height: 125px;
+    border-radius: 50%;
+}
+.course-author ul li p{
+    font-size: 14px;
+}
+@media only screen and (max-width: 992px){
+    .autho-info{
+        width: 80%;
+    }
+}
+@media only screen and (max-width: 567px){
+    .autho-info{
+        width: 100%;
+    }
+    .autho-info img{
+        width: 100px;
+        height: 100px;
+    }
+    .course-author ul li p{
+        font-size: 13px;
+    }
+    .autho-info h4, .autho-info li.auto-title{
+      font-size: 13px;
+    }
+}
+@media only screen and (max-width: 398px){
+    .autho-info img{
+        width: 80px;
+        height: 80px;
+    }
+}
+
+/*************** STUDENT REVIEWS ************* */
+.start-review .title h4{
+    border-bottom: 1px solid #ccc;
+}
+.review-comments{
+    display: flex;
+    padding: 10px 0px;
+    border-bottom: 1px solid #ccc;
+}
+.review-comments img{
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+}
+.review-comments ul{
+    width: 100%;
+    margin: 0px 0px 0px 10px;
+}
+.review-comments ul li .review-time{
+    font-size: 12px;
+    color: rgb(116, 116, 116);
+}
+.review-comments ul li i.fa-star{
+    font-size: 12px;
+}
+.review-edit{
+    text-align: right;
+}
+.review-edit a{
+    padding: 2px 15px;
+    border-radius: 3px;
+    transition: background-color 0.4s ease;
+    color:   rgb(248, 179, 50);
+}
+.review-edit a:hover{
+    color: #fff;
+    background-color:   rgb(248, 179, 50);
+}
+.review-comments ul li p{
+    font-size: 14px;
+}
+
+@media only screen and (max-width: 1125px){
+    .review-comments ul{
+        width: 100%;
+    }
+}
+@media only screen and (max-width: 992px){
+    .review-comments ul{
+        width: 100%;
+    }
+    .review-comments img{
+        width: 40px;
+        height: 40px;
+    }
+}
+@media only screen and (max-width: 767px){
+    .start-review h4{
+        border-bottom: 1px solid #ccc;
+    }
+    .review-comments{
+        border-bottom: 1px solid transparent;
+    }
+    .review-comments ul li p{
+        font-size: 13px;
+    }
+    .review-comments ul{
+        border-radius: 3px;
+        padding: 5px;
+       background-color: rgb(248, 248, 248);
+    }
+}
+
+
+
+
+
+
 
 
 

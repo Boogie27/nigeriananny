@@ -158,6 +158,10 @@ $(".side-bar-dark-theme").click(function(){
    $(".child-drop-down").hide();
 })
 
+
+
+
+
 // ===================================
 // OPEN AND CLOSE NAV LINK DROP DOWN
 // ===================================
@@ -393,6 +397,50 @@ function account_verify_alert(){
     });
 }
 account_verify_alert()
+
+
+
+
+
+
+
+// *********** OPEN MOBILE SEARCH FORM ***********//
+var searchState = false;
+$("#nav_top_search_toggle").click(function(e){
+    e.preventDefault();
+    searchState = true;
+    $("#mobile_nav_search_container").show()
+})
+
+
+//*********** CLOSE MOBILE SEARCH FORM******** */
+$(window).click(function(e){
+    if($(e.target).hasClass('mobile-search-form')){
+        $("#mobile_nav_search_container").hide()
+    }
+})
+
+
+
+
+
+
+
+
+// **********NOTIFICATION OPEN **********//
+$("#notification_open_btn").click(function(e){
+    e.preventDefault();
+    $(".notification-container").toggle()
+})
+
+
+
+
+// **********NOTIFICATION CANCLE **********//
+$("#notification_cancle_btn").click(function(e){
+    e.preventDefault();
+    $(".notification-container").fadeOut(200)
+})
 
 
 

@@ -3,7 +3,6 @@
 if(!Admin_auth::is_loggedin())
 {
   Session::delete('admin');
-  Session::put('old_url', '/admin-nanny/employees');
   return view('/admin/login');
 }
 
@@ -80,7 +79,7 @@ foreach($employee_employmets as $employee_employmet)
                     <div class="col-lg-12">
                     <div class="alert-danger text-center p-3 mb-2 page_alert_danger" style="display: none;"></div>
                         <nav class="breadcrumb_widgets" aria-label="breadcrumb mb30">
-                            <h4 class="title float-left">Employee ratings</h4>
+                            <h4 class="title float-left">Employee details</h4>
                             <ol class="breadcrumb float-right">
                                 <li class="breadcrumb-item"><a href="<?= url('/admin-nanny/employments') ?>">Employments</a></li>
                                 <li class="breadcrumb-item active" aria-current="page"><a href="<?= url('/admin-nanny/employment-details?rid='.Input::get('rid')) ?>">Employment details</a></li>

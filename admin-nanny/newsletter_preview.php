@@ -1,5 +1,13 @@
 <?php include('../Connection.php');  ?>
 <?php
+
+if(!Admin_auth::is_loggedin())
+{
+  Session::delete('admin');
+  return view('/admin/login');
+}
+
+
 if(!Input::exists('get') || !Input::get('nid'))
 {
     return view('/admin-nanny/news-letters');

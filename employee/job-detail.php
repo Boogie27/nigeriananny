@@ -3,7 +3,7 @@
 if(!Auth_employee::is_loggedin())
 {
     Session::put('old_url', '/employee/account');
-    Session::put('error', '*Signup or Login to access that page!');
+    Session::flash('error', '*Signup or Login to access that page!');
     return view('/');
 }
 
@@ -16,6 +16,7 @@ if(!Input::exists('get') || !Input::get('rid'))
 {
     return view('/jobs');
 }
+
 
 
 
@@ -40,6 +41,18 @@ $request = $connection->select('request_workers')->leftJoin('employers', 'reques
 if(!$request)
 {
     return view('/jobs');
+}
+
+
+
+// ************ CLEAR NOTIFICATION *************//
+$notification = $connection->select('notifications')->where('from_user', 'employer')
+	                    ->where('to_user', 'employee')->where('to_id', Auth_employee::employee('id'))->where('not_reference', $request->reference)->where('is_seen', 0)->first();
+if($notification)
+{
+    $connection->update('notifications', [
+           'is_seen' => 1
+    ])->where('from_user', 'employer')->where('from_id', $request->j_employer_id)->where('to_id', Auth_employee::employee('id'))->where('not_reference', $notification->not_reference)->save();
 }
 
 ?>

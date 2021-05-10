@@ -3,7 +3,7 @@
 if(!Admin_auth::is_loggedin())
 {
   Session::delete('admin');
-  Session::put('old_url', '/admin-nanny/job-alert');
+  Session::put('old_url', '/admin-nanny/employer-newsletter');
   return view('/admin/login');
 }
 
@@ -163,7 +163,7 @@ $client_type = Session::has('employer_type') ? Session::get('employer_type') : n
                                 <p class="text-center">Do you wish to send newsletters?</p>
                                 <input type="hidden" id="employee_newsletter_id" value="<?= Input::get('nid')?>">
                             </div>
-                            <button type="button" data-url="<?= url('/admin-nanny/ajax.php') ?>" id="submit_employer_newsletter_btn" class="btn bg-primary btn-log btn-block" style="color: #fff;">Delete</button>
+                            <button type="button" data-url="<?= url('/admin-nanny/ajax.php') ?>" id="submit_employer_newsletter_btn" class="btn bg-primary btn-log btn-block" style="color: #fff;">Send</button>
                         </form>
                     </div>
                 </div>

@@ -77,7 +77,9 @@ $banner =  $connection->select('settings')->where('id', 1)->first();
                                 ?>
                                     <tr>
                                         <td>
-                                             <img src="<?= asset($image) ?>" alt="" class="table-img <?= $user->is_active ? 'online' : 'offline' ?>">
+                                            <a href="<?= url('/admin-course/user-detail?uid='.$user->id) ?>">
+                                                <img src="<?= asset($image) ?>" alt="" class="table-img <?= $user->is_active ? 'online' : 'offline' ?>">
+                                            </a>
                                         </td>
                                         <td><?= ucfirst($user->last_name).' '.ucfirst($user->first_name)?></td>
                                         <td><?= $user->email ?></td>

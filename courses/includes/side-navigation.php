@@ -23,16 +23,29 @@
                 <?php endif; ?>
             </li>
             <li>
-                <a href="#" class="nav-drop-down"><i class="fa fa-heart"></i>Saved courses <i class="fa fa-angle-right float-right angle"></i></a>
-                <ul class="child-drop-down">
-                    <li><a href="#">course 1</a></li>
-                    <li><a href="#">course 2</a></li>
-                    <li><a href="#">course 3</a></li>
+                <?php $savedCount = Cookie::has('saved_course') ?  json_decode(Cookie::get('saved_course'), true) : ''?>
+                <a href="#" class="nav-drop-down"><i class="fa fa-heart"></i>Saved courses <span class="text-danger" id="saved_course_count"><?= $savedCount ? '('.count($savedCount).')' : '' ?></span><i class="fa fa-angle-right float-right angle"></i></a>
+                <ul class="child-drop-down" id="save_course_ul_dropdown">
+                <?php if(Cookie::has('saved_course')):
+                    $savedCourses = json_decode(Cookie::get('saved_course'), true);
+                    foreach($savedCourses as $savedCourse):?>
+                        <li><a href="<?= url('/courses/detail.php?cid='.$savedCourse['course_id']) ?>"><?= ucfirst(substr($savedCourse['title'], 0, 20)).'...'?></a></li>
+                    <?php endforeach; ?>
+                <?php else: ?>
+                     <li>Empty</li>
+                <?php endif; ?>
                 </ul>
             </li>
+            <?php if(Auth_course::is_loggedin()): ?>
             <li>
-                <a href="#"><i class="fa fa-user"></i>Account</a>
+                <a href="<?= url('/courses/account') ?>"><i class="fa fa-user"></i>Account</a>
             </li>
+            <?php endif; ?>
+            <?php if(Auth_course::is_loggedin()): ?>
+            <li>
+                <a href="<?= url('/courses/change-password') ?>"><i class="fa fa-key"></i>Change password</a>
+            </li>
+            <?php endif; ?>
             <li>
                 <a href="<?= url('/jobs') ?>"><i class="fa fa-briefcase"></i>Find a worker</a>
             </li>

@@ -3,15 +3,12 @@
 if(!Admin_auth::is_loggedin())
 {
   Session::delete('admin');
-  Session::put('old_url', '/admin-nanny/general-settings');
+  Session::put('old_url', '/admin-nanny/email-settings');
   return view('/admin/login');
 }
 
 
-// smtp = smtp.gmail.com
-// smtp port = 465
-// smtp_username: anonyecharles@gmail.com
-// smtp_password = boogie190
+
 
 // ===========================================
 // EMAIL SETTINGS

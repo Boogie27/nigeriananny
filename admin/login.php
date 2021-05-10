@@ -14,6 +14,8 @@
             'email' => 'required|email',
             'password' => 'required|min:6|max:12',
         ]);
+
+        
         
         if($validation->passed())
         {
@@ -27,10 +29,11 @@
 
             if(!password_verify(Input::get('password'), $email_verify->password))
             {
-                Session::errors('errors', ['password' => '*Wrong passowrd, try again!']);
+                Session::errors('errors', ['password' => '*Wrong password, try again!']);
                 return back();
             }
 
+            
             if(Admin_auth::login(Input::get('email')))
             {
                 if(Session::has('old_url'))
@@ -38,7 +41,7 @@
                     $old_url = Session::get('old_url');
                     Session::delete('old_url');
                     Session::flash('success', 'You have loggedin successfully!');
-                    return Redirect::to($old_url);
+                    return view($old_url);
                 }
 
                 Session::flash('success', 'You have loggedin successfully!');
@@ -47,6 +50,8 @@
         }
    }
 
+
+   
 
 // app banner settings
 $banner =  $connection->select('settings')->where('id', 1)->first();

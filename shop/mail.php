@@ -61,6 +61,7 @@ $app =  $connection->select('settings')->where('id', 1)->first();
 
         }
         ul.ul-footer{
+            padding-left: 0px;
             text-align: center;
         }
         ul.ul-footer li{
@@ -90,12 +91,20 @@ $app =  $connection->select('settings')->where('id', 1)->first();
         @media only screen and (max-width: 567px){
             ul.ul-footer li{
                 font-size: 9px;
+                padding: 5px;
             }
             .bottom-footer .rights{
                 font-size: 9px;
             }
             .container{
                 width: 100%;
+            }
+            .msg-header img{
+                width: 40px;
+                height: 40px;
+            }
+            .mgs-body p{
+                font-size: 12px;
             }
         }
         

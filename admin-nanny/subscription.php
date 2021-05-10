@@ -3,7 +3,7 @@
 if(!Admin_auth::is_loggedin())
 {
   Session::delete('admin');
-  Session::put('old_url', '/admin-nanny/employees');
+  Session::put('old_url', '/admin-nanny/subscription');
   return view('/admin/login');
 }
 
@@ -79,7 +79,7 @@ $banner =  $connection->select('settings')->where('id', 1)->first();
                                            <?php if($employer->e_image): ?>
                                             <img src="<?= asset($employer->e_image) ?>" alt="" class="table-img <?= $employer->e_active ? 'online' : 'offline' ?>">
                                             <?php else: ?>
-                                            <img src="<?= asset('/employer/images/employer/demo.png') ?>" alt="" class="table-img <?= $employer->e_active ? 'online' : 'offline' ?>">
+                                            <img src="<?= asset('/employer/images/demo.png') ?>" alt="" class="table-img <?= $employer->e_active ? 'online' : 'offline' ?>">
                                             <?php endif; ?>
                                         </td>
                                         <td><?= ucfirst($employer->last_name).' '.ucfirst($employer->first_name)?></td>

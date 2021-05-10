@@ -330,7 +330,8 @@ if(Input::post('save_course_action'))
     }
 
     $stored_course = array();
-    $stored_course = ["course_id" => Input::get('course_id')];
+    $course = $connection->select('courses')->where('course_id', Input::get('course_id'))->first();
+    $stored_course = ["course_id" => Input::get('course_id'), 'title' => $course->title];
     
     if(Cookie::has('saved_course'))
     {
@@ -356,13 +357,35 @@ if(Input::post('save_course_action'))
     {
         $data = true;
     }
-
     return response(['data' => $data]);
 }
 
 
 
 
+
+
+
+// *********** GET ALL SAVED COURSE **************//
+if(Input::post('get_all_save_course'))
+{
+    return include('common/ajax-saved-course.php');
+}
+
+
+
+// *********** SAVED COURSE COUNT ****************//
+if(Input::post('saved_course_count'))
+{
+    $count = false;
+    if(Cookie::has('saved_course'))
+    {
+        $saved_course = json_decode(Cookie::get('saved_course'), true);
+        $count = count($saved_course);
+    }
+
+    return response(['count' => $count]);
+}
 
 
 // ************** COURSE USERS  LOGOUT **************//

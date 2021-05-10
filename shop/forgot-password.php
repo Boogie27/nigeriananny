@@ -15,6 +15,11 @@ if(Input::post('receive_password'))
         'email' => 'required|email',
     ]);
 
+    if(!$validation->passed())
+    {
+        return back();
+    }
+
     $emailExists = $connection->select('users')->where('email', Input::get('email'))->first();
     if(!$emailExists)
     {

@@ -61,7 +61,6 @@ class Admin_auth{
                     {
                         Session::delete('user');
                     }
-                    Session::delete('old_url');
                     Session::put('admin', $login_user);
                     return true;
                 }

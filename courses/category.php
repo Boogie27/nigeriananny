@@ -59,18 +59,18 @@ if(!count($courses->result()))
                                 </div>
                                 <ul>
                                     <li>
-                                        <a href="#"><h4><?= substr($course->title, 0, 50)?></h4></a>
+                                        <a href="<?= url('/courses/detail.php?cid='.$course->course_id) ?>">
+                                           <h4><?= substr($course->title, 0, 50)?></h4>
+                                        </a>
                                     </li>
                                     <li>
-                                        <p><?= substr($course->description, 0, 60)?></p>
+                                        <a href="<?= url('/courses/detail.php?cid='.$course->course_id) ?>">
+                                            <p><?= substr($course->description, 0, 60)?></p>
+                                        </a>
                                     </li>
                                     <li>
-                                        <i class="fa fa-star text-warning"></i>
-                                        <i class="fa fa-star text-warning"></i>
-                                        <i class="fa fa-star text-warning"></i>
-                                        <i class="fa fa-star text-secondary"></i>
-                                        <i class="fa fa-star text-secondary"></i>
-                                        <span class="views-course">20 reviews</span>
+                                        <?= stars($course->ratings, $course->rating_count) ?>
+                                        <span class="views-course"><?= $course->rating_count ?> reviews</span>
                                     </li>
                                 </ul>
                             </div><!-- course end-->

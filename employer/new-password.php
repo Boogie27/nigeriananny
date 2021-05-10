@@ -15,6 +15,11 @@ if(!Input::exists('get') && !Input::get('tid'))
         'confirm_password' => 'required|min:6|max:12|match:new_password'
     ]);
 
+    if(!$validation->passed())
+    {
+        return back();
+    }
+
     $reset = $connection->select('employer_reset_password')->where('reset_token', Input::get('reset_token'))->first();
     if($reset)
     {
@@ -22,14 +27,15 @@ if(!Input::exists('get') && !Input::get('tid'))
             'password' => password_hash(Input::get('new_password'), PASSWORD_DEFAULT)
         ])->where('email', $reset->reset_email)->save();
 
-       if($update_passowrd)
-       {
-           $connection->delete('employer_reset_password')->where('reset_token', Input::get('reset_token'))->save();
-           Session::delete('get_passsword');
-           return Redirect::to('login.php', ['success', 'Password reset successfully, you can now login!']);
-       }
+        if($update_passowrd)
+        {
+            $connection->delete('employer_reset_password')->where('reset_token', Input::get('reset_token'))->save();
+            Session::delete('get_passsword');
+            return Redirect::to('login.php', ['success', 'Password reset successfully, you can now login!']);
+        }
     
     }
+    
  }
 
 ?>

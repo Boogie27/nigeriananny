@@ -7,6 +7,7 @@ if(!Input::exists('get') && !Input::get('wid'))
 }
 
 
+
 // ===================================================
 // HIRE AN EMPLOYEE
 // ===================================================
@@ -74,11 +75,13 @@ function hire_employee($connection)
     $message = Input::get('message') ? Input::get('message') : null;
     $address = Input::get('address') ? Input::get('address') : null;
 
+    $reference = 'employer'.uniqid().uniqid().$employee->employee_id;
     $connection = new DB();
     $create = $connection->create('request_workers', [
                 'j_employer_id' => Auth_employer::employer('id'),
                 'j_employee_id' => $employee->employee_id,
                 'r_worker_id' => Input::get('wid'),
+                'reference' => $reference,
                 'j_first_name' => Input::get('first_name'),
                 'j_last_name' => Input::get('last_name'),
                 'j_phone' => Input::get('phone'),
@@ -90,6 +93,21 @@ function hire_employee($connection)
             ]);
     if($create)
     {
+        $employer = $connection->select('employers')->where('id', Auth_employer::employer('id'))->first();
+
+        $name = $employer->last_name.' '.$employer->first_name;
+        $request = $connection->select('request_workers')->where('j_employer_id', Auth_employer::employer('id'))->where('j_employee_id', $employee->employee_id)->where('reference', $reference)->first();
+        $connection->create('notifications', [
+              'from_id' => Auth_employer::employer('id'),
+              'to_id' => $employee->employee_id,
+              'not_reference' => $reference,
+              'from_user' => 'employer',
+              'to_user' => 'employee',
+              'name' => $name,
+              'body' => $name.' wants to hire you',
+              'link' => '/employee/job-detail.php?rid='.$request->request_id,
+        ]);
+
         Session::flash('success', "Employee has been requested successfully!");
         return back();
     }

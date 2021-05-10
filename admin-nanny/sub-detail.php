@@ -3,7 +3,6 @@
 if(!Admin_auth::is_loggedin())
 {
   Session::delete('admin');
-  Session::put('old_url', '/admin-nanny/employees');
   return view('/admin/login');
 }
 
@@ -73,7 +72,7 @@ $banner =  $connection->select('settings')->where('id', 1)->first();
                         <div class="modal_subscription_container">
                             <div class="modal-img">
                                 <div class="inner-modal-img">
-                                    <?php  $profile_image = $subscription->e_image ? $subscription->e_image : '/employer/images/employer/demo.png' ?>
+                                    <?php  $profile_image = $subscription->e_image ? $subscription->e_image : '/employer/images/demo.png' ?>
                                     <img src="<?= asset($profile_image) ?>" alt="<?= $subscription->first_name ?>">
                                 </div>
                             </div>

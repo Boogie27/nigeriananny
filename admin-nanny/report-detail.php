@@ -3,7 +3,6 @@
 if(!Admin_auth::is_loggedin())
 {
   Session::delete('admin');
-  Session::put('old_url', '/admin-nanny/report-employee');
   return view('/admin/login');
 }
 
@@ -88,7 +87,7 @@ $banner =  $connection->select('settings')->where('id', 1)->first();
                                 <div class="employee-review" id="employee_review_container">
                                        <?php foreach($reports as $report): ?>
                                         <div class="emp-rev flex-item">
-                                            <?php $review_image = $report->e_image ? $report->e_image : '/employer/images/employer/demo.png';  ?>
+                                            <?php $review_image = $report->e_image ? $report->e_image : '/employer/images/demo.png';  ?>
                                             <img src="<?= asset($review_image) ?>" alt="<?= $report->first_name ?>" class="review-img">
                                             <ul class="a-info pt-2">
                                                 <li><b>Name: </b><?= ucfirst($report->first_name.' '.$report->last_name)?> <span class="float-right text-success"><?= date('d M Y', strtotime($report->date_reported))?></span></li>

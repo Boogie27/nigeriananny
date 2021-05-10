@@ -140,6 +140,14 @@ $banner =  $connection->select('settings')->where('id', 1)->first();
                                 <?php endif; ?>
                             </div>
                             <div class="account-x">
+                                <div class="text-right">
+                                    <div class="drop-down">
+                                        <i class="fa fa-ellipsis-h dot-icon"></i>
+                                        <ul class="drop-down-ul">
+                                            <li><a href="<?= url('/admin-course/course-detail.php?cid='.Input::get('cid'))?>">View detail</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
                                 <div class="account-x-body" id="account-x-body"><br>
                                     <form action="<?= current_url()?>" method="POST" enctype="multipart/form-data">
                                         <div class="sr-head text-center"><h4>Edit course</h4></div><br>

@@ -16,6 +16,7 @@ body{
 }
 .alert-div{
     height: 20px;
+    font-size: 12px;
 }
 .alert_label, .all_alert{
     font-size: 13px;

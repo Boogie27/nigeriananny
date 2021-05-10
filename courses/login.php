@@ -150,19 +150,20 @@ $courses = $connection->select('courses')->where('is_feature', 1)->paginate(24);
                                      </div>
                                      <div class="col-lg-12">
                                         <div class="form-group">
-                                        <button type="submit" name="login_user" class="btn btn-log btn-block button">Login</button>
-                                        <div class="divide">
-                                            <span class="lf_divider">Or</span>
-                                            <hr>
-                                        </div>
-                                        <div class="row mt40">
-                                            <div class="col-lg mb-3">
-                                                <button type="submit" name="facebook_login" class="btn btn-block color-white bgc-fb mb0"><i class="fa fa-facebook float-left mt5"></i> Facebook</button>
+                                            <button type="submit" name="login_user" class="btn btn-log btn-block button">Login</button>
+                                            <div class="text-right"><a href="<?= url('/courses/forgot-password')?>" class="text-danger">Forgot password</a></div>
+                                            <div class="divide">
+                                                <span class="lf_divider">Or</span>
+                                                <hr>
                                             </div>
-                                            <div class="col-lg mb-3">
-                                                <button type="submit" name="google_login" class="btn btn2 btn-block color-white bgc-gogle mb0"><i class="fa fa-google float-left mt5"></i> Google</button>
+                                            <div class="row mt40">
+                                                <div class="col-lg mb-3">
+                                                    <button type="submit" name="facebook_login" class="btn btn-block color-white bgc-fb mb0"><i class="fa fa-facebook float-left mt5"></i> Facebook</button>
+                                                </div>
+                                                <div class="col-lg mb-3">
+                                                    <button type="submit" name="google_login" class="btn btn2 btn-block color-white bgc-gogle mb0"><i class="fa fa-google float-left mt5"></i> Google</button>
+                                                </div>
                                             </div>
-                                        </div>
                                         </div>
                                      </div>
                                 </div>

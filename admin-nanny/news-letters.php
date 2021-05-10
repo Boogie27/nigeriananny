@@ -3,7 +3,7 @@
 if(!Admin_auth::is_loggedin())
 {
   Session::delete('admin');
-  Session::put('old_url', '/admin-nanny/job-alert');
+  Session::put('old_url', '/admin-nanny/news-letters');
   return view('/admin/login');
 }
 

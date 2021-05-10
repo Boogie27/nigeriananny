@@ -390,6 +390,9 @@ if(Input::post('employee_accept_offer'))
 
     if($update)
     {
+
+        
+
         Session::flash('success', 'Job offer has been accepted successfully, you will be contacted be the employee soon');
         Session::flash('success-m', 'Job offer has been accepted successfully, you will be contacted be the employee soon');
         $data = true;

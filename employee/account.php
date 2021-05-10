@@ -1,9 +1,9 @@
 <?php include('../Connection.php');  ?>
 <?php
-// if(!Auth_employee::is_loggedin())
-// {
-//     return view('/employee/login');
-// }
+if(!Auth_employee::is_loggedin())
+{
+    return view('/employee/login');
+}
 
 
 

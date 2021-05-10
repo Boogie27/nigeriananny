@@ -3,7 +3,7 @@
 if(!Admin_auth::is_loggedin())
 {
   Session::delete('admin');
-  Session::put('old_url', '/admin-nanny/privacy');
+  Session::put('old_url', '/admin-nanny/about');
   return view('/admin/login');
 }
 

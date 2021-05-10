@@ -49,6 +49,14 @@ if(Cookie::has('saved_course'))
         $saved_course = true;
     }
 }
+
+
+
+
+
+
+
+
 ?>
 
 
@@ -150,7 +158,7 @@ if(Cookie::has('saved_course'))
                                     <ul class="course-download">
                                         <li>Size: <?= $course->course_size?></li>
                                         <li>Duration: <?= $course->duration?></li>
-                                        <li>Uploaded: <?= date('d M Y', strtotime($course->date_posted))?></li>
+                                        <li>Uploaded on: <?= date('d M Y', strtotime($course->date_posted))?></li>
                                     </ul>
                                 </div><!-- course size end -->
                             </div>
@@ -225,7 +233,7 @@ if(Cookie::has('saved_course'))
                                             <div class="form-group">
                                                 <input type="checkbox" name="remember_me" id="remember_me_input">
                                                 <label for="" class="remember-me">Remember me</label>
-                                                <a href="#" class="forgortPassword text-danger float-right">Forgort password</a>
+                                                <a href="<?= url('/courses/forgot-password')?>" class="forgortPassword text-danger float-right">Forgort password</a>
                                             </div>
                                         </div>
                                         <div class="col-lg-12">
@@ -253,12 +261,12 @@ if(Cookie::has('saved_course'))
                                         <li>
                                             <h4><?= $tutor["name"]?></h4>
                                         </li>
-                                        <li><b><?= $tutor["title"] ?></b></li>
+                                        <li class="auto-title"><b><?= $tutor["title"] ?></b></li>
                                         <li><p><?= $tutor["about"]?></p></li>
                                     </ul>
                                 </div>
                             </div>
-                        </div><!-- instructor end -->
+                        </div><!-- student end -->
                         <?php endif; ?>
                         
                         <div class="col-lg-12"><!-- review start -->
@@ -1056,11 +1064,13 @@ $("#course_save_btn").click(function(e){
         success: function(response){
             var data = JSON.parse(response);
             if(data.unsaved){
+                get_saved_course()
                 $("#course_save_btn").children('.saves').html('save')
                 $(".little-preloader-container").hide();
             }else if(data.data){
-                $("#course_save_btn").children('.saves').html('Unsave')
+                get_saved_course()
                 set_preloader('Course saved successfully!')
+                $("#course_save_btn").children('.saves').html('Unsave')
             }else{
                 set_preloader('Network error, try again later!') 
             }
@@ -1074,6 +1084,40 @@ $("#course_save_btn").click(function(e){
 
 
 
+// *********** GET ALL SAVED COURSE **************//
+function get_saved_course(){
+    var url = $("#app_ajax_url").attr('href');
+
+    $.ajax({
+        url: url,
+        method: 'post',
+        data: {
+            get_all_save_course: 'get_all_save_course'
+        },
+        success: function(response){
+            saved_course_count()
+            $("#save_course_ul_dropdown").html(response)
+        }
+   })
+}
+
+
+// *********** SAVED COURSE COUNT ****************//
+function saved_course_count(){
+    var url = $("#app_ajax_url").attr('href');
+
+    $.ajax({
+        url: url,
+        method: 'post',
+        data: {
+            saved_course_count: 'saved_course_count'
+        },
+        success: function(response){
+            var data = JSON.parse(response);
+            $("#saved_course_count").html(data.count ? '('+data.count+')' : '')
+        }
+    })
+}
 
 
 // ************* SHOW / REMOVE PRELOADER *********//

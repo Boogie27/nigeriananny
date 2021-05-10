@@ -19,6 +19,11 @@
         'email' => 'required|email',
     ]);
 
+    if(!$validation->passed())
+    {
+        return back();
+    }
+
     $settings = $connection->select('settings')->where('id', 1)->first();
     
     $emailExists = $connection->select('employee')->where('email', Input::get('email'))->first();
@@ -28,15 +33,15 @@
         return back();
     }
 
-    $oldReset = $connection->select('employer_reset_password')->where('reset_email', Input::get('email'))->first();
+    $oldReset = $connection->select('employee_reset_password')->where('reset_email', Input::get('email'))->first();
     if($oldReset)
     {
-        $connection->delete('employer_reset_password')->where('reset_id ', $oldReset->reset_id )->save();
+        $connection->delete('employee_reset_password')->where('reset_id ', $oldReset->reset_id )->save();
     }
 
       
     $token = password_hash(uniqid(), PASSWORD_DEFAULT);
-    $createReset = $connection->create('employer_reset_password', [
+    $createReset = $connection->create('employee_reset_password', [
                         'reset_email' => Input::get('email'),
                         'reset_token' => $token,
                 ]);
@@ -115,7 +120,7 @@
                                 <div class="text-danger"><?= $errors['email']; ?></div>
                             <?php endif; ?>
                             <label for="">Email:</label>
-                            <input type="email" name="email" class="form-control h50" value="<?= old('email')?>" required>
+                            <input type="email" name="email" class="form-control h50" value="<?= old('email')?>" >
                         </div>
                     </div>
                    <div class="col-lg-12">

@@ -394,14 +394,60 @@ a.nav-alert-badge span{
 }
 
 
-
+/* *********** MOBILE SEARCH FIELD ******* */
+.mobile-nav-search{
+    z-index: 10;
+    display: none;
+    position: relative;
+}
+.search-dark-theme{
+    top: 0px;
+    width: 100%;
+    height: 100vh;
+    z-index: 10;
+    position: fixed;
+    display: table;
+    text-align: center;
+    background-color: rgba(0, 0, 0, 0.76);
+}
+.mobile-search-form{
+    display: table-cell;
+    vertical-align: middle;
+}
+.mobile-search-form .inner-search-form{
+    width: 80%;
+    margin: 0 auto;
+    display: flex;
+    background-color: #fff;
+}
+.mobile-search-form input{
+    width: 80%;
+    border: none;
+    padding: 0px 10px;
+    background-color: #fff;
+}
+.mobile-search-form button{
+    width: 20%;
+    border: none;
+    color: #fff;
+    padding: 15px 0px;
+    background-color:  rgb(248, 179, 50);
+}
+.mobile-search-form button i{
+    color: #fff;
+    font-size: 20px;
+}
+.mobile-search-form button:focus, .mobile-search-form input:focus{
+    outline: none;
+    box-shadow: none;
+}
 
 /* ===================================== */
 /*        SIDE NAVIGATION               */
 /* =================================== */
 .side-bar-dark-theme{
     top: 0px;
-    z-index: 10;
+    z-index: 20;
     position: fixed;
     display: none;
     width: 100%;
@@ -460,7 +506,14 @@ ul.child-drop-down{
     padding-left: 10px;
     display: none;
 }
-
+.nav-right .fa-search{
+    display: none;
+}
+@media only screen and (max-width: 767px){
+    .nav-right .fa-search{
+        display: inline-block;
+    }
+}
 @media only screen and (max-width: 398px){
     .side-navigation{
          width: 300px;
@@ -729,7 +782,66 @@ ul.ul-social-media li a{
 
 
 
-
+/* ********** NOTIFICATION ********** */
+.notification-container{
+    z-index: 20;
+    height: 0px;
+    display: none;
+    position: relative;
+}
+.notification-body{
+    top: 10px;
+    right: 10px;
+    z-index: 10;
+    padding: 20px;
+    width: 400px;
+    border-radius: 2px;
+    position: absolute;
+    background-color: #fff;
+    box-shadow: 0px 0px 5px 10px rgba(233, 233, 233, 0.164);
+}
+.not-header h4{
+    margin: 0px;
+    padding: 20px 0px;
+    border-bottom: 1px solid rgb(224, 224, 224);
+}
+ul.ul-notification li{
+    margin: 10px 0px;
+    border-bottom: 1px solid rgb(224, 224, 224);
+}
+ul.ul-notification li h5{
+    font-size: 14px;
+    margin: 0px;
+}
+ul.ul-notification li p{
+    font-size: 11px;
+    color: rgb(134, 134, 134);
+}
+.notification-body .not-cancle{
+    height: 0px;
+    position: relative;
+}
+.notification-body .not-cancle{
+    top: 10px;
+    right: 20px;
+    position: absolute;
+}
+span.nav-alert-badge-body{
+    position: relative;
+}
+span.nav-alert-badge-body span{
+    top: -2px;
+    right: 5px;
+    color: #fff;
+    font-size: 10px;
+    position: absolute;
+}
+@media only screen and (max-width: 567px){
+    .notification-body{
+        right: 0px;
+        width: 100%;
+    }
+}
 
 
 

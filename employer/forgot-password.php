@@ -13,6 +13,12 @@
     $validation = $validate->validate([
         'email' => 'required|email',
     ]);
+
+    if(!$validation->passed())
+    {
+        return back();
+    }
+    
     $settings = $connection->select('settings')->where('id', 1)->first();
     
     $emailExists = $connection->select('employers')->where('email', Input::get('email'))->first();

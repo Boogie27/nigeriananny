@@ -3,7 +3,7 @@
 if(!Admin_auth::is_loggedin())
 {
   Session::delete('admin');
-  Session::put('old_url', '/admin-nanny/edit-faq.php?fid='.Input::get('fid'));
+  Session::put('old_url', '/admin-nanny/add-faq');
   return view('/admin/login');
 }
 

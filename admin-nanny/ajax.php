@@ -178,6 +178,36 @@ if(Input::get('delete_employee_action'))
                 $delete = $connection->delete('workers')->where('employee_id', $employee_id)->save();
             }
 
+            // ******* delete all emplyee reviews*****//
+            $reviews = $connection->select('employee_reviews')->where('r_employee_id', $employee_id)->get();
+            if(count($reviews))
+            {
+                foreach($reviews as $review)
+                {
+                    $connection->delete('employee_reviews')->where('r_employee_id', $employee_id)->save();
+                }
+            }
+
+            // ******* delete from employer request *****//
+            $reports = $connection->select('employer_reports')->where('employee_rid', $employee_id)->get();
+            if(count($reports))
+            {
+                foreach($reports as $report)
+                {
+                    $connection->delete('employer_reports')->where('employee_rid', $employee_id)->save();
+                }
+            }
+
+             // ******* delete from employer report*****//
+             $requests = $connection->select('request_workers')->where('j_employee_id', $employee_id)->get();
+             if(count($requests))
+             {
+                foreach($requests as $request)
+                {
+                    $connection->delete('request_workers')->where('j_employee_id', $employee_id)->save();
+                }
+             }
+
             $delete = $connection->delete('employee')->where('e_id', $employee_id)->save();
             if($delete)
             {
@@ -1726,7 +1756,7 @@ if(Input::post('upload_app_logo_image'))
         $file = Image::files('app_logo');
 
         $file_name = Image::name('app_logo', 'logo');
-        $image->resize_image($file, [ 'name' => $file_name, 'width' => 50, 'height' => 56, 'size_allowed' => 1000000,'file_destination' => '../admin/images/']);
+        $image->upload_image($file, [ 'name' => $file_name, 'size_allowed' => 1000000,'file_destination' => '../admin/images/']);
             
         $image_name = '/admin/images/'.$file_name;
 
@@ -1794,7 +1824,7 @@ if(Input::post('upload_footer_logo_image'))
         $file = Image::files('footer_logo');
 
         $file_name = Image::name('footer_logo', 'footer_logo');
-        $image->resize_image($file, [ 'name' => $file_name, 'width' => 50, 'height' => 56, 'size_allowed' => 1000000,'file_destination' => '../admin/images/']);
+        $image->upload_image($file, [ 'name' => $file_name, 'size_allowed' => 1000000,'file_destination' => '../admin/images/']);
             
         $image_name = '/admin/images/'.$file_name;
 
