@@ -8,9 +8,26 @@
 
 <?php
 //************ GET ALL VIDEOS ****************** 
-$courses = $connection->select('courses')->where('is_feature', 1)->paginate(24);
+$courses = $connection->select('courses')->where('is_feature', 1);
+
+if(Input::exists('get') && Input::get('category'))
+{
+    $courses->where('slug', Input::get('category'));
+}
+
+$courses->paginate(24);
 
 
+// ***********CHECK FOR SEARCH ***********//
+$page_alert = null;
+$course_category = implode(' ', explode('-', Input::get('category')));
+if(!count($courses->result()))
+{
+    $page_alert = 'There are no courses in <b>'.$course_category.' category</b>!';
+    $courses = $connection->select('courses')->where('is_feature', 1)->paginate(24);
+}else{
+    $page_alert = 'Category result in <b>'.$course_category.'</b>!';
+}
 
 
 ?>
@@ -26,7 +43,9 @@ $courses = $connection->select('courses')->where('is_feature', 1)->paginate(24);
                     <?php if(Session::has('success')): ?>
                         <div class="alert alert-success text-center"><?= Session::flash('success') ?></div>
                     <?php endif; ?>
-                        <div class="page-alert">Featured courses</div>
+                    <?php if($page_alert): ?>
+                        <div class="page-alert"><?= $page_alert ?></div>
+                    <?php endif; ?>
                     <?php if(count($courses->result())): ?>
                     <div class="row">
                         <?php foreach($courses->result() as $course):?>
@@ -66,17 +85,5 @@ $courses = $connection->select('courses')->where('is_feature', 1)->paginate(24);
         </div>
     </div>
 </div>
-
-
-
-
-
-
-
-
-
-
-<a href="<?= asset('/courses/ajax.php') ?>" id="app_ajax_url" style="display: none;"></a>
-
 
 

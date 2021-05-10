@@ -13,7 +13,7 @@ $settings = $connection->select('settings')->where('id', 1)->first();
 			</a>
 		</div><!-- nav left end-->
 		<div class="navigation-search">
-	        <form action="<?= current_url()?>" method="" class="nav-form">
+	        <form action="<?= url('/courses/search.php')?>" method="" class="nav-form">
 				<input type="text" name="search" class="nav-search" placeholder="search for...">
 				<button class="search-btn"><i class="fa fa-search"></i></button>
 		    </form>

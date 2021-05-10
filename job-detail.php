@@ -134,7 +134,7 @@ if(count($employer_requests))
 $dailyViews = $connection->select('worker_daily_view')->where('wdv_employer_id', Auth_employer::employer('id'))->first();
 if($dailyViews)
 {
-    $today = date('Y-m-d', strtotime('+ 1month'));
+    $today = date('Y-m-d H:i:s');
     if($today >= $dailyViews->expire_date)
     {
         $connection->update('worker_daily_view', [
@@ -142,6 +142,7 @@ if($dailyViews)
             'count' => 0,
             'is_complete' => 0
         ])->where('wdv_employer_id', Auth_employer::employer('id'))->save();
+        dd('yes');
     }
 }
 
@@ -228,7 +229,7 @@ if($subscription && !$job_is_accepted)
   
     if(!$daily_view && $is_requested == null)
     {
-        $expire_date = date('Y-m-d', strtotime('+ 1month'));
+        $expire_date = date('Y-m-d', strtotime('+1month'));
         $worker[$job->worker_id] = ['woker_id' => $job->worker_id];
         $worker_ids = json_encode($worker);
 
@@ -262,6 +263,7 @@ if($subscription && !$job_is_accepted)
                         'count' => $daily_view->count + 1
                     ])->where('wdv_employer_id', Auth_employer::employer('id'))->save(); 
                 }
+               
             }
         }
         if($currntCount == $subscription->s_access){

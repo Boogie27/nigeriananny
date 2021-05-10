@@ -71,9 +71,8 @@
 
 
 
-//  =============================================
-// GOOGLE LOGIN AUTH
-// =============================================
+
+// ***************GOOGLE LOGIN AUTH ****************//
 if(Input::post('google_login'))
 {
     $google = new Google();
@@ -88,10 +87,7 @@ if(Input::post('google_login'))
 
 
 
-
-// ==============================================
-// FACEBOOK LOGIN AUTH
-// ==============================================
+// *************FACEBOOK LOGIN AUTH ***************//
 if(Input::post('facebook_login'))
 {
     $facebook = new Facebook();

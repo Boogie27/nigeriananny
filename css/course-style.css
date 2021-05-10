@@ -158,6 +158,14 @@ font-family: 'poppins', sans-serif;
 /* ======================================== */
 /*            COMMON                        */
 /* ======================================== */
+.page-alert{
+    padding: 10px;
+    font-size: 12px;
+    margin-bottom: 20px;
+    border-radius: 3px 0px 0px 3px;
+    background-color: #fff;
+    border-left: 4px solid rgb(248, 179, 50);
+}
 .modal-header-x{
     position: relative;
 }
@@ -187,6 +195,7 @@ font-family: 'poppins', sans-serif;
 .main_form_alert{
     font-size: 11px;
 }
+
 /* *********** ERROR ALERT ********** */
 .error-alert{
     width: 100%;
@@ -200,6 +209,12 @@ font-family: 'poppins', sans-serif;
     border-radius: 4px;
     background-color:   rgb(255, 214, 126);
     border-left: 7px solid   rgb(248, 179, 50);
+}
+.alert_no_label, .all_alert{
+    font-size: 13px;
+    line-height: 10px;
+    height: 10px;
+    margin-bottom: 2px;
 }
 @media only screen and (max-width: 767px){
     .error-alert-content{
@@ -276,6 +291,10 @@ span.nav-app-name{
 .navigation-search input{
     width: 93%;
     padding-right: 10px;
+}
+.navigation-search input:focus{
+    outline: none;
+    box-shadow: none;
 }
 .navigation-search .search-btn, .navigation-search .nav-search{
     border: none;
@@ -1131,3 +1150,57 @@ label.remember-me{
         width: 100%;
     }
 }
+/* *********** REGISTER ***************** */
+.auth-form-course{
+    width: 50%;
+    margin: 0 auto;
+    border-radius: 4px;
+    background-color: #fff;
+    border-top: 3px solid  rgb(248, 179, 50);
+    box-shadow: 2px 0px 5px 0px rgba(209, 209, 209, 0.3);
+}
+@media only screen and (max-width: 992px){
+    .auth-form-course{
+        width: 90%;
+    }
+}
+@media only screen and (max-width: 767px){
+    .auth-form-course{
+        width: 100%;
+        padding: 50px 20px;
+    }
+}
+
+@media only screen and (max-width: 567px){
+    .auth-form-course{
+        box-shadow: none;
+        padding: 50px 0px;
+        border-radius: 0px;
+        border-bottom: 1px solid #ccc;
+        border-top: 3px solid  transparent;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

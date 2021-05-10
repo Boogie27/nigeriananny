@@ -21,7 +21,7 @@ $new_messages = $connection->select('contact_us')->where('is_seen', 0)->get();
                     <li class="<?= path('/') ? 'active' : ''?>"><a href="<?= url('/admin-course') ?>"><span class="flaticon-puzzle-1"></span> Dashboard</a></li>
                     <li class="<?= path('categories') ? 'active' : ''?>"><a href="<?= url('/admin-course/category') ?>"><span class="fa fa-cubes"></span>Categories</a></li>
                     <li class="<?= path('employees') ? 'active' : ''?>"><a href="<?= url('/admin-course/courses') ?>"><span class="fa fa-video-camera"></span> Courses</a></li>
-                    <li class="<?= path('employers') ? 'active' : ''?>"><a href="<?= url('/admin-nanny/employers') ?>"><span class="fa fa-users"></span>Employers</a></li>
+                    <li class="<?= path('employers') ? 'active' : ''?>"><a href="<?= url('/admin-course/users') ?>"><span class="fa fa-users"></span>Manage users</a></li>
                     <li class="<?= path('employers') ? 'active' : ''?>"><a href="<?= url('/admin-nanny/employments') ?>"><span class="fa fa-money"></span>Employments</a></li>
                     <li class="<?= path('subscriptions') ? 'active' : ''?>"><a href="<?= url('/admin-nanny/subscriptions') ?>"><span class="flaticon-speech-bubble"></span>Subscriptions</a></li>
                     <li class="<?= path('subscription') ? 'active' : ''?>"><a href="<?= url('/admin-nanny/subscription') ?>"><span class="flaticon-speech-bubble"></span>Employer subscription</a></li>

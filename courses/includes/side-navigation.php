@@ -17,7 +17,7 @@
                 <?php if(count($categories)):?>
                 <ul class="child-drop-down">
                     <?php foreach($categories as $category):?>
-                        <li><a href="#"><?= $category->category_name?></a></li>
+                        <li><a href="<?= url('/courses/category.php?category='.$category->category_slug) ?>"><?= $category->category_name?></a></li>
                     <?php endforeach; ?>
                 </ul>
                 <?php endif; ?>
@@ -47,6 +47,7 @@
                     <a href="<?= url('/courses/logout') ?>" id="course_user_logout_btn"><i class="fa fa-power-off"></i>Logout</a>
                 <?php else: ?>
                     <a href="<?= url('/courses/login') ?>"><i class="fa fa-sign-in"></i>Login</a>
+                    <a href="<?= url('/courses/register') ?>"><i class="fa fa-users"></i>Register</a>
                 <?php endif; ?>
             </li>
         </ul>

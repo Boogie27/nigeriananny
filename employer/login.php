@@ -94,10 +94,10 @@ if(Input::post('google_login'))
 if(Input::post('facebook_login'))
 {
     $facebook = new Facebook();
-    Session::put('fb_employer_login', true);
     Session::delete('fb_shop_login');
-    Session::put('facebook_auth', true);
     Session::delete('fb_employee_login');
+    Session::put('facebook_auth', true);
+    Session::put('fb_employer_login', true);
     return Redirect::to($facebook->login_url());
 }
 

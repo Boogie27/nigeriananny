@@ -560,3 +560,123 @@ if(Input::post('update_edit_course_image'))
 
 
 
+// ======================================
+// ADD USER PROFILE IMAGE
+// ======================================
+if(Input::post('upload_ourse_user_image'))
+{
+    $data = true;
+    if(Image::exists('image'))
+    {
+        $image = new Image();
+        $file = Image::files('image');
+
+        $file_name = Image::name('image', 'user');
+        $image->resize_image($file, ['name' => $file_name, 'width' => 200, 'height' => 200, 'size_allowed' => 1000000,'file_destination' => '../courses/images/user/']);
+            
+        $image_name = '/courses/images/user/'.$file_name;
+
+        if(!$image->passed())
+        {
+            return response(['error' => ['image' => $image->error()]]);
+        }
+        
+        $connection = new DB();
+        $user = $connection->select('course_users')->where('id', Input::get('user_id'))->first();
+        if($user->image)
+        {
+            Image::delete('../'.$user->image);
+        }
+        
+        $update = $connection->update('course_users', [
+            'image' => $image_name
+        ])->where('id', Input::get('user_id'))->save();
+
+        if($update)
+        {
+            $data = asset($image_name);
+        }
+    }
+    return response(['data' => $data]);
+}
+
+
+
+
+
+
+
+
+
+
+// ===========================================
+// DEACTIVATE USERS
+// ===========================================
+if(Input::post('update_course_user_deactivate'))
+{
+    $data = false;
+    $connection = new DB();
+    $user =  $connection->select('course_users')->where('id', Input::get('user_id'))->first();
+    $is_deactivate = $user->is_deactivate ? 0 : 1;
+
+    $update = $connection->update('course_users', [
+            'is_deactivate' => $is_deactivate,
+            'is_active' => 0
+        ])->where('id', Input::get('user_id'))->save();
+    if($update)
+    {
+        $data = true;
+    }
+
+    if(!$data){
+        Session::flash('error', 'Network error, try again later!');
+    }
+    return response(['data' => $data]);
+}
+
+
+
+
+// ==========================================
+// DELETE USERS
+// ==========================================
+if(Input::get('delete_course_user_action'))
+{
+    $data = false;
+    if(!empty(Input::get('user_id')))
+    {
+        $connection = new DB();
+        $user = $connection->select('course_users')->where('id', Input::get('user_id'))->first();
+        if($user)
+        {
+            if($user->image)
+            {
+                Image::delete('../'.$user->image);
+            }
+
+            $delete = $connection->delete('course_users')->where('id', Input::get('user_id'))->save();
+            if($delete)
+            {
+               $data = true;
+               Session::flash('success', 'User deleted successfully!');
+            }
+        }
+    }
+    return response(['data' => $data]);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
