@@ -98,10 +98,21 @@ $reviews = $connection->select('employee_reviews')->leftJoin('employers', 'emplo
 
 
 
-// =========================================
-// GET REPORT OPTIONS
-// =========================================
+// GET REPORT OPTIONS ************//
 $reports =  $connection->select('reports')->where('is_feature', 1)->get();
+
+
+
+// ************ CLEAR NOTIFICATION *************//
+$notification = $connection->select('notifications')->where('from_user', 'employee')
+	                    ->where('to_user', 'employer')->where('to_id', Auth_employer::employer('id'))->where('not_reference', $worker->reference)->where('is_seen', 0)->first();
+if($notification)
+{
+    $connection->update('notifications', [
+           'is_seen' => 1
+    ])->where('from_user', 'employee')->where('from_id', $worker->employee_id)->where('to_id', Auth_employer::employer('id'))->where('not_reference', $notification->not_reference)->save();
+}
+
 ?>
 
 

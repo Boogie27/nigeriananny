@@ -101,9 +101,17 @@ $others = $connection->select('courses')->where('is_feature', 1)->random()->limi
                     <?php endif; ?>
                     <div class="sign_up_form account-course-page">
 						<div class="heading">
-							<h3 class="text-center">Account page</h3>
+                            <h3 class="text-center">Account page</h3>
+                            <div class="text-center text-danger alert_no_label alert_0"></div>                            
 						</div>
 						<div class="details">
+                            <div class="course-account-img-con">
+                                <?php $profile_img = $profile->image ? $profile->image : '/courses/images/user/demo.png'?>
+                                <img src="<?= asset($profile_img) ?>" alt="profile image" id="course_profile_img">
+                               <a href="#" id="course_profile_img_open"> <i class="fa fa-camera"></i></a>
+                                <input type="file" id="course_profile_img_input" style="display: none;">
+                            </div>
+                           
 							<form action="<?= current_url()?>" method="POST">
                                 <div class="row">
                                      <div class="col-lg-6 col-md-6 col-sm-6">
@@ -225,3 +233,70 @@ $others = $connection->select('courses')->where('is_feature', 1)->random()->limi
 </div>
 
 
+
+
+
+
+
+
+
+<a href="<?= url('/courses/ajax.php') ?>" class="ajax_url_page" style="display: none;"></a>
+
+
+
+
+<script>
+$(document).ready(function(){
+    
+// ===========================================
+//      OPEN PROFILE IMAGE
+// ===========================================
+$('#course_profile_img_open').click(function(e){
+    e.preventDefault()
+    $("#course_profile_img_input").click();
+    $('.alert_0').html('')
+});
+
+
+//  ********** ADD PROFILE IMAGE ***********//
+$('.course-account-img-con').on('change', '#course_profile_img_input', function(){
+    var url = $(".ajax_url_page").attr('href');
+    var image = $("#course_profile_img_input");
+    $(".little-preloader-container").show();
+    
+    var data = new FormData();
+    var image = $(image)[0].files[0];
+
+    data.append('image', image);
+    data.append('upload_course_user_image', true);
+
+    $.ajax({
+        url: url,
+        method: "post",
+        data: data,
+        contentType: false,
+        processData: false,
+        success: function (response){
+           var data = JSON.parse(response);
+            if(data.error){
+                $('.alert_0').html(data.error.image);
+            }else if(data.data){
+                $("#course_profile_img").attr('src', data.data)
+                $(".nav-profile-img").attr('src', data.data)
+            }else{
+                $('.alert_0').html('Network error, try again later!')
+            }
+            $(".little-preloader-container").hide();
+
+           
+        }, 
+        error: function(){
+            $(".little-preloader-container").hide();
+            $('.alert_0').html('Network error, try again later!')
+        }
+    });
+});
+
+
+})
+</script>

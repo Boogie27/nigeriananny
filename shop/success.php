@@ -1,6 +1,8 @@
 <?php include('../Connection.php');  ?>
 
 <?php
+// ********** app banner settings **********//
+$app =  $connection->select('settings')->where('id', 1)->first();
 
 
 if(!Session::has('buyer_details'))
@@ -45,7 +47,7 @@ if(Input::exists('get') && Input::get('reference'))
 		]);
 		if($create)
 		{
-			store_paid_products($reference);
+			store_paid_products($app, $reference, $buyer_detail['email']);
 			
 			return view('/shop/success');
 		}
@@ -56,7 +58,7 @@ if(Input::exists('get') && Input::get('reference'))
 
 
 
-function store_paid_products($reference)
+function store_paid_products($app, $reference, $email)
 {
     if(Session::has('cart'))
     {
@@ -87,13 +89,187 @@ function store_paid_products($reference)
             ])->where('id', $item['id'])->save();
 		}
 		
+
+		send_mail_to_buyer($app, $reference, $email); //send mail to buyer
 		Session::delete('cart');
     }
 }
 
 
-// app banner settings
-$banner =  $connection->select('settings')->where('id', 1)->first();
+
+
+
+
+
+// ******** SEND MAIL TO BUYER *************//
+function send_mail_to_buyer($app, $reference, $email)
+{
+	$body = buyer_email($app, $reference);
+
+	$mail = new Mail();
+    $send = $mail->mail([
+				'to' => $email,
+				'subject' => 'Transaction success',
+				'body' => $body,
+			]);
+	
+	if($send->passed())
+	{
+		$send->send_email();
+	}
+}
+
+
+
+//******* BUYER MAIL ********** */
+function buyer_email($app, $reference){
+	$mail = '';
+	$mail .= '
+			<!DOCTYPE html>
+			<html lang="en">
+			<head>
+				<meta charset="UTF-8">
+				<meta name="viewport" content="width=device-width, initial-scale=1.0">
+				<meta http-equiv="X-UA-Compatible" content="ie=edge">
+				<style>
+					body{
+						font-family: "poppins", sans-serif;
+						color: #555;
+					}
+					body a{
+						color: #555; 
+						text-decoration: none;
+					}
+					.container{
+						width: 60%;
+						margin: 0 auto;
+						padding: 50px 0px;
+					}
+					.msg-header{
+						width: 100%;
+						margin-bottom: 50px;
+						text-align: center;
+					}
+					.msg-header img{
+						width: 50px;
+						height: 50px;
+						border-radius: 3px;
+					}
+					.msg-header h3{
+						margin: 0px;
+						font-size: 25px;
+						letter-spacing: 2px;
+					}
+					.mgs-body p{
+					text-align: center;
+					}
+					/* ********* FOOTER *********** */
+					.bottom-footer{
+						width: 100%;
+						margin-top: 150px;
+						padding: 60px 0px 10px 0px;
+						background-color: rgb(246, 246, 246);
+					}
+					.bottom-footer .rights{
+						font-size: 13px;
+						text-align: center;
+			
+					}
+					ul.ul-footer{
+						padding-left: 0px;
+						text-align: center;
+					}
+					ul.ul-footer li{
+						margin: 0px 5px;
+						font-size: 12px;
+						display: inline-block;
+						padding: 1px 10px;
+						border-radius: 2px;
+						margin-bottom: 5px;
+						border: 1px solid #ccc;
+					}
+					.bottom-footer .rights{
+						font-size: 10px;
+			
+					}
+					.text-center{
+						text-align: center;
+					}
+					p.info{
+						color: #555;
+						font-size: 12px;
+					}
+					@media only screen and (max-width: 992px){
+						.container{
+							width: 80%;
+						}
+					}
+					@media only screen and (max-width: 767px){
+						.container{
+							width: 90%;
+						}
+					}
+					@media only screen and (max-width: 567px){
+						ul.ul-footer li{
+							font-size: 9px;
+							padding: 5px;
+						}
+						.bottom-footer .rights{
+							font-size: 9px;
+						}
+						.container{
+							width: 100%;
+						}
+						.msg-header img{
+							width: 40px;
+							height: 40px;
+						}
+						.mgs-body p{
+							font-size: 12px;
+						}
+					}
+					
+				</style>
+			</head>
+			<body>
+				<div class="container">
+					<div class="msg-header">
+						<img src='.asset($app->logo).' alt='.$app->app_name.'>
+						<h3>'.$app->app_name.'</h3>
+					</div>
+					<div class="mgs-body">
+						<p>
+							Thank you for shopping with nigeria nanny. <br>
+							We have recieved Your order and it would be attended to shortly. <br>This is your 
+							reference ID: <b>'.$reference.'</b>
+						</p>
+					</div>
+					
+					<div class="bottom-footer">
+						<div class="text-center">
+						<p class="info">Contact: '.$app->phone.'</p>
+						<p class="info">Customer care: '.$app->info_email.'</p>
+						</div>
+						<ul class="ul-footer">
+							<li><a href='.url("/") .'>Find a worker</a></li>
+							<li><a href='.url("/privacy") .'>Privacy Policy</a></li>
+							<li><a href='.url("/terms") .'>Terms & Conditions</a></li>
+							<li><a href='.url("/about") .'>About us</a></li>
+							<li><a href='.url("/shop") .'>Market place</a></li>
+							<li><a href='.url("/courses") .'>Download courses</a></li>
+							<li><a href='.url("/contact") .'>Contact</a></li>
+						</ul>
+						<div class="rights">'.$app->alrights.'</div>
+					</div>
+				</div>
+			</body>
+			</html>
+			';
+
+    return $mail;
+}
+
+
 
 ?>
 <?php include('includes/header.php') ?>
@@ -106,8 +282,8 @@ $banner =  $connection->select('settings')->where('id', 1)->first();
 				<div class="col-sm-6 offset-sm-4 col-lg-6 offset-lg-5 text-center">
 					<div class="logo-widget error_paged">
 				        <a href="<?=  url('/shop/index.php') ?>" class="navbar_brand float-left">
-				            <img class="logo1 img-fluid" src="<?= asset($banner->logo) ?>" alt="<?= $banner->app_name ?>">
-				            <span style="color: #555;"><?= $banner->app_name ?></span>
+				            <img class="logo1 img-fluid" src="<?= asset($app->logo) ?>" alt="<?= $app->app_name ?>" style="width: 50px; height: 50px;">
+				            <span style="color: #555;"><?= $app->app_name ?></span>
 				        </a>
 					</div>
 				</div>

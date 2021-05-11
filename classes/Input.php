@@ -224,6 +224,52 @@
 
 
 
+    public static function course_google_login($email)
+    {
+      if($email)
+      {
+        $connection = new DB();
+        $course_user = $connection->select('course_users')->where('email', $email)->first();
+		if($course_user && $course_user->is_deactivate)
+		{
+            return 'deactivated';
+		}
+
+		// IF EMAIL DOES NOT EXIST THEN CREATE NEW EMPLOYEE
+		if(!$course_user)
+		{
+			$create = $connection->create('course_users', [
+				'email' => $email
+			]);
+		}
+
+        if(Session::has('course_google_login'))
+        {
+            Session::delete('course_google_login');
+        }
+
+        if(Session::has('course_facebook_login'))
+        {
+            Session::delete('course_facebook_login');
+        }
+
+        Auth_course::login($email);
+
+		// CHECK AND REDIRECT IF OLD URL EXIST
+		if(Session::has('old_url'))
+		{
+			$old_url = Session::get('old_url');
+			return $old_url;
+		}
+
+            return 'login';
+        }
+    }
+
+
+
+
+
 
 
 
@@ -258,6 +304,19 @@
         if($email)
         {
             return  self::shop_google_login($email);
+        }
+        return false;
+    }
+
+
+
+
+
+    public static function facebook_course_login($email)
+    {
+        if($email)
+        {
+            return  self::course_google_login($email);
         }
         return false;
     }

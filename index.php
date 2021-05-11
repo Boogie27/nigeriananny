@@ -82,6 +82,33 @@ if(Session::has('facebook_auth') && Input::exists('get') && Input::get('code'))
 	}
 	
 	
+
+
+
+
+
+	// LOGIN USER IN COURSE
+	if(Session::has('course_facebook_login'))
+	{
+		$course_login = Input::facebook_course_login($user_data['email']);
+		if($course_login == 'deactivated')
+		{
+			Session::delete('facebook_auth');
+			Session::flash('error', '*This account has been deactivated, please contact the admin.');
+			return view('/courses/login');
+		}else if($course_login == 'login'){
+			Session::delete('facebook_auth');
+			Session::flash('success', 'You have loggedin successfully!');
+			return view('/courses');
+		}else{
+			Session::delete('facebook_auth');
+			Session::delete('old_url');
+			Session::flash('success', 'You have loggedin successfully!');
+			return view($course_login);
+		}
+	}
+	
+	
 	
 	
 }
@@ -168,6 +195,30 @@ if(Session::has('google_auth') && Input::exists('get') && Input::get('code'))
 				Session::delete('google_auth');
 				Session::flash('success', 'You have loggedin successfully!');
 				return view($employee_login);
+			}
+		}
+
+
+
+
+		// LOGIN AS COURSE USER
+		if(Session::has('course_google_login'))
+		{
+			$course_login = Input::course_google_login($data['email']);
+			if($course_login == 'deactivated')
+			{
+				Session::delete('google_auth');
+				Session::flash('error', '*This account has been deactivated, please contact the admin.');
+                return view('/courses/login');
+			}else if($course_login == 'login'){
+				Session::delete('google_auth');
+				Session::flash('success', 'You have loggedin successfully!');
+				return view('/courses');
+			}else{
+				Session::delete('old_url');
+				Session::delete('google_auth');
+				Session::flash('success', 'You have loggedin successfully!');
+				return view($course_login);
 			}
 		}
 	}

@@ -4,7 +4,6 @@ $settings = $connection->select('settings')->where('id', 1)->first();
 
 
 
-
 // ********* COURSE USERS PROFILE *********** //
 $course_user = $connection->select('course_users')->where('id', Auth_course::user('id'))->where('email', Auth_course::user('email'))->first();
 ?>
@@ -33,7 +32,7 @@ $course_user = $connection->select('course_users')->where('id', Auth_course::use
 				<?php else: ?>
 					<a href="<?= url('/courses/login')?>"><i class="fa fa-sign-in text-danger"></i></a>
 				<?php endif; ?>
-				<?php $profile_image = $course_user->image ? $course_user->image : '/employee/images/demo.png' ?>
+				<?php $profile_image = $course_user && $course_user->image ? $course_user->image : '/employee/images/demo.png' ?>
 				<img src="<?= asset($profile_image) ?>" alt="name" class="nav-profile-img"></span>
 			</div>
 		</div><!-- nav right end-->

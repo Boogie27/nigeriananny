@@ -51,7 +51,7 @@ $app =  $connection->select('settings')->where('id', 1)->first();
         /* ********* FOOTER *********** */
         .bottom-footer{
             width: 100%;
-            margin-top: 100px;
+            margin-top: 150px;
             padding: 60px 0px 10px 0px;
             background-color: rgb(246, 246, 246);
         }
@@ -77,7 +77,13 @@ $app =  $connection->select('settings')->where('id', 1)->first();
             font-size: 10px;
 
         }
-
+        .text-center{
+            text-align: center;
+        }
+        p.info{
+            color: #555;
+            font-size: 12px;
+        }
         @media only screen and (max-width: 992px){
             .container{
                 width: 80%;
@@ -119,11 +125,16 @@ $app =  $connection->select('settings')->where('id', 1)->first();
         <div class="mgs-body">
             <p>
                 Thank you for shopping with nigeria nanny. <br>
-                We have recieved Your order and it would be attended to shortly.
+                We have recieved Your order and it would be attended to shortly. <br>This is your 
+                reference ID: <b>234567g6789</b>
             </p>
         </div>
         
         <div class="bottom-footer">
+            <div class="text-center">
+               <p class="info">Contact: <?= $app->phone?></p>
+               <p class="info">Customer care: <?= $app->info_email?></p>
+            </div>
             <ul class="ul-footer">
                 <li><a href="<?= url('/') ?>">Find a worker</a></li>
                 <li><a href="<?= url('/privacy') ?>">Privacy Policy</a></li>

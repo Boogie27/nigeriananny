@@ -7,7 +7,7 @@
     <div class="side-navigation">
         <ul class="parent-ul">
             <li>
-                <a href="<?= url('/') ?>"><i class="fa fa-home"></i>Home</a>
+                <a href="<?= url('/courses') ?>"><i class="fa fa-home"></i>Home</a>
             </li>
             <li>
                 <a href="<?= url('/courses') ?>"><i class="fa fa-camera"></i>All courses</a>

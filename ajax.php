@@ -106,11 +106,6 @@ if(Input::post('subscribe_now'))
 if(Input::post('upload_employer_image'))
 {
     $data = true;
-    if(!Auth_employer::is_loggedin())
-    {
-        Session::flash('error', '*Signup or Login to be able to hire a worker');
-        return response(['not_login' => ['login' => true]]);
-    }
 
     if(Image::exists('image'))
     {
@@ -324,12 +319,7 @@ if(Input::post('report_employee'))
 // ======================================
 if(Input::post('upload_employee_image'))
 {
-    $data = true;
-    if(!Auth_employee::is_loggedin())
-    {
-        Session::flash('error', '*Signup or Login to be able to hire a worker');
-        return response(['not_login' => ['login' => true]]);
-    }
+    $data = false;
 
     if(Image::exists('image'))
     {
@@ -347,10 +337,10 @@ if(Input::post('upload_employee_image'))
         }
         
         $connection = new DB();
-        $employer = $connection->select('employee')->where('e_id', Auth_employee::employee('id'))->first();
-        if($employer->w_image)
+        $employee = $connection->select('employee')->where('e_id', Auth_employee::employee('id'))->first();
+        if($employee->w_image)
         {
-            Image::delete('./'.$employer->w_image);
+            Image::delete('./'.$employee->w_image);
         }
         
         $update = $connection->update('employee', [
@@ -377,8 +367,8 @@ if(Input::post('upload_employee_image'))
 if(Input::post('employee_accept_offer'))
 {
     $data = false;
-    $requests = $connection->select('request_workers')->where('request_id', Input::get('request_id'))->first();    
-    if(!$requests){
+    $request = $connection->select('request_workers')->where('request_id', Input::get('request_id'))->first();    
+    if(!$request){
         Session::flash('error', 'Something went wrong, try again later!');
         return response(['error' => ['error' => true]]);
     }
@@ -390,11 +380,21 @@ if(Input::post('employee_accept_offer'))
 
     if($update)
     {
+        $name = Auth_employee::employee('last_name').' '.Auth_employee::employee('first_name');
 
-        
+        $connection->create('notifications', [
+              'from_id' => Auth_employee::employee('id'),
+              'to_id' => $request->j_employer_id,
+              'not_reference' => $request->reference,
+              'from_user' => 'employee',
+              'to_user' => 'employer',
+              'name' => $name,
+              'body' => $name.' has accepted you offer',
+              'link' => '/employer/employee-detail.php?wid='.$request->request_id,
+        ]);
 
-        Session::flash('success', 'Job offer has been accepted successfully, you will be contacted be the employee soon');
-        Session::flash('success-m', 'Job offer has been accepted successfully, you will be contacted be the employee soon');
+        Session::flash('success', 'Job offer has been accepted successfully, you will be contacted by the employee soon');
+        Session::flash('success-m', 'Job offer has been accepted successfully, you will be contacted by the employee soon');
         $data = true;
     }
    

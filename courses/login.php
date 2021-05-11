@@ -78,6 +78,22 @@ if(Input::post('google_login'))
 
 
 
+
+
+// *************FACEBOOK LOGIN AUTH ***************//
+if(Input::post('facebook_login'))
+{
+    $facebook = new Facebook();
+    Session::delete('fb_employer_login');
+    Session::delete('fb_shop_login');
+    Session::delete('fb_employee_login');
+    Session::put('facebook_auth', true);
+    Session::put('course_facebook_login', true);
+    return Redirect::to($facebook->login_url());
+}
+
+
+
 // ************* MORE COURSES *****************//
 $others = $connection->select('courses')->where('is_feature', 1)->random()->limit(8)->get();
 

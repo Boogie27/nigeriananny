@@ -407,6 +407,47 @@ if(Input::post('course_user_logout_action'))
 
 
 
+// ======================================
+// ADD PROFILE IMAGE
+// ======================================
+if(Input::post('upload_course_user_image'))
+{
+    $data = false;
+    if(Image::exists('image'))
+    {
+        $image = new Image();
+        $file = Image::files('image');
+
+        $file_name = Image::name('image', 'course_user');
+        $image->resize_image($file, ['name' => $file_name, 'width' => 110, 'height' => 110, 'size_allowed' => 1000000,'file_destination' => '../courses/images/user/']);
+            
+        $image_name = '/courses/images/user/'.$file_name;
+
+        if(!$image->passed())
+        {
+            return response(['error' => ['image' => $image->error()]]);
+        }
+        
+        $connection = new DB();
+        $user = $connection->select('course_users')->where('id', Auth_course::user('id'))->first();
+        if($user->image)
+        {
+            Image::delete('../'.$user->image);
+        }
+        
+        $update = $connection->update('course_users', [
+            'image' => $image_name
+        ])->where('id', Auth_course::user('id'))->save();
+
+        $image = $connection->select('course_users')->where('id', Auth_course::user('id'))->first();
+
+        if($update)
+        {
+            $data = asset($image->image);
+        }
+    }
+    return response(['data' => $data]);
+}
 
 
 

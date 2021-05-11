@@ -2,10 +2,47 @@
 
 
 <?php
+// ****** CHECK IF VIDEO WAS CLICK *********//
 if(!Input::exists('get') || !Input::get('cid'))
 {
     return view('/courses');
 }
+
+
+
+
+
+// ***************GOOGLE LOGIN AUTH ****************//
+if(Input::post('google_login'))
+{
+    $google = new Google();
+    Session::delete('employer_login');
+    Session::delete('shop_login');
+    Session::delete('employee_login');
+
+    Session::put('google_auth', true);
+    Session::put('course_google_login', true);
+    return Redirect::to($google->auth_url());
+}
+
+
+
+
+
+// *************FACEBOOK LOGIN AUTH ***************//
+if(Input::post('facebook_login'))
+{
+    $facebook = new Facebook();
+    Session::delete('fb_employer_login');
+    Session::delete('fb_shop_login');
+    Session::delete('fb_employee_login');
+    Session::put('facebook_auth', true);
+    Session::put('course_facebook_login', true);
+    return Redirect::to($facebook->login_url());
+}
+
+
+
 
 // ************* GET COURSE *********************//
 $course = $connection->select('courses')->where('course_id', Input::get('cid'))->where('is_feature', 1)->first();
@@ -209,10 +246,10 @@ if(Cookie::has('saved_course'))
                                             <p class="login-detail text-center">Use your social account to login</p>
                                             <div class="socialBtn text-center">
                                                 <div class="socialBtn-innner">
-                                                    <button type="submit" class="btn login-social-facebook"><i class="fa fa-facebook"></i></button>
+                                                    <button type="submit" name="facebook_login" class="btn login-social-facebook"><i class="fa fa-facebook"></i></button>
                                                 </div>
                                                 <div class="socialBtn-innner">
-                                                    <button type="submit" class="btn login-social-google"><i class="fa fa-google"></i></button>
+                                                    <button type="submit" name="google_login" class="btn login-social-google"><i class="fa fa-google"></i></button>
                                                 </div>
                                             </div>
                                         </div>
@@ -525,7 +562,7 @@ $("#video_input_tag").click(function(e){
 // ======================================
 // LOGIN
 // ======================================
-$("#submit_login_form").submit(function(e){
+$("#side_login_btn").click(function(e){
    e.preventDefault();
   
    $(".main_form_alert").hide()

@@ -39,7 +39,8 @@ if(Auth_employee::is_loggedin())
 	                    ->where('to_user', 'employee')->where('to_id', Auth_employee::employee('id'))->where('is_seen', 0)->orderBy('date', 'DESC')->limit(5)->get();
 }else if(Auth_employer::is_loggedin())
 {
-     //do something here
+    $notifications = $connection->select('notifications')->where('from_user', 'employee')
+	                    ->where('to_user', 'employer')->where('to_id', Auth_employer::employer('id'))->where('is_seen', 0)->orderBy('date', 'DESC')->limit(5)->get();
 }
 ?>
 
@@ -147,22 +148,26 @@ if(Auth_employee::is_loggedin())
 			<a href="#" id="notification_cancle_btn"><i class="fa fa-times"></i></a>
 		</div>
 		<div class="not-header"><h4>Notification</h4></div>
-			<ul class="ul-notification">
-				<li class="not-link">
-					<a href="#">
-						<h5>Charles anonye</h5>
-						<p>Charles anonye bought cloths from shop</p>
-					</a>
-				</li>
-				<li class="not-link">
-					<a href="#">
-						<h5>Charles anonye</h5>
-						<p>Charles anonye bought cloths from shop</p>
-					</a>
-				</li>
+	   	<div id="notification_content_container">
+		   <ul class="ul-notification">
+				<?php if(count($notifications)): ?>
+				<?php foreach($notifications as $notification): ?>
+					<li class="not-link">
+						<a href="<?= url($notification->link)?>">
+							<h5><?= $notification->name ?></h5>
+							<p><?= $notification->body?></p>
+						</a>
+					</li>
+				<?php endforeach; ?>
+				<?php else: ?>
+					No notification
+				<?php endif; ?>
 			</ul>
-			<div class="text-center"><a href="#" class="text-primary">Show all</a></div>
+			<?php if(count($notifications)): ?>
+				<div class="text-center"><a href="#" class="text-primary">Show all</a></div>
+			<?php endif;?>
 		</div>
+	</div>
 </div>
 <?php endif;?>
 <!-- notification end-->
