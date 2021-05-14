@@ -36,6 +36,11 @@ if(Input::post('update_profile'))
             'country' => 'required|min:3|max:50',
         ]);
 
+        if(!$validation->passed())
+        {
+            return back();
+        }
+
         $my_email = $connection->select('course_users')->where('email', Input::get('email'))->where('id', Input::get('uid'))->first();
         if(!$my_email)
         {

@@ -24,7 +24,12 @@ if(Input::post('update_email_settings'))
 		'smtp_port' => 'required|number',
 		'smtp_username' => 'required|min:3|max:200',
 		'smtp_password' => 'required|min:6',
-	]);
+    ]);
+    
+    if(!$validation->passed())
+    {
+        return back();
+    }
 	
 	if($validation->passed())
 	{

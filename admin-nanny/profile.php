@@ -34,6 +34,11 @@ if(Input::post('edit_admin_submit'))
         'country' => 'required|max:100',
         'gender' => 'required',
     ]);
+    
+    if(!$validation->passed())
+    {
+        return back();
+    }
 
    
     if($admin->email != Input::get('email'))

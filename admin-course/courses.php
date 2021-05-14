@@ -14,9 +14,7 @@ if(!Admin_auth::is_loggedin())
 $courses = $connection->select('courses')->paginate(15);
 
 
-// ============================================
-    // app banner settings
-// ============================================
+// ********** app banner settings ***********//
 $banner =  $connection->select('settings')->where('id', 1)->first();
 ?>
 
@@ -57,7 +55,7 @@ $banner =  $connection->select('settings')->where('id', 1)->first();
                         </nav>
                     </div>
                     <div class="col-lg-12">
-                        <div class="item-table table-responsive"> <!-- table start-->
+                        <div class="table-responsive"> <!-- table start-->
                             <table class="table table-striped">
                                 <thead>
                                     <tr>

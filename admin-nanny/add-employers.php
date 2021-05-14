@@ -21,6 +21,11 @@ if(Input::post('create_employer'))
         'gender' => 'required'
     ]);
 
+    if(!$validation->passed())
+    {
+        return back();
+    }
+
     if($validation->passed())
     {
         $create = new DB();

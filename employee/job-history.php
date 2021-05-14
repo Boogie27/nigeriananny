@@ -133,7 +133,7 @@ $requests = $connection->select('request_workers')->leftJoin('employers', 'reque
                                 <div class="empty-inner">
                                     <img src="<?= asset('/images/icons/1.svg')?>" alt="">
                                     <h3>Empty job history!</h3>
-                                    <h5>You have no pending job offers!</h5>
+                                    <h5>You have no job history!</h5>
                                 </div>
                             </div>
                         <?php endif; ?>

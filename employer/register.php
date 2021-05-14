@@ -19,20 +19,20 @@
             'image' => 'file_required|img_min:10000'
         ]);
 
-        $image = new Image();
-        $file = Image::files('image');
-        $fileName = Image::name('image', 'employer');
-        $image_name = '/employer/images/'.$fileName;
-        $images = $image->upload_image($file, [ 'name' => $fileName, 'size_allowed' => 1000000,'file_destination' => '../employer/images/' ]);
-           
-        if(!$images->passed())
-        {
-            Session::errors('errors', ['image' => $images->error()]);
-            return back();
-        }
-
         if($validation->passed())
         {
+            $image = new Image();
+            $file = Image::files('image');
+            $fileName = Image::name('image', 'employer');
+            $image_name = '/employer/images/'.$fileName;
+            $images = $image->upload_image($file, [ 'name' => $fileName, 'size_allowed' => 1000000,'file_destination' => '../employer/images/' ]);
+               
+            if(!$images->passed())
+            {
+                Session::errors('errors', ['image' => $images->error()]);
+                return back();
+            }
+
             $create = new DB();
             $create->create('employers', [
                     'first_name' => Input::get('first_name'),
@@ -51,7 +51,7 @@
             {
                 Session::flash('success', 'Account created successfully!');
                 Auth_employer::login(Input::get('email'));
-                return view('/jobs');
+                return view('/employer/account');
             }
         }
     }

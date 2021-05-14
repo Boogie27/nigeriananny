@@ -22,12 +22,6 @@ $new_messages = $connection->select('contact_us')->where('is_seen', 0)->get();
                     <li class="<?= path('categories') ? 'active' : ''?>"><a href="<?= url('/admin-course/category') ?>"><span class="fa fa-cubes"></span>Categories</a></li>
                     <li class="<?= path('employees') ? 'active' : ''?>"><a href="<?= url('/admin-course/courses') ?>"><span class="fa fa-video-camera"></span> Courses</a></li>
                     <li class="<?= path('employers') ? 'active' : ''?>"><a href="<?= url('/admin-course/users') ?>"><span class="fa fa-users"></span>Manage users</a></li>
-                    <li class="<?= path('employers') ? 'active' : ''?>"><a href="<?= url('/admin-nanny/employments') ?>"><span class="fa fa-money"></span>Employments</a></li>
-                    <li class="<?= path('subscriptions') ? 'active' : ''?>"><a href="<?= url('/admin-nanny/subscriptions') ?>"><span class="flaticon-speech-bubble"></span>Subscriptions</a></li>
-                    <li class="<?= path('subscription') ? 'active' : ''?>"><a href="<?= url('/admin-nanny/subscription') ?>"><span class="flaticon-speech-bubble"></span>Employer subscription</a></li>
-                    <li class="<?= path('report-employee') ? 'active' : ''?>"><a href="<?= url('/admin-nanny/report-employee') ?>"><span class="flaticon-add-contact"></span> Reported employee</a></li>
-                    <li class="<?= path('testimonial') ? 'active' : ''?>"><a href="<?= url('/admin-nanny/testimonial') ?>"><span class="fa fa-folder-o"></span> Testimonial</a></li>
-                    <li class="<?= path('message') ? 'active' : ''?>"><a href="<?= url('/admin-nanny/message') ?>"><span class="fa fa-envelope-o"></span> Messages <span class="text-danger" style="font-size: 13px;"><?= $new_messages ? '('.count($new_messages).')' : ''?> </span></a></li>
                     <li class="<?= path('profile') ? 'active' : ''?>"><a href="<?= url('/admin-nanny/profile') ?>"><span class="fa fa-user-o"></span>Profile</a></li>
                 </ul>
                 

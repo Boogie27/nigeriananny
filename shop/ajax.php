@@ -458,6 +458,7 @@ if(Input::post('cancle_product'))
                         'product_quantity_sold' => $product->product_quantity_sold -= $quantity
                     ])->where('id', $paid_product->product_id)->save();
 
+                    send_notification(Auth::user('id'), $reference); //send notification to admin
                     Session::put('success', "Order has been cancled");
                 }else{
                     Session::put('error', "Error has occured, please try again later!");
@@ -469,4 +470,30 @@ if(Input::post('cancle_product'))
 
     return print_r(json_encode(['data' => $data]));
 
+}
+
+
+
+
+
+
+
+
+
+function send_notification($user_id, $reference)
+{
+    $connection = new DB();
+    $user_profile = $connection->select('users')->where('id', $user_id)->first();
+    $cancle = $connection->select('cancled_product')->where('cancled_reference', $reference)->first();
+    
+    $connection->create('notifications', [
+		  'from_id' => $user_id,
+		  'to_id' => 1,
+		  'not_reference' => $reference,
+		  'from_user' => 'customer',
+		  'to_user' => 'admin',
+		  'name' => $user_profile->email,
+		  'body' => $user_profile->email.' has cancled an order',
+		  'link' => '/admin/cancled-order-detail.php?cod='.$cancle->cancled_id 
+	]);
 }

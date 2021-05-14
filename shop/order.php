@@ -181,7 +181,7 @@ if(!Auth::is_loggedin())
 								 <input type="hidden" class="cancle_order_reference_input" value="">
                                  <textarea id="cancle_message_input" class="form-control"  cols="30" rows="10" placeholder="Reasons for cancelation"></textarea>
                             </div>
-                            <button type="button" data-url="<?= url('/shop/ajax.php') ?>" id="cancle_product_order_btn" class="btn btn-log btn-block btn-thm2">Return order</button>
+                            <button type="button" data-url="<?= url('/shop/ajax.php') ?>" id="cancle_product_order_btn" class="btn btn-log btn-block btn-thm2">Cancle order</button>
                         </form>
                     </div>
                 </div>

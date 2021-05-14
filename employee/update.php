@@ -19,6 +19,11 @@ if(Input::post('update_profile'))
             'about' => 'required|min:3|max:5000',
         ]);
 
+        if(!$validation->passed())
+        {
+            return back();
+        }
+
         if($validation->passed())
         {
             $update = $connection->update('workers', [

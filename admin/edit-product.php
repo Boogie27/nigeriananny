@@ -35,6 +35,11 @@ if(!Admin_auth::is_loggedin())
             'description' => 'required|min:6|max:5000',
         ]);
 
+        if(!$validation->passed())
+        {
+            return back();
+        }
+
 
         $products = $connection->select('shop_products')->where('id', $product_id)->first();
         if(!$products->big_image)

@@ -20,21 +20,25 @@
             'image' => 'file_required|img_min:10000'
         ]);
 
-        
-        $image = new Image();
-        $file = Image::files('image');
-        $fileName = Image::name('image', 'employee');
-        $image_name = '/employee/images/'.$fileName;
-        $images = $image->upload_image($file, [ 'name' => $fileName, 'size_allowed' => 1000000,'file_destination' => '../employee/images/' ]);
-           
-        if(!$images->passed())
+        if(!$validation->passed())
         {
-            Session::errors('errors', ['image' => $images->error()]);
             return back();
         }
 
         if($validation->passed())
         {
+            $image = new Image();
+            $file = Image::files('image');
+            $fileName = Image::name('image', 'employee');
+            $image_name = '/employee/images/'.$fileName;
+            $images = $image->upload_image($file, [ 'name' => $fileName, 'size_allowed' => 1000000,'file_destination' => '../employee/images/' ]);
+               
+            if(!$images->passed())
+            {
+                Session::errors('errors', ['image' => $images->error()]);
+                return back();
+            }
+
             $create = new DB();
             $employee = $create->create('employee', [
                         'first_name' => Input::get('first_name'),

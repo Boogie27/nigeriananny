@@ -36,9 +36,7 @@ if(Input::post('contact_nanny'))
 
 
 
-// ===========================================
-// GET FREQUESNTLY ASK QUESTIONS
-// ===========================================
+// ********** GET FREQUESNTLY ASK QUESTIONS *********//
 $faqs = $connection->select('faqs')->where('is_feature', 1)->get();
 
 
@@ -58,34 +56,32 @@ $faqs = $connection->select('faqs')->where('is_feature', 1)->get();
     
  
     
-   <!-- jobs  start-->
-   <div class="page-content">
-        <div class="register-container">
-            <div class="register-forms" id="contact-form">
-            <?php if(Session::has('success')): ?>
-                <div class="alert alert-success text-center p-3"><?= Session::flash('success') ?></div><br>
-            <?php endif; ?>
-               <form action="<?= current_url()?>" method="POST">
-                    <h1 class="rh-head">Contact the admin</h3>
-                    <p class="text-center" style="font-size: 13px;">
-                        Nanny is the most popular job posting and all-in-on jobs advertsing website for all industry in nigeria.
-                        You can contact us using the form below. please donot send cv's using this form. we can only respond to 
-                        client relevant qrequests or uestions.
-                    </p>
-                    <br>
+
+ <!-- contacts start -->
+ <div class="contact-container">
+        <div class="contact-body">
+            <div class="contact-img">
+                <img src="<?= asset('/images/banner/6.png')?>" alt="">
+            </div>
+            <div class="contact-form">
+                <form action="<?= current_url() ?>" method="POST">
+                    <?php if(Session::has('success')): ?>
+                        <div class="text-success text-center"><?= Session::flash('success') ?></div>
+                    <?php endif; ?>
+                    <div class="title"><h3>Contact us</h3></div>
                     <div class="row">
-                            <div class="col-lg-12">
-                                <div class="form-group">
-                                    <label for="">Full name:</label>
-                                    <input type="text" name="full_name" class="form-control h50" value="<?= old('full_name') ?>">
-                                    <div class="alert-cont">
-                                         <?php  if(isset($errors['full_name'])) : ?>
-                                            <div class="text-danger"><?= $errors['full_name']; ?></div>
-                                        <?php endif; ?>
-                                    </div>
+                        <div class="col-xl-12">
+                            <div class="form-group">
+                                <label for="">Full name:</label>
+                                <input type="text" name="full_name" class="form-control h50" value="<?= old('full_name') ?>">
+                                <div class="alert-cont">
+                                        <?php  if(isset($errors['full_name'])) : ?>
+                                        <div class="text-danger"><?= $errors['full_name']; ?></div>
+                                    <?php endif; ?>
                                 </div>
                             </div>
-                            <div class="col-lg-6 col-sm-6">
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-12">
                                 <div class="form-group">
                                     <label for="">Email:</label>
                                     <input type="email" name="email" class="form-control h50" value="<?= old('email') ?>">
@@ -96,7 +92,7 @@ $faqs = $connection->select('faqs')->where('is_feature', 1)->get();
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-lg-6 col-sm-6">
+                            <div class="col-lg-6 col-md-6 col-sm-12">
                                 <div class="form-group">
                                     <label for="">Subject:</label>
                                     <input type="text" name="subject" class="form-control h50" value="<?= old('subject') ?>">
@@ -110,7 +106,7 @@ $faqs = $connection->select('faqs')->where('is_feature', 1)->get();
                             <div class="col-lg-12">
                                 <div class="form-group">
                                     <label for="">Message:</label>
-                                  <textarea name="message" class="form-control h50" cols="30" rows="10" placeholder="Message or ask a question here..."><?= old('message') ?></textarea>
+                                  <textarea name="message" class="form-control h50" cols="30" rows="6" placeholder="Message or ask a question here..."><?= old('message') ?></textarea>
                                     <div class="alert-cont">
                                          <?php  if(isset($errors['message'])) : ?>
                                             <div class="text-danger"><?= $errors['message']; ?></div>
@@ -127,7 +123,8 @@ $faqs = $connection->select('faqs')->where('is_feature', 1)->get();
                 </form>
             </div>
         </div>
-   </div>
+    </div>
+  <!-- contacts end -->
 
 
 

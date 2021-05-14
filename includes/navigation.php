@@ -16,13 +16,16 @@ if(Cookie::has('saved_worker'))
 
 
 // ********** NAVIGATION IMAGE ******************//
+$link = current_url();
 $profile_image = '/employee/images/demo.png';
 if(Auth_employee::is_loggedin())
 {
+	$link = url('/employee/account');
 	$employee_profile = $connection->select('employee')->leftJoin('workers', 'employee.e_id', '=', 'workers.employee_id')->where('email', Auth_employee::employee('email'))->where('e_id', Auth_employee::employee('id'))->first();
     $profile_image = $employee_profile->w_image ? $employee_profile->w_image : '/employee/images/demo.png';
 }else if(Auth_employer::is_loggedin())
 {
+	$link = url('/employer/account');
 	$employee_profile = $connection->select('employers')->where('email', Auth_employer::employer('email'))->where('id', Auth_employer::employer('id'))->first();
     $profile_image = $employee_profile->e_image ? $employee_profile->e_image : '/employer/images/demo.png';
 }
@@ -78,13 +81,13 @@ if(Auth_employee::is_loggedin())
 			    	<span class="nav-alert-badge-body">
 						<a href="#" class="nav-alert-badge" id="notification_open_btn">
 							<i class="fa fa-bell-o text-danger"></i>
-							<?php if(count($notifications)):?>
-								<span class="badge bg-danger"><?= count($notifications) ?></span>
-							<?php endif; ?>
+							<span class="badge bg-danger"><?= count($notifications) ? count($notifications) : '' ?></span>
 						</a>
 					</span>
 				<?php endif ?>
-				<img src="<?= asset($profile_image) ?>" alt="name" class="nav-profile-img"></span>
+				<a href="<?= $link ?>">
+					<img src="<?= asset($profile_image) ?>" alt="name" class="nav-profile-img">
+				</a>
 			</div>
 		</div><!-- nav right end-->
    </div>
@@ -117,7 +120,7 @@ if(Auth_employee::is_loggedin())
 		</div>
 		<div class="not-header"><h4>Notification</h4></div>
 	   	<div id="notification_content_container">
-		   <ul class="ul-notification">
+		   <ul class="ul-notification client_ul_notification">
 				<?php if(count($notifications)): ?>
 				<?php foreach($notifications as $notification): ?>
 					<li class="not-link">
@@ -131,9 +134,6 @@ if(Auth_employee::is_loggedin())
 					No notification
 				<?php endif; ?>
 			</ul>
-			<?php if(count($notifications)): ?>
-				<div class="text-center"><a href="#" class="text-primary">Show all</a></div>
-			<?php endif;?>
 		</div>
 	</div>
 </div>
@@ -149,7 +149,7 @@ if(Auth_employee::is_loggedin())
 		</div>
 		<div class="not-header"><h4>Notification</h4></div>
 	   	<div id="notification_content_container">
-		   <ul class="ul-notification">
+		   <ul class="ul-notification client_ul_notification">
 				<?php if(count($notifications)): ?>
 				<?php foreach($notifications as $notification): ?>
 					<li class="not-link">
@@ -163,9 +163,6 @@ if(Auth_employee::is_loggedin())
 					No notification
 				<?php endif; ?>
 			</ul>
-			<?php if(count($notifications)): ?>
-				<div class="text-center"><a href="#" class="text-primary">Show all</a></div>
-			<?php endif;?>
 		</div>
 	</div>
 </div>

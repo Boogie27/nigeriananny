@@ -7,7 +7,8 @@ if(!Admin_auth::is_loggedin())
   return view('/admin/login');
 }
 
-
+// ********** app banner settings ***********//
+$banner =  $connection->select('settings')->where('id', 1)->first();
 
 
 // ===========================================
@@ -274,7 +275,7 @@ if(count($today_subs))
 					<div class="row mt50 mb50">
 						<div class="col-lg-6 offset-lg-3">
 							<div class="copyright-widget text-center">
-								<p class="color-black2">Copyright Edumy © 2019. All Rights Reserved.</p>
+								<p class="color-black2"><?= $banner->alrights ?></p>
 							</div>
 						</div>
 					</div>

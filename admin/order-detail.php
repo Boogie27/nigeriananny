@@ -9,6 +9,8 @@ if(!Admin_auth::is_loggedin())
 }
 
 
+
+
 if(!Input::exists('get') || empty(Input::get('pid')) || !is_numeric(Input::get('pid')))
 {
     return view('/admin/transactions');
@@ -23,7 +25,23 @@ $orderDetail = $connection->select('paid_products')->leftJoin('shop_products', '
 $order_information = $connection->select('shop_transactions')->where('reference', $orderDetail->paid_reference)->first();
 
 
-// app banner settings
+
+
+// ********** CANCLE NOTIFICATION ***********//
+$notification = $connection->select('notifications')->where('to_id', 1)->where('to_user', 'admin')->where('is_seen', 0)
+                       ->where('not_reference', $orderDetail->paid_reference)->where('link', '/admin/order-detail.php?pid='.Input::get('pid'))->first();
+if($notification)
+{
+    $connection->update('notifications', [
+                     'is_seen' => 1
+                ])->where('to_id', 1)->where('not_reference', $orderDetail->paid_reference)->where('to_user', 'admin')->where('is_seen', 0)->where('link', '/admin/order-detail.php?pid='.Input::get('pid'))->save();
+}
+
+
+
+
+
+//************ app banner settings *************//
 $banner =  $connection->select('settings')->where('id', 1)->first();
 ?>
 

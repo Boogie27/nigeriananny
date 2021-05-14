@@ -22,6 +22,58 @@ body{
 .alert-div{
     height: 20px;
 }
+/* *********** NOTIFICATION ************* */
+.flaticon-not-count{
+    border: 2px solid rgb(150, 245, 137);
+}
+ul.ul-notification{
+    padding: 0px;
+    margin: 0px;
+}
+ul.ul-notification li h4{
+    margin: 0px;
+    font-size: 15px;
+}
+ul.ul-notification li p{
+    margin: 0px;
+    font-size: 12px;
+}
+.not-seen{
+    background-color: rgb(243, 243, 243);
+}
+ul.ul-notification{
+    padding: 5px 5px;
+    margin-bottom: 5px;
+    border-radius: 3px;
+    border-top: 1px solid rgb(230, 229, 229);
+}
+ul.ul-notification span{
+    font-size: 10px;
+}
+.notification-body{
+    height: 567px;
+    width: 50%;
+    margin: 0 auto;
+    overflow: auto;
+    padding: 20px 5px;
+    background-color: #fff;
+}
+@media only screen and (max-width: 992px){
+    .notification-body{
+        width: 70%;
+    }
+}
+@media only screen and (max-width: 767px){
+    .notification-body{
+        width: 90%;
+    }
+}
+@media only screen and (max-width: 567px){
+    .notification-body{
+        width: 100%;
+    }
+}
+
 /* ================================== */
 /*        COMMON                    */
 /* =============================== */
@@ -1665,8 +1717,17 @@ label.upload-course-img-btn{
 label.upload-course-img-btn:hover{
     background-color:  rgb(241, 158, 4);
 }
-
-
+.tutor-img-preview, .course-img-preview{
+    position: relative;
+}
+.tutor-img-preview .img-delete-btn, .course-img-preview .img-delete-btn{
+    top: 5px;
+    right: 10px;
+    padding: 7px 10px;
+    border-radius: 10px;
+    position: absolute;
+    background-color:  #fff;
+}
 
 
 
@@ -1849,7 +1910,22 @@ ul.w-y-learn li i{
 
 
 
-
+/* *********** DASHBOAD ********** */
+ul.course-img-dashboard{
+    display: flex;
+}
+ul.course-img-dashboard li.course-img{
+    width: 50%;
+    margin-right: 10px;
+}
+ul.course-img-dashboard li i{
+    font-size: 10px;
+    margin: 0px;
+    padding: 0px;
+}
+ul.course-img-dashboard li span{
+    display: block;
+}
 
 
 

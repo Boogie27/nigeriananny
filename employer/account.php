@@ -27,19 +27,19 @@ if(Input::post('update_profile'))
             'address' => 'required|min:3|max:100',
         ]);
 
-        $my_email = $connection->select('employers')->where('email', Input::get('email'))->where('id', Auth_employer::employer('id'))->first();
-        if(!$my_email)
-        {
-            $all_email = $connection->select('employers')->where('email', Input::get('email'))->get();           
-            if(count($all_email))
-            {
-                Session::errors('errors', ['email' => '*Email already exists']);
-                return back();
-            }
-        }
-
         if($validation->passed())
         {
+            $my_email = $connection->select('employers')->where('email', Input::get('email'))->where('id', Auth_employer::employer('id'))->first();
+            if(!$my_email)
+            {
+                $all_email = $connection->select('employers')->where('email', Input::get('email'))->get();           
+                if(count($all_email))
+                {
+                    Session::errors('errors', ['email' => '*Email already exists']);
+                    return back();
+                }
+            }
+
             $create = new DB();
             $create->update('employers', [
                     'first_name' => Input::get('first_name'),
@@ -81,9 +81,50 @@ if(!$employer)
 
 
 
+
 // ********** GET SUBSCRIPTIONS ************//
 $employer_subscriptions = $connection->select('employer_subscriptions')->where('s_employer_id', Auth_employer::employer('id'))->where('is_employer_delete', 0)->get();
 
+
+
+
+// ************CHECK IF ACCOUNT INFO IS COMPLETED ***********//
+$approve = false;
+$alert = false;
+if($employer->employer_approved == 0  && $employer->first_name && $employer->address && $employer->city && $employer->e_image && $employer->e_phone)
+{
+    $update = $connection->update('employers', [
+                'employer_approved' => 1
+            ])->where('id', $employer->id)->save();
+
+            $approve = true;
+            $alert = 'Account has been approved!';
+}
+
+
+
+
+
+// ************DISAPPROVE IF ACCOUNT INFO IS INCOMPLETED ***********//
+$state = false;
+if($employer->employer_approved)
+{
+    if($employer->first_name && $employer->e_image && $employer->e_phone && $employer->city && $employer->address)
+    {
+        $state = true;
+    }
+    
+    if(!$state)
+    {    
+        $update = $connection->update('employers', [
+                    'employer_approved' => 0
+                ])->where('id', $employer->id)->save();
+        if($update)
+        {
+            return back();
+        }
+    }
+}
 
 ?>
 
@@ -100,12 +141,22 @@ $employer_subscriptions = $connection->select('employer_subscriptions')->where('
 <div class="page-content">
     <div class="items-container">
         <div class="account-container" id="account-container">
+            
             <div class="desktop-alert">
                 <?php if(Session::has('error')): ?>
                     <div class="alert alert-danger text-center p-3 mb-2"><?= Session::flash('error') ?></div>
                 <?php endif; ?>
                 <?php if(Session::has('success')): ?>
                     <div class="alert alert-success text-center p-3 mb-2"><?= Session::flash('success') ?></div>
+                <?php endif; ?>
+                <?php if($alert): ?>
+                    <div class="alert alert-success text-center p-3 mb-2"><?= $alert ?></div>
+                <?php endif; ?>
+                <?php if(!$employer->employer_approved && !$approve): ?>
+                    <div class="alert alert-danger account-verify-alert">
+                        <i class="fa fa-times float-right text-danger"></i>
+                        *Complete account information to be approved like <br>Full name, image and contact information!
+                    </div>
                 <?php endif; ?>
            </div>
             <div class="row">
@@ -140,6 +191,24 @@ $employer_subscriptions = $connection->select('employer_subscriptions')->where('
                                     </div>
                                 </div>
                             </div>
+
+                            <div class="account-x">
+                                <?php if($alert): ?>
+                                    <div class="text-success text-center"><?= $alert ?></div>
+                                <?php endif; ?>
+                                <div class="head-x flex-item"><i class="fa fa-key"></i><h4>Status information </h4> </div>
+                                <div class="account-x-body">
+                                    <ul class="ul-account-bar">
+                                        <li>Full name <i id="check_full_name" class="fa fa-check <?= $employer->first_name ? 'text-warning' : 'text-danger'?>"></i></li>
+                                        <li>Profile image <i id="check_image" class="fa fa-check <?= $employer->e_image ? 'text-warning' : 'text-danger'?>"></i></li>
+                                        <li>City <i id="check_salary" class="fa fa-check <?= $employer->city ? 'text-warning' : 'text-danger'?>"></i></li>
+                                        <li>Address <i id="check_education" class="fa fa-check <?= $employer->address ? 'text-warning' : 'text-danger'?>"></i></li>
+                                        <li>State <i id="check_salary" class="fa fa-check <?= $employer->city ? 'text-warning' : 'text-danger'?>"></i></li>
+                                        <li>Country <i id="check_salary" class="fa fa-check <?= $employer->city ? 'text-warning' : 'text-danger'?>"></i></li>
+                                    </ul>
+                                </div>
+                            </div>
+
                         </div><!-- right nav end-->
                         <div class="col-lg-9"><!-- content start-->
                             <div class="mobile-alert">
@@ -148,6 +217,12 @@ $employer_subscriptions = $connection->select('employer_subscriptions')->where('
                                 <?php endif; ?>
                                 <?php if(Session::has('success-m')): ?>
                                     <div class="alert alert-success text-center p-3 mb-2"><?= Session::flash('success-m') ?></div>
+                                <?php endif; ?>
+                                <?php if(!$employer->employer_approved && !$approve): ?>
+                                    <div class="alert alert-danger account-verify-alert">
+                                        <i class="fa fa-times float-right text-danger"></i>
+                                        *Complete account information to be approved like <br>Full name, image and contact information!
+                                    </div>
                                 <?php endif; ?>
                             </div>
                             <div class="account-x">
@@ -368,9 +443,15 @@ $employer_subscriptions = $connection->select('employer_subscriptions')->where('
 <script>
 $(document).ready(function(){
 
-// ===========================================
-//      OPEN PROFILE IMAGE
-// ===========================================
+// ********** REMOVE ACCOUNT VERIFY ALERT *******//
+$(".account-verify-alert i").click(function(){
+    $(".account-verify-alert").hide();
+})
+
+
+
+
+//********* OPEN PROFILE IMAGE *********//
 $('.img-conatiner-x').on('click', '#profile_img_open', function(){
      $(".profile_img_input").click();
      $(".alert_profile_img").html('');
@@ -383,6 +464,7 @@ $('.img-conatiner-x').on('click', '#profile_img_open', function(){
 $('.img-conatiner-x').on('change', '.profile_img_input', function(){
     var url = $(".ajax_url_page").attr('href');
     var image = $(".profile_img_input");
+    $("#check_image").removeClass('text-warning')
     $(".e-loader-kamo").show();
 
     var data = new FormData();
@@ -404,6 +486,7 @@ $('.img-conatiner-x').on('change', '.profile_img_input', function(){
             }else if(data.data){
                 $(".nav-profile-img").attr('src', data.data)
                 $("#profile_image_img").attr('src', data.data)
+                $("#check_image").addClass('text-warning')
                 img_preloader()
             }
         }

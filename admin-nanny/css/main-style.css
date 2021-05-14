@@ -23,6 +23,58 @@ body{
     line-height: 10px;
     height: 10px;
 }
+/* *********** NOTIFICATION ************* */
+.flaticon-not-count{
+    border: 2px solid rgb(150, 245, 137);
+}
+ul.ul-notification{
+    padding: 0px;
+    margin: 0px;
+}
+ul.ul-notification li h4{
+    margin: 0px;
+    font-size: 15px;
+}
+ul.ul-notification li p{
+    margin: 0px;
+    font-size: 12px;
+}
+.not-seen{
+    background-color: rgb(243, 243, 243);
+}
+ul.ul-notification{
+    padding: 5px 5px;
+    margin-bottom: 5px;
+    border-radius: 3px;
+    border-top: 1px solid rgb(230, 229, 229);
+}
+ul.ul-notification span{
+    font-size: 10px;
+}
+.notification-body{
+    height: 567px;
+    width: 50%;
+    margin: 0 auto;
+    overflow: auto;
+    padding: 20px 5px;
+    background-color: #fff;
+}
+@media only screen and (max-width: 992px){
+    .notification-body{
+        width: 70%;
+    }
+}
+@media only screen and (max-width: 767px){
+    .notification-body{
+        width: 90%;
+    }
+}
+@media only screen and (max-width: 567px){
+    .notification-body{
+        width: 100%;
+    }
+}
+
 /* ================================== */
 /*        COMMON                    */
 /* =============================== */

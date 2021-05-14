@@ -274,7 +274,13 @@ if($notification)
                                 </div>
                                 <?php endif; ?>
                                 <!-- CV END-->
-                               
+                                <div class="form-group text-right pt-3">
+                                    <?php if(!$worker->is_completed): ?>
+                                        <a href="#" data-toggle="modal"  data-target="#exampleModal_complete_employement" class="btn btn-primary" id="complete_employment_btn">Complete employement</a>
+                                    <?php else: ?>
+                                        <a href="#" data-toggle="modal"  data-target="#exampleModal_uncomplete_employement" class="btn btn-info" id="complete_employment_btn">Uncomplete employement</a>
+                                    <?php endif; ?>
+                                </div>
                             </div>
                             <!-- featured jobs end-->
                         </div>
@@ -457,6 +463,64 @@ if($notification)
     </div>
 </div>
 
+
+
+
+
+
+
+<!-- Modal uncomplete employement-->
+<div class="sign_up_modal modal fade" id="exampleModal_uncomplete_employement" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close dynamic_modal_btn_close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="tab-content" id="myTabContent">
+                <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                    <div class="login_form">
+                        <form action="#">
+                            <div class="heading">
+                                <p class="text-center">Do you wish to uncomplete this emploment?</p>
+                            </div>
+                            <button type="button" data-url="<?= url('/ajax.php') ?>" id="submit_uncomplete_employment_btn" class="btn bg-primary btn-log btn-block" style="color: #fff;">Uncomplete</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+<!-- Modal complete employement-->
+<div class="sign_up_modal modal fade" id="exampleModal_complete_employement" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close dynamic_modal_btn_close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="tab-content" id="myTabContent">
+                <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                    <div class="login_form">
+                        <form action="#">
+                            <div class="heading">
+                                <p class="text-center">Do you wish to complete this emploment?</p>
+                            </div>
+                            <button type="button" data-url="<?= url('/ajax.php') ?>" id="submit_complete_employment_btn" class="btn bg-primary btn-log btn-block" style="color: #fff;">Complete</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 
 
@@ -834,6 +898,80 @@ function error_alert(error){
 }
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+// ********** COMPLETE EMPLOYEE EMPLOYMENT ************//
+$("#submit_complete_employment_btn").click(function(e){
+    e.preventDefault();
+    var url = $(".ajax_url_page").attr('href');
+    var employee_id = $(".emplpoyee_id_input").val()
+    var request_id = $(".emplpoyee_id_input").attr('data-id')
+    $(".preloader-container").show() //show preloader
+    $(".dynamic_modal_btn_close").click()
+
+    $.ajax({
+        url: url,
+        method: "post",
+        data: {
+            employee_id: employee_id,
+            request_id: request_id,
+            complete_employee_employment: 'complete_employee_employment'
+        },
+        success: function (response){
+            var data = JSON.parse(response);
+            if(data.data){
+                location.reload()
+            }
+            remove_preloader();
+        }
+    });
+    
+});
+
+
+
+
+
+
+
+
+// ********** UNCOMPLETE EMPLOYEE EMPLOYMENT ************//
+$("#submit_uncomplete_employment_btn").click(function(e){
+    e.preventDefault();
+    var url = $(".ajax_url_page").attr('href');
+    var employee_id = $(".emplpoyee_id_input").val()
+    var request_id = $(".emplpoyee_id_input").attr('data-id')
+    $(".preloader-container").show() //show preloader
+    $(".dynamic_modal_btn_close").click()
+
+    $.ajax({
+        url: url,
+        method: "post",
+        data: {
+            employee_id: employee_id,
+            request_id: request_id,
+            uncomplete_employee_employment: 'uncomplete_employee_employment'
+        },
+        success: function (response){
+            var data = JSON.parse(response);
+            if(data.data){
+                location.reload()
+            }
+            remove_preloader();
+        }
+    });
+    
+});
 
 
 

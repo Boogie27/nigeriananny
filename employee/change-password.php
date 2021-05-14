@@ -17,6 +17,11 @@ if(Input::post('update_password'))
         'confirm_password' => 'required|min:6|max:12|match:new_password',
     ]);
 
+    if(!$validation->passed())
+    {
+        return back();
+    }
+
     if($validation->passed())
     {
         $old_password = $connection->select('employee')->where('e_id', Auth_employee::employee('id'))->first();

@@ -1,15 +1,18 @@
 
 <?php
-// =====================================
-//    GET APP BANNER
-// =====================================
+// ************ GET APP BANNER ***********//
 $banner =  $connection->select('settings')->where('id', 1)->first();
 
 
-// =====================================
-//    GET MESSAGE
-// =====================================
+// *********** GET MESSAGE **************//
 $new_messages = $connection->select('contact_us')->where('is_seen', 0)->get();
+
+
+// ********* GET NOTIFICATION *****************//
+$nav_nots = $connection->select('notifications')->where('to_id', 1)->where('to_user', 'admin')->where('is_seen', 0)->orderBy('date', 'DESC')->limit(6)->get();
+
+
+
 ?>
 
 	<header class="header-nav menu_style_home_one dashbord_pages navbar-scrolltofixed stricky main-menu">
@@ -61,6 +64,7 @@ $new_messages = $connection->select('contact_us')->where('is_seen', 0)->get();
 		                <a href="#"><span class="title">Others</span></a>
 		                <ul>
 							<li><a href="<?= url('/admin-nanny/faq') ?>">FAQ</a></li>
+							<li><a href="<?= url('/admin-nanny/notification') ?>">Notifications</a></li>
 							<li><a href="<?= url('/admin-nanny/about') ?>">About us</a></li>
 							<li><a href="<?= url('/admin-nanny/privacy') ?>">Privacy</a></li>
 							<li><a href="<?= url('/admin-nanny/terms') ?>">Terms & condition</a></li>
@@ -79,6 +83,38 @@ $new_messages = $connection->select('contact_us')->where('is_seen', 0)->get();
 					</li>
 		        </ul>
 		        <ul class="header_user_notif pull-right dn-smd">
+			    	<li class="user_notif">
+						<div class="dropdown">
+						    <a class="notification_icon <?= count($nav_nots) ? 'flaticon-not-count' : '' ?>" href="#" data-toggle="dropdown">
+								<span class="flaticon-alarm"></span>
+							</a>
+						    <div class="dropdown-menu notification_dropdown_content">
+								<div class="so_heading">
+									<p>Notifications</p>
+								</div>
+								<div class="so_content" data-simplebar="init">
+									<ul>
+									<?php if(count($nav_nots)): 
+									foreach($nav_nots as $notification):
+										?>
+											<li>
+												<a href="<?= url($notification->link) ?>">
+													<h5><?= $notification->name ?></h5>
+													<p><?= $notification->body ?></p>
+												</a>
+											</li>
+										<?php endforeach; ?>
+									<?php else: ?>
+										<li>No notifications yet!</li>
+									<?php endif; ?>
+									</ul>
+								</div>
+								<?php if(count($nav_nots)):  ?>
+								<a class="view_all_noti text-thm" href="<?= url('/admin-nanny/notification') ?>">View all alerts</a>
+								<?php endif; ?>
+						    </div>
+						</div>
+	                </li>
 	                <li class="user_setting">
 						<div class="dropdown">
 	                		<a class="btn dropdown-toggle" href="#" data-toggle="dropdown"><img class="rounded-circle" src="<?= asset(Admin_auth::admin('image')) ?>" alt="<?= Admin_auth::admin('first_name') ?>"></a>

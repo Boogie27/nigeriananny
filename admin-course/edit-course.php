@@ -37,6 +37,11 @@ if(Input::post('update_course'))
         'tutor_about' => 'required|min:3|max:500',
     ]);
 
+    if(!$validation->passed())
+    {
+        return back();
+    }
+
     if($validation->passed())
     {
         $is_feature = Input::get('feature') == 1 ? 1 : 0;

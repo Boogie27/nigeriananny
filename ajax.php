@@ -378,6 +378,10 @@ if(Input::post('employee_accept_offer'))
         'accepted_date' => date('Y-m-d H:i:s')
     ])->where('request_id', Input::get('request_id'))->save();
 
+    $connection->update('employee', [
+                'is_locked' => 1
+            ])->where('e_id', Auth_employee::employee('id'))->save();
+
     if($update)
     {
         $name = Auth_employee::employee('last_name').' '.Auth_employee::employee('first_name');
@@ -389,12 +393,12 @@ if(Input::post('employee_accept_offer'))
               'from_user' => 'employee',
               'to_user' => 'employer',
               'name' => $name,
-              'body' => $name.' has accepted you offer',
+              'body' => $name.' has accepted your offer',
               'link' => '/employer/employee-detail.php?wid='.$request->request_id,
         ]);
 
-        Session::flash('success', 'Job offer has been accepted successfully, you will be contacted by the employee soon');
-        Session::flash('success-m', 'Job offer has been accepted successfully, you will be contacted by the employee soon');
+        Session::flash('success', 'Accepted successfully and would be contacted soon.');
+        Session::flash('success-m', 'Accepted successfully and would be contacted soon.');
         $data = true;
     }
    
@@ -1441,4 +1445,114 @@ if(Input::post('check_account_verify'))
 
 
 
+// ********** GET CLIENT NOTIFICATIONS ***********//
+if(Input::post('get_client_notification'))
+{
+    $notifications = get_client_notification();
 
+    return include('common/ajax-notification.php');
+}
+
+
+
+
+
+function get_client_notification(){
+    $notifications = array();
+    
+    $connection = new DB();
+    if(Auth_employee::is_loggedin())
+    {
+        $notifications = $connection->select('notifications')->where('from_user', 'employer')
+                            ->where('to_user', 'employee')->where('to_id', Auth_employee::employee('id'))->where('is_seen', 0)->orderBy('date', 'DESC')->limit(5)->get();
+    }else if(Auth_employer::is_loggedin())
+    {
+        $notifications = $connection->select('notifications')->where('from_user', 'employee')
+                            ->where('to_user', 'employer')->where('to_id', Auth_employer::employer('id'))->where('is_seen', 0)->orderBy('date', 'DESC')->limit(5)->get();
+    }
+
+    return $notifications;
+}
+
+
+
+
+
+
+
+// ********** GET CLIENT NOTIFICATION COUNT***********//
+if(Input::post('get_client_notification_count'))
+{
+    $notifications = get_client_notification();
+    $data = count($notifications);
+    
+    return response(['data' => $data]);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+// ********** COMPLETE EMPLOYEE EMPLOYMENT ************//
+if(Input::post('complete_employee_employment'))
+{
+    $data = false;
+    $date = date('Y-m-d H:i:s');
+    $update = $connection->update('request_workers', [
+                    'is_completed' => 1,
+                    'completed_date' => $date
+            ])->where('request_id', Input::get('request_id'))->save();
+
+    $connection->update('employee', [
+                'is_locked' => 0,
+        ])->where('e_id', Input::get('employee_id'))->save();
+  
+    if($update)
+    {
+        $data = true;
+        Session::flash('success', 'Employment status completed!');
+    }
+    return response(['data' => $data]);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// ********** UNCOMPLETE EMPLOYEE EMPLOYMENT ************//
+if(Input::post('uncomplete_employee_employment'))
+{
+    $data = false;
+    $date = date('Y-m-d H:i:s');
+    $update = $connection->update('request_workers', [
+                    'is_completed' => 0,
+                    'completed_date' => null
+            ])->where('request_id', Input::get('request_id'))->save();
+    
+    $connection->update('employee', [
+                'is_locked' => 1,
+        ])->where('e_id', Input::get('employee_id'))->save();
+  
+    if($update)
+    {
+        $data = true;
+        Session::flash('success', 'Employment status updated!');
+    }
+    return response(['data' => $data]);
+}

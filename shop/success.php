@@ -47,7 +47,7 @@ if(Input::exists('get') && Input::get('reference'))
 		]);
 		if($create)
 		{
-			store_paid_products($app, $reference, $buyer_detail['email']);
+			store_paid_products($app, $reference);
 			
 			return view('/shop/success');
 		}
@@ -58,7 +58,7 @@ if(Input::exists('get') && Input::get('reference'))
 
 
 
-function store_paid_products($app, $reference, $email)
+function store_paid_products($app, $reference)
 {
     if(Session::has('cart'))
     {
@@ -90,9 +90,58 @@ function store_paid_products($app, $reference, $email)
 		}
 		
 
+		notify_admin($connection, $reference); //send notification to admin
 		send_mail_to_buyer($app, $reference, $email); //send mail to buyer
+
+		if($app->my_email)
+		{
+			send_mail_to_admin($app, $reference); //send mail to admin
+		}
 		Session::delete('cart');
     }
+}
+
+
+
+// notify admin
+function notify_admin($connection, $reference)
+{
+	
+	$buyer = Session::get('buyer_details');
+	$paid_product  = $connection->select('paid_products')->where('paid_reference', $reference)->first();
+
+	$name = $buyer['last_name'].' '.$buyer['first_name'];
+	$connection->create('notifications', [
+		  'from_id' => Auth::user('id'),
+		  'to_id' => 1,
+		  'not_reference' => $reference,
+		  'from_user' => 'customer',
+		  'to_user' => 'admin',
+		  'name' => $name,
+		  'body' => $name.' has made an order',
+		  'link' => '/admin/order-detail.php?pid='.$paid_product->paid_product_id
+	]);
+}
+
+
+
+
+// sends email to admin personally
+function send_mail_to_admin($app, $reference)
+{
+	$body = admin_mail($app, $reference);
+	
+	$mail = new Mail();
+    $send = $mail->mail([
+				'to' => $app->my_email,
+				'subject' => 'Nigeria nanny Order request',
+				'body' => $body,
+			]);
+	
+	if($send->passed())
+	{
+		$send->send_email();
+	}
 }
 
 
@@ -100,15 +149,17 @@ function store_paid_products($app, $reference, $email)
 
 
 
-
 // ******** SEND MAIL TO BUYER *************//
-function send_mail_to_buyer($app, $reference, $email)
+function send_mail_to_buyer($app, $reference)
 {
+	$buyer = Session::get('buyer_details');
+
+
 	$body = buyer_email($app, $reference);
 
 	$mail = new Mail();
     $send = $mail->mail([
-				'to' => $email,
+				'to' => $buyer['email'],
 				'subject' => 'Transaction success',
 				'body' => $body,
 			]);
@@ -270,6 +321,164 @@ function buyer_email($app, $reference){
 }
 
 
+
+
+
+
+
+
+
+
+
+function admin_mail($app, $reference)
+{
+	$buyer = Session::get('buyer_details');
+
+	$mail = '';
+	$mail .= '
+			<!DOCTYPE html>
+			<html lang="en">
+			<head>
+				<meta charset="UTF-8">
+				<meta name="viewport" content="width=device-width, initial-scale=1.0">
+				<meta http-equiv="X-UA-Compatible" content="ie=edge">
+				<style>
+					body{
+						font-family: "poppins", sans-serif;
+						color: #555;
+					}
+					body a{
+						color: #555; 
+						text-decoration: none;
+					}
+					.container{
+						width: 60%;
+						margin: 0 auto;
+						padding: 50px 0px;
+					}
+					.msg-header{
+						width: 100%;
+						margin-bottom: 50px;
+						text-align: center;
+					}
+					.msg-header img{
+						width: 50px;
+						height: 50px;
+						border-radius: 3px;
+					}
+					.msg-header h3{
+						margin: 0px;
+						font-size: 25px;
+						letter-spacing: 2px;
+					}
+					.mgs-body p{
+					text-align: center;
+					}
+					/* ********* FOOTER *********** */
+					.bottom-footer{
+						width: 100%;
+						margin-top: 150px;
+						padding: 60px 0px 10px 0px;
+						background-color: rgb(246, 246, 246);
+					}
+					.bottom-footer .rights{
+						font-size: 13px;
+						text-align: center;
+			
+					}
+					ul.ul-footer{
+						padding-left: 0px;
+						text-align: center;
+					}
+					ul.ul-footer li{
+						margin: 0px 5px;
+						font-size: 12px;
+						display: inline-block;
+						padding: 1px 10px;
+						border-radius: 2px;
+						margin-bottom: 5px;
+						border: 1px solid #ccc;
+					}
+					.bottom-footer .rights{
+						font-size: 10px;
+			
+					}
+					.text-center{
+						text-align: center;
+					}
+					p.info{
+						color: #555;
+						font-size: 12px;
+					}
+					@media only screen and (max-width: 992px){
+						.container{
+							width: 80%;
+						}
+					}
+					@media only screen and (max-width: 767px){
+						.container{
+							width: 90%;
+						}
+					}
+					@media only screen and (max-width: 567px){
+						ul.ul-footer li{
+							font-size: 9px;
+							padding: 5px;
+						}
+						.bottom-footer .rights{
+							font-size: 9px;
+						}
+						.container{
+							width: 100%;
+						}
+						.msg-header img{
+							width: 40px;
+							height: 40px;
+						}
+						.mgs-body p{
+							font-size: 12px;
+						}
+					}
+					
+				</style>
+			</head>
+			<body>
+				<div class="container">
+					<div class="msg-header">
+						<img src='.asset($app->logo).' alt='.$app->app_name.'>
+						<h3>'.$app->app_name.'</h3>
+					</div>
+					<div class="mgs-body">
+						<p>
+							'.ucfirst($buyer['last_name'].' '.$buyer['first_name']).' has ordered for product/products from the market place with the <br>
+							reference ID: <b>'.$reference.'</b>.
+							Phone: '.$buyer['phone'].'
+						</p>
+					</div>
+					
+					<div class="bottom-footer">
+						<div class="text-center">
+						<p class="info">Contact: '.$app->phone.'</p>
+						<p class="info">Customer care: '.$app->info_email.'</p>
+						</div>
+						<ul class="ul-footer">
+							<li><a href='.url("/") .'>Find a worker</a></li>
+							<li><a href='.url("/privacy") .'>Privacy Policy</a></li>
+							<li><a href='.url("/terms") .'>Terms & Conditions</a></li>
+							<li><a href='.url("/about") .'>About us</a></li>
+							<li><a href='.url("/shop") .'>Market place</a></li>
+							<li><a href='.url("/courses") .'>Download courses</a></li>
+							<li><a href='.url("/contact") .'>Contact</a></li>
+						</ul>
+						<div class="rights">'.$app->alrights.'</div>
+					</div>
+				</div>
+			</body>
+			</html>
+			';
+
+    return $mail;
+}
 
 ?>
 <?php include('includes/header.php') ?>

@@ -46,6 +46,11 @@ if(Input::post('create_course'))
         return back();
     }
 
+    if(!$validation->passed())
+    {
+        return back();
+    }
+
     if($validation->passed())
     {
         $is_feature = Input::get('feature') == 1 ? 1 : 0;
@@ -305,6 +310,7 @@ $banner =  $connection->select('settings')->where('id', 1)->first();
                                                     <div class="tutor-img-preview img">
                                                         <?php $tutor_img = Cookie::has('tutor_img') ? Cookie::get('tutor_img') : '/images/camera-icon.jpg' ?>
                                                         <img src="<?= asset($tutor_img) ?>" alt="camera" class="upload_tutor_img_open">
+                                                        <a href="#" class="img-delete-btn" id="delete_add_tutor_image" title="Delete tutor image"><i class="fa fa-times text-danger"></i></a>
                                                     </div>
                                                     <div class="form-group">
                                                         <input type="file" id="tutor_img_input" style="display: none;">
@@ -324,6 +330,7 @@ $banner =  $connection->select('settings')->where('id', 1)->first();
                                                     <div class="course-img-preview">
                                                         <?php $course_img = Cookie::has('course_img') ? Cookie::get('course_img') : '/images/camera-icon.jpg' ?>
                                                         <img src="<?= asset($course_img) ?>" alt="camera" class="upload_course_img_open">
+                                                        <a href="#" class="img-delete-btn" id="delete_add_course_image" title="Delete course image"><i class="fa fa-times text-danger"></i></a>
                                                     </div>
                                                     <div class="form-group">
                                                         <input type="file" id="course_img_input" style="display: none;">
@@ -615,6 +622,76 @@ $("#tutor_img_input").on('change', function(e){
 		}
     });
 });
+
+
+
+
+
+
+
+// ******** DELETE TUTOR IMAGE IN ADD COURSE PAGE ***********//
+$("#delete_add_tutor_image").click(function(e){
+    e.preventDefault()
+    var url = $(".ajax_url_page").attr('href')
+    $(".preloader-container").show();
+
+    $.ajax({
+        url: url,
+        method: "post",
+        data: {
+            delete_add_tutor_image: 'delete_add_tutor_image'
+        },
+        success: function (response){
+           var data = JSON.parse(response);
+            if(data.data){
+               $(".tutor-img-preview img").attr('src', data.data)
+           }
+		   console.log(response)
+           $(".preloader-container").hide();
+		},
+		error: function(){
+            $(".preloader-container").hide();
+			$('.alert_1').html('*Network error, try again later!');
+		}
+    });
+})
+
+
+
+
+
+// ******** DELETE COURSE IMAGE IN ADD COURSE PAGE ***********//
+$("#delete_add_course_image").click(function(e){
+    e.preventDefault()
+    var url = $(".ajax_url_page").attr('href')
+    $(".preloader-container").show();
+
+    $.ajax({
+        url: url,
+        method: "post",
+        data: {
+            delete_add_course_image: 'delete_add_course_image'
+        },
+        success: function (response){
+           var data = JSON.parse(response);
+            if(data.data){
+                $(".course-img-preview img").attr('src', data.data)
+           }
+		   console.log(response)
+           $(".preloader-container").hide();
+		},
+		error: function(){
+            $(".preloader-container").hide();
+			$('.alert_1').html('*Network error, try again later!');
+		}
+    });
+})
+
+
+
+
+
+
 
 
 // end

@@ -24,6 +24,11 @@ if(Input::post('create_testimonial'))
             'comment' => 'required|min:50|max:3000',
         ]);
 
+        if(!$validation->passed())
+        {
+            return back();
+        }
+
         if($validation->passed())
         {
             $connection = new DB();

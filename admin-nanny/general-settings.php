@@ -23,8 +23,14 @@ if(Input::post('update_app_settings'))
 		'app_name' => 'required|min:1|max:50',
 		'info_email' =>  'required|email',
 		'business_hours' => 'required',
+		'my_email' => 'email',
 		'alrights' => 'required|min:3|max:50',
 	]);
+
+	if(!$validation->passed())
+    {
+        return back();
+    }
 
 	if($validation->passed())
 	{
@@ -35,6 +41,7 @@ if(Input::post('update_app_settings'))
 						'info_email' => Input::get('info_email'),
 						'business_hours' => Input::get('business_hours'),
 						'alrights' => Input::get('alrights'),
+						'my_email' => Input::get('my_email'),
 						'is_active' => $app_active,
 					])->where('id', 1)->save();
 		if($update_settings)
@@ -65,6 +72,11 @@ if(Input::post('update_general_settings'))
 		'paystack_secrete' => 'required|min:3|max:50',
 		'paystack_public' => 'required|min:3|max:50',
 	]);
+
+	if(!$validation->passed())
+    {
+        return back();
+    }
 	
 
 	if($validation->passed())
@@ -202,6 +214,15 @@ $setting =  $connection->select('settings')->where('id', 1)->first();
 											<textarea name="alrights" class="form-control h50" placeholder="Copyrights"><?= $setting->alrights ?? old('alrights') ?></textarea>
 										</div>
 									</div>
+									<div class="col-lg-12">
+											<div class="form-group">
+												<?php  if(isset($errors['my_email'])) : ?>
+													<div class="form-alert text-danger"><?= $errors['my_email']; ?></div>
+												<?php endif; ?>
+												<input type="email" name="my_email" class="form-control h50" value="<?= $setting->my_email ?? old('my_email') ?>" placeholder="Enter personal email">
+											    <label for="" class="text-warning" style="font-size: 10px;">Email for recieving notifications from buyers</label>
+											</div>
+										</div>
 									<div class="col-lg-12">
 										<div class="form-group">
 										    <div class="custom-control custom-checkbox">

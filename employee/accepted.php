@@ -62,7 +62,7 @@ $requests = $connection->select('request_workers')->leftJoin('employers', 'reque
                         <div class="account-x-body">
                             <div class="img-conatiner-x">
                                 <div class="em-img">
-                                    <?php $profile_image = $employee->w_image ? $employee->w_image : '/images/employee/demo.png' ?>
+                                    <?php $profile_image = $employee->w_image ? $employee->w_image : '/employee/images/demo.png' ?>
                                     <img src="<?= asset($profile_image) ?>" alt="<?= $employee->first_name ?>" class="acc-img" id="profile_image_img">
                                     <i class="fa fa-camera" id="profile_img_open"></i>
                                     <input type="file" class="profile_img_input" style="display: none;">
@@ -103,7 +103,7 @@ $requests = $connection->select('request_workers')->leftJoin('employers', 'reque
                     <?php endif; ?>
                         <?php if(count($requests)): 
                         foreach($requests as $request):
-                            $profile_image = $request->e_image ? $request->e_image : '/images/employer/demo.png';
+                            $profile_image = $request->e_image ? $request->e_image : '/employer/images/demo.png';
                         ?>
                             <div class="jobs-info accept-x-inner">
                                 <img src="<?= asset($profile_image) ?>" alt="">
@@ -138,7 +138,7 @@ $requests = $connection->select('request_workers')->leftJoin('employers', 'reque
                             <div class="empty-inner">
                                 <img src="<?= asset('/images/icons/1.svg')?>" alt="">
                                 <h3>No job offers yet!</h3>
-                                <h5>You have no pending job offers!</h5>
+                                <h5>You have no accepted jobs!</h5>
                             </div>
                         </div>
                         <?php endif; ?>

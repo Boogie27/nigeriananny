@@ -21,7 +21,10 @@
         'password' => 'required|min:6|max:12',
     ]);
 
-
+    if(!$validation->passed())
+    {
+        return back();
+    }
       
     if($validation->passed())
     {

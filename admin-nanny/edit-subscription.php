@@ -25,6 +25,11 @@ if(Input::post('subscription'))
             'access' => 'required',
             'description' => 'required|min:6|max:500'
      ]);
+
+    if(!$validation->passed())
+    {
+        return back();
+    }
      
     if($validation->passed())
     {
@@ -138,6 +143,7 @@ $banner =  $connection->select('settings')->where('id', 1)->first();
                                         <div class="ui_kit_select_box">
                                             <select name="duration" class="selectpicker custom-select-lg mb-3">
                                                 <option value="<?= $subscription->duration ?? 'select' ?>" ><?= $subscription->duration ?? 'Select' ?></option>
+                                                <option value="1 month">1 month</option>
                                                 <option value="3 months">3 months</option>
                                                 <option value="6 months">6 months</option>
                                                 <option value="6 months">9 months</option>
@@ -187,7 +193,7 @@ $banner =  $connection->select('settings')->where('id', 1)->first();
                                                 <label class="custom-control-label" for="customSwitch_1">Feature</label>
                                             </div>
                                         </div>
-                                        <input type="hidden" name="feature" id="subscription_feature_input" value="">
+                                        <input type="hidden" name="feature" id="subscription_feature_input" value="<?= $subscription->is_feature ?? old('feature')?>">
                                     </div>
                                 </div>
                                 <div class="col-lg-12">

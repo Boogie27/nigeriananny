@@ -83,9 +83,10 @@ $banner =  $connection->select('settings')->where('id', 1)->first();
                                 </ul>
                                 <ul class="ul-sub">
                                     <li><h1><?= money($subscription->s_amount) ?></h1></li>
-                                    <li class="s-type"><h4>premium</h4></li>
+                                    <li class="s-type"><h4><?= $subscription->s_type ?></h4></li>
                                     <br>
                                     <li><b>Reference ID: </b><?= $subscription->reference ?></li>
+                                    <li><b>Monthly views: </b><?= $subscription->s_access ?></li>
                                     <li><b>Duration: </b><?= $subscription->s_duration ?></li>
                                     <li><b>Start date : </b><?= date('d M Y', strtotime($subscription->start_date)) ?></li>
                                     <li><b>End date : </b><?= date('d M Y', strtotime($subscription->end_date)) ?></li>

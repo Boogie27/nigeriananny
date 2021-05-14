@@ -46,6 +46,11 @@ if(Input::post('update_profile'))
         'address' => 'required|min:3|max:100',
     ]);
 
+    if(!$validation->passed())
+    {
+        return back();
+    }
+
     $my_email = $connection->select('employee')->where('email', Input::get('email'))->where('e_id', Auth_employee::employee('id'))->first();
     if(!$my_email)
     {
@@ -57,7 +62,7 @@ if(Input::post('update_profile'))
         }
     }
     
-    if($employee->is_bvn && Input::get('first_name') &&  Input::get('last_name') && $employee->w_image && $worker->job_title && $worker->education && $worker->amount_form)
+    if(Input::get('first_name') &&  Input::get('last_name') && $employee->w_image && $worker->job_title && $worker->education && $worker->amount_form)
     {
         $approve = 1;
     }
@@ -97,7 +102,7 @@ if(Input::post('update_profile'))
 // ************CHECK IF ACCOUNT INFO IS COMPLETED ***********//
 $approve = false;
 $alert = false;
-if($employee->e_approved == 0 && $employee->is_bvn && $employee->first_name && $employee->w_image && $worker->job_title && $worker->education && $worker->amount_form)
+if($employee->e_approved == 0 && $employee->first_name && $employee->w_image && $worker->job_title && $worker->education && $worker->amount_form)
 {
     $update = $connection->update('employee', [
                 'e_approved' => 1
@@ -112,14 +117,23 @@ if($employee->e_approved == 0 && $employee->is_bvn && $employee->first_name && $
 
 
 // ************DISAPPROVE IF ACCOUNT INFO IS INCOMPLETED ***********//
-if($employee->e_approved && (!$employee->is_bvn || !$employee->first_name || !$employee->w_image || !$worker->job_title || !$worker->education || !$worker->amount_form))
+$state = false;
+if($employee->e_approved)
 {
-    $update = $connection->update('employee', [
-                'e_approved' => 0
-            ])->where('e_id', $employee->e_id)->save();
-    if($update)
+    if($employee->first_name && $employee->w_image && $worker->job_title && $worker->education && $worker->amount_form)
     {
-        return back();
+        $state = true;
+    }
+    
+    if(!$state)
+    {    
+        $update = $connection->update('employee', [
+                    'e_approved' => 0
+                ])->where('e_id', $employee->e_id)->save();
+        if($update)
+        {
+            return back();
+        }
     }
 }
 
@@ -148,13 +162,10 @@ if($employee->e_approved && (!$employee->is_bvn || !$employee->first_name || !$e
                 <?php if(Session::has('success')): ?>
                     <div class="alert alert-success text-center p-3 mb-2"><?= Session::flash('success') ?></div>
                 <?php endif; ?>
-                <?php if($alert): ?>
-                    <div class="alert alert-success text-center p-3 mb-2"><?= $alert ?></div>
-                <?php endif; ?>
                 <?php if(!$employee->e_approved && !$approve): ?>
                     <div class="alert alert-danger account-verify-alert">
                         <i class="fa fa-times float-right text-danger"></i>
-                        *Complete account information to be approved like <br>Full name, image, BVN, Job title, Education and Expected salary!
+                        *Complete account information to be approved like <br>Full name, image, Job title, Education and Expected salary!
                     </div>
                 <?php endif; ?>
            </div>
@@ -192,10 +203,12 @@ if($employee->e_approved && (!$employee->is_bvn || !$employee->first_name || !$e
                                 </div>
                             </div>
                             <div class="account-x">
+                                <?php if($alert): ?>
+                                    <div class="text-success text-center"><?= $alert ?></div>
+                                <?php endif; ?>
                                 <div class="head-x flex-item"><i class="fa fa-key"></i><h4>Status information </h4> </div>
                                 <div class="account-x-body">
                                     <ul class="ul-account-bar">
-                                        <li>BVN <i id="check_bvn" class="fa fa-check <?= $employee->is_bvn ? 'text-warning' : 'text-danger'?>"></i></li>
                                         <li>Full name <i id="check_full_name" class="fa fa-check <?= $employee->first_name ? 'text-warning' : 'text-danger'?>"></i></li>
                                         <li>Job title <i id="check_title" class="fa fa-check <?= $worker->job_title ? 'text-warning' : 'text-danger'?>"></i></li>
                                         <li>Education <i id="check_education" class="fa fa-check <?= $worker->education ? 'text-warning' : 'text-danger'?>"></i></li>
@@ -213,13 +226,10 @@ if($employee->e_approved && (!$employee->is_bvn || !$employee->first_name || !$e
                                 <?php if(Session::has('success-m')): ?>
                                     <div class="alert alert-success text-center p-3 mb-2"><?= Session::flash('success-m') ?></div>
                                 <?php endif; ?>
-                                <?php if($alert): ?>
-                                    <div class="alert alert-success text-center p-3 mb-2"><?= $alert ?></div>
-                                <?php endif; ?>
                                 <?php if(!$employee->e_approved && !$approve): ?>
                                     <div class="alert alert-danger account-verify-alert">
                                         <i class="fa fa-times float-right text-danger"></i>
-                                        *Complete account information to be approved like <br>Full name, image, BVN, Job title, Education and Expected salary!
+                                        *Complete account information to be approved like <br>Full name, image, Job title, Education and Expected salary!
                                     </div>
                                 <?php endif; ?>
                             </div>
@@ -329,7 +339,6 @@ if($employee->e_approved && (!$employee->is_bvn || !$employee->first_name || !$e
                                             </div>
                                             <div class="col-lg-12">
                                                 <div class="form-group">
-                                                    <a href="#" class="text-primary verify-bvn-btn">Verify BVN here</a>
                                                     <button type="submit" name="update_profile" class="btn view-btn-fill float-right">Update...</button>
                                                 </div>
                                             </div>

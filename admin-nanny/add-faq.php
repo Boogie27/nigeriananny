@@ -22,6 +22,11 @@ if(Input::post('add_faq'))
         'faq_content' => 'required|min:6',
     ]);
 
+    if(!$validation->passed())
+    {
+        return back();
+    }
+
     if($validation->passed())
     {
         $create = $connection->create('faqs', [

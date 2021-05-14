@@ -2,6 +2,17 @@
 <?php
 //    banner 
 $banner =  $connection->select('settings')->where('id', 1)->first();
+
+
+
+
+
+// ********* GET NOTIFICATION *****************//
+$nav_nots = $connection->select('notifications')->where('to_id', 1)->where('to_user', 'admin')->where('is_seen', 0)->orderBy('date', 'DESC')->limit(6)->get();
+
+
+
+
 ?>
 
 	<header class="header-nav menu_style_home_one dashbord_pages navbar-scrolltofixed stricky main-menu">
@@ -76,6 +87,38 @@ $banner =  $connection->select('settings')->where('id', 1)->first();
 					</li>
 		        </ul>
 		        <ul class="header_user_notif pull-right dn-smd">
+				    <li class="user_notif">
+						<div class="dropdown">
+						    <a class="notification_icon <?= count($nav_nots) ? 'flaticon-not-count' : '' ?>" href="#" data-toggle="dropdown">
+								<span class="flaticon-alarm"></span>
+							</a>
+						    <div class="dropdown-menu notification_dropdown_content">
+								<div class="so_heading">
+									<p>Notifications</p>
+								</div>
+								<div class="so_content" data-simplebar="init">
+									<ul>
+									<?php if(count($nav_nots)): 
+									foreach($nav_nots as $notification):
+										?>
+											<li class="nav-not-link">
+												<a href="<?= url($notification->link) ?>">
+													<h5><?= $notification->name ?></h5>
+													<p><?= $notification->body ?></p>
+												</a>
+											</li>
+										<?php endforeach; ?>
+									<?php else: ?>
+                                         <li>No notifications yet!</li>
+									<?php endif; ?>
+									</ul>
+								</div>
+								<?php if(count($nav_nots)):  ?>
+								<a class="view_all_noti text-thm" href="<?= url('/admin/notification') ?>">View all alerts</a>
+								<?php endif; ?>
+						    </div>
+						</div>
+	                </li>
 	                <li class="user_setting">
 						<div class="dropdown">
 	                		<a class="btn dropdown-toggle" href="#" data-toggle="dropdown"><img class="rounded-circle" src="<?= asset(Admin_auth::admin('image')) ?> " alt="<?= Admin_auth::admin('first_name') ?>"></a>

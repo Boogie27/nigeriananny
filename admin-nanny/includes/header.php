@@ -5,7 +5,7 @@
 $employer_subs = $connection->select('employer_subscriptions')->where('is_expire', 0)->get();
 if(count($employer_subs))
 {
-	$today = date('Y-m-d H:i:s', strtotime('+4months'));
+	$today = date('Y-m-d H:i:s');
 	foreach($employer_subs as $subs)
 	{
 		if($today > $subs->end_date)

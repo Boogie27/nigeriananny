@@ -25,6 +25,21 @@ $order_information = $connection->select('shop_transactions')->where('reference'
 
 // app banner settings
 $banner =  $connection->select('settings')->where('id', 1)->first();
+
+
+
+
+// ********** CANCLE NOTIFICATION ***********//
+$notification = $connection->select('notifications')->where('to_id', 1)->where('to_user', 'admin')->where('is_seen', 0)
+                       ->where('not_reference', $orderDetail->cancled_reference)->where('link', '/admin/cancled-order-detail.php?cod='.Input::get('cod'))->first();
+if($notification)
+{
+    $connection->update('notifications', [
+                     'is_seen' => 1
+                ])->where('to_id', 1)->where('not_reference', $notification->not_reference)->where('to_user', 'admin')->where('is_seen', 0)->where('link', '/admin/cancled-order-detail.php?cod='.Input::get('cod'))->save();
+}
+
+
 ?>
 
 <?php include('includes/header.php'); ?>

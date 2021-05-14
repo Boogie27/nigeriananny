@@ -8,9 +8,21 @@ if(!Input::exists('get') && !Input::get('wid'))
 
 
 
-// ===================================================
-// HIRE AN EMPLOYEE
-// ===================================================
+
+// **************CHECK IF EMPLOYER IS APPROVED ************//
+if(Auth_employer::is_loggedin())
+{
+    $info = $connection->select('employers')->where('id', Auth_employer::employer('id'))->first();
+    if(!$info->employer_approved)
+    {
+        return view('/employer/account');
+    }
+}
+
+
+
+
+// ************** HIRE AN EMPLOYEE ************//
 if(Input::post('hire_employee'))
 {
     $connection = new DB();
@@ -36,6 +48,13 @@ function hire_employee($connection)
         Session::flash('error', '*Signup or Login to be able to hire a worker');
         return view('/employer/login');
     }
+
+    $info = $connection->select('employers')->where('id', Auth_employer::employer('id'))->first();
+    if(!$info->employer_approved)
+    {
+        return view('/employer/account');
+    }
+
 
     $subscription = $connection->select('employer_subscriptions')->where('s_employer_id', Auth_employer::employer('id'))->where('is_expire', 0)->first();
     
@@ -117,35 +136,6 @@ function hire_employee($connection)
 
 
 
-
-// ************ LOCK THE EMPLOYEE IF EMPLOYEMENT REQUEST ACCEPTED *******//
-$job_is_accepted = false;
-$employer_requests = $connection->select('request_workers')->where('r_worker_id', Input::get('wid'))->get();
-if(count($employer_requests))
-{
-    foreach($employer_requests as $employer_request)
-    {
-        if($employer_request->is_accept == 0 && $employer_request->is_completed == 0)
-        {
-            $job_is_accepted = false;
-        }else if($employer_request->is_accept && $employer_request->is_completed)
-        {
-            $job_is_accepted = false;
-        }else if($employer_request->is_accept && $employer_request->is_completed == 0)
-        {
-            $job_is_accepted = true;
-        }
-    }
-}
-
-
-
-
-
-
-
-
-
 // =======================================================
 // REMOVE EMPLOYER WORKER VIEWS EVERY MONTH
 // =======================================================
@@ -160,7 +150,6 @@ if($dailyViews)
             'count' => 0,
             'is_complete' => 0
         ])->where('wdv_employer_id', Auth_employer::employer('id'))->save();
-        dd('yes');
     }
 }
 
@@ -224,7 +213,7 @@ if(Auth_employer::is_loggedin())
 // ============================================
 // GET WORK DETAILS
 // ============================================
-$job = $connection->select('workers')->leftJoin('employee', 'workers.employee_id', '=', 'employee.e_id')->where('worker_id', Input::get('wid'))->where('is_deactivate', 0)->where('is_job_feature', 1)->first(); 
+$job = $connection->select('workers')->leftJoin('employee', 'workers.employee_id', '=', 'employee.e_id')->where('worker_id', Input::get('wid'))->where('e_approved', 1)->where('is_deactivate', 0)->where('is_job_feature', 1)->first(); 
 if(!$job)
 {
     return view('/jobs');
@@ -240,14 +229,13 @@ if(!$job)
 $daily_view = null;
 $subscription = $connection->select('employer_subscriptions')->where('s_employer_id', Auth_employer::employer('id'))->where('is_expire', 0)->first();
 
-if($subscription && !$job_is_accepted)
+if($subscription && !$job->is_locked)
 {
     $is_requested = $connection->select('request_workers')->where('j_employer_id', Auth_employer::employer('id'))->where('r_worker_id', Input::get('wid'))->where('is_accept', 0)->first();
     $daily_view = $connection->select('worker_daily_view')->where('s_reference', $subscription->reference)->where('wdv_employer_id', Auth_employer::employer('id'))->first();
   
     if(!$daily_view && $is_requested == null)
     {
-        $expire_date = date('Y-m-d', strtotime('+1month'));
         $worker[$job->worker_id] = ['woker_id' => $job->worker_id];
         $worker_ids = json_encode($worker);
 
@@ -256,7 +244,7 @@ if($subscription && !$job_is_accepted)
                 'wdv_employer_id' => Auth_employer::employer('id'),
                 'worker_id' => $worker_ids,
                 'count' => 1,
-                'expire_date' => $expire_date
+                'expire_date' => $subscription->end_date
         ]);
     }else if($is_requested == null){
         $currntCount = $daily_view->count + 1;
@@ -284,7 +272,7 @@ if($subscription && !$job_is_accepted)
                
             }
         }
-        if($currntCount == $subscription->s_access){
+        if($currntCount >= $subscription->s_access){
             if(!$daily_view->is_complete)
             {
                 $connection->update('worker_daily_view', [
@@ -293,10 +281,7 @@ if($subscription && !$job_is_accepted)
             }
         }
     }
-}else{
-   
 }
-
 
 
 
@@ -306,7 +291,7 @@ if($subscription && !$job_is_accepted)
 //      CHECK AND GET EMPLOYEE THAT HAS BEEN VIEWED
 // ======================================================
 $viewed = false;
-if($subscription && !$job_is_accepted)
+if($subscription && !$job->is_locked)
 {
     $is_requested = $connection->select('request_workers')->where('j_employer_id', Auth_employer::employer('id'))->where('r_worker_id', Input::get('wid'))->where('is_completed', 0)->first();
     if($is_requested)
@@ -335,10 +320,13 @@ if($subscription && !$job_is_accepted)
 // CHECK IF WORKER HAS BEEN REQUESTED
 // =========================================
 $is_requested = false;
+$employer_id = null;
+
 $request_worker = $connection->select('request_workers')->where('j_employer_id', Auth_employer::employer('id'))->where('r_worker_id', Input::get('wid'))->where('is_completed', 0)->first();
 if($request_worker)
 {
     $is_requested = true;
+    $employer_id = Auth_employer::employer('id');
 }
 
 
@@ -367,6 +355,9 @@ if(Auth_employee::is_loggedin())
     }
 }
 
+
+
+
 ?>
 
 
@@ -392,12 +383,8 @@ if(Auth_employee::is_loggedin())
                         <div class="alert-daily_v text-danger"><i class="fa fa-bell text-danger"></i> You have exceeded your maximum view chances</div>
                     <?php endif; ?>
 
-                    <?php if($job_is_accepted && !Auth_employee::is_loggedin()): ?>
-                        <div class="alert-daily_v text-danger"><i class="fa fa-bell text-danger"></i> This employee has been hired</div>
-                    <?php endif; ?>
-
-                    <?php if($job_is_accepted && Auth_employee::is_loggedin()): ?>
-                        <div class="alert-daily_v text-warning"><i class="fa fa-bell text-warning"></i> You accepted this offer</div>
+                    <?php if($job->is_locked && Auth_employer::employer('id') != $employer_id): ?>
+                        <div class="alert-daily_v text-warning"><i class="fa fa-bell text-warning"></i>This employee has been hired</div>
                     <?php endif; ?>
 
                     <?php if(!$job->e_approved && Auth_employee::is_loggedin()): ?>
@@ -410,7 +397,7 @@ if(Auth_employee::is_loggedin())
                 </div>
                 <div class="j-body">
                     <div class="row"> 
-                        <?php if(!$job_is_accepted):?>
+                        <?php if(!$job->is_locked):?>
                         <div class="col-lg-4" id="apply_now_1">
                             <form action="<?= current_url() ?>" method="POST" class="p-apply-container">
                                 <div class="apply-h"><h4>HIRE WORKER HERE</h4></div>
@@ -524,7 +511,7 @@ if(Auth_employee::is_loggedin())
                             </div>
                         </div>
                         <?php endif; ?>
-                        <div class="col-lg-<?= $job_is_accepted ? '12' : '8'?>">
+                        <div class="col-lg-<?= $job->is_locked ? '12' : '8'?>">
                             <!-- featured jobs start-->
                             <?php if(Session::has('error')): ?>
                                 <div class="alert alert-danger text-center p-3 mb-2"><?= Session::flash('error') ?></div>
@@ -663,7 +650,7 @@ if(Auth_employee::is_loggedin())
                                         <?php endif;?>
                                      <div class="unsub">
                                         <?php if(!$is_employee && $daily_view && $daily_view->is_complete && !$viewed):?>
-                                            <p class="text-center alert-danger p-2"><i class="fa fa-bell"></i> You have exceeded your maximum view chances for the month!</p>
+                                            <p class="text-center alert-danger p-2"><i class="fa fa-bell text-danger"></i> You have exceeded your maximum view chances for the month!</p>
                                         <?php endif; ?>
                                         <?php if(!$is_employee && !$subscription):?>
                                             <p class="text-danger">
@@ -708,7 +695,7 @@ if(Auth_employee::is_loggedin())
                             </div>
                             <!-- featured jobs end-->
                         </div>
-                        <?php if(!$job_is_accepted):?>
+                        <?php if(!$job->is_locked):?>
                         <div class="col-lg-3" id="apply_now_2">
                             <form action="<?= current_url() ?>" method="POST" class="p-apply-container">
                                 <div class="apply-h"><h4>HIRE WORKER HERE</h4></div>

@@ -10,89 +10,44 @@ if(!Admin_auth::is_loggedin())
 
 
 
-// ===========================================
-// GET ALL EMPLOYEES
-// ===========================================
-$employees = $connection->select('employee')->get();
 
-// ===========================================
-// GET ALL EMPLOYEES
-// ===========================================
+// *************** GET ALL COURSE USERS *************//
+$userCount = $connection->select('course_users')->get();
+
+
+//************ GET ALL EMPLOYEES *************/
 $flagged_employees = $connection->select('employee')->where('is_flagged', 1)->get();
 
 
-// ===========================================
-// GET EMPLOYERS COUNT
-// ===========================================
+
+// ******** GET EMPLOYERS COUNT *********//
 $employers = $connection->select('employers')->get();
 
 
-// ===========================================
-// GET ALL EMPLOYERS 
-// ===========================================
-$my_employers =  $connection->select('employers')->orderBy('id', 'DESC')->get();
+
+// *********** GET ALL EMPLOYERS **********//
+$users =  $connection->select('course_users')->orderBy('id', 'DESC')->get();
 
 // ===========================================
 // GET EMPLOYERS COUNT
 // ===========================================
-$deactivated_employers =  $connection->select('employers')->where('e_deactivate', 1)->get();
-
-// ===========================================
-// GET ALL SUBSCRITPION AMOUNT MADE
-// ===========================================
-$total_amount = 0;
-$employer_subscriptions = $connection->select('employer_subscriptions')->get();
-if(count($employer_subscriptions))
-{
-	foreach($employer_subscriptions as $subscriptions)
-	{
-		$total_amount += $subscriptions->s_amount;
-	}
-}
+$deactivated_users =  $connection->select('course_users')->where('is_deactivate', 1)->get();
 
 
 
+// *********** ACTIVE USERS ********* //
+$usersActive =  $connection->select('course_users')->where('is_active', 1)->get();
 
 
-// ===========================================
-// GET EMPLOYERS SUBSCRIPTIONS
-// ===========================================
-$e_subscriptions = $connection->select('employer_subscriptions')->leftJoin('employers', 'employer_subscriptions.s_employer_id', '=', 'employers.id')->where('is_expire', 0)->orderBy('subscription_id ', 'DESC')->limit(5)->get();
+// *********** ALL COURSES ********* //
+$courseCount = $connection->select('courses')->get();
 
 
+// ********** GET HIGHEST RATED COURSE **********//
+$courses =  $connection->select('courses')->orderBy('ratings', 'DESC')->limit(5)->get();
 
-// ===========================================
-// GET ALL ONLINE USERS
-// ===========================================
-$active_employers = $connection->select('employers')->where('e_active', 1)->get();
-$active_employee = $connection->select('employee')->where('is_active', 1)->get();
-$total_active = count($active_employee) + count($active_employers);
-
-
-
-
-
-// ===========================================
-// GET SUBSCRIPTION NOTIFICATION
-// ===========================================
-$employer_subs = $connection->select('employer_subscriptions')->where('is_expire', 0)->limit(5)->get();
-
-
-
-// ===========================================
-// GET TODAY AMOUNT
-// ===========================================
-$today_amount = 0;
-$today = date('Y-m-d');
-$today_subs = $connection->select('employer_subscriptions')->where('start_date', $today)->where('is_expire', 0)->get();
-if(count($today_subs))
-{
-	foreach($today_subs as $today_sub)
-	{
-		$today_amount += $today_sub->s_amount;
-	}	
-}
-
+// ********** app banner settings ***********//
+$banner =  $connection->select('settings')->where('id', 1)->first();
 ?>
 
 
@@ -136,19 +91,19 @@ if(count($today_subs))
 						</div>
 						<div class="col-sm-6 col-md-6 col-lg-6 col-xl-3">
 							<div class="ff_one">
-								<div class="icon"><span class="fa fa-briefcase"></span></div>
+								<div class="icon"><span class="fa fa-users"></span></div>
 								<div class="detais">
-									<p>Employees</p>
-									<div class="timer"><?= count($employees)?></div>
+									<p>Users</p>
+									<div class="timer"><?= count($userCount)?></div>
 								</div>
 							</div>
 						</div>
 						<div class="col-sm-6 col-md-6 col-lg-6 col-xl-3">
 							<div class="ff_one style2">
-								<div class="icon"><span class="fa fa-users"></span></div>
+								<div class="icon"><span class="fa fa-power-off"></span></div>
 								<div class="detais">
-									<p>Employers</p>
-									<div class="timer"><?= count($employers)?></div>
+									<p>Deative users</p>
+									<div class="timer"><?= count($deactivated_users)?></div>
 								</div>
 							</div>
 						</div>
@@ -157,93 +112,56 @@ if(count($today_subs))
 								<div class="icon"><span class="flaticon-online-learning"></span></div>
 								<div class="detais">
 									<p>Active users</p>
-									<div class="timer"><?= $total_active ?></div>
-								</div>
-							</div>
-						</div>
-						<div class="col-sm-6 col-md-6 col-lg-6 col-xl-3">
-							<div class="ff_one style4">
-								<div class="icon"><span class="fa fa-money"></span></div>
-								<div class="detais">
-									<p>Income</p>
-									<div class="dash-amount"><h3><?= money($total_amount) ?></h3></div>
-								</div>
-							</div>
-						</div>
-						<div class="col-sm-6 col-md-6 col-lg-6 col-xl-3">
-							<div class="ff_one"  title="Flagged employees">
-								<div class="icon bg-danger"><span class="fa fa-flag"></span></div>
-								<div class="detais">
-									<p>Employee</p>
-									<div class="timer"><?= count($flagged_employees)?></div>
-								</div>
-							</div>
-						</div>
-						<div class="col-sm-6 col-md-6 col-lg-6 col-xl-3">
-							<div class="ff_one style2" title="Deactivated employers">
-								<div class="icon"><span class="fa fa-power-off"></span></div>
-								<div class="detais">
-									<p>Employer</p>
-									<div class="timer"><?= count($deactivated_employers)?></div>
+									<div class="timer"><?= count($usersActive) ?></div>
 								</div>
 							</div>
 						</div>
 						<div class="col-sm-6 col-md-6 col-lg-6 col-xl-3">
 							<div class="ff_one style3">
-								<div class="icon"><span class="fa fa-money"></span></div>
+								<div class="icon bg-warning"><span class="fa fa-video-camera"></span></div>
 								<div class="detais">
-									<p>Today</p>
-									<div class="dash-amount"><h3><?= money($today_amount) ?></h3></div>
-								</div>
-							</div>
-						</div>
-						<div class="col-sm-6 col-md-6 col-lg-6 col-xl-3">
-							<div class="ff_one style4" id="dashboard_calculator" data-toggle="modal"  data-target="#exampleModal_calculator_btn"  title="Calculate income">
-								<div class="icon"><span class="fa fa-circle"></span></div>
-								<div class="detais">
-									<p>Calculator</p>
-									<div class="dash-amount"><h3></h3></div>
+									<p>Courses</p>
+									<div class="timer"><?= count($courseCount) ?></div>
 								</div>
 							</div>
 						</div>
 						<div class="col-xl-8">
 							<div class="application_statics">
-								<h4>Employers <span class="float-right"><a href="<?= url('/admin-nanny/employers') ?>" class="text-primary" style="font-size: 16px;">view more</a></span></h4>
+								<h4>Course users <span class="float-right"><a href="<?= url('/admin-course/users') ?>" class="text-primary" style="font-size: 16px;">view more</a></span></h4>
 							    <div class="col-lg-12">
 									<div class="table-responsive"> <!-- table start-->
 										<table class="table table-striped">
 											<thead>
 												<tr>
 												<th scope="col">Image</th>
-												<th scope="col">Employer name</th>
+												<th scope="col">Full name</th>
 												<th scope="col">Email</th>
-												<th scope="col">Date registered</th>
+												<th scope="col">Date</th>
 												</tr>
 											</thead>
 											<tbody class="item-table-t">
-											<?php if($my_employers): 
-											foreach($my_employers as $employer):    
+											<?php if($users): 
+											foreach($users as $user):    
 											?>
 												<tr>
 													<td>
-													<?php if($employer->e_image): ?>
-														<img src="<?= asset($employer->e_image) ?>" alt="" class="table-img <?= $employer->e_active ? 'online' : 'offline' ?>">
+													<?php if($user->image): ?>
+														<img src="<?= asset($user->image) ?>" alt="" class="table-img <?= $user->is_active ? 'online' : 'offline' ?>">
 														<?php else: ?>
-														<img src="<?= asset('/employer/images/demo.png') ?>" alt="" class="table-img <?= $employer->e_active ? 'online' : 'offline' ?>">
+														<img src="<?= asset('/courses/images/user/demo.png') ?>" alt="" class="table-img <?= $user->is_active ? 'online' : 'offline' ?>">
 														<?php endif; ?>
 													</td>
-													<td><?= ucfirst($employer->last_name).' '.ucfirst($employer->first_name)?></td>
-													<td><?= $employer->email ?></td>
-													<td><?= date('d M Y', strtotime($employer->e_date_joined)) ?></td>
+													<td><?= ucfirst($user->last_name).' '.ucfirst($user->first_name)?></td>
+													<td><?= $user->email ?></td>
+													<td><?= date('d M Y', strtotime($user->date)) ?></td>
 												</tr>
 											<?php endforeach; ?>
-									
 											<?php endif; ?>
 											</tbody>
 										</table>
 										<div class="col-lg-12">
-											<?php if(!$my_employers): ?>
-												<div class="text-center">There are no employers yet!</div>
+											<?php if(!$users): ?>
+												<div class="text-center">There are no users yet!</div>
 											<?php endif; ?>
 										</div>
 									</div><!-- table end-->
@@ -252,21 +170,24 @@ if(count($today_subs))
 						</div>
 						<div class="col-xl-4">
 							<div class="recent_job_activity">
-								<h4 class="title">Subscriptions <span class="float-right"><a href="<?= url('/admin-nanny/subscriptions') ?>" class="text-primary" style="font-size: 16px;">view more</a></span></h4>
-								<?php if($e_subscriptions):
-									foreach($e_subscriptions as $sub):
+								<h4 class="title">Highest rated Courses <span class="float-right"><a href="<?= url('/admin-course/courses') ?>" class="text-primary" style="font-size: 16px;">view more</a></span></h4>
+								<?php if($courses):
+									foreach($courses as $course):
 									?>
 									<div class="grid">
-										<ul>
-											<li><div class="title"><?= ucfirst($sub->first_name.' '.$sub->last_name)?></div></li>
-											<li><p>Type: <?= $sub->s_type ?></p></li>
-											<li><p>Duration: <?= $sub->s_duration ?></p></li>
-											<li><p class="text-success">End date: <?= date('d M Y', strtotime($sub->end_date)) ?></p></li>
+										<ul class="course-img-dashboard">
+											<li class="course-img"><img src="<?= asset($course->course_poster)?>" alt="<?= $course->title?>"></li>
+											<li>
+												<div class="">
+													<span><?= stars($course->ratings, $course->rating_count) ?></span>
+													<?= ucfirst($course->title)?>
+												</div>
+											</li>
 										</ul>
 									</div>
 									<?php endforeach; ?>
 								<?php else: ?>
-                                 <div class="alert alert-warning text-center">There are no subscriptions yet</div>
+                                 <div class="alert alert-warning text-center">There are no courses yet</div>
 								<?php endif; ?>
 							</div>
 						</div>
@@ -274,7 +195,7 @@ if(count($today_subs))
 					<div class="row mt50 mb50">
 						<div class="col-lg-6 offset-lg-3">
 							<div class="copyright-widget text-center">
-								<p class="color-black2">Copyright Edumy © 2019. All Rights Reserved.</p>
+								<p class="color-black2"><?= $banner->alrights ?></p>
 							</div>
 						</div>
 					</div>

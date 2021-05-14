@@ -3063,6 +3063,10 @@ if(Input::post('complete_employee_employment'))
                     'is_completed' => 1,
                     'completed_date' => $date
             ])->where('request_id', Input::get('request_id'))->save();
+
+    $connection->update('employee', [
+                'is_locked' => 0,
+        ])->where('e_id', Input::get('employee_id'))->save();
   
     if($update)
     {
@@ -3087,6 +3091,10 @@ if(Input::post('uncomplete_employee_employment'))
                     'is_completed' => 0,
                     'completed_date' => null
             ])->where('request_id', Input::get('request_id'))->save();
+    
+    $connection->update('employee', [
+                'is_locked' => 1,
+        ])->where('e_id', Input::get('employee_id'))->save();
   
     if($update)
     {
@@ -3238,15 +3246,4 @@ if(Input::post('delete_slider_banner_action'))
 
     return response(['data' => $data]);
 }
-
-
-
-
-
-
-
-
-
-
-// [{"title":"Find amazing employees","body":"Explore from the list of amazing employees we provide","link":"\/jobs","button":"Ready to get Started?","image":"\/images\/slider\/3.jpg"},{"title":"Are you looking for your dream job?","body":"Technology is brining a massive wave of evolution create a new career with us.","link":"\/employee\/register","button":"Employee register","image":"\/images\/slider\/1.jpg"},{"title":"Are you looking for your dream job?","body":"i love to code all the time dear i know its cool though","link":"\/jobs","button":"click here","image":"\/images\/slider\/slider_6096ebffc8596.jpg"}]
 

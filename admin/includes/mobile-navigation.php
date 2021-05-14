@@ -7,92 +7,38 @@ $banner =  $connection->select('settings')->where('id', 1)->first();
 	<div id="page" class="stylehome1 h0">
 		<div class="mobile-menu">
 	        <ul class="header_user_notif dashbord_pages_mobile_version pull-right">
-                <li class="user_notif">
+				<li class="user_notif">
 					<div class="dropdown">
-					    <a class="notification_icon" href="#" data-toggle="dropdown"><span class="flaticon-email"></span></a>
-					    <div class="dropdown-menu notification_dropdown_content">
+						<a class="notification_icon flaticon-not-count" href="#" data-toggle="dropdown">
+							<span class="flaticon-alarm"></span>
+						</a>
+						<div class="dropdown-menu notification_dropdown_content">
 							<div class="so_heading">
 								<p>Notifications</p>
 							</div>
-							<!-- <div class="so_content" data-simplebar="init">
+							<div class="so_content" data-simplebar="init">
 								<ul>
-									<li>
-										<h5>Status Update</h5>
-										<p>This is an automated server response message. All systems are online.</p>
-									</li>
-									<li>
-										<h5>Status Update</h5>
-										<p>This is an automated server response message. All systems are online.</p>
-									</li>
-									<li>
-										<h5>Status Update</h5>
-										<p>This is an automated server response message. All systems are online.</p>
-									</li>
-									<li>
-										<h5>Status Update</h5>
-										<p>This is an automated server response message. All systems are online.</p>
-									</li>
-									<li>
-										<h5>Status Update</h5>
-										<p>This is an automated server response message. All systems are online.</p>
-									</li>
-									<li>
-										<h5>Status Update</h5>
-										<p>This is an automated server response message. All systems are online.</p>
-									</li>
-									<li>
-										<h5>Status Update</h5>
-										<p>This is an automated server response message. All systems are online.</p>
-									</li>
+								<?php if(count($nav_nots)): 
+								foreach($nav_nots as $notification):
+									?>
+										<li>
+											<a href="<?= url($notification->link) ?>">
+												<h5><?= $notification->name ?></h5>
+												<p><?= $notification->body ?></p>
+											</a>
+										</li>
+									<?php endforeach; ?>
+								<?php else: ?>
+									<li>No notifications yet!</li>
+								<?php endif; ?>
 								</ul>
-							</div> -->
-							<a class="view_all_noti text-thm" href="#">View all alerts</a>
-					    </div>
-					</div>
-                </li>
-                <li class="user_notif">
-					<div class="dropdown">
-					    <a class="notification_icon" href="#" data-toggle="dropdown"><span class="flaticon-alarm"></span></a>
-					    <div class="dropdown-menu notification_dropdown_content">
-							<div class="so_heading">
-								<p>Notifications</p>
 							</div>
-							<!-- <div class="so_content" data-simplebar="init">
-								<ul>
-									<li>
-										<h5>Status Update</h5>
-										<p>This is an automated server response message. All systems are online.</p>
-									</li>
-									<li>
-										<h5>Status Update</h5>
-										<p>This is an automated server response message. All systems are online.</p>
-									</li>
-									<li>
-										<h5>Status Update</h5>
-										<p>This is an automated server response message. All systems are online.</p>
-									</li>
-									<li>
-										<h5>Status Update</h5>
-										<p>This is an automated server response message. All systems are online.</p>
-									</li>
-									<li>
-										<h5>Status Update</h5>
-										<p>This is an automated server response message. All systems are online.</p>
-									</li>
-									<li>
-										<h5>Status Update</h5>
-										<p>This is an automated server response message. All systems are online.</p>
-									</li>
-									<li>
-										<h5>Status Update</h5>
-										<p>This is an automated server response message. All systems are online.</p>
-									</li>
-								</ul>
-							</div> -->
-							<a class="view_all_noti text-thm" href="#">View all alerts</a>
-					    </div>
+							<?php if(count($nav_nots)):  ?>
+							<a class="view_all_noti text-thm" href="<?= url('/admin-course/notification') ?>">View all alerts</a>
+							<?php endif; ?>
+						</div>
 					</div>
-                </li>
+				</li>
                 <li class="user_setting">
 					<div class="dropdown">
                 		<a class="btn dropdown-toggle" href="#" data-toggle="dropdown"><img class="rounded-circle" src="<?= asset(Admin_auth::admin('image')) ?>" alt="<?= Admin_auth::admin('first_name') ?>"></a>
@@ -125,7 +71,7 @@ $banner =  $connection->select('settings')->where('id', 1)->first();
 		<nav id="menu" class="stylehome1">
 			<ul>
 			    <li>
-	              <a href="<?= url('/shop') ?>"><span>Home</span></a>
+	              <a href="<?= url('/admin') ?>"><span>Home</span></a>
 				</li>
 				<li><span>Categories</span>
 					<ul>

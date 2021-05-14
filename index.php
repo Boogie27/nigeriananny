@@ -236,6 +236,8 @@ $employees = $connection->select('employee')->leftJoin('workers', 'employee.e_id
 // ==================================
 $workers = $connection->select('workers')->leftJoin('employee', 'workers.employee_id', '=', 'employee.e_id')->where('is_job_feature', 1)->where('is_top', 1)->where('employee.is_feature', 1)->where('employee.e_approved', 1)->where('is_flagged', 0)->where('employee.e_is_deactivate', 0)->random()->limit(9)->get();
 
+
+$testimoials = $connection->select('testimonial')->where('is_featured', 1)->get();
 ?>
 
 <?php include('includes/header.php');  ?>
@@ -293,17 +295,17 @@ $workers = $connection->select('workers')->leftJoin('employee', 'workers.employe
     <div class="content-two">
         <div class="content-two-body">
             <div class="one-img">
-                <img src="<?= asset('/images/banner/4.png')?>" alt="" class="one-image-left">
+                <img src="<?= asset('/images/banner/8.png')?>" alt="" class="one-image-left">
             </div>
             <ul class="ul-content-two">
-                <li><h3>Find the right domestic staff <span>in Nigeria</span></h3></li>
+                <li><h3>Find the right domestic staff <br>in Nigeria</h3></li>
                 <li>NNC offers what you need</li>
                 <li class="text-center create-btn">
                     <a href="<?= url('/employer/register')?>" class="btn-fill">Create account</a>
                 </li>
             </ul>
             <div class="two-img fade-right-container">
-                <img src="<?= asset('/images/banner/4.png')?>" alt="" class="two-image-right">
+                <img src="<?= asset('/images/banner/8.png')?>" alt="" class="two-image-right">
             </div>
         </div>
     </div>
@@ -316,10 +318,10 @@ $workers = $connection->select('workers')->leftJoin('employee', 'workers.employe
                 <img src="<?= asset('/images/banner/7.png')?>" alt="">
             </div>
             <ul class="ul-content-two">
-                <li><h3>Get Hired By The Right Employer <span>in Nigeria</span></h3></li>
+                <li><h3>Get Hired By The Right Employer <br>in Nigeria</h3></li>
                 <li>
-                    <p>as quality of CVs. Jobberman seems to get us what we need, at the right time - so there’s
-                        and most times you don’t get the best from that. I will definitely use Jobberman</p>
+                    <p>as quality of CVs seems to get us what we need, at the right time - so there’s
+                        and most times you don’t get the best from that. I will definitely use nigeri nanny</p>
                 </li>
                 <li class="text-center create-btn">
                     <a href="<?= url('/employee/register')?>" class="btn-fill">Create account</a>
@@ -359,26 +361,61 @@ $workers = $connection->select('workers')->leftJoin('employee', 'workers.employe
      </div> <!-- top content end -->
     <?php endif; ?>
 
-     
-    <!-- content two start -->
-    <div class="content-two">
-        <div class="content-two-body">
-            <div class="one-img">
-                <img src="<?= asset('/images/banner/6.png')?>" alt="">
-            </div>
-            <ul class="ul-content-two">
-                <li><h3>What Services We Offer <span>in Nigeria Nanny</span></h3></li>
-                <li>
-                    <p>as quality of CVs. Jobberman seems to get us what we need, at the right time - so there’s
-                        and most times you don’t get the best from that. I will definitely use Jobberman</p>
-                </li>
-            </ul>
-            <div class="two-img fade-right-container">
-                <img src="<?= asset('/images/banner/6.png')?>" alt="">
-            </div>
-        </div>
-    </div>
-	<!-- content two start -->
+
+	<div class="services-offer">
+		<div class="content-two">
+			<div class="content-two-body">
+				<div class="one-img">
+					<img src="<?= asset('/images/banner/6.png')?>" class="services-img" alt="">
+				</div>
+				<ul class="ul-content-two">
+					<li><h3>What Services We Offer <br>in Nigeria Nanny</h3></li>
+					<li>
+						<p style="color: #fff;">as quality of CVs seems to get us what we need, at the right time - so there’s
+							and most times <br>you don’t get the best from that. I will definitely use nigeria nanny</p>
+					</li>
+					<li class="create-btn">
+						<a href="<?= url('/how-it-works')?>" class="btn-fill">How it works</a>
+					</li>
+				</ul>
+				<div class="two-img fade-right-container">
+					<img src="<?= asset('/images/banner/6.png')?>" class="services-img" alt="">
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+	<!-- testimial start -->
+	<?php if(count($testimoials)):?>
+    <div class="testimonial-container">
+		<div class="testimoial-header">
+			<h4>What people said about <br>Nigeria nanny</h4>
+		</div>
+		<div class="row">
+			<?php foreach($testimoials as $testimoial): 
+			$title = implode(',', json_decode($testimoial->function, true));
+			$t_image = $testimoial->image ? $testimoial->image : '/images/testimonial/demo.png';	
+			?>
+			<div class="col-xl-4 col-lg-6 col-md-12">
+                 <div class="testimonial-body">
+					  <div class="testimoial-img">
+							<img src="<?= asset($t_image) ?>" alt="<?=$testimoial->first_name ?>">
+					   </div>
+					   <ul>
+						   <li><h4><?= ucfirst($testimoial->last_name.' '.$testimoial->first_name)?></h4></li>
+						   <li class="title"><?= $title ?></li>
+						   <li>
+							  <p><?= $testimoial->comment ?></p>
+							</li>
+					   </ul>
+				 </div>
+			</div>
+			<?php endforeach; ?>
+		</div>
+	</div>
+	<?php endif; ?>
+	<!-- testimonial end -->
 	
 
 	

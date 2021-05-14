@@ -13,14 +13,19 @@ if(!Admin_auth::is_loggedin())
   
 if(Input::post('subscription'))
 {
-     $validate = new DB();
-     $validation = $validate->validate([
-            'type' => 'required|min:2|max:50',
-            'duration' => 'required',
-            'amount' => 'required',
-            'access' => 'required',
-            'description' => 'required|min:6|max:500'
-     ]);
+    $validate = new DB();
+    $validation = $validate->validate([
+        'type' => 'required|min:2|max:50',
+        'duration' => 'required',
+        'amount' => 'required',
+        'access' => 'required',
+        'description' => 'required|min:6|max:500'
+    ]);
+
+    if(!$validation->passed())
+    {
+        return back();
+    }
      
     if($validation->passed())
     {
@@ -117,6 +122,7 @@ $banner =  $connection->select('settings')->where('id', 1)->first();
                                         <div class="ui_kit_select_box">
                                             <select name="duration" class="selectpicker custom-select-lg mb-3">
                                                 <option value="">Select</option>
+                                                <option value="1 month">1 month</option>
                                                 <option value="3 months">3 months</option>
                                                 <option value="6 months">6 months</option>
                                                 <option value="9 months">9 months</option>

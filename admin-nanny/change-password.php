@@ -20,6 +20,11 @@ if(Input::post('update_password'))
             'new_password' => 'required|min:6|max:12',
             'confirm_new_password' => 'required|min:6|max:12|match:new_password',
      ]);
+
+    if(!$validation->passed())
+    {
+        return back();
+    }
      
     if($validation->passed())
     {

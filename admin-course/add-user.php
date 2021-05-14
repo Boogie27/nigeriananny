@@ -27,6 +27,11 @@ if(Input::post('create_account'))
             'country' => 'required|min:3|max:50',
         ]);
 
+        if(!$validation->passed())
+        {
+            return back();
+        }
+
         if($validation->passed())
         {
             $create = new DB();

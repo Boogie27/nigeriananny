@@ -37,8 +37,9 @@ $settings = $connection->select('settings')->where('id', 1)->first();
         <li><a href="<?= url('/privacy') ?>">Privacy Policy</a></li>
         <li><a href="<?= url('/terms') ?>">Terms & Conditions</a></li>
         <li><a href="<?= url('/about') ?>">About us</a></li>
+        <li><a href="<?= url('/how-it-works') ?>">How it works</a></li>
         <li><a href="<?= url('/shop') ?>">Market place</a></li>
-        <li><a href="<?= url('/courses') ?>">Download courses</a></li>
+        <li><a href="<?= url('/courses') ?>">Courses</a></li>
         <li><a href="<?= url('/contact') ?>">Contact</a></li>
     </ul>
     <ul class="ul-social-media">
@@ -441,6 +442,61 @@ $("#notification_cancle_btn").click(function(e){
     e.preventDefault();
     $(".notification-container").fadeOut(200)
 })
+
+
+
+
+// ********* GET EMPLOYEE NOTIFICATION **********//
+function get_client_notification()
+{
+    var url = $("#ajax_url_page").attr('href');
+
+    // ******* GET NOTIFICATION ***************//
+    $.ajax({
+        url: url,
+        method: 'post',
+        data: {
+            get_client_notification: 'get_client_notification'
+        },
+        success: function(response){
+            $(".client_ul_notification").html(response)
+        }
+    });
+
+
+    // ********** GET NOTIFICATION COUNT ***********//
+    $.ajax({
+        url: url,
+        method: 'post',
+        data: {
+            get_client_notification_count: 'get_client_notification_count'
+        },
+        success: function(response){
+            var data = JSON.parse(response);
+            if(data.data){
+                $("#notification_open_btn span").html(data.data)
+            }else{
+                $("#notification_open_btn span").html('')
+            }
+        }
+    });
+
+
+    setTimeout(function(){
+        get_client_notification()
+    }, 5000)
+}
+
+get_client_notification();
+
+
+
+
+
+
+
+
+
 
 
 

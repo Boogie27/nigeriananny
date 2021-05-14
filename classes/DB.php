@@ -622,8 +622,9 @@ public function validate($parameters = array())
                     $this->_validate_error[$key] = '*Wrong email format';
                 }else{
                     $columns = explode(':', $cond);
-                    $name = explode('_', $columns[1]);
-                    $name_name = implode(' ', $name);
+                    // $name = explode('_', $columns[1]);
+                    // $name_name = implode(' ', $name);
+
                     foreach($columns as $val)
                     {
                         switch($columns[0])
@@ -653,6 +654,8 @@ public function validate($parameters = array())
                             case 'match':
                                 if($_POST[$key] != $_POST[$columns[1]])
                                 {
+                                    $name = explode('_', $columns[1]);
+                                    $name_name = implode(' ', $name);
                                     $this->_validate_error[$key] = '*'.$field_name.' must match '.$name_name;
                                 }
                             break;

@@ -124,9 +124,9 @@ $app =  $connection->select('settings')->where('id', 1)->first();
         </div>
         <div class="mgs-body">
             <p>
-                Thank you for shopping with nigeria nanny. <br>
-                We have recieved Your order and it would be attended to shortly. <br>This is your 
-                reference ID: <b>234567g6789</b>
+                John doe has ordered for product/products from the market place with the <br>
+                reference ID: <b>234567g6789</b>.
+                Phone: 08012345678
             </p>
         </div>
         

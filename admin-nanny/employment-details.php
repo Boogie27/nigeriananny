@@ -16,6 +16,11 @@ if(!Input::exists('get') || empty(Input::get('rid')) || !is_numeric(Input::get('
 
 // **************GET EMPLOYEES REQUESTED DETAILS ****************//
 $employment = $connection->select('request_workers')->leftJoin('workers', 'request_workers.r_worker_id', '=', 'workers.worker_id')->leftJoin('employee', 'request_workers.j_employee_id', '=', 'employee.e_id')->where('request_id', Input::get('rid'))->first();
+if(!$employment)
+{
+    return view('/admin-nanny/employments');
+}
+
 
 // **************GET EMPLOYERS DETAILS ****************//
 $employer = $connection->select('employers')->where('id', $employment->j_employer_id)->first();
@@ -242,7 +247,7 @@ $banner =  $connection->select('settings')->where('id', 1)->first();
                     <div class="login_form">
                         <form action="#">
                             <div class="heading">
-                                <p class="text-center">Do you wish to complete this emploment?</p>
+                                <p class="text-center">Do you wish to uncomplete this emploment?</p>
                                 <input type="hidden" id="employee_complete_id" value="<?= Input::get('rid')?>">
                             </div>
                             <button type="button" data-url="<?= url('/admin-nanny/ajax.php') ?>" id="submit_uncomplete_employment_btn" class="btn bg-primary btn-log btn-block" style="color: #fff;">Uncomplete</button>
@@ -260,7 +265,7 @@ $banner =  $connection->select('settings')->where('id', 1)->first();
 
 <a href="<?= url('/admin-nanny/ajax.php') ?>" class="ajax_url_page" style="display: none;"></a>
 
-
+<input type="hidden" id="request_employee_id_input" value="<?= $employment->e_id ?>" style="display: none;">
 
 
 
@@ -286,6 +291,7 @@ $(document).ready(function(){
 $("#submit_complete_employment_btn").click(function(e){
     e.preventDefault();
     var url = $(".ajax_url_page").attr('href');
+    var employee_id = $("#request_employee_id_input").val()
     var request_id = $("#employee_complete_id").val()
     $(".preloader-container").show() //show preloader
     $(".page_alert_danger").hide();
@@ -295,6 +301,7 @@ $("#submit_complete_employment_btn").click(function(e){
         url: url,
         method: "post",
         data: {
+            employee_id: employee_id,
             request_id: request_id,
             complete_employee_employment: 'complete_employee_employment'
         },
@@ -340,6 +347,7 @@ function remove_preloader(){
 $("#submit_uncomplete_employment_btn").click(function(e){
     e.preventDefault();
     var url = $(".ajax_url_page").attr('href');
+    var employee_id = $("#request_employee_id_input").val()
     var request_id = $("#employee_complete_id").val()
     $(".preloader-container").show() //show preloader
     $(".page_alert_danger").hide();
@@ -349,6 +357,7 @@ $("#submit_uncomplete_employment_btn").click(function(e){
         url: url,
         method: "post",
         data: {
+            employee_id: employee_id,
             request_id: request_id,
             uncomplete_employee_employment: 'uncomplete_employee_employment'
         },

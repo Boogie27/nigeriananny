@@ -36,6 +36,11 @@ if(Input::post('update_profile'))
             'address' => 'required|min:3|max:100',
         ]);
 
+        if(!$validation->passed())
+        {
+            return back();
+        }
+
         $my_email = $connection->select('employee')->where('email', Input::get('email'))->where('e_id', Input::get('wid'))->first();
         if(!$my_email)
         {

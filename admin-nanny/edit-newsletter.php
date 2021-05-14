@@ -33,6 +33,11 @@ if(Input::post('update_news_letter'))
         'subject' => 'required|min:6|max:100'
     ]);
 
+    if(!$validation->passed())
+    {
+        return back();
+    }
+
     if($validation->passed())
     {
         $update = $connection->update('news_letters', [

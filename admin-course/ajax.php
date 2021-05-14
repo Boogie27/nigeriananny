@@ -699,6 +699,34 @@ if(Input::get('delete_course_user_review'))
 
 
 
+// ******** DELETE TUTOR IMAGE IN ADD COURSE PAGE ***********//
+if(Input::get('delete_add_tutor_image'))
+{
+    $data = false;
+    if(Cookie::has('tutor_img'))
+    {
+        Image::delete('../'.Cookie::get('tutor_img'));
+        Cookie::delete('tutor_img');
+        $data = asset('/images/camera-icon.jpg');
+    }
+    return response(['data' => $data]);
+}
+
+
+
+
+// ******** DELETE COURSE IMAGE IN ADD COURSE PAGE ***********//
+if(Input::get('delete_add_course_image'))
+{
+    $data = false;
+    if(Cookie::has('course_img'))
+    {
+        Image::delete('../'.Cookie::get('course_img'));
+        Cookie::delete('course_img');
+        $data = asset('/images/camera-icon.jpg');
+    }
+    return response(['data' => $data]);
+}
 
 
 
