@@ -26,7 +26,6 @@ $course_user = $connection->select('course_users')->where('id', Auth_course::use
 		</div>
 		<div class="nav-right"><!-- nav right start-->
 			<div class="img-right">
-				<i class="fa fa-bars toggle-side-navigation"></i>
 				<?php if(Auth_course::is_loggedin()): ?>
 					<a href="<?= url('/courses/logout')?>"><i class="fa fa-power-off text-danger"></i></a>
 				<?php else: ?>
@@ -34,6 +33,7 @@ $course_user = $connection->select('course_users')->where('id', Auth_course::use
 				<?php endif; ?>
 				<?php $profile_image = $course_user && $course_user->image ? $course_user->image : '/employee/images/demo.png' ?>
 				<img src="<?= asset($profile_image) ?>" alt="name" class="nav-profile-img"></span>
+				<i class="fa fa-bars toggle-side-navigation"></i>
 			</div>
 		</div><!-- nav right end-->
    </div>

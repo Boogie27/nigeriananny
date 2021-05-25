@@ -18,7 +18,7 @@ if(!$app_active && !Admin_auth::is_loggedin())
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="keywords" content="academy, college, coursera, courses, education, elearning, kindergarten, lms, lynda, online course, online education, school, training, udemy, university">
+<meta name="keywords">
 <meta name="description" content="shop">
 <meta name="CreativeLayers" content="ATFN">
 <!-- css file -->

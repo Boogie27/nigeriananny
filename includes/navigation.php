@@ -69,7 +69,6 @@ if(Auth_employee::is_loggedin())
 					<a href="<?= url('/job-detail.php?wid='.$employee_profile->worker_id) ?>" class="nav-right-profile-link">My profile</a>
 				<?php endif; ?>
 				<a href="#" id="nav_top_search_toggle"><i class="fa fa-search"></i></a>
-				<i class="fa fa-bars toggle-side-navigation"></i>
 				<?php if(Auth_employee::is_loggedin() && !$employee_profile->e_approved): ?>
 				<span class="nav-alert-badge-body">
 					<a href="#" class="nav-alert-badge">
@@ -85,6 +84,7 @@ if(Auth_employee::is_loggedin())
 						</a>
 					</span>
 				<?php endif ?>
+				<i class="fa fa-bars toggle-side-navigation"></i>
 				<a href="<?= $link ?>">
 					<img src="<?= asset($profile_image) ?>" alt="name" class="nav-profile-img">
 				</a>

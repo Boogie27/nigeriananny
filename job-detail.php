@@ -396,7 +396,7 @@ if(Auth_employee::is_loggedin())
                     <?php endif; ?>
                 </div>
                 <div class="j-body">
-                    <div class="row"> 
+                    <div class="row row-expand"> 
                         <?php if(!$job->is_locked):?>
                         <div class="col-lg-4" id="apply_now_1">
                             <form action="<?= current_url() ?>" method="POST" class="p-apply-container">
@@ -511,7 +511,7 @@ if(Auth_employee::is_loggedin())
                             </div>
                         </div>
                         <?php endif; ?>
-                        <div class="col-lg-<?= $job->is_locked ? '12' : '8'?>">
+                        <div class="col-lg-<?= $job->is_locked ? '12' : '8'?> row-expand">
                             <!-- featured jobs start-->
                             <?php if(Session::has('error')): ?>
                                 <div class="alert alert-danger text-center p-3 mb-2"><?= Session::flash('error') ?></div>
@@ -696,7 +696,7 @@ if(Auth_employee::is_loggedin())
                             <!-- featured jobs end-->
                         </div>
                         <?php if(!$job->is_locked):?>
-                        <div class="col-lg-3" id="apply_now_2">
+                        <div class="col-lg-3 row-expand" id="apply_now_2">
                             <form action="<?= current_url() ?>" method="POST" class="p-apply-container">
                                 <div class="apply-h"><h4>HIRE WORKER HERE</h4></div>
                                 <div class="apply-container">

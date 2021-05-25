@@ -355,7 +355,7 @@ if(Input::post('add_new_category'))
         $file = Image::files('image');
 
         $file_name = Image::name('image', 'category');
-        $image->resize_image($file, [ 'name' => $file_name, 'width' => 500, 'height' => 600, 'size_allowed' => 1000000,'file_destination' => '../shop/images/category/']);
+        $image->upload_image($file, [ 'name' => $file_name, 'size_allowed' => 1000000,'file_destination' => '../shop/images/category/']);
             
         $image_name = '/shop/images/category/'.$file_name;
 
@@ -443,7 +443,7 @@ if(Input::post('upload_category_image'))
             $file = Image::files('image');
 
             $file_name = Image::name('image', 'category');
-            $image->resize_image($file, [ 'name' => $file_name, 'width' => 350, 'height' => 400, 'size_allowed' => 1000000,'file_destination' => '../shop/images/category/']);
+            $image->upload_image($file, [ 'name' => $file_name, 'size_allowed' => 1000000,'file_destination' => '../shop/images/category/']);
                 
             $image_name = '/shop/images/category/'.$file_name;
 
@@ -662,7 +662,7 @@ if(Input::get('upload_customer_image'))
                 $file = Image::files('image');
 
                 $file_name = Image::name('image', 'users');
-                $image->resize_image($file, [ 'name' => $file_name, 'width' => 100, 'height' => 100, 'size_allowed' => 1000000,'file_destination' => '../shop/images/users/']);
+                $image->upload_image($file, [ 'name' => $file_name, 'size_allowed' => 1000000,'file_destination' => '../shop/images/users/']);
                     
                 $image_name = '/shop/images/users/'.$file_name;
 
@@ -738,7 +738,7 @@ if(Input::post('upload_admin_image'))
                 $file = Image::files('image');
 
                 $file_name = Image::name('image', 'admins');
-                $image->resize_image($file, [ 'name' => $file_name, 'width' => 100, 'height' => 100, 'size_allowed' => 1000000,'file_destination' => '../admin/images/admin-img/']);
+                $image->upload_image($file, [ 'name' => $file_name, 'size_allowed' => 1000000,'file_destination' => '../admin/images/admin-img/']);
                     
                 $image_name = '/admin/images/admin-img/'.$file_name;
 
@@ -1018,7 +1018,7 @@ if(Input::post('upload_footer_logo_image'))
         $file = Image::files('footer_logo');
 
         $file_name = Image::name('footer_logo', 'footer_logo');
-        $image->resize_image($file, [ 'name' => $file_name, 'width' => 50, 'height' => 56, 'size_allowed' => 1000000,'file_destination' => '../admin/images/']);
+        $image->upload_image($file, [ 'name' => $file_name, 'size_allowed' => 1000000,'file_destination' => '../admin/images/']);
             
         $image_name = '/admin/images/'.$file_name;
 
@@ -1085,7 +1085,7 @@ if(Input::post('update_home_banner_image'))
         $file = Image::files('home_banner');
 
         $file_name = Image::name('home_banner', 'home_banner');
-        $image->resize_image($file, [ 'name' => $file_name, 'width' => 1920, 'height' => 1000, 'size_allowed' => 1000000,'file_destination' => '../shop/images/banner/']);
+        $image->upload_image($file, [ 'name' => $file_name, 'size_allowed' => 1000000,'file_destination' => '../shop/images/banner/']);
             
         $image_name = '/shop/images/banner/'.$file_name;
 
@@ -1180,7 +1180,7 @@ if(Input::post('update_category_banner_image'))
         $file = Image::files('category_banner');
 
         $file_name = Image::name('category_banner', 'category_banner');
-        $image->resize_image($file, [ 'name' => $file_name, 'width' => 1920, 'height' => 1000, 'size_allowed' => 1000000,'file_destination' => '../shop/images/banner/']);
+        $image->upload_image($file, [ 'name' => $file_name, 'size_allowed' => 1000000,'file_destination' => '../shop/images/banner/']);
             
         $image_name = '/shop/images/banner/'.$file_name;
 
@@ -1272,7 +1272,7 @@ if(Input::post('update_cart_banner_image'))
         $file = Image::files('cart_banner');
 
         $file_name = Image::name('cart_banner', 'cart_banner');
-        $image->resize_image($file, [ 'name' => $file_name, 'width' => 1920, 'height' => 1000, 'size_allowed' => 1000000,'file_destination' => '../shop/images/banner/']);
+        $image->upload_image($file, [ 'name' => $file_name, 'size_allowed' => 1000000,'file_destination' => '../shop/images/banner/']);
             
         $image_name = '/shop/images/banner/'.$file_name;
 
@@ -1366,7 +1366,7 @@ if(Input::post('update_form_banner_image'))
         $file = Image::files('form_banner');
 
         $file_name = Image::name('form_banner', 'form_banner');
-        $image->resize_image($file, [ 'name' => $file_name, 'width' => 1920, 'height' => 1000, 'size_allowed' => 1000000,'file_destination' => '../shop/images/banner/']);
+        $image->upload_image($file, [ 'name' => $file_name, 'size_allowed' => 1000000,'file_destination' => '../shop/images/banner/']);
             
         $image_name = '/shop/images/banner/'.$file_name;
 
@@ -1459,7 +1459,7 @@ if(Input::post('update_chcekout_banner_image'))
         $file = Image::files('checkout_banner');
 
         $file_name = Image::name('checkout_banner', 'checkout_banner');
-        $image->resize_image($file, [ 'name' => $file_name, 'width' => 1920, 'height' => 1000, 'size_allowed' => 1000000,'file_destination' => '../shop/images/banner/']);
+        $image->upload_image($file, [ 'name' => $file_name, 'size_allowed' => 1000000,'file_destination' => '../shop/images/banner/']);
             
         $image_name = '/shop/images/banner/'.$file_name;
 

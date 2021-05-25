@@ -331,7 +331,7 @@ if(Input::post('save_course_action'))
 
     $stored_course = array();
     $course = $connection->select('courses')->where('course_id', Input::get('course_id'))->first();
-    $stored_course = ["course_id" => Input::get('course_id'), 'title' => $course->title];
+    $stored_course = ["course_id" => Input::get('course_id'), "title" => $course->title];
     
     if(Cookie::has('saved_course'))
     {

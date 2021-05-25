@@ -1917,7 +1917,7 @@ if(Input::post('upload_testimonial_image'))
         $file = Image::files('image');
 
         $file_name = Image::name('image', 'testimonial');
-        $image->resize_image($file, ['name' => $file_name, 'width' => 200, 'height' => 200, 'size_allowed' => 1000000,'file_destination' => '../images/testimonial/']);
+        $image->upload_image($file, ['name' => $file_name, 'size_allowed' => 1000000,'file_destination' => '../images/testimonial/']);
             
         $image_name = '/images/testimonial/'.$file_name;
 
@@ -2258,7 +2258,7 @@ if(Input::post('add_testimonial_image'))
         $file = Image::files('image');
 
         $file_name = Image::name('image', 'testimonial');
-        $image->resize_image($file, ['name' => $file_name, 'width' => 200, 'height' => 200, 'size_allowed' => 1000000,'file_destination' => '../images/testimonial/']);
+        $image->upload_image($file, ['name' => $file_name, 'size_allowed' => 1000000,'file_destination' => '../images/testimonial/']);
             
         $image_name = '/images/testimonial/'.$file_name;
 
@@ -2973,7 +2973,7 @@ if(Input::post('update_construction_banner_image'))
         $file = Image::files('construction_banner');
 
         $file_name = Image::name('construction_banner', 'construction_banner');
-        $image->resize_image($file, [ 'name' => $file_name, 'width' => 1920, 'height' => 1000, 'size_allowed' => 1000000,'file_destination' => '../images/banner/']);
+        $image->upload_image($file, [ 'name' => $file_name, 'size_allowed' => 1000000,'file_destination' => '../images/banner/']);
             
         $image_name = '/images/banner/'.$file_name;
 
@@ -3214,7 +3214,7 @@ if(Input::post('delete_slider_banner_action'))
 {
     $data = false;
     $slider = null;
-    if(Input::get('key'))
+    if(Input::get('key') >= 0)
     {
         $key = Input::get('key');
         $settings = $connection->select('settings')->where('id', 1)->first();
@@ -3243,6 +3243,8 @@ if(Input::post('delete_slider_banner_action'))
             }
         }
     }
+
+    $data = Input::get('key');
 
     return response(['data' => $data]);
 }

@@ -209,7 +209,7 @@ h3, h4, h2, h1, h5{
     margin: 0px;
 }
 .page-content{
-    z-index: 10p;
+    z-index: 10;
     position: relative;
     padding-bottom: 50px;
     background-color: rgb(243, 243, 243);
@@ -859,6 +859,7 @@ h3, h4, h2, h1, h5{
 }
 .j-body{
     padding-top: 20px;
+    width: 100%;
 }
 .j-header{
     border-radius: 3px;
@@ -1000,8 +1001,12 @@ ul.ability-x{
 ul.ability-x li{
     font-size: 13px;
 }
-
-
+@media only screen and (max-width: 992px){
+    .row-expand{
+       margin: 0px;
+       padding: 0px;
+    }
+}
 @media only screen and (max-width: 567px){
     .j-expirience ul{
         padding: 0px 10px 10px 10px;
@@ -2988,12 +2993,11 @@ ul.ul-job-side li a:hover{
 
 /* ***********SERVICES ************** */
 .services-offer{
-    background-image: linear-gradient(rgba(0, 0, 0, 0.603), rgba(0, 0, 0, 0.644)) , url(../images/banner/10.jpg);
     background-size: cover;
     color: #fff;
     font-weight: 300;
+    background-position: center center;
     background-attachment: fixed;
-    margin-top: 60px;
     padding: 70px 0px;
 }
 img.services-img{

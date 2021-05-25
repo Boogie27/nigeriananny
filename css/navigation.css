@@ -384,7 +384,9 @@ a.nav-alert-badge span{
     }
     .nav-right i.fa-bars{
         top: 8px;
+        right: -5px;
         font-size: 25px;
+        margin: 0px;
         display: inline-block;
         position: relative;
     }
@@ -517,6 +519,9 @@ ul.child-drop-down{
 @media only screen and (max-width: 398px){
     .side-navigation{
          width: 300px;
+    }
+    ul.parent-ul li a, ul.parent-ul li{
+        font-weight: 300;
     }
 }
 @media only screen and (max-width: 398px){

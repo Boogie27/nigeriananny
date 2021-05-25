@@ -141,3 +141,34 @@ $faqs = $connection->select('faqs')->where('is_feature', 1)->get();
 
 <!-- Our Footer -->
 <?php include('includes/footer.php');  ?>
+
+
+
+
+
+
+
+
+
+
+
+<script>
+$(document).ready(function(){
+
+// ==============================================
+// OPEN FAQS CONTENT DETAILS
+// ==============================================
+$(".faq-single-item-x").click(function(e){
+    e.preventDefault();
+	var content = $(this).parent().children('.inner-faq');
+	$(content).toggle();
+});
+
+
+
+
+
+
+// end ready function
+});
+</script>

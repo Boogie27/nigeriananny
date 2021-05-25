@@ -319,6 +319,9 @@ span.nav-app-name{
     .nav-left i{
         display: inline-block;
     }
+    .nav-right .fa-bars{
+        margin-right: 0px;
+    }
     .nav-left img{
         margin-left: 20px;
     }
@@ -394,9 +397,12 @@ span.nav-app-name{
     height: 100vh;
     border-top: 1px solid transparent;
 }
+ul.parent-ul li{
+    font-weight: 300;
+}
 ul.parent-ul li a{
     display: block;
-    font-weight: 500;
+    font-weight: 300;
     padding: 10px 10px;
     transition: all 0.2s ease;
 }

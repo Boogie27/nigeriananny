@@ -2,6 +2,8 @@
 <?php
 
 
+ 
+
 // ==================================
 // FACEBOOK LOGIN AUTH
 // ==================================
@@ -248,7 +250,8 @@ $testimoials = $connection->select('testimonial')->where('is_featured', 1)->get(
 
 <?php include('includes/side-navigation.php');  ?>
 
-<?php include('includes/slider.php');  ?>
+<?php include('includes/slider.php');  
+?>
 
 
 
@@ -362,8 +365,8 @@ $testimoials = $connection->select('testimonial')->where('is_featured', 1)->get(
     <?php endif; ?>
 
 
-	<div class="services-offer">
-		<div class="content-two">
+	<div class="services-offer" style="background-image: linear-gradient(rgba(0, 0, 0, 0.603), rgba(0, 0, 0, 0.644)) , url(images/banner/body-banner.jpg);">
+		<div class="content-two" style="margin: 0px;">
 			<div class="content-two-body">
 				<div class="one-img">
 					<img src="<?= asset('/images/banner/6.png')?>" class="services-img" alt="">
