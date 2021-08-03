@@ -62,6 +62,11 @@ function path($string){
 
 
 
+
+
+
+
+
 // =====================================
 // GET PAGE TITLE
 //======================================
@@ -80,6 +85,13 @@ function title(){
 
 
 
+
+
+
+
+
+
+
 function dd($string)
 {
     var_dump($string);
@@ -87,11 +99,21 @@ function dd($string)
 }
 
 
+
+
+
+
+
 function back()
 {
     $back_url = 'http://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
    return header("Location: ".$back_url);
 }
+
+
+
+
+
 
 
 
@@ -111,6 +133,11 @@ function image($image, $index = null)
 
 
 
+
+
+
+
+
 function response($array = array())
 {
     if(count($array))
@@ -119,6 +146,11 @@ function response($array = array())
     }
     return false;
 }
+
+
+
+
+
 
 
 
@@ -185,6 +217,11 @@ function stars($ratings, $count)
 
 
 
+
+
+
+
+
 function employee_star($ratings)
 {
     if($ratings && is_numeric($ratings))
@@ -205,6 +242,12 @@ function employee_star($ratings)
 
 
 
+
+
+
+
+
+
 function ratings($ratings)
 {
     if($ratings && is_numeric($ratings))
@@ -221,6 +264,11 @@ function ratings($ratings)
     }
     return false;
 }
+
+
+
+
+
 
 
 
@@ -248,10 +296,71 @@ function user_star($ratings)
 
 
 
+
+function csrf_token()
+{
+    return Token::generate();
+}
+
+
+
+
+
+function page_expired()
+{
+    $page_expired = '<!DOCTYPE html>
+                        <html lang="en">
+                        <head>
+                            <meta charset="UTF-8">
+                            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                            <meta http-equiv="X-UA-Compatible" content="ie=edge">
+                            <title>page expired</title>
+                            <style>
+                                *{
+                                    padding: 0px;
+                                    margin: 0px;
+                                    color: #555;
+                                }
+                                body{
+                                    font-family: "poppins" sans-serif;
+                                }
+                                .container{
+                                    display: table;
+                                    width: 100%;
+                                    height: 100vh;
+                                    text-align: center;
+                                }
+                                .inner{
+                                    font-size: 17px;
+                                    font-weight: 600;
+                                    display: table-cell;
+                                    vertical-align: middle;
+                                }
+                            </style>
+                        </head>
+                        <body>
+                                <div class="container">
+                                    <p class="inner">419 | page expired</p>
+                                </div>
+                        </body>
+                        </html>';
+        return $page_expired;
+}
+
+
+
+
+
+
 function current_url()
 {
     return 'http://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
 }
+
+
+
+
+
 
 
 
@@ -269,6 +378,13 @@ function old($name)
 
 
 
+
+
+
+
+
+
+
 function shipping_fee($city_ids = null)
 {
     $city_id = $city_ids ? $city_ids : 76581;
@@ -281,6 +397,10 @@ function shipping_fee($city_ids = null)
     }
     return '00.0';
 }
+
+
+
+
 
 
 
@@ -307,10 +427,20 @@ function view($string)
 
 
 
+
+
+
+
+
+
 function current_page()
 {
     return '/'.basename($_SERVER['REQUEST_URI']);
 }
+
+
+
+
 
 
 
@@ -332,6 +462,11 @@ function saved_jobs($worker_id)
     }
     return false;
 }
+
+
+
+
+
 
 
 
@@ -358,36 +493,266 @@ function flagged_employee($employee_id = null)
 
 
 
+function settings()
+{
+    $connection = new DB();
+    $settings = $connection->select('settings')->where('id', 1)->first();
+    if($settings)
+    {
+        return $settings;
+    }
+    return false;
+}
 
 
 
 
 
 
+function unapproved_members($member_type)
+{
+    $connection = new DB();
+    if($member_type && $member_type == 'employee')
+    {
+        $members = $connection->select('employee')->where('e_approved', 0)->get();
+        if(count($members))
+        {
+            return count($members);
+        }
+    }
+    if($member_type && $member_type == 'employer')
+    {
+        $members = $connection->select('employers')->where('employer_approved', 0)->get();
+        if(count($members))
+        {
+            return count($members);
+        }
+    }
+    return false;
+}
 
 
 
 
 
-// function view($string)
-// {
-//     if($string)
-//     {
-//         if($string == '/')
-//         {
-//             $view = SITE_URL;
-//         }else{
-//             $url = explode(':', $string); 
-//             // if(array_key_exists('http', $url))
-//             // {
-//             //     $view = $url[count($url) - 1];
-//             //     dd($view);
-//             // }else{
-//             //     $view = SITE_URL.$string;
-//             // }
-//             $view = $url[count($url) - 1];
-//         }
-//         return header("Location:".$view);
-//     }
-//     return false;
-// }
+// ************** GET NEWS LETTER PAGE **************//
+function get_news_letter_page($logo, $app_name, $address, $header, $body)
+{
+    $news_letters = '';
+    $news_letters .= '<!DOCTYPE html>
+                    <html lang="en">
+                    <head>
+                        <meta charset="UTF-8">
+                        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+                        <style>
+                            *{
+                                padding: 0px;
+                                margin: 0px;
+                            }
+                            .content{
+                                padding: 30px;
+                                background-color: rgb(240, 240, 240);
+                            }
+                            .news-header{
+                                text-align: center;
+                            }
+                            .container{
+                                width: 80%;
+                                margin: 0 auto;
+                                padding: 30px 20px;
+                                background-color: #fff;
+                            }
+                            .news-header h4{
+                                color: #333333;
+                                margin-top: 10px;
+                                font-family: Arial,Helvetica Neue,Helvetica,sans-serif;
+                                font-size: 30px;
+                            }
+                            h4, h3, h2, h1, h5, h6, p, li{
+                                color: #333333;
+                                margin: 0px;
+                                font-family: Arial,Helvetica Neue,Helvetica,sans-serif;
+                            }
+                            .content-header p{
+                                margin-top: 20px;
+                                text-align: center;
+                            }
+                            p.content-body{
+                                color: #555;
+                                margin: 0 auto;
+                                margin-top: 20px;
+                                font-size: 18px;
+                            }
+                            .footer{
+                                padding: 50px 0px;
+                                text-align: center;
+                            }
+                            .footer ul{
+                                padding:0px;
+                                margin: 0px;
+                                list-style: none;
+                            }
+                            .footer ul li{
+                                
+                            }
+                            .footer-header{
+                                font-size: 20px;
+                            }
+                            .anchor{
+                                float: right;
+                                color: blue;
+                                text-decoration: none;
+                            }
+                            @media only screen and (max-width: 767px){
+                                .container{
+                                    width: 90%;
+                                    padding: 30px 10px;
+                                }
+                                .content{
+                                    padding: 20px 0px;
+                                    width: 95%;
+                                    margin: 0 auto;
+                                    background-color: rgb(240, 240, 240);
+                                }
+                            }
+                        </style>
+                    </head>
+                    <body>
+                        <div class="content">
+                            <div class="container">
+                                <div class="news-header">
+                                        <img src="'.asset($logo).'" alt="'.$app_name.'">
+                                        <h4>'.$app_name.'</h4>
+                                </div>
+                                <div class="news-body">
+                                        <div class="content-header"><p>'.$header.'</p></div>
+                                        <p class="content-body">'.$body.'</p>
+                                        <div class="footer">
+                                            <ul>
+                                                <li class="footer-header">'.$app_name.'</li>
+                                                <li>'.$address.'</li>
+                                                <li><a href="'.url('/unsubscribe-newsletter').'">Unsubscribe newsletter</a></li>
+                                            </ul>
+                                        </div>
+                                </div>
+                            </div>
+                        </div>
+                    </body>
+                    </html>';
+
+        return $news_letters;
+}
+
+
+
+
+
+
+function mail_view($logo, $app_name, $address, $header, $body)
+{
+    $mail = '';
+    $mail .= '<!DOCTYPE html>
+                    <html lang="en">
+                    <head>
+                        <meta charset="UTF-8">
+                        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+                        <style>
+                            *{
+                                padding: 0px;
+                                margin: 0px;
+                            }
+                            .content{
+                                padding: 30px;
+                                background-color: rgb(240, 240, 240);
+                            }
+                            .news-header{
+                                text-align: center;
+                            }
+                            .container{
+                                width: 80%;
+                                margin: 0 auto;
+                                padding: 30px 20px;
+                                background-color: #fff;
+                            }
+                            .news-header h4{
+                                color: #333333;
+                                margin-top: 10px;
+                                font-family: Arial,Helvetica Neue,Helvetica,sans-serif;
+                                font-size: 30px;
+                            }
+                            h4, h3, h2, h1, h5, h6, p, li{
+                                color: #333333;
+                                margin: 0px;
+                                font-family: Arial,Helvetica Neue,Helvetica,sans-serif;
+                            }
+                            .content-header p{
+                                margin-top: 20px;
+                                text-align: center;
+                            }
+                            p.content-body{
+                                color: #555;
+                                margin: 0 auto;
+                                margin-top: 20px;
+                                font-size: 15px;
+                                text-align: center
+                            }
+                            .footer{
+                                padding: 50px 0px;
+                                text-align: center;
+                            }
+                            .footer ul{
+                                padding:0px;
+                                margin: 0px;
+                                list-style: none;
+                            }
+                            .footer ul li{
+                                
+                            }
+                            .footer-header{
+                                font-size: 20px;
+                            }
+                            .anchor{
+                                float: right;
+                                color: blue;
+                                text-decoration: none;
+                            }
+                            @media only screen and (max-width: 767px){
+                                .container{
+                                    width: 90%;
+                                    padding: 30px 10px;
+                                }
+                                .content{
+                                    padding: 20px 0px;
+                                    width: 95%;
+                                    margin: 0 auto;
+                                    background-color: rgb(240, 240, 240);
+                                }
+                            }
+                        </style>
+                    </head>
+                    <body>
+                        <div class="content">
+                            <div class="container">
+                                <div class="news-header">
+                                        <img src="'.asset($logo).'" alt="'.$app_name.'">
+                                        <h4>'.$app_name.'</h4>
+                                </div>
+                                <div class="news-body">
+                                        <div class="content-header"><p>'.$header.'</p></div>
+                                        <p class="content-body">'.$body.'</p>
+                                        <div class="footer">
+                                            <ul>
+                                                <li class="footer-header">'.$app_name.'</li>
+                                                <li>'.$address.'</li>
+                                            </ul>
+                                        </div>
+                                </div>
+                            </div>
+                        </div>
+                    </body>
+                    </html>';
+
+        return $mail;
+}

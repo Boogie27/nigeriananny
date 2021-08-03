@@ -14,42 +14,45 @@
 //  ********** REST PASSWORD ************//
  if(Input::post('change_password'))
  {
-     $validate = new DB(); 
-     $validation = $validate->validate([
-            'old_password' => 'required|min:6|max:12',
-            'new_password' => 'required|min:6|max:12',
-            'confirm_password' => 'required|min:6|max:12|match:new_password'
-     ]);
-
-     if(!$validation->passed())
+    if(Token::check())
     {
-        return back();
-    }
+        $validate = new DB(); 
+        $validation = $validate->validate([
+                'old_password' => 'required|min:6|max:12',
+                'new_password' => 'required|min:6|max:12',
+                'confirm_password' => 'required|min:6|max:12|match:new_password'
+        ]);
 
-    $check = $connection->select('course_users')->where('email', Auth_course::user('email'))->where('id', Auth_course::user('id'))->first();
-    if(!$check)
-    {
-        Session::delete('course_user');
-        Session::flash('error', 'Wrong user, login and try again');
-        return view('/courses/login');
-    }
+        if(!$validation->passed())
+        {
+            return back();
+        }
 
-    if(!password_verify(Input::get('old_password'), $check->password))
-    {
-        Session::errors('errors', ['old_password' => '*Wrong password, try again!']);
-        return back();
-    }
+        $check = $connection->select('course_users')->where('email', Auth_course::user('email'))->where('id', Auth_course::user('id'))->first();
+        if(!$check)
+        {
+            Session::delete('course_user');
+            Session::flash('error', 'Wrong user, login and try again');
+            return view('/courses/login');
+        }
 
-    $update = $connection->update('course_users', [
-                    'password' => password_hash(Input::get('new_password'), PASSWORD_DEFAULT),
-                ])->where('email', Auth_course::user('email'))->where('id', Auth_course::user('email'))->save();
+        if(!password_verify(Input::get('old_password'), $check->password))
+        {
+            Session::errors('errors', ['old_password' => '*Wrong password, try again!']);
+            return back();
+        }
 
-    if($update)
-    {
-        Auth_course::login($check->email);
+        $update = $connection->update('course_users', [
+                        'password' => password_hash(Input::get('new_password'), PASSWORD_DEFAULT),
+                    ])->where('email', Auth_course::user('email'))->where('id', Auth_course::user('email'))->save();
 
-        Session::flash('success', 'Password updated successfully!');
-        return back();
+        if($update)
+        {
+            Auth_course::login($check->email);
+
+            Session::flash('success', 'Password updated successfully!');
+            return back();
+        }
     }
  }
 ?>
@@ -128,6 +131,7 @@
                                           </div>
                                      </div>
                                 </div>
+                                <?= csrf_token() ?>
 							</form>
 						</div>
                     </div>

@@ -25,6 +25,8 @@ if(!Input::exists('get') || !Input::get('wid'))
 // ============================================
 if(Input::post('update_profile'))
 {
+    if(Token::check())
+    {
         $validate = new DB();
         $validation = $validate->validate([
             'email' => 'required|email',
@@ -75,7 +77,7 @@ if(Input::post('update_profile'))
                 return back();
             }
         }
-
+    }
 }
 
 
@@ -266,6 +268,7 @@ $banner =  $connection->select('settings')->where('id', 1)->first();
                                                 </div>
                                             </div>
                                         </div>
+                                        <?= csrf_token() ?>
                                     </form>
                                 </div>
                             </div>

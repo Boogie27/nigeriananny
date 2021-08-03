@@ -70,7 +70,6 @@ $settings = $connection->select('settings')->where('id', 1)->first();
 					   <?php if($settings->footer_logo): ?>
 						<img class="footer-img img-fluid" src="<?= asset($settings->footer_logo)?>" alt="logo.png">
 						 <?php endif;?>
-						<span><?= $settings->app_name ? $settings->app_name : '' ?></span>
 					</div>
 				</div>
 				<div class="col-sm-8 col-md-5 col-lg-6 col-xl-6 pb25 pt25 brdr_left_right">

@@ -31,7 +31,6 @@ $nav_nots = $connection->select('notifications')->where('to_id', 1)->where('to_u
 		        <a href="<?= url('/') ?>" class="navbar_brand float-left dn-smd">
 		            <img class="logo1 img-fluid navi-top-img" src="<?= asset($banner->logo) ?>" alt="<?= $banner->app_name ?>">
 		            <img class="logo2 img-fluid navi-top-img" src="<?= asset($banner->logo) ?>" alt="<?= $banner->app_name ?>">
-		            <span><?= $banner->app_name ?></span>
 		        </a>
 		        <!-- Responsive Menu Structure-->
 		        <!--Note: declare the Menu style in the data-menu-style="horizontal" (options: horizontal, vertical, accordion) -->
@@ -117,10 +116,10 @@ $nav_nots = $connection->select('notifications')->where('to_id', 1)->where('to_u
 	                </li>
 	                <li class="user_setting">
 						<div class="dropdown">
-	                		<a class="btn dropdown-toggle" href="#" data-toggle="dropdown"><img class="rounded-circle" src="<?= asset(Admin_auth::admin('image')) ?>" alt="<?= Admin_auth::admin('first_name') ?>"></a>
+	                		<a class="btn dropdown-toggle" href="#" data-toggle="dropdown"><img class="rounded-circle navigation-image-circle" src="<?= asset(Admin_auth::admin('image')) ?>" alt="<?= Admin_auth::admin('first_name') ?>"></a>
 						    <div class="dropdown-menu">
 						    	<div class="user_set_header">
-						    		<img class="float-left" src="<?= asset(Admin_auth::admin('image')) ?>" alt="<?= Admin_auth::admin('first_name') ?>">
+						    		<img class="float-left navigation-image-circle" src="<?= asset(Admin_auth::admin('image')) ?>" alt="<?= Admin_auth::admin('first_name') ?>">
 							    	<p><?= Admin_auth::admin('first_name') ?></p>
 						    	</div>
 						    	<div class="user_setting_content">

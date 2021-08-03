@@ -20,7 +20,6 @@ $settings = $connection->select('settings')->where('id', 1)->first();
 		        <a href="<?= url('/shop'); ?>" class="navbar_brand float-left dn-smd">
 		            <img class="logo1 img-fluid navi-top-img" src="<?= asset($settings->logo)?>" alt="<?=$settings->app_name ?>">
 		            <img class="logo2 img-fluid navi-top-img" src="<?= asset($settings->logo)?>" alt="<?=$settings->app_name ?>">
-		            <span><?= $settings->app_name ? $settings->app_name : '' ?></span>
 		        </a>
 		        <!-- Responsive Menu Structure-->
 		        <!--Note: declare the Menu style in the data-menu-style="horizontal" (options: horizontal, vertical, accordion) -->
@@ -52,21 +51,23 @@ $settings = $connection->select('settings')->where('id', 1)->first();
 		          
 					<?php if(Auth::is_loggedin()):?>
 		            <li>
-		                <a href="<?= url('/shop/account') ?>"><span class="title">My account</span></a>
+		                <a href="<?= url('/shop/account') ?>"><span class="title">Account</span></a>
 		            </li>
 					<?php endif;?>
 		            <li>
-		                <a href="<?= url('/shop/order') ?>"><span class="title">My order</span></a>
+		                <a href="<?= url('/shop/order') ?>"><span class="title">Order</span></a>
 		            </li>
 					<li>
 		                <a href="<?= url('/shop/cart') ?>"><span class="title">Cart</span></a>
 		            </li>
 					<li>
-		                <a href="<?= url('/') ?>"><span class="title">Find a worker</span></a>
-		            </li>
-					<li>
-		                <a href="<?= url('/courses') ?>"><span class="title">Courses</span></a>
-		            </li>
+						<a href="#">More</a>
+						<!-- Level Three-->
+						<ul>
+							<li><a href="<?= url('/') ?>">Find a worker</a></li>
+							<li><a href="<?= url('/courses') ?>">Courses</a></li>
+						</ul>
+					</li>
 		        </ul>
 		        <ul class="sign_up_btn pull-right dn-smd mt20">
 	                <li class="list-inline-item list_s">

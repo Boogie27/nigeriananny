@@ -14,33 +14,36 @@ if(!Admin_auth::is_loggedin())
 // =============================================
 if(Input::post('create_news_letter'))
 {
-    $validate = new DB();
-   
-    $validation = $validate->validate([
-        'header' => 'required|min:3|max:200',
-        'client_type' => 'required',
-        'body' => 'required|min:6',
-        'subject' => 'required|min:6|max:100'
-    ]);
-
-    if(!$validation->passed())
+    if(Token::check())
     {
-        return back();
-    }
-
-    if($validation->passed())
-    {
-        $create = $connection->create('news_letters', [
-            'header' => Input::get('header'),
-            'subject' => Input::get('subject'),
-            'n_client_type' => Input::get('client_type'),
-            'body' => Input::get('body'),
-        ]);
+        $validate = new DB();
     
-        if($create)
+        $validation = $validate->validate([
+            'header' => 'required|min:3|max:200',
+            'client_type' => 'required',
+            'body' => 'required|min:6',
+            'subject' => 'required|min:6|max:100'
+        ]);
+
+        if(!$validation->passed())
         {
-            Session::flash('success', 'Newsletter created successfully!');
-            return view('/admin-nanny/news-letters');
+            return back();
+        }
+
+        if($validation->passed())
+        {
+            $create = $connection->create('news_letters', [
+                'header' => Input::get('header'),
+                'subject' => Input::get('subject'),
+                'n_client_type' => Input::get('client_type'),
+                'body' => Input::get('body'),
+            ]);
+        
+            if($create)
+            {
+                Session::flash('success', 'Newsletter created successfully!');
+                return view('/admin-nanny/news-letters');
+            }
         }
     }
 }
@@ -48,10 +51,7 @@ if(Input::post('create_news_letter'))
 
 
 
-// ============================================
-    // app banner settings
-// ============================================
-$banner =  $connection->select('settings')->where('id', 1)->first();
+
 ?>
 
 
@@ -134,6 +134,7 @@ $banner =  $connection->select('settings')->where('id', 1)->first();
                                                         <option value="">Select</option>
                                                         <option value="employee" <?= old('client_type') == 'employee' ? 'selected' : ''?>>Employee</option>
                                                         <option value="employer" <?= old('client_type') == 'employer' ? 'selected' : ''?>>Employer</option>
+                                                        <option value="other" <?= old('client_type') == 'other' ? 'selected' : ''?>>Other</option>
                                                     </select>
                                                 </div>
                                             </div>
@@ -159,21 +160,18 @@ $banner =  $connection->select('settings')->where('id', 1)->first();
                                             </div>
                                         </div>
                                     </div>
+                                    <?= csrf_token() ?>
                                 </form>
                             </div>
                        </div>
                     </div><!-- edit faq end-->
                 </div>
-                <div class="row mt50 mb50">
-                    <div class="col-lg-6 offset-lg-3">
-                        <div class="copyright-widget text-center">
-                            <p class="color-black2"><?= $banner->alrights ?></p>
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
     </div>
+</div>
+<div class="footer-copy-right">
+    <p><?= $banner->alrights ?></p>
 </div>
 <a class="scrollToHome" href="#"><i class="flaticon-up-arrow-1"></i></a>
 </div>

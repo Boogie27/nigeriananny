@@ -3,9 +3,13 @@ $settings = $connection->select('settings')->where('id', 1)->first();
 ?>
 
 
-
-
-
+<?php if($settings->footer_message): ?>
+<div class="section-footer-message">
+    <div class="footer-message">
+        <p><?= $settings->footer_message ?></p>
+    </div>
+</div>
+<?php endif; ?>
 
 
  <!-- little preloader start-->
@@ -40,6 +44,7 @@ $settings = $connection->select('settings')->where('id', 1)->first();
         <li><a href="<?= url('/how-it-works') ?>">How it works</a></li>
         <li><a href="<?= url('/shop') ?>">Market place</a></li>
         <li><a href="<?= url('/courses') ?>">Courses</a></li>
+        <li><a href="<?= url('/unsubscribe-newsletter') ?>">Unsubscribe newsletter</a></li>
         <li><a href="<?= url('/contact') ?>">Contact</a></li>
     </ul>
     <ul class="ul-social-media">
@@ -487,7 +492,7 @@ function get_client_notification()
     }, 5000)
 }
 
-get_client_notification();
+// get_client_notification();
 
 
 

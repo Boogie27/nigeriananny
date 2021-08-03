@@ -27,24 +27,27 @@ if(!Input::exists('get') && !Input::get('fid'))
 // =============================================
 if(Input::post('edit_faq'))
 {
-    $validate = new DB();
-   
-    $validation = $validate->validate([
-        'faq' => 'required|min:3|max:200',
-        'faq_content' => 'required|min:6',
-    ]);
-
-    if($validation->passed())
+    if(Token::check())
     {
-        $update = $connection->update('faqs', [
-            'faq' => Input::get('faq'),
-            'content' => Input::get('faq_content'),
-        ])->where('id', Input::get('fid'))->save();
+        $validate = new DB();
     
-        if($update)
+        $validation = $validate->validate([
+            'faq' => 'required|min:3|max:200',
+            'faq_content' => 'required|min:6',
+        ]);
+
+        if($validation->passed())
         {
-            Session::flash('success', 'FAQ updated successfully!');
-            return back();
+            $update = $connection->update('faqs', [
+                'faq' => Input::get('faq'),
+                'content' => Input::get('faq_content'),
+            ])->where('id', Input::get('fid'))->save();
+        
+            if($update)
+            {
+                Session::flash('success', 'FAQ updated successfully!');
+                return back();
+            }
         }
     }
 }
@@ -55,10 +58,7 @@ if(Input::post('edit_faq'))
 // ===========================================
 $faq = $connection->select('faqs')->where('id', Input::get('fid'))->first();
 
-// ============================================
-    // app banner settings
-// ============================================
-$banner =  $connection->select('settings')->where('id', 1)->first();
+
 ?>
 
 
@@ -138,21 +138,18 @@ $banner =  $connection->select('settings')->where('id', 1)->first();
                                             </div>
                                         </div>
                                     </div>
+                                    <?= csrf_token() ?>
                                 </form>
                             </div>
                        </div>
                     </div><!-- edit faq end-->
                 </div>
-                <div class="row mt50 mb50">
-                    <div class="col-lg-6 offset-lg-3">
-                        <div class="copyright-widget text-center">
-                            <p class="color-black2"><?= $banner->alrights ?></p>
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
     </div>
+</div>
+<div class="footer-copy-right">
+    <p><?= $banner->alrights ?></p>
 </div>
 <a class="scrollToHome" href="#"><i class="flaticon-up-arrow-1"></i></a>
 </div>

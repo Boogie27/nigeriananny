@@ -11,7 +11,18 @@ if(!Admin_auth::is_loggedin())
 // ===========================================
 // GET ALL EMPLOYEES
 // ===========================================
-$users = $connection->select('course_users')->paginate(15);
+$users = $connection->select('course_users')->where('is_deactivate', 0);
+
+if($search = Input::get('search'))
+{
+    if(preg_match('/@/', $search))
+    {
+        $users->where('email', $search);
+    }else{
+        $users->where('first_name', 'RLIKE', $search);
+    }
+}
+$users->paginate(50);
 
 
 // ============================================
@@ -55,19 +66,35 @@ $banner =  $connection->select('settings')->where('id', 1)->first();
                                 <li class="breadcrumb-item active" aria-current="page"><a href="<?= url('/admin-course/add-user') ?>" class="view-btn-fill">Add user</a></li>
                             </ol>
                         </nav>
+                        <div class="text">
+                            Total Users: <?= count($users->result())?>
+                            <a href="#" class="text-primary" id="open_mass_member_newsletter_modal_btn">| Send newsletter |</a>
+                            <a href="#" class="text-primary" id="open_mass_users_deactivate_modal_btn"> Deactivate |</a>
+                        </div>
+                    </div>
+                    <div class="col-lg-12">
+                        <div class="top-table-container">
+                            <div class="icon-container"><i class="fa fa-users"></i></div>
+                            <form action="" method="GET" class="form-search-input">
+                                <div class="form-group">
+                                    <input type="text" name="search" class="form-control" value="" placeholder="Search...">
+                                </div>
+                            </form>
+                        </div>
                     </div>
                     <div class="col-lg-12">
                         <div class="table-responsive"> <!-- table start-->
-                            <table class="table table-striped">
+                            <table class="table table-striped" id="members_parent_table_container">
                                 <thead>
                                     <tr>
-                                    <th scope="col">Image</th>
-                                    <th scope="col">Employee name</th>
-                                    <th scope="col">Email</th>
-                                    <th scope="col">Status</th>
-                                    <th scope="col">Last login</th>
-                                    <th scope="col">Date registered</th>
-                                    <th scope="col">Action</th>
+                                        <th scope="col"><input type="checkbox" id="mass_member_check_box_input"></th>
+                                        <th scope="col">Image</th>
+                                        <th scope="col">Employee name</th>
+                                        <th scope="col">Email</th>
+                                        <th scope="col">Status</th>
+                                        <th scope="col">Last login</th>
+                                        <th scope="col">Date registered</th>
+                                        <th scope="col">Action</th>
                                     </tr>
                                 </thead>
                                 <tbody class="item-table-t">
@@ -77,6 +104,9 @@ $banner =  $connection->select('settings')->where('id', 1)->first();
                                 ?>
                                     <tr>
                                         <td>
+                                            <input type="checkbox" data-type="employee" id="<?= $user->id ?>" class="check-box-members-input-btn">
+                                        </td>
+                                        <td>
                                             <a href="<?= url('/admin-course/user-detail?uid='.$user->id) ?>">
                                                 <img src="<?= asset($image) ?>" alt="" class="table-img <?= $user->is_active ? 'online' : 'offline' ?>">
                                             </a>
@@ -85,7 +115,7 @@ $banner =  $connection->select('settings')->where('id', 1)->first();
                                         <td><?= $user->email ?></td>
                                       
                                         <td>
-                                           <a href="#" data-id="<?= $user->id ?>" data-toggle="modal"  data-target="#exampleModal_deactivate_user_delete" class="course_user_deactivate_btn <?= !$user->is_deactivate ? 'delivered' : 'deactivate'?>"><?= !$user->is_deactivate ? 'Activated' : 'Deactivated'?></a>
+                                           <a href="#" data-id="<?= $user->id ?>" data-toggle="modal"  data-target="#exampleModal_deactivate_user_delete" class="course_user_deactivate_btn <?= !$user->is_deactivate ? 'deactivate' : 'delivered'?>"><?= !$user->is_deactivate ? 'Deactivate' : 'Activate'?></a>
                                         </td>
                                         <td><?= date('d M Y', strtotime($user->last_login)) ?></td>
                                         <td><?= date('d M Y', strtotime($user->date)) ?></td>
@@ -168,10 +198,10 @@ $banner =  $connection->select('settings')->where('id', 1)->first();
                     <div class="login_form">
                         <form action="#">
                             <div class="heading">
-                                <p class="text-center">Do you wish to updated this user's status?</p>
+                                <p class="text-center">Do you wish to deactivate this user's status?</p>
                                 <input type="hidden" id="course_user_deactivate_id" value="">
                             </div>
-                            <button type="button" data-url="<?= url('/admin-course/ajax.php') ?>" id="submit_course_user_deactivate_btn" class="btn bg-danger btn-log btn-block" style="color: #fff;">Delete</button>
+                            <button type="button" data-url="<?= url('/admin-course/ajax.php') ?>" id="submit_course_user_deactivate_btn" class="btn bg-danger btn-log btn-block" style="color: #fff;">Proceed</button>
                         </form>
                     </div>
                 </div>

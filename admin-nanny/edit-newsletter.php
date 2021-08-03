@@ -24,33 +24,36 @@ if(!Input::exists('get') || !Input::get('nid'))
 // =============================================
 if(Input::post('update_news_letter'))
 {
-    $validate = new DB();
-   
-    $validation = $validate->validate([
-        'header' => 'required|min:3|max:200',
-        'client_type' => 'required',
-        'body' => 'required|min:6',
-        'subject' => 'required|min:6|max:100'
-    ]);
-
-    if(!$validation->passed())
+    if(Token::check())
     {
-        return back();
-    }
-
-    if($validation->passed())
-    {
-        $update = $connection->update('news_letters', [
-            'header' => Input::get('header'),
-            'subject' => Input::get('subject'),
-            'n_client_type' => Input::get('client_type'),
-            'body' => Input::get('body'),
-        ])->where('id', Input::get('nid'))->save();
+        $validate = new DB();
     
-        if($update)
+        $validation = $validate->validate([
+            'header' => 'required|min:3|max:200',
+            'client_type' => 'required',
+            'body' => 'required|min:6',
+            'subject' => 'required|min:6|max:100'
+        ]);
+
+        if(!$validation->passed())
         {
-            Session::flash('success', 'Newsletter update successfully!');
             return back();
+        }
+
+        if($validation->passed())
+        {
+            $update = $connection->update('news_letters', [
+                'header' => Input::get('header'),
+                'subject' => Input::get('subject'),
+                'n_client_type' => Input::get('client_type'),
+                'body' => Input::get('body'),
+            ])->where('id', Input::get('nid'))->save();
+        
+            if($update)
+            {
+                Session::flash('success', 'Newsletter update successfully!');
+                return back();
+            }
         }
     }
 }
@@ -68,10 +71,7 @@ if(!$news_letter)
 }
 
 
-// ============================================
-    // app banner settings
-// ============================================
-$banner =  $connection->select('settings')->where('id', 1)->first();
+
 ?>
 
 
@@ -179,21 +179,18 @@ $banner =  $connection->select('settings')->where('id', 1)->first();
                                             </div>
                                         </div>
                                     </div>
+                                    <?= csrf_token() ?>
                                 </form>
                             </div>
                        </div>
                     </div><!-- edit faq end-->
                 </div>
-                <div class="row mt50 mb50">
-                    <div class="col-lg-6 offset-lg-3">
-                        <div class="copyright-widget text-center">
-                            <p class="color-black2"><?= $banner->alrights ?></p>
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
     </div>
+</div>
+<div class="footer-copy-right">
+    <p><?= $banner->alrights ?></p>
 </div>
 <a class="scrollToHome" href="#"><i class="flaticon-up-arrow-1"></i></a>
 </div>

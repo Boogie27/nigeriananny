@@ -7,8 +7,15 @@ if(!Admin_auth::is_loggedin())
 }
 
 
-$products = $connection->select('shop_products')->paginate(15);
+$products = $connection->select('shop_products');
 
+
+if($search = Input::get('search'))
+{
+    $products->where('product_name', 'RLIKE', $search);
+}
+
+$products->paginate(50);
 
     // app banner settings
 $banner =  $connection->select('settings')->where('id', 1)->first();
@@ -45,6 +52,19 @@ $banner =  $connection->select('settings')->where('id', 1)->first();
                                 <li class="breadcrumb-item"><a href="<?= url('/admin/add-product.php') ?>" class="btn-fill">Add product</a></li>
                             </ol>
                         </nav>
+                        <div class="text">
+                            Total Products: <?= count($products->result())?>
+                        </div>
+                    </div>
+                    <div class="col-lg-12">
+                        <div class="top-table-container">
+                            <div class="icon-container"><i class="fa fa-shopping-cart"></i></div>
+                            <form action="" method="GET" class="form-search-input">
+                                <div class="form-group">
+                                    <input type="text" name="search" class="form-control" value="" placeholder="Search...">
+                                </div>
+                            </form>
+                        </div>
                     </div>
                     <div class="col-lg-12">
                         <div class="item-table table-responsive"> <!-- table start-->
@@ -101,7 +121,7 @@ $banner =  $connection->select('settings')->where('id', 1)->first();
                                 <!-- pagination -->
                                 <?php $products->links(); ?>
 
-                                <?php if($products->result() == 0): ?>
+                                <?php if(!count($products->result())): ?>
                                     <div class="empty-table">There are no products yet!</div>
                                 <?php endif; ?>
                             </div>

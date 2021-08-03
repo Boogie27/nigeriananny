@@ -12,14 +12,18 @@
    {
         $validate = new DB();
        
-        $validation = $validate->validate([
+        $validate->validate([
             'email' => 'required|email',
             'password' => 'required|min:6|max:12',
         ]);
 
 
+        if(!$validate->passed())
+        {
+            return back();
+        }
         
-        if($validation->passed())
+        if($validate->passed())
         {
             $verify = new DB();
             $verification = $verify->select('users')->where('email', Input::get('email'))->first();

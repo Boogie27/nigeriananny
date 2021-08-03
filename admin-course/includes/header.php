@@ -65,7 +65,7 @@ if(count($employer_subs))
 </head>
 <body>
 <div class="wrapper">
-	<!-- <div class="preloader"></div> -->
+	<div class="preloader"></div>
 
 
 

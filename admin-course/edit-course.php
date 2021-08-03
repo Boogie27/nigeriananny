@@ -22,53 +22,56 @@ if(!Input::exists('get') || !Input::get('cid'))
 // ============================================
 if(Input::post('update_course'))
 {
-    $validate = new DB();
-   
-    $validation = $validate->validate([
-        'course_title' => 'required|min:3|max:50',
-        'category' => 'required',
-        'course_duration' => 'required',
-        'course_size' => 'required',
-        'video_link' => 'required',
-        'description' => 'required|min:6|max:5000',
-        'course_for' => 'required|min:6|max:5000',
-        'tutor_title' => 'required|min:3|max:100',
-        'tutor_name' => 'required|min:3|max:50',
-        'tutor_about' => 'required|min:3|max:500',
-    ]);
-
-    if(!$validation->passed())
+    if(Token::check())
     {
-        return back();
-    }
+        $validate = new DB();
+    
+        $validation = $validate->validate([
+            'course_title' => 'required|min:3|max:50',
+            'category' => 'required',
+            'course_duration' => 'required',
+            'course_size' => 'required',
+            'video_link' => 'required',
+            'description' => 'required|min:6|max:5000',
+            'course_for' => 'required|min:6|max:5000',
+            'tutor_title' => 'required|min:3|max:100',
+            'tutor_name' => 'required|min:3|max:50',
+            'tutor_about' => 'required|min:3|max:500',
+        ]);
 
-    if($validation->passed())
-    {
-        $is_feature = Input::get('feature') == 1 ? 1 : 0;
-        $course = $connection->select('courses')->where('course_id', Input::get('cid'))->first(); 
-        
-        $tutor = json_decode($course->tutor, true);
-
-        $tutor_info = ["name" => Input::get('tutor_name'), "image" => $tutor['image'], "title" => Input::get('tutor_title'), "about" => Input::get('tutor_about')];
-        
-        $category = $connection->select('course_categories')->where('category_id', Input::get('category'))->first();
-
-        $course = $connection->update('courses', [
-            'title' => Input::get('course_title'),
-            'categories_id' => Input::get('category'),
-            'slug' => $category->category_slug,
-            'duration' => Input::get('course_duration'),
-            'course_size' => Input::get('course_size'),
-            'video_link' => Input::get('video_link'),
-            'description' => Input::get('description'),
-            'course_for' => Input::get('course_for'),
-            'tutor' => json_encode($tutor_info),
-            'is_feature' => $is_feature
-        ])->where('course_id', Input::get('cid'))->save();
-        if($course->passed())
+        if(!$validation->passed())
         {
-            Session::flash('success', 'Course update successfully!');
             return back();
+        }
+
+        if($validation->passed())
+        {
+            $is_feature = Input::get('feature') == 1 ? 1 : 0;
+            $course = $connection->select('courses')->where('course_id', Input::get('cid'))->first(); 
+            
+            $tutor = json_decode($course->tutor, true);
+
+            $tutor_info = ["name" => Input::get('tutor_name'), "image" => $tutor['image'], "title" => Input::get('tutor_title'), "about" => Input::get('tutor_about')];
+            
+            $category = $connection->select('course_categories')->where('category_id', Input::get('category'))->first();
+
+            $course = $connection->update('courses', [
+                'title' => Input::get('course_title'),
+                'categories_id' => Input::get('category'),
+                'slug' => $category->category_slug,
+                'duration' => Input::get('course_duration'),
+                'course_size' => Input::get('course_size'),
+                'video_link' => Input::get('video_link'),
+                'description' => Input::get('description'),
+                'course_for' => Input::get('course_for'),
+                'tutor' => json_encode($tutor_info),
+                'is_feature' => $is_feature
+            ])->where('course_id', Input::get('cid'))->save();
+            if($course->passed())
+            {
+                Session::flash('success', 'Course update successfully!');
+                return back();
+            }
         }
     }
 }
@@ -363,7 +366,7 @@ $banner =  $connection->select('settings')->where('id', 1)->first();
                                                     </div>
                                                 </div>
                                             </div>
-
+                                            <?= csrf_token() ?>
                                         </form>
                                 </div>
                             </div>

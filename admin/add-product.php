@@ -15,45 +15,48 @@ if(!Admin_auth::is_loggedin())
     
     if(Input::post('add_product'))
     {
-        $validate = new DB();
-       
-        $validation = $validate->validate([
-            'product_name' => 'required|min:3|max:50',
-            'category' => 'required',
-            'subcategory' => 'required',
-            'product_price' => 'required',
-            'product_quantity' => 'required',
-            'shipping_fee' => 'required',
-            'product_detail' => 'required|min:6|max:2000',
-            'description' => 'required|min:6|max:5000',
-        ]);
-
-        if(!Cookie::has('product_image'))
+        if(Token::check())
         {
-            Session::errors('errors', ['image' => '*Product image is required!']);
-            return back();
-        }
+            $validate = new DB();
         
-        $store_image = json_decode(Cookie::get('product_image'), true);
-        $image = implode(',', $store_image);
+            $validation = $validate->validate([
+                'product_name' => 'required|min:3|max:50',
+                'category' => 'required',
+                'subcategory' => 'required',
+                'product_price' => 'required',
+                'product_quantity' => 'required',
+                'shipping_fee' => 'required',
+                'product_detail' => 'required|min:6|max:2000',
+                'description' => 'required|min:6|max:5000',
+            ]);
 
-        $create = $connection->create('shop_products', [
-            'product_name' => Input::get('product_name'),
-            'product_category_id' => Input::get('category'),
-            'product_subCategory_id' => Input::get('subcategory'),
-            'product_price' => Input::get('product_price'),
-            'product_quantity' => Input::get('product_quantity'),
-            'shipping_fee' => Input::get('shipping_fee'),
-            'product_detail' => Input::get('product_detail'),
-            'description' => Input::get('description'),
-            'big_image' => $image,
-        ]);
+            if(!Cookie::has('product_image'))
+            {
+                Session::errors('errors', ['image' => '*Product image is required!']);
+                return back();
+            }
+            
+            $store_image = json_decode(Cookie::get('product_image'), true);
+            $image = implode(',', $store_image);
 
-        if($create)
-        {
-            Cookie::delete('product_image');
-            Session::flash('success', 'Product has been add successfully!');
-            return back();
+            $create = $connection->create('shop_products', [
+                'product_name' => Input::get('product_name'),
+                'product_category_id' => Input::get('category'),
+                'product_subCategory_id' => Input::get('subcategory'),
+                'product_price' => Input::get('product_price'),
+                'product_quantity' => Input::get('product_quantity'),
+                'shipping_fee' => Input::get('shipping_fee'),
+                'product_detail' => Input::get('product_detail'),
+                'description' => Input::get('description'),
+                'big_image' => $image,
+            ]);
+
+            if($create)
+            {
+                Cookie::delete('product_image');
+                Session::flash('success', 'Product has been add successfully!');
+                return back();
+            }
         }
     }
 
@@ -215,7 +218,7 @@ $banner =  $connection->select('settings')->where('id', 1)->first();
                                            <button type="submit" name="add_product" class="btn bg-primary float-right" style="color: #fff;">Add product</button>
                                        </div> 
                                     </div>
-
+                                    <?= csrf_token() ?>
                                 </div>
                             </form>
                         </div>

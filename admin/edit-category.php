@@ -24,25 +24,32 @@ if(!$single_category)
 
 
 
+
+
+
+
 if(Input::post('edit_category'))
 {
-    $validate = new DB();
-       
-    $validation = $validate->validate([
-        'category_name' => 'required|min:3|max:50',
-        'category_title' => 'required|min:3|max:100',
-    ]);
-    
-    if($validation->passed())
+    if(Token::check())
     {
-        $update = $connection->update('shop_categories', [
-                    'category_name' => Input::get('category_name'),
-                    'category_header' => Input::get('category_title')
-                ])->where('category_id', $single_category->category_id)->save(); 
-        if($update)
+        $validate = new DB();
+        
+        $validation = $validate->validate([
+            'category_name' => 'required|min:3|max:50',
+            'category_title' => 'required|min:3|max:100',
+        ]);
+        
+        if($validation->passed())
         {
-            Session::flash('success', 'Category has been updated successfully!');
-            return back();
+            $update = $connection->update('shop_categories', [
+                        'category_name' => Input::get('category_name'),
+                        'category_header' => Input::get('category_title')
+                    ])->where('category_id', $single_category->category_id)->save(); 
+            if($update)
+            {
+                Session::flash('success', 'Category has been updated successfully!');
+                return back();
+            }
         }
     }
 }
@@ -131,6 +138,7 @@ $banner =  $connection->select('settings')->where('id', 1)->first();
                                                     </div>
                                                  </div>
                                                 <button type="submit" name="edit_category" class="btn bg-danger btn-log btn-block h50" style="color: #fff;">Submit</button>                                                 
+                                                <?= csrf_token() ?>
                                             </form>
                                         </div>
                                         <br>

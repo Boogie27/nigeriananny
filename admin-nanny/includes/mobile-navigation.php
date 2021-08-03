@@ -9,7 +9,7 @@ $banner =  $connection->select('settings')->where('id', 1)->first();
 	        <ul class="header_user_notif dashbord_pages_mobile_version pull-right">
 			<li class="user_notif">
 					<div class="dropdown">
-						<a class="notification_icon flaticon-not-count" href="#" data-toggle="dropdown">
+						<a class="notification_icon <?= count($nav_nots) ? 'flaticon-not-count' : ''?>" href="#" data-toggle="dropdown">
 							<span class="flaticon-alarm"></span>
 						</a>
 						<div class="dropdown-menu notification_dropdown_content">
@@ -59,7 +59,6 @@ $banner =  $connection->select('settings')->where('id', 1)->first();
 			<div class="header stylehome1 dashbord_mobile_logo dashbord_pages">
 				<div class="main_logo_home2">
 		            <img class="nav_logo_img img-fluid float-left mt20 navi-top-img" src="<?=asset($banner->logo) ?>" alt="<?= $banner->app_name ?>">
-		            <span><?= $banner->app_name ?></span>
 				</div>
 				<ul class="menu_bar_home2">
 					<li class="list-inline-item"></li>
@@ -83,6 +82,12 @@ $banner =  $connection->select('settings')->where('id', 1)->first();
 						endforeach;
 					endif; ?>
 					</ul>
+				</li>
+				<li>
+	              <a href="<?= url('/admin') ?>"><span>Market Place Dashboard</span></a>
+				</li>
+				<li>
+	              <a href="<?= url('/admin-course') ?>"><span>Course Dashboard</span></a>
 				</li>
 				<li><span>Newsletters</span>
 					<ul>

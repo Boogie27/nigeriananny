@@ -14,56 +14,60 @@
 // ==============================================
  if(Input::post('login_employer'))
  {
-    $validate = new DB();
-    
-    $validation = $validate->validate([
-        'email' => 'required|email',
-        'password' => 'required|min:6|max:12',
-    ]);
-
-
-    
-    if($validation->passed())
+    if(Token::check())
     {
-        $verify = new DB();
-        $verification = $verify->select('employers')->where('email', Input::get('email'))->first();
-        if(!$verification)
+        $validate = new DB();
+        
+        $validation = $validate->validate([
+            'email' => 'required|email',
+            'password' => 'required|min:6|max:12',
+        ]);
+
+
+        
+        if($validation->passed())
         {
-            Session::errors('errors', ['email' => '*Wrong email provided, try again!']);
-            return back();
-        }
+            $verify = new DB();
+            $verification = $verify->select('employers')->where('email', Input::get('email'))->first();
+            if(!$verification)
+            {
+                Session::errors('errors', ['email' => '*Wrong email provided, try again!']);
+                return back();
+            }
 
-        if(!password_verify(Input::get('password'), $verification->password))
-        {
-            Session::errors('errors', ['password' => '*Wrong password, try again!']);
-            return back();
-        }
+            if(!password_verify(Input::get('password'), $verification->password))
+            {
+                Session::errors('errors', ['password' => '*Wrong password, try again!']);
+                return back();
+            }
 
-        if($verification->e_deactivate)
-        {
-            Session::flash('error', '*This account has been deactivated, please contact the admin.');
-            return back();
-        }
+            if($verification->e_deactivate)
+            {
+                Session::flash('error', '*This account has been deactivated, please contact the admin.');
+                return back();
+            }
 
-        $remember_me = Input::get('remember_me')? true : false;
+            $remember_me = Input::get('remember_me')? true : false;
 
-        $logged_in = Auth_employer::login(Input::get('email'), $remember_me);
+            $logged_in = Auth_employer::login(Input::get('email'), $remember_me);
 
-        if($logged_in && Session::has('old_url'))
-        {
-            $old_url = Session::get('old_url');
-            Session::delete('old_url');
-            Session::flash('success', 'You have loggedin successfully!');
-            return view($old_url);
-        }
+            if($logged_in && Session::has('old_url'))
+            {
+                $old_url = Session::get('old_url');
+                Session::delete('old_url');
+                Session::flash('success', 'You have loggedin successfully!');
+                return view($old_url);
+            }
 
-        if($logged_in)
-        {
-            Session::flash('success', 'You have loggedin successfully!');
-            return view('/');
+            if($logged_in)
+            {
+                Session::flash('success', 'You have loggedin successfully!');
+                return view('/');
+            }
         }
     }
-    
+    Session::flash('error', 'Network error, try again later!');
+    return back();
 }
 
 
@@ -177,6 +181,7 @@ if(Input::post('facebook_login'))
                     </div>
                 </div>
             </div>
+            <?= csrf_token() ?>
         </form>
     </div>
 </div>

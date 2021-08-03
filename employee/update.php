@@ -14,6 +14,8 @@ if(!Auth_employee::is_loggedin())
 // ============================================
 if(Input::post('update_profile'))
 {
+    if(Token::check())
+    {
         $validate = new DB();
         $validation = $validate->validate([
             'about' => 'required|min:3|max:5000',
@@ -35,6 +37,7 @@ if(Input::post('update_profile'))
                 Session::flash('success-m', 'About updated successufully!');
             }
         }
+    }
     return view('/employee/account');
 }
 
@@ -140,7 +143,7 @@ if(Input::exists('get') && Input::get('page') == 'edit_work' && Input::get('eid'
                                         <div class="dob text-center text-success" style="font-size: 12px;"><span>Joined: </span><?= date('d M Y', strtotime($employee->date_joined)) ?></div>
                                         <ul class="anchor-acc">
                                             <li><a href="<?= url('/employee/account') ?>">Account</a></li>
-                                            <li><a href="<?= url('/employee/job-offer') ?>">Job offeres</a></li>
+                                            <li><a href="<?= url('/employee/job-offer') ?>">Job offers</a></li>
                                             <li><a href="<?= url('/employee/accepted')?>">Accepted offers</a></li>
                                             <li><a href="<?= url('/employee/job-history')?>">Offer history</a></li>
                                             <li><a href="<?= url('/employee/change-password')?>">Change password</a></li>
@@ -183,6 +186,7 @@ if(Input::exists('get') && Input::get('page') == 'edit_work' && Input::get('eid'
                                                 </div>
                                             </div>
                                         </div>
+                                        <?= csrf_token() ?>
                                     </form>
                                 </div>
                             </div>

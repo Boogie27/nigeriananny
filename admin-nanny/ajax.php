@@ -22,7 +22,7 @@ if(Input::post('upload_admin_image'))
                 $file = Image::files('image');
 
                 $file_name = Image::name('image', 'admins');
-                $image->resize_image($file, [ 'name' => $file_name, 'width' => 100, 'height' => 100, 'size_allowed' => 1000000,'file_destination' => '../admin/images/admin-img/']);
+                $image->upload_image($file, [ 'name' => $file_name, 'size_allowed' => 5000000,'file_destination' => '../admin/images/admin-img/']);
                     
                 $image_name = '/admin/images/admin-img/'.$file_name;
 
@@ -96,6 +96,12 @@ if(Input::post('is_employee_deactivate'))
                 ])->where('e_id', $employee_id)->save();
         if($update)
         {
+            if($is_deactivate)
+            {
+                send_deactivate_mail($employee);
+            }else{
+                send_activate_mail($employee);
+            }
             Session::flash('success', "Employee status updated successfully!");
             $data = true;
         }
@@ -796,6 +802,10 @@ if(Input::post('employee_writing_ability'))
 
 
 
+
+
+
+
 // =========================================
 // EMPLOYEE LIVE IN
 // =========================================
@@ -931,7 +941,7 @@ if(Input::post('upload_employee_cv'))
     $file_name = Image::name('image', 'cv');
     $image->upload_image($file, [
         'name' => $file_name,
-        'size_allowed' => 1000000,
+        'size_allowed' => 5000000,
         'file_destination' => '../employee/images/cv/'
     ]);
 
@@ -1016,19 +1026,13 @@ if(Input::post('delete_employee_cv'))
 if(Input::post('upload_employee_image'))
 {
     $data = true;
-    if(!Auth_employee::is_loggedin())
-    {
-        Session::flash('error', '*Signup or Login to be able to hire a worker');
-        return response(['not_login' => ['login' => true]]);
-    }
-
     if(Image::exists('image'))
     {
         $image = new Image();
         $file = Image::files('image');
 
         $file_name = Image::name('image', 'employee');
-        $image->resize_image($file, ['name' => $file_name, 'width' => 200, 'height' => 200, 'size_allowed' => 1000000,'file_destination' => '../employee/images/']);
+        $image->upload_image($file, ['name' => $file_name, 'size_allowed' => 5000000,'file_destination' => '../employee/images/']);
             
         $image_name = '/employee/images/'.$file_name;
 
@@ -1145,6 +1149,12 @@ if(Input::post('is_employer_deactivate'))
         if($update)
         {
             $data = true;
+            if($is_deactivate)
+            {
+                send_deactivate_mail($employer);
+            }else{
+                send_activate_mail($employer);
+            }
         }
     }
     if(!$data)
@@ -1170,7 +1180,7 @@ if(Input::post('upload_employer_image'))
         $file = Image::files('image');
 
         $file_name = Image::name('image', 'employer');
-        $image->resize_image($file, ['name' => $file_name, 'width' => 200, 'height' => 200, 'size_allowed' => 1000000,'file_destination' => '../employer/images/']);
+        $image->upload_image($file, ['name' => $file_name, 'size_allowed' => 5000000,'file_destination' => '../employer/images/']);
             
         $image_name = '/employer/images/'.$file_name;
 
@@ -1756,7 +1766,7 @@ if(Input::post('upload_app_logo_image'))
         $file = Image::files('app_logo');
 
         $file_name = Image::name('app_logo', 'logo');
-        $image->upload_image($file, [ 'name' => $file_name, 'size_allowed' => 1000000,'file_destination' => '../admin/images/']);
+        $image->upload_image($file, [ 'name' => $file_name, 'size_allowed' => 5000000,'file_destination' => '../admin/images/']);
             
         $image_name = '/admin/images/'.$file_name;
 
@@ -1824,7 +1834,7 @@ if(Input::post('upload_footer_logo_image'))
         $file = Image::files('footer_logo');
 
         $file_name = Image::name('footer_logo', 'footer_logo');
-        $image->upload_image($file, [ 'name' => $file_name, 'size_allowed' => 1000000,'file_destination' => '../admin/images/']);
+        $image->upload_image($file, [ 'name' => $file_name, 'size_allowed' => 5000000,'file_destination' => '../admin/images/']);
             
         $image_name = '/admin/images/'.$file_name;
 
@@ -1917,7 +1927,7 @@ if(Input::post('upload_testimonial_image'))
         $file = Image::files('image');
 
         $file_name = Image::name('image', 'testimonial');
-        $image->upload_image($file, ['name' => $file_name, 'size_allowed' => 1000000,'file_destination' => '../images/testimonial/']);
+        $image->upload_image($file, ['name' => $file_name, 'size_allowed' => 5000000,'file_destination' => '../images/testimonial/']);
             
         $image_name = '/images/testimonial/'.$file_name;
 
@@ -2258,7 +2268,7 @@ if(Input::post('add_testimonial_image'))
         $file = Image::files('image');
 
         $file_name = Image::name('image', 'testimonial');
-        $image->upload_image($file, ['name' => $file_name, 'size_allowed' => 1000000,'file_destination' => '../images/testimonial/']);
+        $image->upload_image($file, ['name' => $file_name, 'size_allowed' => 5000000,'file_destination' => '../images/testimonial/']);
             
         $image_name = '/images/testimonial/'.$file_name;
 
@@ -2681,115 +2691,11 @@ if(Input::post('send_news_letter_to_employer'))
 }
 
 
-// =============================================
-// GET NEWS LETTER PAGE
-// =============================================
-function get_news_letter_page($logo, $app_name, $address, $header, $body)
-{
-    $news_letters = '';
-    $news_letters .= '<!DOCTYPE html>
-                    <html lang="en">
-                    <head>
-                        <meta charset="UTF-8">
-                        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                        <meta http-equiv="X-UA-Compatible" content="ie=edge">
-                        <style>
-                            *{
-                                padding: 0px;
-                                margin: 0px;
-                            }
-                            .content{
-                                padding: 30px;
-                                background-color: rgb(240, 240, 240);
-                            }
-                            .news-header{
-                                text-align: center;
-                            }
-                            .container{
-                                width: 80%;
-                                margin: 0 auto;
-                                padding: 30px 20px;
-                                background-color: #fff;
-                            }
-                            .news-header h4{
-                                color: #333333;
-                                margin-top: 10px;
-                                font-family: Arial,Helvetica Neue,Helvetica,sans-serif;
-                                font-size: 30px;
-                            }
-                            h4, h3, h2, h1, h5, h6, p, li{
-                                color: #333333;
-                                margin: 0px;
-                                font-family: Arial,Helvetica Neue,Helvetica,sans-serif;
-                            }
-                            .content-header p{
-                                margin-top: 20px;
-                                text-align: center;
-                            }
-                            p.content-body{
-                                color: #555;
-                                margin: 0 auto;
-                                margin-top: 20px;
-                                font-size: 18px;
-                            }
-                            .footer{
-                                padding: 50px 0px;
-                                text-align: center;
-                            }
-                            .footer ul{
-                                padding:0px;
-                                margin: 0px;
-                                list-style: none;
-                            }
-                            .footer ul li{
-                                
-                            }
-                            .footer-header{
-                                font-size: 20px;
-                            }
-                            .anchor{
-                                float: right;
-                                color: blue;
-                                text-decoration: none;
-                            }
-                            @media only screen and (max-width: 767px){
-                                .container{
-                                    width: 90%;
-                                    padding: 30px 10px;
-                                }
-                                .content{
-                                    padding: 20px 0px;
-                                    width: 95%;
-                                    margin: 0 auto;
-                                    background-color: rgb(240, 240, 240);
-                                }
-                            }
-                        </style>
-                    </head>
-                    <body>
-                        <div class="content">
-                            <div class="container">
-                                <div class="news-header">
-                                        <img src="'.asset($logo).'" alt="'.$app_name.'">
-                                        <h4>'.$app_name.'</h4>
-                                </div>
-                                <div class="news-body">
-                                        <div class="content-header"><p>'.$header.'</p></div>
-                                        <p class="content-body">'.$body.'</p>
-                                        <div class="footer">
-                                            <ul>
-                                                <li class="footer-header">'.$app_name.'</li>
-                                                <li>'.$address.'</li>
-                                            </ul>
-                                        </div>
-                                </div>
-                            </div>
-                        </div>
-                    </body>
-                    </html>';
 
-        return $news_letters;
-}
+
+
+
+
 
 
 
@@ -2973,7 +2879,7 @@ if(Input::post('update_construction_banner_image'))
         $file = Image::files('construction_banner');
 
         $file_name = Image::name('construction_banner', 'construction_banner');
-        $image->upload_image($file, [ 'name' => $file_name, 'size_allowed' => 1000000,'file_destination' => '../images/banner/']);
+        $image->upload_image($file, [ 'name' => $file_name, 'size_allowed' => 5000000,'file_destination' => '../images/banner/']);
             
         $image_name = '/images/banner/'.$file_name;
 
@@ -3161,7 +3067,7 @@ if(Input::post('upload_slide_image'))
         $file = Image::files('image');
 
         $file_name = Image::name('image', 'slider');
-        $image->upload_image($file, [ 'name' => $file_name, 'size_allowed' => 1000000,'file_destination' => '../images/slider/']);
+        $image->upload_image($file, [ 'name' => $file_name, 'size_allowed' => 5000000,'file_destination' => '../images/slider/']);
             
         $image_name = '/images/slider/'.$file_name;
 
@@ -3248,4 +3154,323 @@ if(Input::post('delete_slider_banner_action'))
 
     return response(['data' => $data]);
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// ************** SEND NEWSLETTER *************//
+if(Input::post('send_newsletter'))
+{
+    $data = false;
+    $newsletter_id = Input::get('newsletter_id');
+
+    $news_letter = $connection->select('news_letters')->where('id', $newsletter_id)->first();
+    if($news_letter)
+    {
+        if($stored_ids = Input::get('stored_id'))
+        {
+            $member_type = Input::get('member_type');
+            $banner =  $connection->select('settings')->where('id', 1)->first(); //get site details like app name, address and logo
+            $newsLetter = get_news_letter_page($banner->logo, $banner->app_name, $banner->address, $news_letter->header, $news_letter->body);
+            
+            foreach($stored_ids as $id)
+            {
+                if($member_type == 'employee')
+                {
+                    $member = $connection->select('employee')->where('e_id', $id)->first();
+                    
+                }
+                if($member_type == 'employer')
+                {
+                    $member = $connection->select('employers')->where('id', $id)->first();
+                }
+                if($member)
+                {
+                    $mail = new Mail();
+                    $send = $mail->mail([
+                        'to' => $member->email,
+                        'subject' => $news_letter->subject,
+                        'body' => $newsLetter,
+                    ]);
+                    $send->send_email();
+                    $data = true;
+                }
+            }
+        }
+    }
+    return response(['data' => $data]);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+if(Input::post('approve_members'))
+{
+    $data = false;
+    $member_type = Input::get('member_type');
+
+    if($stored_ids = Input::get('stored_id'))
+    {
+        foreach($stored_ids as $id)
+        {
+            if($member_type == 'employee')
+            {
+                $member = $connection->select('employee')->where('e_id', $id)->first();
+                if($member)
+                {
+                    $data = true;
+                    $connection->update('employee', [
+                        'e_approved' => 1
+                    ])->where('e_id', $id)->save();
+                }
+            }
+            if($member_type == 'employer')
+            {
+                $member = $connection->select('employers')->where('id', $id)->first();
+                if($member)
+                {
+                    $data = true;
+                    $connection->update('employers', [
+                        'employer_approved' => 1
+                    ])->where('id', $id)->save();
+                }
+            }
+        }
+        if($data)
+        {
+            Session::flash('success', 'Approved successfully!');
+        }
+    }
+    
+    return response(['data' => $data]);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// ********** ACTIVATE MEMBERS ************//
+if(Input::post('activate_members'))
+{
+    $data = false;
+    $member_type = Input::get('member_type');
+
+    if($stored_ids = Input::get('stored_id'))
+    {
+        foreach($stored_ids as $id)
+        {
+            if($member_type == 'employee')
+            {
+                $member = $connection->select('employee')->where('e_id', $id)->first();
+                if($member)
+                {
+                    $data = true;
+                    $connection->update('employee', [
+                        'e_is_deactivate' => 0
+                    ])->where('e_id', $id)->save();
+
+                    send_activate_mail($member);
+                }
+            }
+            if($member_type == 'employer')
+            {
+                $member = $connection->select('employers')->where('id', $id)->first();
+                if($member)
+                {
+                    $data = true;
+                    $connection->update('employers', [
+                        'e_deactivate' => 0
+                    ])->where('id', $id)->save();
+
+                    send_activate_mail($member);
+                }
+            }
+        }
+        if($data)
+        {
+            Session::flash('success', 'Activated successfully!');
+        }
+    }
+    
+    return response(['data' => $data]);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+function send_activate_mail($user)
+{
+    if($user)
+    {
+        $app = settings();
+        $header = 'Account Activation';
+        $body = 'Congratulations, Your account has been activated, 
+                 You are able to see this mail because you are a member of nigeriananny,
+                 If this is wrong kindly ignore or delete this mail. Thank you.';
+
+        $mail_view = mail_view($app->logo, $app->app_name, $app->address, $header, $body);
+
+        $mail = new Mail();
+        $send = $mail->mail([
+            'to' => $user->email,
+            'subject' => $header,
+            'body' => $mail_view,
+        ]);
+        $send->send_email();
+        return true;
+    }
+    return false;
+}
+
+
+
+
+
+
+
+
+
+// ********** DEACTIVATE MEMBERS ************//
+if(Input::post('deactivate_members'))
+{
+    $data = false;
+    $member_type = Input::get('member_type');
+
+    if($stored_ids = Input::get('stored_id'))
+    {
+        foreach($stored_ids as $id)
+        {
+            if($member_type == 'employee')
+            {
+                $member = $connection->select('employee')->where('e_id', $id)->first();
+                if($member)
+                {
+                    $data = true;
+                    $connection->update('employee', [
+                        'e_is_deactivate' => 1
+                    ])->where('e_id', $id)->save();
+
+                    send_deactivate_mail($member);
+                }
+            }
+            if($member_type == 'employer')
+            {
+                $member = $connection->select('employers')->where('id', $id)->first();
+                if($member)
+                {
+                    $data = true;
+                    $connection->update('employers', [
+                        'e_deactivate' => 1
+                    ])->where('id', $id)->save();
+
+                    send_deactivate_mail($member);
+                }
+            }
+        }
+        if($data)
+        {
+            Session::flash('success', 'Deactivated successfully!');
+        }
+    }
+    
+    return response(['data' => $data]);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+function send_deactivate_mail($user)
+{
+    if($user)
+    {
+        $app = settings();
+        $header = 'Account deactivation';
+        $body = 'We are sorry to notify you that Your account has been deactivated, 
+                kindly contact the admin if you wish to reactivate your account, Thank you.';
+
+        $mail_view = mail_view($app->logo, $app->app_name, $app->address, $header, $body);
+
+        $mail = new Mail();
+        $send = $mail->mail([
+            'to' => $user->email,
+            'subject' => $header,
+            'body' => $mail_view,
+        ]);
+        $send->send_email();
+        return true;
+    }
+    return false;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

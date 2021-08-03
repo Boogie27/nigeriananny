@@ -20,58 +20,61 @@ if(!$admin)
 
 if(Input::post('edit_admin_submit'))
 {
-    $validate = new DB();
-       
-    $validation = $validate->validate([
-        'first_name' => 'required|min:3|max:50',
-        'last_name' => 'required|min:3|max:50',
-        'email' =>'required|min:3|max:50',
-        'phone' =>'required|min:11|max:11|number',
-        'birth_date' =>'required',
-        'address' =>'required|min:3|max:200',
-        'city' => 'required|max:100',
-        'state' => 'required|max:100',
-        'country' => 'required|max:100',
-        'gender' => 'required',
-    ]);
-    
-    if(!$validation->passed())
+    if(Token::check())
     {
-        return back();
-    }
-
-   
-    if($admin->email != Input::get('email'))
-    {
-        $other_email = $connection->select('admins')->where('email', Input::get('email'))->get();
-        if(count($other_email))
+        $validate = new DB();
+        
+        $validation = $validate->validate([
+            'first_name' => 'required|min:3|max:50',
+            'last_name' => 'required|min:3|max:50',
+            'email' =>'required|min:3|max:50',
+            'phone' =>'required|min:11|max:11|number',
+            'birth_date' =>'required',
+            'address' =>'required|min:3|max:200',
+            'city' => 'required|max:100',
+            'state' => 'required|max:100',
+            'country' => 'required|max:100',
+            'gender' => 'required',
+        ]);
+        
+        if(!$validation->passed())
         {
-            Session::errors('errors', ['email' => '*email already exists!']);
             return back();
         }
-    }
 
-    if($validation->passed())
-    {
-       $update = $connection->update('admins', [
-            'first_name' =>  Input::get('first_name'),
-            'last_name' =>  Input::get('last_name'),
-            'email' => Input::get('email'),
-            'phone' => Input::get('phone'),
-            'birth_date' => Input::get('birth_date'),
-            'address' => Input::get('address'),
-            'city' => strtoupper(Input::get('city')),
-            'state' => strtoupper(Input::get('state')),
-            'country' => strtoupper(Input::get('country')),
-            'gender' => Input::get('gender'),
-       ])->where('id', $admin->id)->save();
+    
+        if($admin->email != Input::get('email'))
+        {
+            $other_email = $connection->select('admins')->where('email', Input::get('email'))->get();
+            if(count($other_email))
+            {
+                Session::errors('errors', ['email' => '*email already exists!']);
+                return back();
+            }
+        }
 
-       if($update)
-       {     
-            Admin_auth::login(Input::get('email'));
-            Session::flash('success', 'Profile has been updated successfully!');
-            return back();
-       }
+        if($validation->passed())
+        {
+        $update = $connection->update('admins', [
+                'first_name' =>  Input::get('first_name'),
+                'last_name' =>  Input::get('last_name'),
+                'email' => Input::get('email'),
+                'phone' => Input::get('phone'),
+                'birth_date' => Input::get('birth_date'),
+                'address' => Input::get('address'),
+                'city' => strtoupper(Input::get('city')),
+                'state' => strtoupper(Input::get('state')),
+                'country' => strtoupper(Input::get('country')),
+                'gender' => Input::get('gender'),
+        ])->where('id', $admin->id)->save();
+
+        if($update)
+        {     
+                Admin_auth::login(Input::get('email'));
+                Session::flash('success', 'Profile has been updated successfully!');
+                return back();
+        }
+        }
     }
 }
 
@@ -240,7 +243,7 @@ $banner =  $connection->select('settings')->where('id', 1)->first();
                                                         <button type="submit" name="edit_admin_submit" class="btn bg-danger btn-log btn-block h50" style="color: #fff;">Submit</button>                                                 
                                                     </div>
                                                 </div>
-                                                
+                                                <?= csrf_token() ?>
                                             </div>
                                         </form>
                                     </div>
@@ -250,16 +253,12 @@ $banner =  $connection->select('settings')->where('id', 1)->first();
                     </div>
                    <!-- profile end -->
                 </div>
-                <div class="row mt50 mb50">
-                    <div class="col-lg-6 offset-lg-3">
-                        <div class="copyright-widget text-center">
-                            <p class="color-black2"><?= $banner->alrights ?></p>
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
     </div>
+</div>
+<div class="footer-copy-right">
+    <p><?= $banner->alrights ?></p>
 </div>
 <a class="scrollToHome" href="#"><i class="flaticon-up-arrow-1"></i></a>
 </div>

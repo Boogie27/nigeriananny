@@ -8,7 +8,7 @@ if(!Admin_auth::is_loggedin())
 
 
 $transactions = $connection->select('shop_transactions')->leftJoin('users', 'shop_transactions.buyer_id','=', 'users.id')
-                      ->where('transaction_is_cancled', 0)->paginate(15);
+                      ->where('transaction_is_cancled', 0)->paginate(50);
 
 
 
@@ -64,6 +64,9 @@ $banner =  $connection->select('settings')->where('id', 1)->first();
                                 <li class="breadcrumb-item"><b>Total earnings:</b> <span class="delivered"><?= money($totalEarnings) ?></span></li>
                             </ol>
                         </nav>
+                        <div class="text">
+                            Total Transactions: <?= count($transactions->result())?>
+                        </div>
                     </div>
                     <div class="col-lg-12">
                         <div class="item-table table-responsive"> <!-- table start-->
@@ -108,7 +111,7 @@ $banner =  $connection->select('settings')->where('id', 1)->first();
                                 <!-- pagination -->
                                 <?php $transactions->links(); ?>
 
-                                 <?php if($transactions->result() == 0): ?>
+                                 <?php if(!count($transactions->result())): ?>
                                     <div class="empty-table">There are no transactions yet!</div>
                                 <?php endif; ?>
                             </div>

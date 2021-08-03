@@ -8,6 +8,16 @@ if(!Admin_auth::is_loggedin())
 }
 
 
+
+
+$course_categories = $connection->select('course_categories');
+
+if($search = Input::get('search'))
+{
+    $course_categories->where('category_name', 'RLIKE', $search);
+}
+$course_categories->paginate(50);
+
 // =============================================
 // app banner settings
 // =============================================
@@ -50,6 +60,19 @@ $banner =  $connection->select('settings')->where('id', 1)->first();
                                 <li class="breadcrumb-item active" aria-current="page"><a href="#" data-toggle="modal" data-target="#exampleModal_category_add" class="view-btn-fill">Add categories</a></li>
                             </ol>
                         </nav>
+                        <div class="text">
+                            Total Categories: <?= count($course_categories->result())?>
+                        </div>
+                    </div>
+                    <div class="col-lg-12">
+                        <div class="top-table-container">
+                            <div class="icon-container"><i class="fa fa-cubes"></i></div>
+                            <form action="" method="GET" class="form-search-input">
+                                <div class="form-group">
+                                    <input type="text" name="search" class="form-control" value="" placeholder="Search...">
+                                </div>
+                            </form>
+                        </div>
                     </div>
                     <div class="col-lg-12">
                         <div class="table-responsive"> <!-- table start-->
@@ -64,8 +87,7 @@ $banner =  $connection->select('settings')->where('id', 1)->first();
                                     </tr>
                                 </thead>
                                 <tbody class="item-table-t">
-                                <?php $course_categories = $connection->select('course_categories')->paginate(15);
-                                if($course_categories->result()): 
+                                <?php if($course_categories->result()): 
                                 foreach($course_categories->result() as $category):    
                                 ?>
                                     <tr>

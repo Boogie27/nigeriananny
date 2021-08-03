@@ -8,10 +8,15 @@ if(!Admin_auth::is_loggedin())
 }
 
 
-// ===========================================
-// GET ALL EMPLOYEES
-// ===========================================
-$courses = $connection->select('courses')->paginate(15);
+// GET ALL EMPLOYEES ************//
+$courses = $connection->select('courses');
+
+if($search = Input::get('search'))
+{
+    $courses->where('title', 'RLIKE', $search);
+}
+$courses->paginate(50);
+
 
 
 // ********** app banner settings ***********//
@@ -53,6 +58,19 @@ $banner =  $connection->select('settings')->where('id', 1)->first();
                                 <li class="breadcrumb-item active" aria-current="page"><a href="<?= url('/admin-course/add-course') ?>" class="view-btn-fill">Add courses</a></li>
                             </ol>
                         </nav>
+                        <div class="text">
+                            Total Courses: <?= count($courses->result())?>
+                        </div>
+                    </div>
+                    <div class="col-lg-12">
+                        <div class="top-table-container">
+                            <div class="icon-container"><i class="fa fa-video-camera"></i></div>
+                            <form action="" method="GET" class="form-search-input">
+                                <div class="form-group">
+                                    <input type="text" name="search" class="form-control" value="" placeholder="Search by title...">
+                                </div>
+                            </form>
+                        </div>
                     </div>
                     <div class="col-lg-12">
                         <div class="table-responsive"> <!-- table start-->

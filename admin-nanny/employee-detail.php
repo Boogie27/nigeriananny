@@ -23,6 +23,8 @@ if(!Input::exists('get') || !Input::get('wid'))
 // ============================================
 if(Input::post('update_profile'))
 {
+    if(Token::check())
+    {
         $validate = new DB();
         $validation = $validate->validate([
             'email' => 'required|email',
@@ -73,7 +75,7 @@ if(Input::post('update_profile'))
                 return back();
             }
         }
-
+    }
 }
 
 
@@ -155,6 +157,7 @@ $worker = $connection->select('workers')->where('employee_id', Input::get('wid')
                                     <div class="drop-down">
                                         <i class="fa fa-ellipsis-h dot-icon"></i>
                                         <ul class="drop-down-ul">
+                                            <li><a href="mailto:<?= $employee->email ?>">Send mail</a></li>
                                             <li><a href="#" id="<?= Input::get('wid') ?>" class="employee_add_top_btn"><?= $employee->is_top ? 'Remove from top' : 'Add to top' ?></a></li>
                                             <li><a href="#" id="<?= Input::get('wid') ?>" class="employee_feature_btn"><?= $employee->is_feature ? 'Unfeature' : 'Feature' ?></a></li>
                                             <li><a href="#" id="<?= Input::get('wid') ?>" class="employee_deactivate_btn"><?= $employee->e_is_deactivate ? 'Activate' : 'Deactivate' ?></a></li>
@@ -269,6 +272,7 @@ $worker = $connection->select('workers')->where('employee_id', Input::get('wid')
                                             </div>
                                         </div>
                                     </div>
+                                    <?= csrf_token() ?>
                                 </form>
                             </div>
                         </div>
@@ -540,7 +544,7 @@ $worker = $connection->select('workers')->where('employee_id', Input::get('wid')
                                    </div>
                                    <div class="inner-body">
                                        <ul class="inner_ul">
-                                            <li><p class="inner-p">Specify your prefered salaray range</p></li>
+                                            <li><p class="inner-p">Specify your prefered salaray</p></li>
                                             <?php if($worker->amount_form): 
                                             $amount = $worker->amount_to ? money($worker->amount_form).' - '.money($worker->amount_to) : money($worker->amount_form);
                                             ?>

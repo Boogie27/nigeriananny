@@ -9,7 +9,6 @@ if(Input::post('save_job'))
 {
     $data = false;
     $expiry = 3153600;
-    $employer_id = Auth_employer::employer('id');
     $connection = new DB();
      
     $worker = $connection->select('workers')->where('worker_id', Input::get('worker_id'))->first();
@@ -49,18 +48,52 @@ if(Input::post('save_job'))
 }
 
 
+
+
+
+
+
+
+
+
+
 // ********** GET ALL SAVED WORKERS ***********//
 if(Input::post('get_save_job'))
 {
     $data = 0;
+    $saved = false;
     if(Cookie::has('saved_worker'))
     {
-        $data = count(json_decode(Cookie::get('saved_worker'), true));
-        
+        $saves = json_decode(Cookie::get('saved_worker'), true);
+        $data = count($saves);
+        $savedWorker = saved_workers($saves);
     }
-    return response(['data' => $data]);
+    return response(['data' => $data, 'saved_worker' => $savedWorker]);
 }
     
+
+
+
+
+
+// ********** GET SAVED WORKERS DIVS ***********//
+function saved_workers($saves = null){
+    $content = '';
+    if($saves && count($saves))
+    {
+        foreach($saves as $saved)
+        {
+            $content .= '<li><a href="'.url('/job-detail.php?wid='.$saved['worker_id']).'">'.$saved['title'].'</a></li>';
+        }
+    }else{
+        $content .= '<li class="text-center text-danger" style="font-size: 10px;">No saved workers</li>';
+    }
+    return $content;
+}
+
+  
+
+
 
 
 
@@ -113,7 +146,7 @@ if(Input::post('upload_employer_image'))
         $file = Image::files('image');
 
         $file_name = Image::name('image', 'employer');
-        $image->resize_image($file, ['name' => $file_name, 'width' => 200, 'height' => 200, 'size_allowed' => 1000000,'file_destination' => './employer/images/']);
+        $image->resize_image($file, ['name' => $file_name, 'width' => 200, 'height' => 200, 'size_allowed' => 5000000,'file_destination' => './employer/images/']);
             
         $image_name = '/employer/images/'.$file_name;
 
@@ -327,7 +360,7 @@ if(Input::post('upload_employee_image'))
         $file = Image::files('image');
 
         $file_name = Image::name('image', 'employee');
-        $image->resize_image($file, ['name' => $file_name, 'width' => 200, 'height' => 200, 'size_allowed' => 1000000,'file_destination' => './employee/images/']);
+        $image->resize_image($file, ['name' => $file_name, 'width' => 200, 'height' => 200, 'size_allowed' => 5000000,'file_destination' => './employee/images/']);
             
         $image_name = '/employee/images/'.$file_name;
 
@@ -1192,7 +1225,7 @@ if(Input::post('upload_employee_cv'))
     $file_name = Image::name('image', 'cv');
     $image->upload_image($file, [
         'name' => $file_name,
-        'size_allowed' => 1000000,
+        'size_allowed' => 5000000,
         'file_destination' => './employee/images/cv/'
     ]);
 

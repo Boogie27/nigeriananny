@@ -30,6 +30,14 @@
     }
 
 
+
+
+
+   
+
+
+
+    
     public static function get($string = null){
         if($string){
             if(isset($_POST[$string])){

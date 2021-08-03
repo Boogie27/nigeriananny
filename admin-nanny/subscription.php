@@ -11,7 +11,21 @@ if(!Admin_auth::is_loggedin())
 // ===========================================
 // GET ALL EMPLOYEES
 // ===========================================
-$employers = $connection->select('employer_subscriptions')->leftJoin('employers', 'employer_subscriptions.s_employer_id', '=', 'employers.id')->paginate(15);
+$employers = $connection->select('employer_subscriptions')->leftJoin('employers', 'employer_subscriptions.s_employer_id', '=', 'employers.id');
+
+if($search = Input::get('search'))
+{
+    if(preg_match('/@/', $search))
+    {
+        $employers->where('employers.email', $search);
+    }else{
+        $employers->where('employers.first_name', 'RLIKE', $search);
+    }
+}
+$employers->paginate(50);
+
+
+
 
 
 
@@ -55,6 +69,16 @@ $banner =  $connection->select('settings')->where('id', 1)->first();
                                 <li class="breadcrumb-item active" aria-current="page"><a href="#">Subscription</a></li>
                             </ol>
                         </nav>
+                    </div>
+                    <div class="col-lg-12">
+                        <div class="top-table-container">
+                            <div class="icon-container"><i class="fa fa-users"></i></div>
+                            <form action="" method="GET" class="form-search-input">
+                                <div class="form-group">
+                                    <input type="text" name="search" class="form-control" value="" placeholder="Search...">
+                                </div>
+                            </form>
+                        </div>
                     </div>
                     <div class="col-lg-12">
                         <div class="item-table table-responsive"> <!-- table start-->
@@ -109,16 +133,12 @@ $banner =  $connection->select('settings')->where('id', 1)->first();
                         </div><!-- table end-->
                     </div>
                 </div>
-                <div class="row mt50 mb50">
-                    <div class="col-lg-6 offset-lg-3">
-                        <div class="copyright-widget text-center">
-                            <p class="color-black2"><?= $banner->alrights ?></p>
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
     </div>
+</div>
+<div class="footer-copy-right">
+    <p><?= $banner->alrights ?></p>
 </div>
 <a class="scrollToHome" href="#"><i class="flaticon-up-arrow-1"></i></a>
 </div>

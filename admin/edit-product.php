@@ -21,50 +21,58 @@ if(!Admin_auth::is_loggedin())
 
 
 
+
+
+
+
     if(Input::post('update_product'))
     {
-        $validate = new DB();
-       
-        $validation = $validate->validate([
-            'product_name' => 'required|min:3|max:50',
-            'category' => 'required',
-            'subcategory' => 'required',
-            'product_price' => 'required',
-            'product_quantity' => 'required',
-            'product_detail' => 'required|min:6|max:2000',
-            'description' => 'required|min:6|max:5000',
-        ]);
-
-        if(!$validation->passed())
+        if(Token::check())
         {
-            return back();
-        }
+            $validate = new DB();
+        
+            $validation = $validate->validate([
+                'product_name' => 'required|min:3|max:50',
+                'category' => 'required',
+                'subcategory' => 'required',
+                'product_price' => 'required',
+                'product_quantity' => 'required',
+                'product_detail' => 'required|min:6|max:2000',
+                'description' => 'required|min:6|max:5000',
+            ]);
+
+            if(!$validation->passed())
+            {
+                return back();
+            }
 
 
-        $products = $connection->select('shop_products')->where('id', $product_id)->first();
-        if(!$products->big_image)
-        {
-            Session::errors('errors', ['image' => '*Product image is required!']);
-            return back();
-        }
+            $products = $connection->select('shop_products')->where('id', $product_id)->first();
+            if(!$products->big_image)
+            {
+                Session::errors('errors', ['image' => '*Product image is required!']);
+                return back();
+            }
 
-        $update = $connection->update('shop_products', [
-            'product_name' => Input::get('product_name'),
-            'product_category_id' => Input::get('category'),
-            'product_subCategory_id' => Input::get('subcategory'),
-            'product_price' => Input::get('product_price'),
-            'product_quantity' => Input::get('product_quantity'),
-            'shipping_fee' => Input::get('shipping_fee'),
-            'product_detail' => Input::get('product_detail'),
-            'description' => Input::get('description'),
-        ])->where('id', $product_id)->save();
-   
-        if($update)
-        {
-            Session::flash('success', 'Product has been updated successfully!');
-            return back();
+            $update = $connection->update('shop_products', [
+                'product_name' => Input::get('product_name'),
+                'product_category_id' => Input::get('category'),
+                'product_subCategory_id' => Input::get('subcategory'),
+                'product_price' => Input::get('product_price'),
+                'product_quantity' => Input::get('product_quantity'),
+                'shipping_fee' => Input::get('shipping_fee'),
+                'product_detail' => Input::get('product_detail'),
+                'description' => Input::get('description'),
+            ])->where('id', $product_id)->save();
+    
+            if($update)
+            {
+                Session::flash('success', 'Product has been updated successfully!');
+                return back();
+            }
         }
     }
+
 
 
     // app banner settings
@@ -232,7 +240,7 @@ $banner =  $connection->select('settings')->where('id', 1)->first();
                                            <button type="submit" name="update_product" class="btn bg-primary float-right" style="color: #fff;">Update product</button>
                                        </div> 
                                     </div>
-
+                                    <?= csrf_token() ?>
                                 </div>
                             </form>
                         </div>

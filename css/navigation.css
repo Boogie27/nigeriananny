@@ -244,6 +244,7 @@ a.btn-fill:hover{
 }
 .inner-navigation{
     display: flex;
+    text-align: center;
     justify-content: space-between;
 }
 .nav-left{
@@ -275,7 +276,7 @@ span.nav-app-name{
     top: 4px;
     color: #333;
     font-weight: 600;
-    font-size: 25px;
+    font-size: 15px;
     position: relative;
 }
 .nav-right{
@@ -371,7 +372,7 @@ a.nav-alert-badge span{
         top: 0px;
     }
     span.nav-app-name{
-        font-size: 20px;
+        font-size: 11px;
     }
     .nav-left img{
         margin-left: 0px;
@@ -463,11 +464,14 @@ a.nav-alert-badge span{
     width: 250px;
     height: 100vh;
     padding-top: 20px;
-    overflow-y: auto;
+    overflow: auto;
     position: fixed;
     background-color: #fff;
     transition: all 0.2s ease;
     border-right: 1px solid #ccc;
+}
+.side-navigation::-webkit-scrollbar{
+    width: 0px;
 }
 .side-saved-workers{
     font-size: 12px;
@@ -563,16 +567,16 @@ ul.child-drop-down{
     margin-bottom: 30px;
 }
 .inner-content{
+    height: 120px;
     border: none;
     margin-bottom: 10px;
-    background-color: #fff;
-    box-shadow: 2px 2px 0px 0px rgba(216, 216, 216, 0.6);
-}
-.inner-content{
     padding: 20px 10px;
     border-radius: 3px;
     border: 1px solid #ccc;
+    background-color: #fff;
+    box-shadow: 2px 2px 0px 0px rgba(216, 216, 216, 0.6);
 }
+
 .inner-content img{
     border-radius: 50%;
     width: 60px;

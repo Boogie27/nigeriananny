@@ -7,7 +7,19 @@ if(!Admin_auth::is_loggedin())
 }
 
     $connection = new DB();
-    $sub_categories = $connection->select('shop_subcategories')->leftJoin('shop_categories', 'shop_subcategories.shop_categories_id', '=', 'shop_categories.category_id')->paginate(15);
+    $sub_categories = $connection->select('shop_subcategories')->leftJoin('shop_categories', 'shop_subcategories.shop_categories_id', '=', 'shop_categories.category_id');
+
+
+    if($search = Input::get('search'))
+    {
+        $sub_categories->where('shop_subCategory_name', 'RLIKE', $search);
+    }
+
+
+
+    $sub_categories->paginate(50);
+
+
 
 // app banner settings
 $banner =  $connection->select('settings')->where('id', 1)->first();
@@ -49,6 +61,19 @@ $banner =  $connection->select('settings')->where('id', 1)->first();
                                 <li class="breadcrumb-item"><a href="<?= url('/admin/add-product.php') ?>" data-toggle="modal" data-target="#modal_add_category" class="btn-fill">Add subcategory</a></li>
                             </ol>
                         </nav>
+                        <div class="text">
+                            Total Subcategories: <?= count($sub_categories->result())?>
+                        </div>
+                    </div>
+                    <div class="col-lg-12">
+                        <div class="top-table-container">
+                            <div class="icon-container"><i class="fa fa-cubes"></i></div>
+                            <form action="" method="GET" class="form-search-input">
+                                <div class="form-group">
+                                    <input type="text" name="search" class="form-control" value="" placeholder="Search...">
+                                </div>
+                            </form>
+                        </div>
                     </div>
                     <div class="col-lg-12">
                         <div class="item-table table-responsive"> <!-- table start-->
@@ -93,7 +118,7 @@ $banner =  $connection->select('settings')->where('id', 1)->first();
                                 <!-- pagination -->
                                 <?php $sub_categories->links(); ?>
 
-                                <?php if($sub_categories->result() == 0): ?>
+                                <?php if(!count($sub_categories->result())): ?>
                                 <div class="empty-table">There are no subcategories yet!</div>
                                 <?php endif; ?>
                             </div>

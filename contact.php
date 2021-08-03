@@ -7,33 +7,36 @@
 // ===========================================
 if(Input::post('contact_nanny'))
 {
-    $validate = new DB();
-    $validation = $validate->validate([
-        'full_name' => 'required|min:3|max:50',
-        'email' => 'required|email',
-        'subject' => 'required|min:6|max:50',
-        'message' => 'required|min:6|max:3000',
-    ]);
-
-    if(!$validation->passed())
+    if(Token::check())
     {
-        return back();
-    }
+        $validate = new DB();
+        $validation = $validate->validate([
+            'full_name' => 'required|min:3|max:50',
+            'email' => 'required|email',
+            'subject' => 'required|min:6|max:50',
+            'message' => 'required|min:6|max:3000',
+        ]);
 
-    if($validation->passed())
-    {
-    $create = $connection->create('contact_us', [
-        'full_name' => Input::get('full_name'),
-        'email' => Input::get('email'),
-        'subject' => Input::get('subject'),
-        'message' => Input::get('message'),
-    ]);
+        if(!$validation->passed())
+        {
+            return back();
+        }
 
-    if($create->passed())
-    {
-        Session::flash('success', 'Message has been sent and would be attended to shortly!');
-        return back();
-    }
+        if($validation->passed())
+        {
+            $create = $connection->create('contact_us', [
+                'full_name' => Input::get('full_name'),
+                'email' => Input::get('email'),
+                'subject' => Input::get('subject'),
+                'message' => Input::get('message'),
+            ]);
+
+            if($create->passed())
+            {
+                Session::flash('success', 'Message has been sent and would be attended to shortly!');
+                return back();
+            }
+        }
     }
 }
 
@@ -125,6 +128,7 @@ $faqs = $connection->select('faqs')->where('is_feature', 1)->get();
                                 </div>
                             </div>
                     </div>
+                    <?= csrf_token() ?>
                 </form>
             </div>
         </div>

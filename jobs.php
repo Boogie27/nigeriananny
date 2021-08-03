@@ -36,7 +36,7 @@ if(Input::exists('get') && Input::get('search'))
 
 
 
-$workers->paginate(15); 
+$workers->paginate(30); 
 
 // dd($workers->result());
 
@@ -46,14 +46,12 @@ if(Input::get('category') && !count($workers->result()))
 {
     $job_title = implode(' ', explode('-', Input::get('category')));
     $page_alert = 'There are no employees in <b>'.$job_title.'</b> category!';
-    $workers = $connection->select('workers')->leftJoin('employee', 'workers.employee_id', '=', 'employee.e_id')->where('employee.e_approved', 1)->where('is_flagged', 0)->where('employee.e_is_deactivate', 0)->paginate(15);
 }
 
 
 if(Input::get('search') && !count($workers->result()))
 {
     $page_alert = 'There are no employees under <b>'.Input::get('search').'</b>!';
-    $workers = $connection->select('workers')->leftJoin('employee', 'workers.employee_id', '=', 'employee.e_id')->where('employee.e_approved', 1)->where('is_flagged', 0)->where('employee.e_is_deactivate', 0)->paginate(15);
 }
 
 
@@ -109,6 +107,7 @@ if(Input::get('search') && !count($workers->result()))
                     <?php endif; ?>
                     <div class="title"><h3><?= $job_title ?></h3></div>
                     <div class="jobs-jobs">
+                        <?php if(count($workers->result())): ?>
                         <div class="row">
                             <?php foreach($workers->result() as $worker): 
                             $w_image = $worker->w_image ?  $worker->w_image : '/employee/images/demo.png';
@@ -121,17 +120,29 @@ if(Input::get('search') && !count($workers->result()))
                                             <img src="<?= asset($w_image)?>" alt="<?= $worker->first_name?>" class="inner-img">
                                     </a>
                                     <ul class="ul-content">
-                                            <li><h4><a href="<?= url('/job-detail.php?wid='.$worker->worker_id) ?>"><?= ucfirst($worker->job_title) ?></a></h4></li>
-                                            <li><?= ucfirst($worker->first_name.' '.$worker->last_name) ?></li>
-                                            <?php if($worker->job_type):?>
-                                            <li><?= $worker->job_type != 'live in' ? 'Live out | '.$location['state'] : 'Live in';?></li>
-                                            <?php endif; ?>
-                                            <li><span class="text-warning"><?= $amount ?></span> <span class="float-right"><?= date('d M Y', strtotime($worker->date_added)) ?></span></li>
-                                        </ul>
+                                        <li>
+                                            <h4>
+                                                <a href="<?= url('/job-detail.php?wid='.$worker->worker_id) ?>"><?= ucfirst($worker->job_title) ?></a>
+                                            </h4>
+                                        </li>
+                                        <li>
+                                            <a href="<?= url('/job-detail.php?wid='.$worker->worker_id) ?>">
+                                                <?= ucfirst($worker->first_name.' '.$worker->last_name) ?></li>
+                                            </a>
+                                        <?php if($worker->job_type):?>
+                                        <li><?= $worker->job_type != 'live in' ? 'Live out | '.$location['state'] : 'Live in';?></li>
+                                        <?php endif; ?>
+                                        <li><span class="text-warning"><?= $amount ?></span> <span class="float-right"><?= date('d M Y', strtotime($worker->date_added)) ?></span></li>
+                                    </ul>
                                 </div>
                             </div>
                             <?php endforeach; ?>
                         </div>
+                        <?php else: ?>
+                            <div class="empty-alert">
+                                <div class="empty-alert-content">There are no employees!</div>
+                            </div>
+                        <?php endif;?>
                     </div>
                     <!-- pagination start -->
                     <?php if(count($workers->result())): ?>

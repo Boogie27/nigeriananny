@@ -10,7 +10,7 @@ $settings = $connection->select('settings')->where('id', 1)->first();
 			<div class="header stylehome1">
 				<div class="main_logo_home2">
 		            <img class="nav_logo_img img-fluid float-left mt20 navi-top-img" src="<?= asset($settings->logo) ?>" alt="<?= $settings->app_name ?>">
-		            <span><?= $settings->app_name ?></span>
+		            <span style="font-size: 11px;"><?= $settings->app_name ?></span>
 				</div>
 			
 				<ul class="menu_bar_home2">

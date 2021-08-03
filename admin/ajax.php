@@ -127,7 +127,7 @@ if(Input::post('upload_edit_Product_image'))
             $file = Image::files('image');
     
             $file_name = Image::name('image', 'product');
-            $image->resize_image($file, [ 'name' => $file_name, 'width' => 320, 'height' => 391, 'size_allowed' => 1000000,'file_destination' => '../shop/images/products/big_image/']);
+            $image->resize_image($file, [ 'name' => $file_name, 'width' => 320, 'height' => 391, 'size_allowed' => 5000000,'file_destination' => '../shop/images/products/big_image/']);
                 
             $image_name = '/shop/images/products/big_image/'.$file_name;
             if(!$image->passed())
@@ -202,7 +202,7 @@ if(Input::post('upload_add_Product_image'))
         $file = Image::files('image');
 
         $file_name = Image::name('image', 'product');
-        $image->resize_image($file, [ 'name' => $file_name, 'width' => 320, 'height' => 391, 'size_allowed' => 1000000,'file_destination' => '../shop/images/products/big_image/']);
+        $image->resize_image($file, [ 'name' => $file_name, 'width' => 320, 'height' => 391, 'size_allowed' => 5000000,'file_destination' => '../shop/images/products/big_image/']);
             
         $image_name = '/shop/images/products/big_image/'.$file_name;
 
@@ -355,7 +355,7 @@ if(Input::post('add_new_category'))
         $file = Image::files('image');
 
         $file_name = Image::name('image', 'category');
-        $image->upload_image($file, [ 'name' => $file_name, 'size_allowed' => 1000000,'file_destination' => '../shop/images/category/']);
+        $image->upload_image($file, [ 'name' => $file_name, 'size_allowed' => 5000000,'file_destination' => '../shop/images/category/']);
             
         $image_name = '/shop/images/category/'.$file_name;
 
@@ -443,7 +443,7 @@ if(Input::post('upload_category_image'))
             $file = Image::files('image');
 
             $file_name = Image::name('image', 'category');
-            $image->upload_image($file, [ 'name' => $file_name, 'size_allowed' => 1000000,'file_destination' => '../shop/images/category/']);
+            $image->upload_image($file, [ 'name' => $file_name, 'size_allowed' => 5000000,'file_destination' => '../shop/images/category/']);
                 
             $image_name = '/shop/images/category/'.$file_name;
 
@@ -601,12 +601,26 @@ if(Input::post('is_customer_deactivate'))
         $customer = $connection->select('users')->where('id', $customer_id)->first();
         $is_deactivate	 = $customer->is_deactivate	 ? 0 : 1;
 
-        $connection->update('users', [
+        $update = $connection->update('users', [
             'is_deactivate	' => $is_deactivate,
             'is_active' => 0
         ])->where('id', $customer_id)->save();
+
+        if($update)
+        {
+            if($is_deactivate)
+            {
+                send_deactivate_mail($customer);
+            }else{
+                send_activate_mail($customer);
+            }
+        }
     }
 }
+
+
+
+
 
 
 
@@ -662,7 +676,7 @@ if(Input::get('upload_customer_image'))
                 $file = Image::files('image');
 
                 $file_name = Image::name('image', 'users');
-                $image->upload_image($file, [ 'name' => $file_name, 'size_allowed' => 1000000,'file_destination' => '../shop/images/users/']);
+                $image->upload_image($file, [ 'name' => $file_name, 'size_allowed' => 5000000,'file_destination' => '../shop/images/users/']);
                     
                 $image_name = '/shop/images/users/'.$file_name;
 
@@ -738,7 +752,7 @@ if(Input::post('upload_admin_image'))
                 $file = Image::files('image');
 
                 $file_name = Image::name('image', 'admins');
-                $image->upload_image($file, [ 'name' => $file_name, 'size_allowed' => 1000000,'file_destination' => '../admin/images/admin-img/']);
+                $image->upload_image($file, [ 'name' => $file_name, 'size_allowed' => 5000000,'file_destination' => '../admin/images/admin-img/']);
                     
                 $image_name = '/admin/images/admin-img/'.$file_name;
 
@@ -758,7 +772,11 @@ if(Input::post('upload_admin_image'))
 
                 if($update)
                 {
-                    $data = $admin_id;
+                    $data = asset($image_name);
+                    
+                    $admin_detail = Session::get('admin');
+                    $admin_detail['image'] = $image_name;
+                    Session::put('admin', $admin_detail);
                 }
             }
             
@@ -769,7 +787,7 @@ if(Input::post('upload_admin_image'))
 
 
 
-
+// Admin_auth::admin('image')
 
 
 
@@ -922,7 +940,7 @@ if(Input::post('upload_app_logo_image'))
         $file = Image::files('app_logo');
 
         $file_name = Image::name('app_logo', 'logo');
-        $image->upload_image($file, [ 'name' => $file_name, 'size_allowed' => 1000000,'file_destination' => '../admin/images/']);
+        $image->upload_image($file, [ 'name' => $file_name, 'size_allowed' => 5000000,'file_destination' => '../admin/images/']);
             
         $image_name = '/admin/images/'.$file_name;
 
@@ -1018,7 +1036,7 @@ if(Input::post('upload_footer_logo_image'))
         $file = Image::files('footer_logo');
 
         $file_name = Image::name('footer_logo', 'footer_logo');
-        $image->upload_image($file, [ 'name' => $file_name, 'size_allowed' => 1000000,'file_destination' => '../admin/images/']);
+        $image->upload_image($file, [ 'name' => $file_name, 'size_allowed' => 5000000,'file_destination' => '../admin/images/']);
             
         $image_name = '/admin/images/'.$file_name;
 
@@ -1085,7 +1103,7 @@ if(Input::post('update_home_banner_image'))
         $file = Image::files('home_banner');
 
         $file_name = Image::name('home_banner', 'home_banner');
-        $image->upload_image($file, [ 'name' => $file_name, 'size_allowed' => 1000000,'file_destination' => '../shop/images/banner/']);
+        $image->upload_image($file, [ 'name' => $file_name, 'size_allowed' => 5000000,'file_destination' => '../shop/images/banner/']);
             
         $image_name = '/shop/images/banner/'.$file_name;
 
@@ -1180,7 +1198,7 @@ if(Input::post('update_category_banner_image'))
         $file = Image::files('category_banner');
 
         $file_name = Image::name('category_banner', 'category_banner');
-        $image->upload_image($file, [ 'name' => $file_name, 'size_allowed' => 1000000,'file_destination' => '../shop/images/banner/']);
+        $image->upload_image($file, [ 'name' => $file_name, 'size_allowed' => 5000000,'file_destination' => '../shop/images/banner/']);
             
         $image_name = '/shop/images/banner/'.$file_name;
 
@@ -1272,7 +1290,7 @@ if(Input::post('update_cart_banner_image'))
         $file = Image::files('cart_banner');
 
         $file_name = Image::name('cart_banner', 'cart_banner');
-        $image->upload_image($file, [ 'name' => $file_name, 'size_allowed' => 1000000,'file_destination' => '../shop/images/banner/']);
+        $image->upload_image($file, [ 'name' => $file_name, 'size_allowed' => 5000000,'file_destination' => '../shop/images/banner/']);
             
         $image_name = '/shop/images/banner/'.$file_name;
 
@@ -1366,7 +1384,7 @@ if(Input::post('update_form_banner_image'))
         $file = Image::files('form_banner');
 
         $file_name = Image::name('form_banner', 'form_banner');
-        $image->upload_image($file, [ 'name' => $file_name, 'size_allowed' => 1000000,'file_destination' => '../shop/images/banner/']);
+        $image->upload_image($file, [ 'name' => $file_name, 'size_allowed' => 5000000,'file_destination' => '../shop/images/banner/']);
             
         $image_name = '/shop/images/banner/'.$file_name;
 
@@ -1459,7 +1477,7 @@ if(Input::post('update_chcekout_banner_image'))
         $file = Image::files('checkout_banner');
 
         $file_name = Image::name('checkout_banner', 'checkout_banner');
-        $image->upload_image($file, [ 'name' => $file_name, 'size_allowed' => 1000000,'file_destination' => '../shop/images/banner/']);
+        $image->upload_image($file, [ 'name' => $file_name, 'size_allowed' => 5000000,'file_destination' => '../shop/images/banner/']);
             
         $image_name = '/shop/images/banner/'.$file_name;
 
@@ -1545,6 +1563,192 @@ if(Input::post('delete_checkout_banner_img'))
 
 
 
+
+
+
+
+
+
+
+// ************** SEND NEWSLETTER *************//
+if(Input::post('send_newsletter'))
+{
+    $data = false;
+    $newsletter_id = Input::get('newsletter_id');
+
+    $news_letter = $connection->select('news_letters')->where('id', $newsletter_id)->first();
+    if($news_letter)
+    {
+        if($stored_ids = Input::get('stored_id'))
+        {
+            $member_type = Input::get('member_type');
+            $banner =  $connection->select('settings')->where('id', 1)->first(); //get site details like app name, address and logo
+            $newsLetter = get_news_letter_page($banner->logo, $banner->app_name, $banner->address, $news_letter->header, $news_letter->body);
+            
+            foreach($stored_ids as $id)
+            {
+                $member = $connection->select('users')->where('id', $id)->first();
+                if($member)
+                {
+                    $mail = new Mail();
+                    $send = $mail->mail([
+                        'to' => $member->email,
+                        'subject' => $news_letter->subject,
+                        'body' => $newsLetter,
+                    ]);
+                    $send->send_email();
+                    $data = true;
+                }
+            }
+        }
+    }
+    return response(['data' => $data]);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+if(Input::post('activate_users'))
+{
+    $data = false;
+    if($stored_ids = Input::get('stored_id'))
+    {
+        foreach($stored_ids as $id)
+        {
+            $member = $connection->select('users')->where('id', $id)->first();
+                if($member)
+                {
+                    $data = true;
+                    $connection->update('users', [
+                        'is_deactivate' => 0
+                    ])->where('id', $id)->save();
+
+                    send_activate_mail($member);
+                }
+        }
+        if($data)
+        {
+            Session::flash('success', 'Activated successfully!');
+        }
+    }
+    
+    return response(['data' => $data]);
+}
+
+
+
+
+
+
+
+
+
+
+function send_activate_mail($user)
+{
+    if($user)
+    {
+        $app = settings();
+        $header = 'Account Activation';
+        $body = 'Congratulations, Your account has been activated, 
+                 You are able to see this mail because you are a member of nigeriananny,
+                 If this is wrong kindly ignore or delete this mail. Thank you.';
+
+        $mail_view = mail_view($app->logo, $app->app_name, $app->address, $header, $body);
+
+        $mail = new Mail();
+        $send = $mail->mail([
+            'to' => $user->email,
+            'subject' => $header,
+            'body' => $mail_view,
+        ]);
+        $send->send_email();
+        return true;
+    }
+    return false;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+if(Input::post('deactivate_users'))
+{
+    $data = false;
+    if($stored_ids = Input::get('stored_id'))
+    {
+        foreach($stored_ids as $id)
+        {
+            $member = $connection->select('users')->where('id', $id)->first();
+                if($member)
+                {
+                    $data = true;
+                    $connection->update('users', [
+                        'is_deactivate' => 1,
+                        'is_active' => 0
+                    ])->where('id', $id)->save();
+
+                    send_deactivate_mail($member);
+                }
+        }
+        if($data)
+        {
+            Session::flash('success', 'Deactivated successfully!');
+        }
+    }
+    
+    return response(['data' => $data]);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+function send_deactivate_mail($user)
+{
+    if($user)
+    {
+        $app = settings();
+        $header = 'Account deactivation';
+        $body = 'We are sorry to notify you that Your account has been deactivated, 
+                kindly contact the admin if you wish to reactivate your account, Thank you.';
+
+        $mail_view = mail_view($app->logo, $app->app_name, $app->address, $header, $body);
+
+        $mail = new Mail();
+        $send = $mail->mail([
+            'to' => $user->email,
+            'subject' => $header,
+            'body' => $mail_view,
+        ]);
+        $send->send_email();
+        return true;
+    }
+    return false;
+}
 
 
 

@@ -14,7 +14,7 @@ if(!Input::exists('get') || empty(Input::get('tid')))
 
 
     $transactions = $connection->select('paid_products')->leftJoin('shop_products', 'paid_products.product_id','=', 'shop_products.id')
-                    ->where('paid_reference', Input::get('tid'))->paginate(15);
+                    ->where('paid_reference', Input::get('tid'))->paginate(50);
 
 // app banner settings
 $banner =  $connection->select('settings')->where('id', 1)->first();

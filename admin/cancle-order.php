@@ -7,7 +7,7 @@ if(!Admin_auth::is_loggedin())
 }
 
 
-$transactions = $connection->select('cancled_product')->leftJoin('shop_products', 'cancled_product.cancled_product_id','=', 'shop_products.id')->paginate(15);
+$transactions = $connection->select('cancled_product')->leftJoin('shop_products', 'cancled_product.cancled_product_id','=', 'shop_products.id')->paginate(50);
 
 
 $cancleAmount = 0;
@@ -59,6 +59,9 @@ $banner =  $connection->select('settings')->where('id', 1)->first();
                             <li class="breadcrumb-item"><b>Total refunds:</b> <span class="delivered"><?= money($cancleAmount) ?></span></li>
                             </ol>
                         </nav>
+                        <div class="text">
+                            Total Cancled Orders: <?= count($transactions->result())?>
+                        </div>
                     </div>
                     <div class="col-lg-12">
                         <div class="item-table table-responsive"> <!-- table start-->
@@ -107,7 +110,7 @@ $banner =  $connection->select('settings')->where('id', 1)->first();
                                 <!-- pagination -->
                                 <?php $transactions->links(); ?>
 
-                                 <?php if($transactions->result() == 0):?>
+                                 <?php if(!count($transactions->result())):?>
                                     <div class="empty-table">There are no transactions yet!</div>
                                 <?php endif; ?>
                             </div>

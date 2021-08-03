@@ -14,70 +14,73 @@ if(!Admin_auth::is_loggedin())
 // ============================================
 if(Input::post('create_course'))
 {
-    $validate = new DB();
-   
-    $validation = $validate->validate([
-        'course_title' => 'required|min:3|max:50',
-        'category' => 'required',
-        'course_duration' => 'required',
-        'course_size' => 'required',
-        'video_link' => 'required',
-        'description' => 'required|min:6|max:5000',
-        'course_for' => 'required|min:6|max:5000',
-        'tutor_title' => 'required|min:3|max:100',
-        'tutor_name' => 'required|min:3|max:50',
-        'tutor_about' => 'required|min:3|max:500',
-    ]);
-
-    if(!Session::has('learn'))
+    if(Token::check())
     {
-        Session::errors('errors', ['what_you_learn' => '*What to learn is required']);
-        return back();
-    }
-
-    if(!Cookie::has('tutor_img'))
-    {
-        Session::errors('errors', ['tutor_image' => '*Tutor image is required']);
-        return back();
-    }
-    if(!Cookie::has('course_img'))
-    {
-        Session::errors('errors', ['course_image' => '*Course image is required']);
-        return back();
-    }
-
-    if(!$validation->passed())
-    {
-        return back();
-    }
-
-    if($validation->passed())
-    {
-        $is_feature = Input::get('feature') == 1 ? 1 : 0;
-        $tutor_info = ["name" => Input::get('tutor_name'), "image" => Cookie::get('tutor_img'), "title" => Input::get('tutor_title'), "about" => Input::get('tutor_about')];
-        $category = $connection->select('course_categories')->where('category_id', Input::get('category'))->first();
-
-        $course = $connection->create('courses', [
-            'title' => Input::get('course_title'),
-            'categories_id' => Input::get('category'),
-            'slug' => $category->category_slug,
-            'duration' => Input::get('course_duration'),
-            'course_size' => Input::get('course_size'),
-            'video_link' => Input::get('video_link'),
-            'description' => Input::get('description'),
-            'course_for' => Input::get('course_for'),
-            'learn' => json_encode(Session::get('learn')),
-            'course_poster' => Cookie::get('course_img'),
-            'tutor' => json_encode($tutor_info),
-            'is_feature' => $is_feature
+        $validate = new DB();
+    
+        $validation = $validate->validate([
+            'course_title' => 'required|min:3|max:50',
+            'category' => 'required',
+            'course_duration' => 'required',
+            'course_size' => 'required',
+            'video_link' => 'required',
+            'description' => 'required|min:6|max:5000',
+            'course_for' => 'required|min:6|max:5000',
+            'tutor_title' => 'required|min:3|max:100',
+            'tutor_name' => 'required|min:3|max:50',
+            'tutor_about' => 'required|min:3|max:500',
         ]);
-        if($course->passed())
+
+        if(!Session::has('learn'))
         {
-            Session::delete('learn');
-            Cookie::delete('course_img');
-            Cookie::delete('tutor_img');
-            Session::flash('success', 'Course created successfully!');
-            return view('/admin-course/courses');
+            Session::errors('errors', ['what_you_learn' => '*What to learn is required']);
+            return back();
+        }
+
+        if(!Cookie::has('tutor_img'))
+        {
+            Session::errors('errors', ['tutor_image' => '*Tutor image is required']);
+            return back();
+        }
+        if(!Cookie::has('course_img'))
+        {
+            Session::errors('errors', ['course_image' => '*Course image is required']);
+            return back();
+        }
+
+        if(!$validation->passed())
+        {
+            return back();
+        }
+
+        if($validation->passed())
+        {
+            $is_feature = Input::get('feature') == 1 ? 1 : 0;
+            $tutor_info = ["name" => Input::get('tutor_name'), "image" => Cookie::get('tutor_img'), "title" => Input::get('tutor_title'), "about" => Input::get('tutor_about')];
+            $category = $connection->select('course_categories')->where('category_id', Input::get('category'))->first();
+
+            $course = $connection->create('courses', [
+                'title' => Input::get('course_title'),
+                'categories_id' => Input::get('category'),
+                'slug' => $category->category_slug,
+                'duration' => Input::get('course_duration'),
+                'course_size' => Input::get('course_size'),
+                'video_link' => Input::get('video_link'),
+                'description' => Input::get('description'),
+                'course_for' => Input::get('course_for'),
+                'learn' => json_encode(Session::get('learn')),
+                'course_poster' => Cookie::get('course_img'),
+                'tutor' => json_encode($tutor_info),
+                'is_feature' => $is_feature
+            ]);
+            if($course->passed())
+            {
+                Session::delete('learn');
+                Cookie::delete('course_img');
+                Cookie::delete('tutor_img');
+                Session::flash('success', 'Course created successfully!');
+                return view('/admin-course/courses');
+            }
         }
     }
 }
@@ -355,7 +358,7 @@ $banner =  $connection->select('settings')->where('id', 1)->first();
                                                     </div>
                                                 </div>
                                             </div>
-
+                                            <?= csrf_token() ?>
                                         </form>
                                 </div>
                             </div>

@@ -20,8 +20,10 @@ $new_messages = $connection->select('contact_us')->where('is_seen', 0)->get();
                 <ul>
                     <li class="<?= path('/') ? 'active' : ''?>"><a href="<?= url('/admin-course') ?>"><span class="flaticon-puzzle-1"></span> Dashboard</a></li>
                     <li class="<?= path('categories') ? 'active' : ''?>"><a href="<?= url('/admin-course/category') ?>"><span class="fa fa-cubes"></span>Categories</a></li>
-                    <li class="<?= path('employees') ? 'active' : ''?>"><a href="<?= url('/admin-course/courses') ?>"><span class="fa fa-video-camera"></span> Courses</a></li>
-                    <li class="<?= path('employers') ? 'active' : ''?>"><a href="<?= url('/admin-course/users') ?>"><span class="fa fa-users"></span>Manage users</a></li>
+                    <li class="<?= path('courses') ? 'active' : ''?>"><a href="<?= url('/admin-course/courses') ?>"><span class="fa fa-video-camera"></span> Courses</a></li>
+                    <li class="<?= path('all-users') ? 'active' : ''?>"><a href="<?= url('/admin-course/all-users') ?>"><span class="fa fa-users text-success"></span>All users</a></li>
+                    <li class="<?= path('users') ? 'active' : ''?>"><a href="<?= url('/admin-course/users') ?>"><span class="fa fa-users"></span>Manage users</a></li>
+                    <li class="<?= path('deactivated') ? 'active' : ''?>"><a href="<?= url('/admin-course/deactivated-users') ?>"><span class="fa fa-users text-danger"></span>Deactivated users</a></li>
                     <li class="<?= path('profile') ? 'active' : ''?>"><a href="<?= url('/admin-nanny/profile') ?>"><span class="fa fa-user-o"></span>Profile</a></li>
                 </ul>
                 

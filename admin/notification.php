@@ -14,7 +14,7 @@ $banner =  $connection->select('settings')->where('id', 1)->first();
 
 
 // ********* GET NOTIFICATION *****************//
-$notifications = $connection->select('notifications')->where('to_id', 1)->where('to_user', 'admin')->orderBy('date', 'DESC')->paginate(20);
+$notifications = $connection->select('notifications')->where('to_id', 1)->where('to_user', 'admin')->orderBy('date', 'DESC')->paginate(50);
 
 
 

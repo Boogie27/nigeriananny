@@ -9,13 +9,28 @@ if(!Admin_auth::is_loggedin())
 
 
 // ===========================================
-// GET ALL EMPLOYEES
+// GET ALL APPROVED MEMBERS EMPLOYEES
 // ===========================================
-$employers = $connection->select('employers')->paginate(15);
+$employers = $connection->select('employers')->where('employer_approved', 1)->where('e_deactivate', 0);
 
 
 
-    // app banner settings
+if($search = Input::get('search'))
+{
+    if(preg_match('/@/', $search))
+    {
+        $employers->where('email', $search);
+    }else{
+        $employers->where('first_name', 'RLIKE', $search);
+    }
+}
+$employers->paginate(50);
+
+
+
+
+
+// app banner settings
 $banner =  $connection->select('settings')->where('id', 1)->first();
 ?>
 
@@ -54,19 +69,35 @@ $banner =  $connection->select('settings')->where('id', 1)->first();
                                 <li class="breadcrumb-item active" aria-current="page"><a href="<?= url('/admin-nanny/add-employers') ?>" class="view-btn-fill">Add employer</a></li>
                             </ol>
                         </nav>
+                        <div class="text">
+                            Total Employers: <?= count($employers->result())?>
+                            <a href="#" class="text-primary" id="open_mass_member_newsletter_modal_btn">| Send newsletter |</a>
+                            <a href="#" class="text-primary" id="open_mass_member_deactivate_modal_btn"> Deactivate |</a>
+                        </div>
                     </div>
                     <div class="col-lg-12">
-                        <div class="item-table table-responsive"> <!-- table start-->
+                        <div class="top-table-container">
+                            <div class="icon-container"><i class="fa fa-users"></i></div>
+                            <form action="" method="GET" class="form-search-input">
+                                <div class="form-group">
+                                    <input type="text" name="search" class="form-control" value="" placeholder="Search...">
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="col-lg-12">
+                        <div class="item-table table-responsive" id="members_parent_table_container"> <!-- table start-->
                             <table class="table table-striped">
                                 <thead>
                                     <tr>
-                                    <th scope="col">Image</th>
-                                    <th scope="col">Employer name</th>
-                                    <th scope="col">Email</th>
-                                    <th scope="col">Activate</th>
-                                    <th scope="col">Last login</th>
-                                    <th scope="col">Date registered</th>
-                                    <th scope="col">Action</th>
+                                        <th scope="col"><input type="checkbox" data-type="employer" id="mass_member_check_box_input"></th>
+                                        <th scope="col">Image</th>
+                                        <th scope="col">Employer name</th>
+                                        <th scope="col">Email</th>
+                                        <th scope="col">Activate</th>
+                                        <th scope="col">Last login</th>
+                                        <th scope="col">Date registered</th>
+                                        <th scope="col">Action</th>
                                     </tr>
                                 </thead>
                                 <tbody class="item-table-t">
@@ -75,11 +106,16 @@ $banner =  $connection->select('settings')->where('id', 1)->first();
                                 ?>
                                     <tr>
                                         <td>
-                                           <?php if($employer->e_image): ?>
-                                            <img src="<?= asset($employer->e_image) ?>" alt="<?= $employer->first_name ?>" class="table-img <?= $employer->e_active ? 'online' : 'offline' ?>">
-                                            <?php else: ?>
-                                            <img src="<?= asset('/employer/images/demo.png') ?>" alt="<?= $employer->first_name ?>" class="table-img <?= $employer->e_active ? 'online' : 'offline' ?>">
-                                            <?php endif; ?>
+                                            <input type="checkbox" data-type="employer" id="<?= $employer->id ?>" class="check-box-members-input-btn">
+                                        </td>
+                                        <td>
+                                            <a href="<?= url('/admin-nanny/employer-detail?wid='.$employer->id) ?>">
+                                                <?php if($employer->e_image): ?>
+                                                    <img src="<?= asset($employer->e_image) ?>" alt="<?= $employer->first_name ?>" class="table-img <?= $employer->e_active ? 'online' : 'offline' ?>">
+                                                <?php else: ?>
+                                                    <img src="<?= asset('/employer/images/demo.png') ?>" alt="<?= $employer->first_name ?>" class="table-img <?= $employer->e_active ? 'online' : 'offline' ?>">
+                                                <?php endif; ?>
+                                            </a>
                                         </td>
                                         <td><?= ucfirst($employer->last_name).' '.ucfirst($employer->first_name)?></td>
                                         <td><?= $employer->email ?></td>
@@ -109,23 +145,19 @@ $banner =  $connection->select('settings')->where('id', 1)->first();
                                 <!-- pagination -->
                                 <?php $employers->links(); ?>
 
-                                <?php if(!$employers->result()): ?>
+                                <?php if(!count($employers->result())): ?>
                                     <div class="empty-table">There are no employers yet!</div>
                                 <?php endif; ?>
                             </div>
                         </div><!-- table end-->
                     </div>
                 </div>
-                <div class="row mt50 mb50">
-                    <div class="col-lg-6 offset-lg-3">
-                        <div class="copyright-widget text-center">
-                            <p class="color-black2"><?= $banner->alrights ?></p>
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
     </div>
+</div>
+<div class="footer-copy-right">
+    <p><?= $banner->alrights ?></p>
 </div>
 <a class="scrollToHome" href="#"><i class="flaticon-up-arrow-1"></i></a>
 </div>
@@ -177,6 +209,20 @@ $banner =  $connection->select('settings')->where('id', 1)->first();
 
 
 <?php  include('includes/footer.php') ?>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

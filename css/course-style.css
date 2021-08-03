@@ -236,6 +236,7 @@ font-family: 'poppins', sans-serif;
 }
 .inner-navigation{
     display: flex;
+    align-items: center;
     justify-content: space-between;
 }
 .nav-left{
@@ -266,7 +267,7 @@ span.nav-app-name{
     top: 4px;
     color: #333;
     font-weight: 600;
-    font-size: 25px;
+    font-size: 15px;
     position: relative;
 }
 .nav-right{
@@ -351,7 +352,7 @@ span.nav-app-name{
         top: 0px;
     }
     span.nav-app-name{
-        font-size: 20px;
+        font-size: 11px;
     }
     .nav-left img{
         margin-left: 0px;
@@ -385,11 +386,14 @@ span.nav-app-name{
     height: 100vh;
     border: 5px;
     padding-top: 20px;
-    overflow-y: auto;
+    overflow: auto;
     /* position: absolute; */
     background-color: #fff;
     border-top: 1px solid #ccc;
     box-shadow: 5px 0px 0px 0px rgba(216, 216, 216, 0.3);
+}
+.side-navigation::-webkit-scrollbar{
+    width: 0px;
 }
 .side-navigation.activate{
     width: 247px;

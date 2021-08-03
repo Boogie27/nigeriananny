@@ -678,14 +678,18 @@ public function validate($parameters = array())
                 }
             }
         }
+
+        
         
         if(!empty($this->_validate_error))
         {
             Session::put('old', $_POST);
+            Session::put('old_post_url', current_url());
             Session::errors('errors', $this->_validate_error);
             return Redirect::back();
         }else{
             Session::delete('old');
+            Session::delete('old_post_url');
             $this->_passed = true;
         }
     }

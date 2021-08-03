@@ -12,34 +12,37 @@ if(!Admin_auth::is_loggedin())
 
 if(Input::post('create_employer'))
 {
-    $validate = new DB();
-   
-    $validation = $validate->validate([
-        'first_name' => 'required|min:3|max:50',
-        'last_name' => 'required|min:3|max:50',
-        'email' => 'required|unique:employers',
-        'gender' => 'required'
-    ]);
-
-    if(!$validation->passed())
+    if(Token::check())
     {
-        return back();
-    }
+        $validate = new DB();
+    
+        $validation = $validate->validate([
+            'first_name' => 'required|min:3|max:50',
+            'last_name' => 'required|min:3|max:50',
+            'email' => 'required|unique:employers',
+            'gender' => 'required'
+        ]);
 
-    if($validation->passed())
-    {
-        $create = new DB();
-        $create->create('employers', [
-                'first_name' => Input::get('first_name'),
-                'last_name' => Input::get('last_name'),
-                'email' => Input::get('email'),
-                'e_gender' => Input::get('gender'),
-            ]);
-
-        if($create->passed())
+        if(!$validation->passed())
         {
-            Session::flash('success', 'Employer created successfully!');
-            return view('/admin-nanny/employers');
+            return back();
+        }
+
+        if($validation->passed())
+        {
+            $create = new DB();
+            $create->create('employers', [
+                    'first_name' => Input::get('first_name'),
+                    'last_name' => Input::get('last_name'),
+                    'email' => Input::get('email'),
+                    'e_gender' => Input::get('gender'),
+                ]);
+
+            if($create->passed())
+            {
+                Session::flash('success', 'Employer created successfully!');
+                return view('/admin-nanny/employers');
+            }
         }
     }
 }
@@ -151,7 +154,7 @@ if(Input::post('create_employer'))
                                                     </div>
                                                 </div>
                                             </div>
-
+                                            <?= csrf_token() ?>
                                         </form>
                                 </div>
                             </div>
@@ -159,16 +162,12 @@ if(Input::post('create_employer'))
                         </div><!-- content end-->
 
                 </div>
-                <div class="row mt50 mb50">
-                    <div class="col-lg-6 offset-lg-3">
-                        <div class="copyright-widget text-center">
-                            <p class="color-black2"><?= $banner->alrights ?></p>
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
     </div>
+</div>
+<div class="footer-copy-right">
+    <p><?= $banner->alrights ?></p>
 </div>
 <a class="scrollToHome" href="#"><i class="flaticon-up-arrow-1"></i></a>
 </div>

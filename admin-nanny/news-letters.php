@@ -11,7 +11,7 @@ if(!Admin_auth::is_loggedin())
 // ===========================================
 // GET ALL NEWS LETTER
 // ===========================================
-$news_letters = $connection->select('news_letters')->paginate(15);
+$news_letters = $connection->select('news_letters')->paginate(50);
 
 
 // ============================================
@@ -128,16 +128,12 @@ $client_type = Session::has('employer_type') ? Session::get('employer_type') : n
                         </div><!-- table end-->
                     </div>
                 </div>
-                <div class="row mt50 mb50">
-                    <div class="col-lg-6 offset-lg-3">
-                        <div class="copyright-widget text-center">
-                            <p class="color-black2"><?= $banner->alrights ?></p>
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
     </div>
+</div>
+<div class="footer-copy-right">
+    <p><?= $banner->alrights ?></p>
 </div>
 <a class="scrollToHome" href="#"><i class="flaticon-up-arrow-1"></i></a>
 </div>
@@ -163,7 +159,7 @@ $client_type = Session::has('employer_type') ? Session::get('employer_type') : n
                     <div class="login_form">
                         <form action="#">
                             <div class="heading">
-                                <p class="text-center">Do you wish to newsletter to all?</p>
+                                <p class="text-center">Do you wish to send newsletter to all?</p>
                                 <input type="hidden" id="admin_send_to_all_id_input" value="">
                             </div>
                             <button type="button" data-url="<?= url('/admin-nanny/ajax.php') ?>" id="submit_send_newsletter_all_btn" class="btn bg-primary btn-log btn-block" style="color: #fff;">Send...</button>

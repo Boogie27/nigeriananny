@@ -18,6 +18,12 @@ if(count($employer_subs))
 	}
 }
 
+
+
+
+// app banner settings
+$banner =  $connection->select('settings')->where('id', 1)->first();
+
 ?>
 
 
@@ -65,7 +71,7 @@ if(count($employer_subs))
 </head>
 <body>
 <div class="wrapper">
-	<!-- <div class="preloader"></div> -->
+	<div class="preloader"></div>
 
 
 
@@ -77,5 +83,8 @@ if(count($employer_subs))
 		</div>
 	</div>
 </div>
+
+
+
 
 

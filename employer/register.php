@@ -3,62 +3,69 @@
 <?php
     if(Input::post('create_employer'))
     {
-        $validate = new DB();
-       
-        $validation = $validate->validate([
-            'first_name' => 'required|min:3|max:50',
-            'last_name' => 'required|min:3|max:50',
-            'password' => 'required|min:6|max:12',
-            'confirm_password' => 'required|min:6|match:password',
-            'email' => 'required|email|unique:employers',
-            'phone' => 'required|min:11|max:11|number:phone',
-            'city' => 'required|min:3|max:50',
-            'state' => 'required|min:3|max:50',
-            'country' => 'required|min:3|max:50',
-            'gender' => 'required',
-            'image' => 'file_required|img_min:10000'
-        ]);
-
-        if($validation->passed())
+        if(Token::check())
         {
-            $image = new Image();
-            $file = Image::files('image');
-            $fileName = Image::name('image', 'employer');
-            $image_name = '/employer/images/'.$fileName;
-            $images = $image->upload_image($file, [ 'name' => $fileName, 'size_allowed' => 1000000,'file_destination' => '../employer/images/' ]);
-               
-            if(!$images->passed())
-            {
-                Session::errors('errors', ['image' => $images->error()]);
-                return back();
-            }
+            $validate = new DB();
+        
+            $validation = $validate->validate([
+                'first_name' => 'required|min:3|max:50',
+                'last_name' => 'required|min:3|max:50',
+                'password' => 'required|min:6|max:12',
+                'confirm_password' => 'required|min:6|match:password',
+                'email' => 'required|email|unique:employers',
+                'phone' => 'required|min:11|max:11|number:phone',
+                'city' => 'required|min:3|max:50',
+                'state' => 'required|min:3|max:50',
+                'country' => 'required|min:3|max:50',
+                'gender' => 'required',
+                'image' => 'file_required|img_min:10000'
+            ]);
 
-            $create = new DB();
-            $create->create('employers', [
-                    'first_name' => Input::get('first_name'),
-                    'last_name' => Input::get('last_name'),
-                    'email' => Input::get('email'),
-                    'password' => password_hash(Input::get('password'), PASSWORD_DEFAULT),
-                    'e_phone' => Input::get('phone'),
-                    'city' => Input::get('city'),
-                    'state' => Input::get('state'),
-                    'country' => Input::get('country'),
-                    'e_gender' => Input::get('gender'),
-                    'e_image' => $image_name,
-                ]);
-    
-            if($create->passed())
+            if($validation->passed())
             {
-                Session::flash('success', 'Account created successfully!');
-                Auth_employer::login(Input::get('email'));
-                return view('/employer/account');
+                $image = new Image();
+                $file = Image::files('image');
+                $fileName = Image::name('image', 'employer');
+                $image_name = '/employer/images/'.$fileName;
+                $images = $image->upload_image($file, [ 'name' => $fileName, 'size_allowed' => 5000000,'file_destination' => '../employer/images/' ]);
+                
+                if(!$images->passed())
+                {
+                    Session::errors('errors', ['image' => $images->error()]);
+                    return back();
+                }
+
+                $create = new DB();
+                $create->create('employers', [
+                        'first_name' => Input::get('first_name'),
+                        'last_name' => Input::get('last_name'),
+                        'email' => Input::get('email'),
+                        'password' => password_hash(Input::get('password'), PASSWORD_DEFAULT),
+                        'e_phone' => Input::get('phone'),
+                        'city' => Input::get('city'),
+                        'state' => Input::get('state'),
+                        'country' => Input::get('country'),
+                        'e_gender' => Input::get('gender'),
+                        'e_image' => $image_name,
+                    ]);
+        
+                if($create->passed())
+                {
+                    Session::flash('success', 'Account created successfully!');
+                    Auth_employer::login(Input::get('email'));
+                    return view('/employer/account');
+                }
             }
         }
+        Session::flash('error', 'Network error, try again later!');
+        return back();
     }
 
 
     $countries = $connection->select('tbl_country')->where('active', 1)->get();
 ?>
+
+
 <?php include('../includes/header.php');  ?>
 
 
@@ -226,6 +233,7 @@
                     </div>
                 </div>
             </div>
+            <?= csrf_token() ?>
         </form>
     </div>
 </div>

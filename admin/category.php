@@ -7,7 +7,20 @@ if(!Admin_auth::is_loggedin())
 }
 
 $connection = new DB();
-$shop_categories = $connection->select('shop_categories')->paginate(15);
+$shop_categories = $connection->select('shop_categories');
+
+
+if($search = Input::get('search'))
+{
+    $shop_categories->where('category_name', 'RLIKE', $search);
+}
+
+
+
+$shop_categories->paginate(50);
+
+
+
 
 
 // app banner settings
@@ -49,6 +62,19 @@ $banner =  $connection->select('settings')->where('id', 1)->first();
                                 <li class="breadcrumb-item"><a href="<?= url('/admin/add-product.php') ?>" data-toggle="modal" data-target="#modal_add_category" class="btn-fill">Add category</a></li>
                             </ol>
                         </nav>
+                        <div class="text">
+                            Total Categories: <?= count($shop_categories->result())?>
+                        </div>
+                    </div>
+                    <div class="col-lg-12">
+                        <div class="top-table-container">
+                            <div class="icon-container"><i class="fa fa-cubes"></i></div>
+                            <form action="" method="GET" class="form-search-input">
+                                <div class="form-group">
+                                    <input type="text" name="search" class="form-control" value="" placeholder="Search...">
+                                </div>
+                            </form>
+                        </div>
                     </div>
                     <div class="col-lg-12">
                         <div class="item-table table-responsive"> <!-- table start-->
@@ -98,7 +124,7 @@ $banner =  $connection->select('settings')->where('id', 1)->first();
                                 <!-- pagination -->
                                 <?php $shop_categories->links(); ?>
 
-                                <?php if($shop_categories->result()): ?>
+                                <?php if(!count($shop_categories->result())): ?>
                                     <div class="empty-table">There are no categories yet!</div>
                                 <?php endif; ?>
                             </div>

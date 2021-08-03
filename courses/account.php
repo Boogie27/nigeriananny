@@ -13,49 +13,51 @@ if(!Auth_course::is_loggedIn())
 // ******** REGISTER COURSE USER ***********//
 if(Input::post('update_account'))
 {
-    $validate = new DB();
-       
-    $validation = $validate->validate([
-        'first_name' => 'required|min:3|max:50',
-        'last_name' => 'required|min:3|max:50',
-        'email' => 'required|email',
-        'phone' => 'required|min:11|max:11|number:phone',
-        'city' => 'required|min:3|max:50',
-        'state' => 'required|min:3|max:50',
-        'country' => 'required|min:3|max:50',
-    ]);
-
-    $verify_email = $connection->select('course_users')->where('email', Input::get('email'))->where('id', Auth_course::user('id'))->first();
-    if(!$verify_email)
+    if(Token::check())
     {
-        $all_email = $connection->select('course_users')->where('email', Input::get('email'))->get();           
-        if(count($all_email))
+        $validate = new DB();
+        
+        $validation = $validate->validate([
+            'first_name' => 'required|min:3|max:50',
+            'last_name' => 'required|min:3|max:50',
+            'email' => 'required|email',
+            'phone' => 'required|min:11|max:11|number:phone',
+            'city' => 'required|min:3|max:50',
+            'state' => 'required|min:3|max:50',
+            'country' => 'required|min:3|max:50',
+        ]);
+
+        $verify_email = $connection->select('course_users')->where('email', Input::get('email'))->where('id', Auth_course::user('id'))->first();
+        if(!$verify_email)
         {
-            Session::errors('errors', ['email' => '*Email already exists']);
-            return back();
+            $all_email = $connection->select('course_users')->where('email', Input::get('email'))->get();           
+            if(count($all_email))
+            {
+                Session::errors('errors', ['email' => '*Email already exists']);
+                return back();
+            }
+        }
+        
+
+        if($validation->passed())
+        {
+            $connection->update('course_users', [
+                'first_name' => Input::get('first_name'),
+                'last_name' => Input::get('last_name'),
+                'email' => Input::get('email'),
+                'phone' => Input::get('phone'),
+                'city' => Input::get('city'),
+                'state' => Input::get('state'),
+                'country' => Input::get('country'),
+            ])->where('id', Auth_course::user('id'))->save();
+
+            if(Auth_course::login(Input::get('email'), $remember_me))
+            {
+                Session::flash('success', 'Account updated successfully');
+                return view('/courses/account');
+            }
         }
     }
-    
-
-    if($validation->passed())
-    {
-        $connection->update('course_users', [
-            'first_name' => Input::get('first_name'),
-            'last_name' => Input::get('last_name'),
-            'email' => Input::get('email'),
-            'phone' => Input::get('phone'),
-            'city' => Input::get('city'),
-            'state' => Input::get('state'),
-            'country' => Input::get('country'),
-        ])->where('id', Auth_course::user('id'))->save();
-
-        if(Auth_course::login(Input::get('email'), $remember_me))
-        {
-            Session::flash('success', 'Account updated successfully');
-            return view('/courses/account');
-        }
-    }
-   
 }
 
 
@@ -190,6 +192,7 @@ $others = $connection->select('courses')->where('is_feature', 1)->random()->limi
                                         </div>
                                      </div>
                                 </div>
+                                <?= csrf_token() ?>
 							</form>
 						</div>
                     </div>

@@ -15,38 +15,41 @@ if(!Admin_auth::is_loggedin())
 // ============================================
 if(Input::post('create_employee'))
 {
-    $validate = new DB();
-   
-    $validation = $validate->validate([
-        'first_name' => 'required|min:3|max:50',
-        'last_name' => 'required|min:3|max:50',
-        'email' => 'required|email|unique:employee',
-        'gender' => 'required',
-    ]);
-
-    if(!$validation->passed())
+    if(Token::check())
     {
-        return back();
-    }
+        $validate = new DB();
+    
+        $validation = $validate->validate([
+            'first_name' => 'required|min:3|max:50',
+            'last_name' => 'required|min:3|max:50',
+            'email' => 'required|email|unique:employee',
+            'gender' => 'required',
+        ]);
 
-    if($validation->passed())
-    {
-        $create = new DB();
-        $employee = $create->create('employee', [
-                    'first_name' => Input::get('first_name'),
-                    'last_name' => Input::get('last_name'),
-                    'email' => Input::get('email'),
-                    'gender' => Input::get('gender'),
-                ]);
-        if($employee->passed())
+        if(!$validation->passed())
         {
-            $employer = $connection->select('employee')->where('email', Input::get('email'))->first();
-            $create->create('workers', [
-                'employee_id' => $employer->e_id,
-            ]);
+            return back();
+        }
 
-            Session::flash('success', 'Employee created successfully!');
-            return view('/admin-nanny/employees');
+        if($validation->passed())
+        {
+            $create = new DB();
+            $employee = $create->create('employee', [
+                        'first_name' => Input::get('first_name'),
+                        'last_name' => Input::get('last_name'),
+                        'email' => Input::get('email'),
+                        'gender' => Input::get('gender'),
+                    ]);
+            if($employee->passed())
+            {
+                $employer = $connection->select('employee')->where('email', Input::get('email'))->first();
+                $create->create('workers', [
+                    'employee_id' => $employer->e_id,
+                ]);
+
+                Session::flash('success', 'Employee created successfully!');
+                return view('/admin-nanny/employees');
+            }
         }
     }
 }
@@ -163,7 +166,7 @@ $banner =  $connection->select('settings')->where('id', 1)->first();
                                                     </div>
                                                 </div>
                                             </div>
-
+                                            <?= csrf_token() ?>
                                         </form>
                                 </div>
                             </div>
@@ -171,16 +174,12 @@ $banner =  $connection->select('settings')->where('id', 1)->first();
                         </div><!-- content end-->
 
                 </div>
-                <div class="row mt50 mb50">
-                    <div class="col-lg-6 offset-lg-3">
-                        <div class="copyright-widget text-center">
-                            <p class="color-black2"><?= $banner->alrights ?></p>
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
     </div>
+</div>
+<div class="footer-copy-right">
+    <p><?= $banner->alrights ?></p>
 </div>
 <a class="scrollToHome" href="#"><i class="flaticon-up-arrow-1"></i></a>
 </div>

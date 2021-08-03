@@ -33,7 +33,15 @@ $connection = DB::instantiate(); //use this instantiated class to make query to 
 
 $errors = Session::flash('errors'); //get field errors from session
      
-
+// ******* DELETE OLD POST INPUT *********//
+if(Session::has('old_post_url'))
+{
+    if(current_url() != Session::get('old_post_url'))
+    {
+        Session::delete('old');
+        Session::delete('old_post_url');
+    }
+}
 
 // ==========================================
 // SHOP REMEMBER ME

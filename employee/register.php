@@ -31,7 +31,7 @@
             $file = Image::files('image');
             $fileName = Image::name('image', 'employee');
             $image_name = '/employee/images/'.$fileName;
-            $images = $image->upload_image($file, [ 'name' => $fileName, 'size_allowed' => 1000000,'file_destination' => '../employee/images/' ]);
+            $images = $image->upload_image($file, [ 'name' => $fileName, 'size_allowed' => 5000000,'file_destination' => '../employee/images/' ]);
                
             if(!$images->passed())
             {

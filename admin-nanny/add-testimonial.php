@@ -17,6 +17,8 @@ if(!Admin_auth::is_loggedin())
 // ============================================
 if(Input::post('create_testimonial'))
 {
+    if(Token::check())
+    {
         $validate = new DB();
         $validation = $validate->validate([
             'first_name' => 'required|min:3|max:50',
@@ -49,7 +51,7 @@ if(Input::post('create_testimonial'))
                 return view('/admin-nanny/testimonial');
             }
         }
-
+    }
 }
 
 
@@ -203,22 +205,19 @@ if(!$testimonial)
                                                 </div>
                                             </div>
                                         </div>
+                                        <?= csrf_token() ?>
                                     </form>
                                 </div>
                             </div>
                         </div><!-- content end-->
                     </div>
                 </div>
-                <div class="row mt50 mb50">
-                    <div class="col-lg-6 offset-lg-3">
-                        <div class="copyright-widget text-center">
-                            <p class="color-black2"><?= $banner->alrights ?></p>
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
     </div>
+</div>
+<div class="footer-copy-right">
+    <p><?= $banner->alrights ?></p>
 </div>
 <a class="scrollToHome" href="#"><i class="flaticon-up-arrow-1"></i></a>
 </div>

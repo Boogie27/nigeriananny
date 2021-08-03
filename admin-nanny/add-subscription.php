@@ -13,42 +13,45 @@ if(!Admin_auth::is_loggedin())
   
 if(Input::post('subscription'))
 {
-    $validate = new DB();
-    $validation = $validate->validate([
-        'type' => 'required|min:2|max:50',
-        'duration' => 'required',
-        'amount' => 'required',
-        'access' => 'required',
-        'description' => 'required|min:6|max:500'
-    ]);
+    if(Token::check())
+    {
+        $validate = new DB();
+        $validation = $validate->validate([
+            'type' => 'required|min:2|max:50',
+            'duration' => 'required',
+            'amount' => 'required',
+            'access' => 'required',
+            'description' => 'required|min:6|max:500'
+        ]);
 
-    if(!$validation->passed())
-    {
-        return back();
-    }
-     
-    if($validation->passed())
-    {
-        $type = $connection->select('subscription_pan')->where('type', Input::get('type'))->first();
-        if($type)
+        if(!$validation->passed())
         {
-            Session::errors('errors', ['type' => '*Type already exist']);
             return back();
         }
-    }
-    
-    $is_feature = Input::get('feature') ? 1 : 0;
-    $create = $connection->create('subscription_pan', [
-                   'type' => Input::get('type'),
-                   'duration' => Input::get('duration'),
-                   'access' => Input::get('access'),
-                   'description' => Input::get('description'),
-                   'amount' => Input::get('amount'),
-                   'is_feature' => $is_feature,
-    ]);
-    if($create){
-        Session::flash('success', 'Subscription created successfully!');
-        return view('/admin-nanny/subscriptions');
+        
+        if($validation->passed())
+        {
+            $type = $connection->select('subscription_pan')->where('type', Input::get('type'))->first();
+            if($type)
+            {
+                Session::errors('errors', ['type' => '*Type already exist']);
+                return back();
+            }
+        }
+        
+        $is_feature = Input::get('feature') ? 1 : 0;
+        $create = $connection->create('subscription_pan', [
+                    'type' => Input::get('type'),
+                    'duration' => Input::get('duration'),
+                    'access' => Input::get('access'),
+                    'description' => Input::get('description'),
+                    'amount' => Input::get('amount'),
+                    'is_feature' => $is_feature,
+        ]);
+        if($create){
+            Session::flash('success', 'Subscription created successfully!');
+            return view('/admin-nanny/subscriptions');
+        }
     }
 }
 
@@ -182,19 +185,16 @@ $banner =  $connection->select('settings')->where('id', 1)->first();
                                     </div>
                                 </div>
                             </div>
+                            <?= csrf_token() ?>
                         </form>
-                    </div>
-                </div>
-                <div class="row mt50 mb50">
-                    <div class="col-lg-6 offset-lg-3">
-                        <div class="copyright-widget text-center">
-                            <p class="color-black2"><?= $banner->alrights ?></p>
-                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+</div>
+<div class="footer-copy-right">
+    <p><?= $banner->alrights ?></p>
 </div>
 <a class="scrollToHome" href="#"><i class="flaticon-up-arrow-1"></i></a>
 </div>

@@ -46,6 +46,12 @@ if(Input::post('add_new_category'))
 
 
 
+
+
+
+
+
+
 // ==========================================
 // EDIT CATEGORY
 // ==========================================
@@ -98,6 +104,14 @@ if(Input::post('category_edit_action'))
 
 
 
+
+
+
+
+
+
+
+
 // ==========================================
 // CATEGORY FEATURE BUTTON
 // ==========================================
@@ -118,6 +132,12 @@ if(Input::post('delete_category_action'))
     }
     return response(['data' => $data]);
 }
+
+
+
+
+
+
 
 
 
@@ -147,6 +167,13 @@ if(Input::post('is_category_feature'))
     }
     return response(['data' => $data]);
 }
+
+
+
+
+
+
+
 
 
 
@@ -193,6 +220,14 @@ if(Input::get('delete_course_action'))
 
 
 
+
+
+
+
+
+
+
+
 // ===========================================
 // FEATURE COURSE
 // ===========================================
@@ -213,6 +248,15 @@ if(Input::post('update_course_feature'))
     }
     return response(['data' => $data]);
 }
+
+
+
+
+
+
+
+
+
 
 
 
@@ -252,6 +296,15 @@ if(Input::post('add_what_to_learn'))
 
 
 
+
+
+
+
+
+
+
+
+
 // **** POPULATE WHAT TO LEARN ******//
 if(Input::post('get_what_to_learn'))
 {
@@ -286,6 +339,12 @@ if(Input::post('delete_what_to_learn'))
 
     return response(['data' => $data]);
 }
+
+
+
+
+
+
 
 
 
@@ -332,6 +391,10 @@ if(Input::post('update_course_image'))
 
 
 
+
+
+
+
 // *********** UPLOAD TUTOR IMAGE ***********//
 if(Input::post('update_tutor_image'))
 {
@@ -365,6 +428,14 @@ if(Input::post('update_tutor_image'))
 
     return response(['data' => $data]);
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -407,6 +478,14 @@ if(Input::post('edit_what_to_learn'))
 
 
 
+
+
+
+
+
+
+
+
 // **** POPULATE WHAT TO LEARN ******//
 if(Input::post('get_edit_what_to_learn'))
 {
@@ -419,6 +498,11 @@ if(Input::post('get_edit_what_to_learn'))
 
     include('common/ajax-what-to-learn-edit.php');
 }
+
+
+
+
+
 
 
 
@@ -458,6 +542,14 @@ if(Input::post('delete_edit_what_to_learn'))
 
     return response(['data' => $data]);
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -515,6 +607,13 @@ if(Input::post('update_edit_tutor_image'))
 
 
 
+
+
+
+
+
+
+
 // *********** UPLOAD EDIT COURSE IMAGE ***********//
 if(Input::post('update_edit_course_image'))
 {
@@ -553,6 +652,15 @@ if(Input::post('update_edit_course_image'))
 
     return response(['data' => $data]);
 }
+
+
+
+
+
+
+
+
+
 
 
 
@@ -609,6 +717,9 @@ if(Input::post('upload_ourse_user_image'))
 
 
 
+
+
+
 // ===========================================
 // DEACTIVATE USERS
 // ===========================================
@@ -625,6 +736,12 @@ if(Input::post('update_course_user_deactivate'))
         ])->where('id', Input::get('user_id'))->save();
     if($update)
     {
+        if($is_deactivate)
+        {
+            send_deactivate_mail($user);
+        }else{
+            send_activate_mail($user);
+        }
         Session::flash('success', 'User status updated successfully!');
         $data = true;
     }
@@ -634,6 +751,13 @@ if(Input::post('update_course_user_deactivate'))
     }
     return response(['data' => $data]);
 }
+
+
+
+
+
+
+
 
 
 
@@ -681,6 +805,11 @@ if(Input::get('delete_course_user_action'))
 
 
 
+
+
+
+
+
 // ************ DELETE COURSE REVIEW ***************//
 if(Input::get('delete_course_user_review'))
 {
@@ -693,6 +822,12 @@ if(Input::get('delete_course_user_review'))
     }
     return response(['data' => $data]);
 }
+
+
+
+
+
+
 
 
 
@@ -715,6 +850,15 @@ if(Input::get('delete_add_tutor_image'))
 
 
 
+
+
+
+
+
+
+
+
+
 // ******** DELETE COURSE IMAGE IN ADD COURSE PAGE ***********//
 if(Input::get('delete_add_course_image'))
 {
@@ -727,6 +871,208 @@ if(Input::get('delete_add_course_image'))
     }
     return response(['data' => $data]);
 }
+
+
+
+
+
+
+
+
+
+// ************** SEND NEWSLETTER *************//
+if(Input::post('send_newsletter'))
+{
+    $data = false;
+    $newsletter_id = Input::get('newsletter_id');
+
+    $news_letter = $connection->select('news_letters')->where('id', $newsletter_id)->first();
+    if($news_letter)
+    {
+        if($stored_ids = Input::get('stored_id'))
+        {
+            $member_type = Input::get('member_type');
+            $banner =  $connection->select('settings')->where('id', 1)->first(); //get site details like app name, address and logo
+            $newsLetter = get_news_letter_page($banner->logo, $banner->app_name, $banner->address, $news_letter->header, $news_letter->body);
+            
+            foreach($stored_ids as $id)
+            {
+                $member = $connection->select('course_users')->where('id', $id)->first();
+                if($member)
+                {
+                    $mail = new Mail();
+                    $send = $mail->mail([
+                        'to' => $member->email,
+                        'subject' => $news_letter->subject,
+                        'body' => $newsLetter,
+                    ]);
+                    $send->send_email();
+                    $data = true;
+                }
+            }
+        }
+    }
+    return response(['data' => $data]);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+if(Input::post('activate_users'))
+{
+    $data = false;
+    if($stored_ids = Input::get('stored_id'))
+    {
+        foreach($stored_ids as $id)
+        {
+            $member = $connection->select('course_users')->where('id', $id)->first();
+                if($member)
+                {
+                    $data = true;
+                    $connection->update('course_users', [
+                        'is_deactivate' => 0
+                    ])->where('id', $id)->save();
+
+                    send_activate_mail($member);
+                }
+        }
+        if($data)
+        {
+            Session::flash('success', 'Activated successfully!');
+        }
+    }
+    
+    return response(['data' => $data]);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+function send_activate_mail($user)
+{
+    if($user)
+    {
+        $app = settings();
+        $header = 'Account Activation';
+        $body = 'Congratulations, Your account has been activated, 
+                 You are able to see this mail because you are a member of nigeriananny,
+                 If this is wrong kindly ignore or delete this mail. Thank you.';
+
+        $mail_view = mail_view($app->logo, $app->app_name, $app->address, $header, $body);
+
+        $mail = new Mail();
+        $send = $mail->mail([
+            'to' => $user->email,
+            'subject' => $header,
+            'body' => $mail_view,
+        ]);
+        $send->send_email();
+        return true;
+    }
+    return false;
+}
+
+
+
+
+
+
+
+if(Input::post('deactivate_users'))
+{
+    $data = false;
+    if($stored_ids = Input::get('stored_id'))
+    {
+        foreach($stored_ids as $id)
+        {
+            $member = $connection->select('course_users')->where('id', $id)->first();
+                if($member)
+                {
+                    $data = true;
+                    $connection->update('course_users', [
+                        'is_deactivate' => 1,
+                        'is_active' => 0
+                    ])->where('id', $id)->save();
+
+                    send_deactivate_mail($member);
+                }
+        }
+        if($data)
+        {
+            Session::flash('success', 'Deactivated successfully!');
+        }
+    }
+    
+    return response(['data' => $data]);
+}
+
+
+
+
+
+
+
+
+
+
+
+function send_deactivate_mail($user)
+{
+    if($user)
+    {
+        $app = settings();
+        $header = 'Account deactivation';
+        $body = 'We are sorry to notify you that Your account has been deactivated, 
+                kindly contact the admin if you wish to reactivate your account, Thank you.';
+
+        $mail_view = mail_view($app->logo, $app->app_name, $app->address, $header, $body);
+
+        $mail = new Mail();
+        $send = $mail->mail([
+            'to' => $user->email,
+            'subject' => $header,
+            'body' => $mail_view,
+        ]);
+        $send->send_email();
+        return true;
+    }
+    return false;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

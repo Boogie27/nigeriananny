@@ -2,8 +2,8 @@
 // ============================================
 // app banner settings
 // ============================================
-$app_active =  $connection->select('settings')->where('id', 1)->where('is_active', 1)->first();
-if(!$app_active && !Admin_auth::is_loggedin())
+$settings =  $connection->select('settings')->where('id', 1)->first();
+if(!$settings->is_active && !Admin_auth::is_loggedin())
 {
     return view('/under-construction');
 }
@@ -23,6 +23,12 @@ if(!$app_active && !Admin_auth::is_loggedin())
 <meta name="keywords" content="academy, college, coursera, courses, education, elearning, kindergarten, lms, lynda, online course, online education, school, training, udemy, university">
 <meta name="description" content="shop">
 <meta name="CreativeLayers" content="ATFN">
+
+<meta property="og:url" content="<?= current_url() ?>">
+<meta property="og:title" content="<?= $settings->site_name ?>">
+<meta name="description" content="We offer you the best products">
+<meta property="og:image" content="<?= asset('/images/icons/icon.ico') ?>" href="<?= asset('/images/icons/icon.ico') ?>">
+
 <!-- css file -->
 <link rel="stylesheet" href="<?= url('/shop/css/bootstrap.min.css') ?>">
 <link rel="stylesheet" href="<?= url('/shop/css/style.css') ?>">
@@ -32,10 +38,12 @@ if(!$app_active && !Admin_auth::is_loggedin())
 <link rel="stylesheet" href="<?= url('/shop/css/dashbord_navitaion.css') ?>">
 
 <!-- Title -->
-<title><?= title() ?></title>
+<title><?= $settings->app_name ?></title>
 <!-- Favicon -->
 <!-- <link href="images/favicon.ico" sizes="128x128" rel="shortcut icon" type="image/x-icon" />
 <link href="images/favicon.ico" sizes="128x128" rel="shortcut icon" /> -->
+
+<link href="<?= asset('/images/icons/icon.ico') ?>" rel="shortcut icon" /> 
 
 <!-- main script-->
 <link rel="stylesheet" href="<?= url('/shop/css/main-style.css') ?>">

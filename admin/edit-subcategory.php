@@ -25,30 +25,39 @@ if(!$single_subcategory)
 $categories = $connection->select('shop_categories')->get();
 
 
+
+
+
+
+
+
 if(Input::post('edit_subcategory'))
 {
-    $validate = new DB();
-       
-    $validation = $validate->validate([
-        'category' => 'required',
-        'subcategory' => 'required|min:3|max:50',
-    ]);
+    if(Token::check())
+    {
+        $validate = new DB();
+        
+        $validation = $validate->validate([
+            'category' => 'required',
+            'subcategory' => 'required|min:3|max:50',
+        ]);
 
-    if(!$validation->passed())
-    {
-        return back();
-    }
-    
-    if($validation->passed())
-    {
-        $update = $connection->update('shop_subcategories', [
-                    'shop_subCategory_name' => Input::get('subcategory'),
-                    'shop_categories_id' => Input::get('category')
-                ])->where('shop_subCategory_id', Input::get('scid'))->save(); 
-        if($update)
+        if(!$validation->passed())
         {
-            Session::flash('success', 'Subcategory has been updated successfully!');
             return back();
+        }
+        
+        if($validation->passed())
+        {
+            $update = $connection->update('shop_subcategories', [
+                        'shop_subCategory_name' => Input::get('subcategory'),
+                        'shop_categories_id' => Input::get('category')
+                    ])->where('shop_subCategory_id', Input::get('scid'))->save(); 
+            if($update)
+            {
+                Session::flash('success', 'Subcategory has been updated successfully!');
+                return back();
+            }
         }
     }
 }
@@ -134,6 +143,7 @@ $banner =  $connection->select('settings')->where('id', 1)->first();
                                                     </div>
                                                  </div>
                                                 <button type="submit" name="edit_subcategory" class="btn bg-danger btn-log btn-block h50" style="color: #fff;">Submit</button>                                                 
+                                                <?= csrf_token() ?>
                                             </form>
                                         </div>
                                         <br>

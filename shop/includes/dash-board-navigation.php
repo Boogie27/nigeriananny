@@ -34,7 +34,7 @@ $banner =  $connection->select('settings')->where('id', 1)->first();
 		        <a href="<?= url('/shop'); ?>" class="navbar_brand float-left dn-smd">
 		            <img class="logo1 img-fluid navi-top-img" src="<?= asset($banner->logo) ?>" alt="<?= $banner->app_name ?>">
 		            <img class="logo2 img-fluid navi-top-img" src="<?= asset($banner->logo) ?>" alt="<?= $banner->app_name ?>">
-		            <span></span>
+		            <!-- <span></span> -->
 		        </a>
 		        <!-- Responsive Menu Structure-->
 		        <!--Note: declare the Menu style in the data-menu-style="horizontal" (options: horizontal, vertical, accordion) -->
@@ -73,11 +73,13 @@ $banner =  $connection->select('settings')->where('id', 1)->first();
 		                <a href="<?= url('/shop/cart') ?>"><span class="title">Cart</span></a>
 		            </li>
 					<li>
-		                <a href="<?= url('/') ?>"><span class="title"> Find a worker</span></a>
+						<a href="#">More</a>
+						<!-- Level Three-->
+						<ul>
+							<li><a href="<?= url('/') ?>">Find a worker</a></li>
+							<li><a href="<?= url('/courses') ?>">Courses</a></li>
+						</ul>
 					</li>
-					<li>
-						<a href="<?= url('/courses') ?>"><span class="title">Courses</span></a>
-		            </li>
 		        </ul>
 		        <ul class="header_user_notif pull-right dn-smd">
 	                <li class="user_notif">

@@ -14,6 +14,8 @@ if(!Auth_employer::is_loggedin())
 // ============================================
 if(Input::post('update_profile'))
 {
+    if(Token::check())
+    {
         $validate = new DB();
         $validation = $validate->validate([
             'email' => 'required|email',
@@ -61,7 +63,9 @@ if(Input::post('update_profile'))
                 return back();
             }
         }
-
+    }
+    Session::flash('error', 'Network error, try again later!');
+    return back();
 }
 
 
@@ -183,7 +187,7 @@ if($employer->employer_approved)
                                         <div class="dob text-center text-success" style="font-size: 12px;"><span>Joined: </span><?= date('d M Y', strtotime($employer->e_date_joined)) ?></div>
                                         <ul class="anchor-acc">
                                             <li><a href="<?= url('/employer/account') ?>">Account</a></li>
-                                            <li><a href="<?= url('/employer/job-offer') ?>">Job offeres</a></li>
+                                            <li><a href="<?= url('/employer/job-offer') ?>">Job offers</a></li>
                                             <li><a href="<?= url('/employer/accepted')?>">Accepted offers</a></li>
                                             <li><a href="<?= url('/employer/change-password')?>">Change password</a></li>
                                             <li><a href="<?= url('/employer/logout')?>">Logout</a></li>
@@ -335,6 +339,7 @@ if($employer->employer_approved)
                                                 </div>
                                             </div>
                                         </div>
+                                        <?= csrf_token() ?>
                                     </form>
                                 </div>
                             </div>

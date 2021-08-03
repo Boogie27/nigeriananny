@@ -899,6 +899,7 @@ function get_saved_workers(){
             var count = data.data ? `(${data.data})` : '';
             // $(".nav-right .saved-workers").html(count)
             $(".side-navigation .side-saved-workers").html(count)
+            $("#side_saved_workers").html(data.saved_worker)
         }
     });
 }

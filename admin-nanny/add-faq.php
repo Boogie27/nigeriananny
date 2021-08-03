@@ -14,31 +14,34 @@ if(!Admin_auth::is_loggedin())
 // =============================================
 if(Input::post('add_faq'))
 {
-    $validate = new DB();
-   
-    $validation = $validate->validate([
-        'faq' => 'required|min:3|max:200',
-        'faq_type' => 'required',
-        'faq_content' => 'required|min:6',
-    ]);
-
-    if(!$validation->passed())
+    if(Token::check())
     {
-        return back();
-    }
-
-    if($validation->passed())
-    {
-        $create = $connection->create('faqs', [
-            'faq' => Input::get('faq'),
-            'faq_type' => Input::get('faq_type'),
-            'content' => Input::get('faq_content'),
-        ]);
+        $validate = new DB();
     
-        if($create)
+        $validation = $validate->validate([
+            'faq' => 'required|min:3|max:200',
+            'faq_type' => 'required',
+            'faq_content' => 'required|min:6',
+        ]);
+
+        if(!$validation->passed())
         {
-            Session::flash('success', 'FAQ added successfully!');
-            return view('/admin-nanny/faq');
+            return back();
+        }
+
+        if($validation->passed())
+        {
+            $create = $connection->create('faqs', [
+                'faq' => Input::get('faq'),
+                'faq_type' => Input::get('faq_type'),
+                'content' => Input::get('faq_content'),
+            ]);
+        
+            if($create)
+            {
+                Session::flash('success', 'FAQ added successfully!');
+                return view('/admin-nanny/faq');
+            }
         }
     }
 }
@@ -147,21 +150,18 @@ $banner =  $connection->select('settings')->where('id', 1)->first();
                                             </div>
                                         </div>
                                     </div>
+                                    <?= csrf_token() ?>
                                 </form>
                             </div>
                        </div>
                     </div><!-- edit faq end-->
                 </div>
-                <div class="row mt50 mb50">
-                    <div class="col-lg-6 offset-lg-3">
-                        <div class="copyright-widget text-center">
-                            <p class="color-black2"><?= $banner->alrights ?></p>
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
     </div>
+</div>
+<div class="footer-copy-right">
+    <p><?= $banner->alrights ?></p>
 </div>
 <a class="scrollToHome" href="#"><i class="flaticon-up-arrow-1"></i></a>
 </div>

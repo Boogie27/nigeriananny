@@ -11,80 +11,82 @@
 // *********** RESET PASSWORD *************//
 if(Input::post('receive_password'))
 {
-    $validate = new DB(); 
-    $validation = $validate->validate([
-        'email' => 'required|email',
-    ]);
-
-    if(!$validation->passed())
+    if(Token::check())
     {
-        return back();
-    }
+        $validate = new DB(); 
+        $validation = $validate->validate([
+            'email' => 'required|email',
+        ]);
 
-    $emailExists = $connection->select('course_users')->where('email', Input::get('email'))->first();
-    if(!$emailExists)
-    {
-        Session::flash('error', '*Email does not exist');
-        return back();
-    }
-    
-    $settings = $connection->select('settings')->where('id', 1)->first();
+        if(!$validation->passed())
+        {
+            return back();
+        }
 
-    $oldReset = $connection->select('course_user_reset_password')->where('reset_email', Input::get('email'))->first();
-    if($oldReset)
-    {
-        $connection->delete('course_user_reset_password')->where('reset_id', $oldReset->reset_id)->save();
-    }
+        $emailExists = $connection->select('course_users')->where('email', Input::get('email'))->first();
+        if(!$emailExists)
+        {
+            Session::flash('error', '*Email does not exist');
+            return back();
+        }
+        
+        $settings = $connection->select('settings')->where('id', 1)->first();
+
+        $oldReset = $connection->select('course_user_reset_password')->where('reset_email', Input::get('email'))->first();
+        if($oldReset)
+        {
+            $connection->delete('course_user_reset_password')->where('reset_id', $oldReset->reset_id)->save();
+        }
 
 
-    $token = password_hash(uniqid(), PASSWORD_DEFAULT);
-    $createReset = $connection->create('course_user_reset_password', [
-                        'reset_email' => Input::get('email'),
-                        'reset_token' => $token,
+        $token = password_hash(uniqid(), PASSWORD_DEFAULT);
+        $createReset = $connection->create('course_user_reset_password', [
+                            'reset_email' => Input::get('email'),
+                            'reset_token' => $token,
+                    ]);
+
+        if(!$createReset)
+        {
+            Session::flash('success', 'Password reset error, please try again later.');
+            return view('/courses/forgot-password');
+        }
+
+
+        $body = '';
+        $url = url('/courses/new-password.php?tid='.$token);
+        
+        $body .= '<div class="password_reset-forms">
+                    <div class="col-lg-12">
+                        <div style="text-align: center;"><img src="'.asset($settings->logo).'" style="width: 50px; height: 50px; border-radius: 50%;" alt="'.$settings->app_name.'"></div>
+                    </div>
+                    <h4 style="text-align: center;">'.$settings->app_name.'</h4>
+                    <h3 style="text-align: center;">Reset password</h3>
+                    <div style="text-align: center;">
+                        <p>We received a password reset request. The link to reset your password is here below.<br>
+                            If you did not make this request please ignore this mail. This token expires after 30 minutes, Thank you.
+                        </p>
+                        <p>Here is the password reset link <a href="'.$url.'">Reset password</a></p>
+                    </div>
+                </div>';
+
+        $mail = new Mail();
+        $send = $mail->mail([
+                    'to' => Input::get('email'),
+                    'subject' => 'forgot password',
+                    'body' => $body,
                 ]);
-
-    if(!$createReset)
-    {
-        Session::flash('success', 'Password reset error, please try again later.');
-        return view('/courses/forgot-password');
+        
+        if(!$send->passed())
+        {
+            return Redirect::to('forgot-password', ['error' => $send->error()]);
+        }
+        
+        if($send->send_email())
+        {
+            Session::flash('success', 'Password reset token has been sent to your email.');
+            return back();
+        }
     }
-
-
-    $body = '';
-    $url = url('/courses/new-password.php?tid='.$token);
-    
-    $body .= '<div class="password_reset-forms">
-                <div class="col-lg-12">
-                    <div style="text-align: center;"><img src="'.asset($settings->logo).'" style="width: 50px; height: 50px; border-radius: 50%;" alt="'.$settings->app_name.'"></div>
-                </div>
-                <h4 style="text-align: center;">'.$settings->app_name.'</h4>
-                <h3 style="text-align: center;">Reset password</h3>
-                <div style="text-align: center;">
-                    <p>We received a password reset request. The link to reset your password is here below.<br>
-                        If you did not make this request please ignore this mail. This token expires after 30 minutes, Thank you.
-                    </p>
-                    <p>Here is the password reset link <a href="'.$url.'">Reset password</a></p>
-                </div>
-            </div>';
-
-    $mail = new Mail();
-    $send = $mail->mail([
-				'to' => Input::get('email'),
-				'subject' => 'forgot password',
-				'body' => $body,
-			]);
-	
-	if(!$send->passed())
-	{
-		return Redirect::to('forgot-password', ['error' => $send->error()]);
-    }
-    
-    if($send->send_email())
-    {
-        Session::flash('success', 'Password reset token has been sent to your email.');
-        return back();
-    }
-
 }
 
 
@@ -147,6 +149,7 @@ if(Input::post('receive_password'))
                                           </div>
                                      </div>
                                 </div>
+                                <?= csrf_token() ?>
 							</form>
 						</div>
                     </div>

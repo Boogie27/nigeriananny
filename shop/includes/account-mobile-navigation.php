@@ -48,7 +48,7 @@ $banner =  $connection->select('settings')->where('id', 1)->first();
 			<div class="header stylehome1 dashbord_mobile_logo dashbord_pages">
 				<div class="main_logo_home2">
 		            <img class="nav_logo_img img-fluid float-left mt20 navi-top-img" src="<?= asset($banner->logo) ?>" alt="<?= $banner->app_name ?>">
-		            <span><?= $banner->app_name ?></span>
+		           
 				</div>
 				<ul class="menu_bar_home2">
 					<li class="list-inline-item"></li>

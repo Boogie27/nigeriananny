@@ -15,6 +15,8 @@ if(!Admin_auth::is_loggedin())
 // ============================================
 if(Input::post('create_account'))
 {
+    if(Token::check())
+    {
         $validate = new DB();
         $validation = $validate->validate([
             'email' => 'required|email',
@@ -51,7 +53,7 @@ if(Input::post('create_account'))
                 return view('/admin-course/users');
             }
         }
-
+    }
 }
 
 
@@ -197,6 +199,7 @@ $banner =  $connection->select('settings')->where('id', 1)->first();
                                                 </div>
                                             </div>
                                         </div>
+                                        <?= csrf_token() ?>
                                     </form>
                                 </div>
                             </div>

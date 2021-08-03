@@ -2,12 +2,29 @@
 <?php
 if(!Admin_auth::is_loggedin())
 {
-  Session::delete('admin');
+    Session::delete('admin');
+    Session::put('old_url', '/admin/customers');
   return Redirect::to('login.php');
 }
 
 
-$customers = $connection->select('users')->paginate(15);
+$customers = $connection->select('users')->where('is_deactivate', 0);
+
+if($search = Input::get('search'))
+{
+    if(preg_match('/@/', $search))
+    {
+        $customers->where('email', $search);
+    }else{
+        $customers->where('first_name', 'RLIKE', $search);
+    }
+}
+
+
+$customers->paginate(50);
+
+
+
 
     // app banner settings
 $banner =  $connection->select('settings')->where('id', 1)->first();
@@ -40,25 +57,41 @@ $banner =  $connection->select('settings')->where('id', 1)->first();
                     <div class="col-lg-12">
                     <div class="alert-danger text-center p-3 mb-2 category_alert_danger" style="display: none;"></div>
                         <nav class="breadcrumb_widgets" aria-label="breadcrumb mb30">
-                            <h4 class="title float-left">Manage products</h4>
+                            <h4 class="title float-left">Manage Customers</h4>
                             <ol class="breadcrumb float-right">
                                 <li class="breadcrumb-item"><a href="<?= url('/admin/index.php') ?>">Home</a></li>
                                 <li class="breadcrumb-item active" aria-current="page"><a href="<?= url('/admin/customers.php') ?>">Customer</a></li>
                             </ol>
                         </nav>
+                        <div class="text">
+                            Total Customers: <?= count($customers->result())?>
+                            <a href="#" class="text-primary" id="open_mass_member_newsletter_modal_btn">| Send newsletter |</a>
+                            <a href="#" class="text-primary" id="open_mass_member_deactivate_modal_btn"> Deactivate |</a>
+                        </div>
                     </div>
                     <div class="col-lg-12">
-                        <div class="item-table table-responsive"> <!-- table start-->
+                        <div class="top-table-container">
+                            <div class="icon-container"><i class="fa fa-users"></i></div>
+                            <form action="" method="GET" class="form-search-input">
+                                <div class="form-group">
+                                    <input type="text" name="search" class="form-control" value="" placeholder="Search...">
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="col-lg-12">
+                        <div class="item-table table-responsive" id="members_parent_table_container"> <!-- table start-->
                             <table class="table table-striped">
                                 <thead>
                                     <tr>
-                                    <th scope="col">Image</th>
-                                    <th scope="col">Customer name</th>
-                                    <th scope="col">Email</th>
-                                    <th scope="col">Activate</th>
-                                    <th scope="col">Last login</th>
-                                    <th scope="col">Date registered</th>
-                                    <th scope="col">Action</th>
+                                        <th scope="col"><input type="checkbox" id="mass_member_check_box_input"></th>
+                                        <th scope="col">Image</th>
+                                        <th scope="col">Customer name</th>
+                                        <th scope="col">Email</th>
+                                        <th scope="col">Activate</th>
+                                        <th scope="col">Last login</th>
+                                        <th scope="col">Date registered</th>
+                                        <th scope="col">Action</th>
                                     </tr>
                                 </thead>
                                 <tbody class="item-table-t">
@@ -66,6 +99,9 @@ $banner =  $connection->select('settings')->where('id', 1)->first();
                                 foreach($customers->result() as $customer):    
                                 ?>
                                     <tr>
+                                        <td>
+                                            <input type="checkbox" data-type="employee" id="<?= $customer->id ?>" class="check-box-members-input-btn">
+                                        </td>
                                         <td>
                                            <?php if($customer->user_image): ?>
                                             <img src="<?= asset($customer->user_image) ?>" alt="" class="table-img <?= $customer->is_active ? 'online' : 'offline' ?>">

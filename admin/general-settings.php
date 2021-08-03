@@ -17,38 +17,41 @@ if(!Admin_auth::is_loggedin())
 // =============================================
 if(Input::post('update_app_settings'))
 {
-	$validate = new DB();
-       
-	$validation = $validate->validate([
-		'app_name' => 'required|min:1|max:50',
-		'info_email' =>  'required|email',
-		'business_hours' => 'required',
-		'my_email' => 'email',
-		'alrights' => 'required|min:3|max:50',
-	]);
-
-	if(!$validation->passed())
+	if(Token::check())
     {
-        return back();
-    }
+		$validate = new DB();
+		
+		$validation = $validate->validate([
+			'app_name' => 'required|min:1|max:50',
+			'info_email' =>  'required|email',
+			'business_hours' => 'required',
+			'my_email' => 'email',
+			'alrights' => 'required|min:3|max:50',
+		]);
 
-	if($validation->passed())
-	{
-		$app_active = Input::get('app_active') == 'true' ? 1 : 0;
-		$connection = new DB();
-		$update_settings = $connection->update('settings', [
-						'app_name' => Input::get('app_name'),
-						'info_email' => Input::get('info_email'),
-						'business_hours' => Input::get('business_hours'),
-						'alrights' => Input::get('alrights'),
-						'my_email' => Input::get('my_email'),
-						'is_active' => $app_active,
-					])->where('id', 1)->save();
-		if($update_settings)
+		if(!$validation->passed())
 		{
-			Session::flash('success', 'App settings updated successfully!');
 			return back();
-		}   
+		}
+
+		if($validation->passed())
+		{
+			$app_active = Input::get('app_active') == 'true' ? 1 : 0;
+			$connection = new DB();
+			$update_settings = $connection->update('settings', [
+							'app_name' => Input::get('app_name'),
+							'info_email' => Input::get('info_email'),
+							'business_hours' => Input::get('business_hours'),
+							'alrights' => Input::get('alrights'),
+							'my_email' => Input::get('my_email'),
+							'is_active' => $app_active,
+						])->where('id', 1)->save();
+			if($update_settings)
+			{
+				Session::flash('success', 'App settings updated successfully!');
+				return back();
+			}   
+		}
 	}
 }
 
@@ -59,41 +62,44 @@ if(Input::post('update_app_settings'))
 // ===============================================
 if(Input::post('update_general_settings'))
 {
-	$validate = new DB();
-       
-	$validation = $validate->validate([
-		'phone' => 'required|min:11|max:11|number',
-		'address' => 'required|min:3|max:200',
-		'city' => 'required|min:1|max:50',
-		'state' => 'required|min:1|max:50',
-		'country' => 'required|min:1|max:50',
-		'paystack_secrete' => 'required|min:3|max:50',
-		'paystack_public' => 'required|min:3|max:50',
-	]);
-
-	if(!$validation->passed())
+	if(Token::check())
     {
-        return back();
-    }
-	
+		$validate = new DB();
+		
+		$validation = $validate->validate([
+			'phone' => 'required|min:11|max:11|number',
+			'address' => 'required|min:3|max:200',
+			'city' => 'required|min:1|max:50',
+			'state' => 'required|min:1|max:50',
+			'country' => 'required|min:1|max:50',
+			'paystack_secrete' => 'required|min:3|max:50',
+			'paystack_public' => 'required|min:3|max:50',
+		]);
 
-	if($validation->passed())
-	{
-		$connection = new DB();
-		$update_settings = $connection->update('settings', [
-						'phone' => Input::get('phone'),
-						'address' => Input::get('address'),
-						'city' => Input::get('city'),
-						'state' => Input::get('state'),
-						'country' => Input::get('country'),
-						'paystack_secrete' => Input::get('paystack_secrete'),
-						'paystack_public' => Input::get('paystack_public'),
-					])->where('id', 1)->save();
-		if($update_settings)
+		if(!$validation->passed())
 		{
-			Session::flash('success', 'Settings has been updated successfully!');
 			return back();
-		}   
+		}
+		
+
+		if($validation->passed())
+		{
+			$connection = new DB();
+			$update_settings = $connection->update('settings', [
+							'phone' => Input::get('phone'),
+							'address' => Input::get('address'),
+							'city' => Input::get('city'),
+							'state' => Input::get('state'),
+							'country' => Input::get('country'),
+							'paystack_secrete' => Input::get('paystack_secrete'),
+							'paystack_public' => Input::get('paystack_public'),
+						])->where('id', 1)->save();
+			if($update_settings)
+			{
+				Session::flash('success', 'Settings has been updated successfully!');
+				return back();
+			}   
+		}
 	}
 }
 
@@ -108,16 +114,19 @@ if(Input::post('update_general_settings'))
 // ===============================================
 if(Input::post('social_media'))
 {
-	$update_settings = $connection->update('settings', [
-		'facebook' => Input::get('facebook'),
-		'twitter' => Input::get('twitter'),
-		'linkedin' => Input::get('linkedin'),
-		'instagram' => Input::get('instagram'),
-	])->where('id', 1)->save();
-	if($update_settings)
-	{
-		Session::flash('success', 'Social links updated successfully!');
-		return back();
+	if(Token::check())
+    {
+		$update_settings = $connection->update('settings', [
+			'facebook' => Input::get('facebook'),
+			'twitter' => Input::get('twitter'),
+			'linkedin' => Input::get('linkedin'),
+			'instagram' => Input::get('instagram'),
+		])->where('id', 1)->save();
+		if($update_settings)
+		{
+			Session::flash('success', 'Social links updated successfully!');
+			return back();
+		}
 	}   
 }
 
@@ -413,7 +422,7 @@ $setting =  $connection->select('settings')->where('id', 1)->first();
 												<button type="submit" name="update_general_settings" class="btn btn-info float-right">Update...</button>
 											</div>
 										</div>
-									
+										<?= csrf_token() ?>
 									</div>
 								</div>
 							</form>

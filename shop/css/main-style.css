@@ -773,8 +773,11 @@ img.cart_img{
 
 /* ************ FOOTER *************** */
 img.footer-img, img.navi-top-img{
-    width: 40px;
     height: 40px;
     border-radius: 3px;
 }
 
+/* *************** NAVIGATION ************* */
+.navbar_brand span.nav-app-name{
+    font-size: 11px;
+}

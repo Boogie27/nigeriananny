@@ -78,7 +78,7 @@ $requests = $connection->select('request_workers')->leftJoin('employers', 'reque
                                 <div class="dob text-center text-success" style="font-size: 12px;"><span>Joined: </span><?= date('d M Y', strtotime($employee->date_joined)) ?></div>
                                 <ul class="anchor-acc">
                                     <li><a href="<?= url('/employee/account') ?>">Account</a></li>
-                                    <li><a href="<?= url('/employee/job-offer') ?>">Job offeres</a></li>
+                                    <li><a href="<?= url('/employee/job-offer') ?>">Job offers</a></li>
                                     <li><a href="<?= url('/employee/accepted')?>">Accepted offers</a></li>
                                     <li><a href="<?= url('/employee/job-history')?>">Offer history</a></li>
                                     <li><a href="<?= url('/employee/change-password')?>">Change password</a></li>

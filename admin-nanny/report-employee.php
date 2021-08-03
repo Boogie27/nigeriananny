@@ -11,7 +11,22 @@ if(!Admin_auth::is_loggedin())
 // ===========================================
 // GET REPORTED EMPLOYEES
 // ===========================================
-$employees = $connection->select('employer_reports')->leftJoin('employee', 'employer_reports.employee_rid', '=', 'employee.e_id')->paginate(15);
+$employees = $connection->select('employer_reports')->leftJoin('employee', 'employer_reports.employee_rid', '=', 'employee.e_id');
+
+if($search = Input::get('search'))
+{
+    if(preg_match('/@/', $search))
+    {
+        $employees->where('employee.email', $search);
+    }else{
+        $employees->where('employee.first_name', 'RLIKE', $search);
+    }
+}
+$employees->paginate(50);
+
+
+
+
 
 // ==============================================
 // app banner settings
@@ -55,6 +70,16 @@ $banner =  $connection->select('settings')->where('id', 1)->first();
                                 <li class="breadcrumb-item active" aria-current="page"><a href="#">Reports</a></li>
                             </ol>
                         </nav>
+                    </div>
+                    <div class="col-lg-12">
+                        <div class="top-table-container">
+                            <div class="icon-container"><i class="fa fa-users"></i></div>
+                            <form action="" method="GET" class="form-search-input">
+                                <div class="form-group">
+                                    <input type="text" name="search" class="form-control" value="" placeholder="Search...">
+                                </div>
+                            </form>
+                        </div>
                     </div>
                     <div class="col-lg-12">
                         <div class="item-table table-responsive"> <!-- table start-->
@@ -115,16 +140,12 @@ $banner =  $connection->select('settings')->where('id', 1)->first();
                         </div><!-- table end-->
                     </div>
                 </div>
-                <div class="row mt50 mb50">
-                    <div class="col-lg-6 offset-lg-3">
-                        <div class="copyright-widget text-center">
-                            <p class="color-black2"><?= $banner->alrights ?></p>
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
     </div>
+</div>
+<div class="footer-copy-right">
+    <p><?= $banner->alrights ?></p>
 </div>
 <a class="scrollToHome" href="#"><i class="flaticon-up-arrow-1"></i></a>
 </div>

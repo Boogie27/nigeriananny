@@ -27,22 +27,25 @@ $banner =  $connection->select('settings')->where('id', 1)->first();
 // ============================================
 if(Input::post('update_terms'))
 {
-    $validate = new DB();
-   
-    $validation = $validate->validate([
-        'terms' => 'required',
-    ]);
-
-    if($validation->passed())
+    if(Token::check())
     {
-        $privacy = new DB();
-        $update = $privacy->update('settings', [
-                    'terms' => Input::get('terms'),
-                ])->where('id', 1)->save();
-        if($update->passed())
+        $validate = new DB();
+    
+        $validation = $validate->validate([
+            'terms' => 'required',
+        ]);
+
+        if($validation->passed())
         {
-            Session::flash('success', 'Terms and Condition updated successfully!');
-            return view('/admin-nanny/terms');
+            $privacy = new DB();
+            $update = $privacy->update('settings', [
+                        'terms' => Input::get('terms'),
+                    ])->where('id', 1)->save();
+            if($update->passed())
+            {
+                Session::flash('success', 'Terms and Condition updated successfully!');
+                return view('/admin-nanny/terms');
+            }
         }
     }
 }
@@ -116,20 +119,17 @@ if(Input::post('update_terms'))
                                         </div>
                                     </div>
                                 </div>
+                                <?= csrf_token() ?>
                             </form>
                       </div>
                     </div><!-- privacy end-->
                 </div>
-                <div class="row mt50 mb50">
-                    <div class="col-lg-6 offset-lg-3">
-                        <div class="copyright-widget text-center">
-                            <p class="color-black2"><?= $banner->alrights ?></p>
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
     </div>
+</div>
+<div class="footer-copy-right">
+    <p><?= $banner->alrights ?></p>
 </div>
 <a class="scrollToHome" href="#"><i class="flaticon-up-arrow-1"></i></a>
 </div>

@@ -27,6 +27,8 @@ if(!Input::exists('get') || !Input::get('page'))
 // ============================================
 if(Input::post('update_about'))
 {
+    if(Token::check())
+    {
         $validate = new DB();
         $validation = $validate->validate([
             'about' => 'required|min:3|max:5000',
@@ -48,6 +50,7 @@ if(Input::post('update_about'))
             }
         }
     return view('/admin-nanny/employee-detail?wid='.Input::get('wid'));
+    }
 }
 
 
@@ -60,6 +63,8 @@ if(Input::post('update_about'))
 // ============================================
 if(Input::post('update_summary'))
 {
+    if(Token::check())
+    {
         $validate = new DB();
         $validation = $validate->validate([
             'summary' => 'required|min:3|max:3000',
@@ -76,6 +81,7 @@ if(Input::post('update_summary'))
             }
         }
         return view('/admin-nanny/employee-detail?wid='.Input::get('wid'));
+    }
 }
 
 
@@ -168,6 +174,7 @@ $worker = $connection->select('workers')->where('employee_id', Input::get('wid')
                                             </div>
                                         </div>
                                     </div>
+                                    <?= csrf_token() ?>
                                 </form>
                             </div>
                         </div>

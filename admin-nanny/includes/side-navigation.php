@@ -21,8 +21,12 @@ $new_messages = $connection->select('contact_us')->where('is_seen', 0)->get();
                     <li class="<?= path('/') ? 'active' : ''?>"><a href="<?= url('/admin-nanny') ?>"><span class="flaticon-puzzle-1"></span> Dashboard</a></li>
                     <li class="<?= path('categories') ? 'active' : ''?>"><a href="<?= url('/admin-nanny/categories') ?>"><span class="fa fa-cubes"></span>Categories</a></li>
                     <li class="<?= path('employees') ? 'active' : ''?>"><a href="<?= url('/admin-nanny/employees') ?>"><span class="fa fa-briefcase"></span>Employees</a></li>
+                    <li class="<?= path('unapproved-employees') ? 'active' : ''?>"><a href="<?= url('/admin-nanny/unapproved-employees') ?>">Unapproved Employees <b class="badge bg-danger unapproved-span"><?= unapproved_members('employee') ?></b></a></li>
+                    <li class="<?= path('deactivated-employees') ? 'active' : ''?>"><a href="<?= url('/admin-nanny/deactivated-employees') ?>">Deactivated Employees</a></li>
                     <li class="<?= path('employers') ? 'active' : ''?>"><a href="<?= url('/admin-nanny/employers') ?>"><span class="fa fa-users"></span>Employers</a></li>
-                    <li class="<?= path('employers') ? 'active' : ''?>"><a href="<?= url('/admin-nanny/employments') ?>"><span class="fa fa-money"></span>Employments</a></li>
+                    <li class="<?= path('unapproved-employers') ? 'active' : ''?>"><a href="<?= url('/admin-nanny/unapproved-employers') ?>">Unapproved Employers <b class="badge bg-danger unapproved-span"><?= unapproved_members('employer') ?></b></a></li>
+                    <li class="<?= path('deactivated-employers') ? 'active' : ''?>"><a href="<?= url('/admin-nanny/deactivated-employers') ?>">Deactivated Employers</a></li>
+                    <li class="<?= path('employments') ? 'active' : ''?>"><a href="<?= url('/admin-nanny/employments') ?>"><span class="fa fa-money"></span>Employments</a></li>
                     <li class="<?= path('subscriptions') ? 'active' : ''?>"><a href="<?= url('/admin-nanny/subscriptions') ?>"><span class="flaticon-speech-bubble"></span>Subscriptions</a></li>
                     <li class="<?= path('subscription') ? 'active' : ''?>"><a href="<?= url('/admin-nanny/subscription') ?>"><span class="flaticon-speech-bubble"></span>Employer subscription</a></li>
                     <li class="<?= path('report-employee') ? 'active' : ''?>"><a href="<?= url('/admin-nanny/report-employee') ?>"><span class="flaticon-add-contact"></span> Reported employee</a></li>

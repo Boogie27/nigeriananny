@@ -118,6 +118,7 @@ $banner =  $connection->select('settings')->where('id', 1)->first();
                         <ul>
                             <li class="footer-header"><?= $banner->app_name ?></li>
                             <li><?= $banner->address ?></li>
+                            <li><a href="<?= url('/unsubscribe-newsletter') ?>">Unsubscribe newsletter</a></li>
                         </ul>
                     </div>
                     <a href="<?= url('/admin-nanny/news-letters') ?>" class="anchor">Back</a>

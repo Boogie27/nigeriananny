@@ -9,33 +9,35 @@ if(!Input::exists('get') && !Input::get('tid'))
   
  if(Input::post('new_password_btn'))
  {
-    $validate = new DB(); 
-    $validation = $validate->validate([
-        'new_password' => 'required|min:6|max:12',
-        'confirm_password' => 'required|min:6|max:12|match:new_password'
-    ]);
-
-    if(!$validation->passed())
+    if(Token::check())
     {
-        return back();
-    }
+        $validate = new DB(); 
+        $validation = $validate->validate([
+            'new_password' => 'required|min:6|max:12',
+            'confirm_password' => 'required|min:6|max:12|match:new_password'
+        ]);
 
-    $reset = $connection->select('employer_reset_password')->where('reset_token', Input::get('reset_token'))->first();
-    if($reset)
-    {
-        $update_passowrd = $connection->update('employers', [
-            'password' => password_hash(Input::get('new_password'), PASSWORD_DEFAULT)
-        ])->where('email', $reset->reset_email)->save();
-
-        if($update_passowrd)
+        if(!$validation->passed())
         {
-            $connection->delete('employer_reset_password')->where('reset_token', Input::get('reset_token'))->save();
-            Session::delete('get_passsword');
-            return Redirect::to('login.php', ['success', 'Password reset successfully, you can now login!']);
+            return back();
         }
-    
+
+        $reset = $connection->select('employer_reset_password')->where('reset_token', Input::get('reset_token'))->first();
+        if($reset)
+        {
+            $update_passowrd = $connection->update('employers', [
+                'password' => password_hash(Input::get('new_password'), PASSWORD_DEFAULT)
+            ])->where('email', $reset->reset_email)->save();
+
+            if($update_passowrd)
+            {
+                $connection->delete('employer_reset_password')->where('reset_token', Input::get('reset_token'))->save();
+                Session::delete('get_passsword');
+                return Redirect::to('login.php', ['success', 'Password reset successfully, you can now login!']);
+            }
+        
+        }
     }
-    
  }
 
 ?>
@@ -88,9 +90,9 @@ if(!Input::exists('get') && !Input::get('tid'))
                             <p class="apply-p"><a href="<?= url('/') ?>" class="text-primary">Back</a></p>
                         </div>
                     </div>
-            
                 </div>
             </div>
+            <?= csrf_token() ?>
         </form>
     </div>
 </div>

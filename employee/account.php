@@ -32,67 +32,71 @@ $worker = $connection->select('workers')->where('employee_id', Auth_employee::em
 // ============================================
 if(Input::post('update_profile'))
 {
-    $approve = 0;
-    $validate = new DB();
-    $validation = $validate->validate([
-        'email' => 'required|email',
-        'first_name' => 'required|min:3|max:50',
-        'last_name' => 'required|min:3|max:50',
-        'phone' => 'required|number:phone',
-        'birth_date' => 'required',
-        'city' => 'required|min:3|max:50',
-        'state' => 'required|min:3|max:50',
-        'country' => 'required|min:3|max:50',
-        'address' => 'required|min:3|max:100',
-    ]);
-
-    if(!$validation->passed())
+    if(Token::check())
     {
-        return back();
-    }
+        $approve = 0;
+        $validate = new DB();
+        $validation = $validate->validate([
+            'email' => 'required|email',
+            'first_name' => 'required|min:3|max:50',
+            'last_name' => 'required|min:3|max:50',
+            'phone' => 'required|number:phone',
+            'birth_date' => 'required',
+            'city' => 'required|min:3|max:50',
+            'state' => 'required|min:3|max:50',
+            'country' => 'required|min:3|max:50',
+            'address' => 'required|min:3|max:100',
+        ]);
 
-    $my_email = $connection->select('employee')->where('email', Input::get('email'))->where('e_id', Auth_employee::employee('id'))->first();
-    if(!$my_email)
-    {
-        $all_email = $connection->select('employee')->where('email', Input::get('email'))->get();           
-        if(count($all_email))
+        if(!$validation->passed())
         {
-            Session::errors('errors', ['email' => '*Email already exists']);
             return back();
         }
-    }
-    
-    if(Input::get('first_name') &&  Input::get('last_name') && $employee->w_image && $worker->job_title && $worker->education && $worker->amount_form)
-    {
-        $approve = 1;
-    }
 
-    if($validation->passed())
-    {
-        $create = new DB();
-        $create->update('employee', [
-                'first_name' => Input::get('first_name'),
-                'last_name' => Input::get('last_name'),
-                'email' => Input::get('email'),
-                'phone' => Input::get('phone'),
-                'dob' => Input::get('birth_date'),
-                'city' => Input::get('city'),
-                'state' => Input::get('state'),
-                'country' => Input::get('country'),
-                'address' => Input::get('address'),
-                'e_approved' => $approve
-            ])->where('e_id', Auth_employee::employee('id'))->save();
-
+        $my_email = $connection->select('employee')->where('email', Input::get('email'))->where('e_id', Auth_employee::employee('id'))->first();
+        if(!$my_email)
+        {
+            $all_email = $connection->select('employee')->where('email', Input::get('email'))->get();           
+            if(count($all_email))
+            {
+                Session::errors('errors', ['email' => '*Email already exists']);
+                return back();
+            }
+        }
         
-        if($create->passed())
+        if(Input::get('first_name') &&  Input::get('last_name') && $employee->w_image && $worker->job_title && $worker->education && $worker->amount_form)
         {
-            Auth_employee::login(Input::get('email'));
-            Session::flash('success-m', 'Account updated successfully!');
-            Session::flash('success', 'Account updated successfully!');
-            return back();
+            $approve = 1;
+        }
+
+        if($validation->passed())
+        {
+            $create = new DB();
+            $create->update('employee', [
+                    'first_name' => Input::get('first_name'),
+                    'last_name' => Input::get('last_name'),
+                    'email' => Input::get('email'),
+                    'phone' => Input::get('phone'),
+                    'dob' => Input::get('birth_date'),
+                    'city' => Input::get('city'),
+                    'state' => Input::get('state'),
+                    'country' => Input::get('country'),
+                    'address' => Input::get('address'),
+                    'e_approved' => $approve
+                ])->where('e_id', Auth_employee::employee('id'))->save();
+
+            
+            if($create->passed())
+            {
+                Auth_employee::login(Input::get('email'));
+                Session::flash('success-m', 'Account updated successfully!');
+                Session::flash('success', 'Account updated successfully!');
+                return back();
+            }
         }
     }
-
+    Session::flash('error', 'Network error, try again later!');
+    return back();
 }
 
 
@@ -193,7 +197,7 @@ if($employee->e_approved)
                                         <div class="dob text-center text-success" style="font-size: 12px;"><span>Joined: </span><?= date('d M Y', strtotime($employee->date_joined)) ?></div>
                                         <ul class="anchor-acc">
                                             <li><a href="<?= url('/employee/account') ?>">Account</a></li>
-                                            <li><a href="<?= url('/employee/job-offer') ?>">Job offeres</a></li>
+                                            <li><a href="<?= url('/employee/job-offer') ?>">Job offers</a></li>
                                             <li><a href="<?= url('/employee/accepted')?>">Accepted offers</a></li>
                                             <li><a href="<?= url('/employee/job-history')?>">Offer history</a></li>
                                             <li><a href="<?= url('/employee/change-password')?>">Change password</a></li>
@@ -343,6 +347,7 @@ if($employee->e_approved)
                                                 </div>
                                             </div>
                                         </div>
+                                        <?= csrf_token() ?>
                                     </form>
                                 </div>
                             </div>
@@ -616,7 +621,7 @@ if($employee->e_approved)
                                    </div>
                                    <div class="inner-body">
                                        <ul class="inner_ul">
-                                            <li><p class="inner-p">Specify your prefered salaray range</p></li>
+                                            <li><p class="inner-p">Specify your prefered salaray</p></li>
                                             <?php if($worker->amount_form): 
                                             $amount = $worker->amount_to ? money($worker->amount_form).' - '.money($worker->amount_to) : money($worker->amount_form);
                                             ?>

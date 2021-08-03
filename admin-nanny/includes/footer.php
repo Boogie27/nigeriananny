@@ -1,4 +1,5 @@
 
+<?php   include('includes/modal-popup.php') ?>
 
 
 <!-- Wrapper End -->
@@ -26,6 +27,9 @@
 <script type="text/javascript" src="<?= SITE_URL ?>/admin-nanny/js/dashboard-script.js"></script>
 <!-- Custom script for all pages --> 
 <script type="text/javascript" src="<?= SITE_URL ?>/admin-nanny/js/script.js"></script>
+
+<!-- main script-->
+<script type="text/javascript" src="<?= SITE_URL ?>/admin-nanny/js/main-script.js"></script>
 </body>
 
 <!-- Mirrored from grandetest.com/theme/edumy-html/page-dashboard.html by HTTrack Website Copier/3.x [XR&CO'2014], Mon, 30 Nov 2020 11:06:36 GMT -->

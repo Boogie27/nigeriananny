@@ -250,15 +250,13 @@ $testimoials = $connection->select('testimonial')->where('is_featured', 1)->get(
 
 <?php include('includes/side-navigation.php');  ?>
 
-<?php include('includes/slider.php');  
-?>
+<?php include('includes/slider.php');  ?>
 
 
 
 
 
 <div class="body-content">
-    
     <?php if(count($workers)): ?>
 	<div class="content-one"> <!-- top content start -->
 	    <div class="page-alert-x">
@@ -281,7 +279,11 @@ $testimoials = $connection->select('testimonial')->where('is_featured', 1)->get(
                        </a>
                        <ul class="ul-content">
                             <li><h4><a href="<?= url('/job-detail.php?wid='.$worker->worker_id) ?>"><?= ucfirst($worker->job_title) ?></a></h4></li>
-                            <li><?= ucfirst($worker->first_name.' '.$worker->last_name) ?></li>
+                            <li>
+								<a href="<?= url('/job-detail.php?wid='.$worker->worker_id) ?>">
+									<?= ucfirst($worker->first_name.' '.$worker->last_name) ?>
+								</a>
+							</li>
                             <li><?= $worker->job_type != 'live in' ? 'Live out | '.$location['state'] : 'Live in';?></li>
                             <li><span class="text-warning"><?= $amount ?></span> <span class="float-right"><?= date('d M Y', strtotime($worker->date_added)) ?></span></li>
                         </ul>
@@ -292,47 +294,8 @@ $testimoials = $connection->select('testimonial')->where('is_featured', 1)->get(
         </div>
      </div> <!-- top content end -->
     <?php endif; ?>
+   
 
-    
-    <!-- content two start -->
-    <div class="content-two">
-        <div class="content-two-body">
-            <div class="one-img">
-                <img src="<?= asset('/images/banner/8.png')?>" alt="" class="one-image-left">
-            </div>
-            <ul class="ul-content-two">
-                <li><h3>Find the right domestic staff <br>in Nigeria</h3></li>
-                <li>NNC offers what you need</li>
-                <li class="text-center create-btn">
-                    <a href="<?= url('/employer/register')?>" class="btn-fill">Create account</a>
-                </li>
-            </ul>
-            <div class="two-img fade-right-container">
-                <img src="<?= asset('/images/banner/8.png')?>" alt="" class="two-image-right">
-            </div>
-        </div>
-    </div>
-    <!-- content two start -->
-
-     <!-- content two start -->
-     <div class="content-two two">
-        <div class="content-two-body">
-            <div class="three-img">
-                <img src="<?= asset('/images/banner/7.png')?>" alt="">
-            </div>
-            <ul class="ul-content-two">
-                <li><h3>Get Hired By The Right Employer <br>in Nigeria</h3></li>
-                <li>
-                    <p>as quality of CVs seems to get us what we need, at the right time - so there’s
-                        and most times you don’t get the best from that. I will definitely use nigeri nanny</p>
-                </li>
-                <li class="text-center create-btn">
-                    <a href="<?= url('/employee/register')?>" class="btn-fill">Create account</a>
-                </li>
-            </ul>
-        </div>
-    </div>
-    <!-- content two start -->
 
    
     <?php if(count($employees)): ?>
@@ -351,10 +314,21 @@ $testimoials = $connection->select('testimonial')->where('is_featured', 1)->get(
                             <img src="<?= asset($w_image)?>" alt="<?= $employee->first_name?>" class="inner-img">
                         </a>
                         <ul class="ul-content">
-                            <li><h4><a href="<?= url('/job-detail.php?wid='.$employee->worker_id) ?>"><?= ucfirst($employee->job_title) ?></a></h4></li>
-                            <li><?= ucfirst($employee->first_name.' '.$employee->last_name) ?></li>
-                            <li><?= $employee->job_type != 'live in' ? 'Live out | '.$location['state'] : 'Live in';?></li>
-                            <li><span class="text-warning"><?= $amount ?></span> <span class="float-right"><?= date('d M Y', strtotime($employee->date_added)) ?></span></li>
+                            <li>
+								<h4>
+									<a href="<?= url('/job-detail.php?wid='.$employee->worker_id) ?>"><?= ucfirst($employee->job_title) ?></a>
+								</h4>
+							</li>
+                            <li>
+								<a href="<?= url('/job-detail.php?wid='.$employee->worker_id) ?>">
+									<?= ucfirst($employee->first_name.' '.$employee->last_name) ?></li>
+								</a>
+                            <li>
+								<?= $employee->job_type != 'live in' ? 'Live out | '.$location['state'] : 'Live in';?>
+							</li>
+                            <li>
+								<span class="text-warning"><?= $amount ?></span> <span class="float-right"><?= date('d M Y', strtotime($employee->date_added)) ?></span>
+							</li>
                         </ul>
                     </div>
                 </div>
@@ -365,28 +339,7 @@ $testimoials = $connection->select('testimonial')->where('is_featured', 1)->get(
     <?php endif; ?>
 
 
-	<div class="services-offer" style="background-image: linear-gradient(rgba(0, 0, 0, 0.603), rgba(0, 0, 0, 0.644)) , url(images/banner/body-banner.jpg);">
-		<div class="content-two" style="margin: 0px;">
-			<div class="content-two-body">
-				<div class="one-img">
-					<img src="<?= asset('/images/banner/6.png')?>" class="services-img" alt="">
-				</div>
-				<ul class="ul-content-two">
-					<li><h3>What Services We Offer <br>in Nigeria Nanny</h3></li>
-					<li>
-						<p style="color: #fff;">as quality of CVs seems to get us what we need, at the right time - so there’s
-							and most times <br>you don’t get the best from that. I will definitely use nigeria nanny</p>
-					</li>
-					<li class="create-btn">
-						<a href="<?= url('/how-it-works')?>" class="btn-fill">How it works</a>
-					</li>
-				</ul>
-				<div class="two-img fade-right-container">
-					<img src="<?= asset('/images/banner/6.png')?>" class="services-img" alt="">
-				</div>
-			</div>
-		</div>
-	</div>
+
 
 
 	<!-- testimial start -->

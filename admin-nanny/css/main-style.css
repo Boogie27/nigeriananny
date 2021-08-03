@@ -23,6 +23,57 @@ body{
     line-height: 10px;
     height: 10px;
 }
+
+/* ***********BOTTOM ALERT *********** */
+.bottom-alert{
+    height: 0px;
+}
+.bottom-alert-danger, .bottom-alert-success{
+    z-index: 10;
+    right: 3px;
+    bottom: -100px;
+    width: 450px;
+    position: fixed;
+    padding: 15px 5px;
+    font-size: 13px;
+    border-radius: 4px;
+    text-align: center;
+    color: rgb(202, 0, 0);
+    transition: all 0.2s ease;
+    border: 1px solid rgb(253, 71, 71);
+    background-color: rgb(230, 140, 140);
+}
+.bottom-alert-success{
+    color: green;
+    border: 1px solid rgb(68, 247, 68);
+    background-color: rgb(170, 250, 170);
+}
+.unapproved-span{
+    right: 8px;
+    font-size: 11px;
+    color: #fff;
+    position: absolute;
+}
+@media only screen and (max-width: 767px){
+    .bottom-alert-danger, .bottom-alert-success{
+        width: 100%;
+        right: 0px;
+        border-radius: 0px;
+    }
+}
+/* ********** SEARCH FORM ************** */
+.top-table-container{
+    display: flex;
+    justify-content: space-between;
+}
+.icon-container i{
+    border: 1px solid #555;
+    border-radius: 4px;
+    padding: 5px 10px;
+}
+.form-search-input{
+    width: 300px;
+}
 /* *********** NOTIFICATION ************* */
 .flaticon-not-count{
     border: 2px solid rgb(150, 245, 137);
@@ -72,6 +123,146 @@ ul.ul-notification span{
 @media only screen and (max-width: 567px){
     .notification-body{
         width: 100%;
+    }
+}
+/* ******** FOOTER **************** */
+.footer-copy-right{
+    width: 100%;
+    padding: 20px 0px;
+    border-top: 1px solid #ccc;
+}
+.footer-copy-right p{
+    font-size: 13px;
+    text-align: center;
+    margin: 0px;
+}
+/* ********* DROP DOWN ******** */
+.drop-down{
+    position: relative;
+}
+.drop-down ul.drop-down-body{
+    top: 0px;
+    right: 0px;
+    padding: 0px;
+    width: 200px;
+    z-index: 10;
+    display: none;
+    list-style: none;
+    position: absolute;
+    border-radius: 4px;
+    background-color: #fff;
+    border: 1px solid rgb(223, 223, 223);
+}
+.drop-down i{
+    color: rgb(109, 106, 106);
+}
+.drop-down ul.drop-down-body li a{
+    font-size: 12px;
+    padding: 5px;
+    display: block;
+    color: rgb(109, 106, 106);
+}
+.drop-down ul.drop-down-body li a:hover{
+    background-color:  rgb(243, 243, 243);
+}
+/* ********** CONFRIM ALERT BOX *********** */
+.modal-alert-popup{
+    display: none;
+}
+.sub-confirm-container{
+    top: 0px;
+    width: 100%;
+    z-index: 30;
+    height: 100vh;
+    position: fixed;
+    display: table;
+    text-align: center; 
+}
+.sub-confirm-dark-theme{
+    width: 100%;
+    height: 100vh;
+    padding: 0px 10px;
+    display: table-cell;
+    vertical-align: middle;
+    background-color: rgba(0, 0, 0, 0.623);
+}
+.sub-inner-content{
+    width: 550px;
+    margin: 0 auto;
+    border-radius: 4px;
+    background-color: #fff;
+}
+.sub-inner-content ul.ul-member-newsletter{
+    width: 100%;
+    height: 200px;
+    list-style: none;
+    text-align: left;
+    padding: 0px 10px;
+    overflow: auto;
+}
+.sub-inner-content ul.ul-member-newsletter::-webkit-scrollbar{
+    width: 0px;
+}
+ul.ul-member-newsletter .inner-newsletter{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+ul.ul-member-newsletter li.main{
+    padding: 10px 0px;
+}
+.confirm-header{
+    padding: 10px 0px;
+}
+.confirm-header h4{
+    font-size: 20px;
+    margin: 0px;
+    color:  rgba(248, 179, 50, 1)
+}
+.confirm-header p{
+    font-size: 14px;
+    margin: 0px;
+}
+button.confirm-box-close{
+    border: none;
+    cursor: pointer;
+    background-color: transparent;
+}
+button.confirm-box-close i{
+    color:  rgb(51, 51, 143);
+}
+button.confirm-btn, button.btn-fill{
+    border: none;
+    cursor: pointer;
+    width: 80%;
+    color: #fff;
+    padding: 10px 0px;
+    border-radius: 4px;
+    margin-bottom: 20px;
+    transition:  background-color 0.2s ease;
+    background-color:  rgb(51, 51, 143);
+}
+button.confirm-btn:hover{
+    background-color: rgb(14, 14, 65);
+}
+button.btn-fill{
+    width: 100%;
+}
+button.btn-fill:hover{
+    background-color: rgb(14, 14, 65);
+}
+@media only screen and (max-width: 767px){
+    .sub-inner-content{
+        width: 90%;
+    }
+}
+@media only screen and (max-width: 567px){
+    .sub-inner-content{
+        width: 100%;
+    }
+    .confirm-header p{
+        font-size: 13px;
+        padding: 0px 10px;
     }
 }
 
@@ -192,7 +383,11 @@ img.table-img{
     width: 55px;
     height: 55px;
 }
-
+img.navigation-image-circle{
+    width: 50px;
+    height: 50px;
+    border: 2px solid #fff;
+}
 /* *********** DASHBOARD ************ */
 .media-body-anchor a{
     margin: 0px 5px;

@@ -12,53 +12,55 @@ if(!Admin_auth::is_loggedin())
 // ********* CHANGE ADMIN PASSWORD **************//
 if(Input::post('update_password'))
 {
-    $state = false;
-     $validate = new DB();
-     $validation = $validate->validate([
-            'email' => 'required',
-            'old_password' => 'required|min:6|max:12',
-            'new_password' => 'required|min:6|max:12',
-            'confirm_new_password' => 'required|min:6|max:12|match:new_password',
-     ]);
-
-    if(!$validation->passed())
+    if(Token::check())
     {
-        return back();
-    }
-     
-    if($validation->passed())
-    {
-        $verify = $connection->select('admins')->where('id', 1)->first();
-        if($verify->email != Input::get('email'))
-        {
-            $state = true;
-            Session::delete('admin');
-            Session::flash('error', '*Wrong email, login and try again');
-        }
+        $state = false;
+        $validate = new DB();
+        $validation = $validate->validate([
+                'email' => 'required',
+                'old_password' => 'required|min:6|max:12',
+                'new_password' => 'required|min:6|max:12',
+                'confirm_new_password' => 'required|min:6|max:12|match:new_password',
+        ]);
 
-        if(!password_verify(Input::get('old_password'), $verify->password))
+        if(!$validation->passed())
         {
-            $state = true;
-            Session::delete('admin');
-            Session::flash('error', '*Wrong password, login and try again!');
-        }
-      
-        if($state){
-            Session::put('old_url', '/admin-nanny/change-password');
-            return view('/admin/login');
-        }
-        
-        $update = $connection->update('admins', [
-                        'password' => password_hash(Input::get('new_password'), PASSWORD_DEFAULT),
-                    ])->where('id', 1)->save();
-        if($update)
-        {
-            Admin_auth::login(Input::get('email'));
-            Session::flash('success', 'Password updated successfully!');
             return back();
         }
+        
+        if($validation->passed())
+        {
+            $verify = $connection->select('admins')->where('id', 1)->first();
+            if($verify->email != Input::get('email'))
+            {
+                $state = true;
+                Session::delete('admin');
+                Session::flash('error', '*Wrong email, login and try again');
+            }
+
+            if(!password_verify(Input::get('old_password'), $verify->password))
+            {
+                $state = true;
+                Session::delete('admin');
+                Session::flash('error', '*Wrong password, login and try again!');
+            }
+        
+            if($state){
+                Session::put('old_url', '/admin-nanny/change-password');
+                return view('/admin/login');
+            }
+            
+            $update = $connection->update('admins', [
+                            'password' => password_hash(Input::get('new_password'), PASSWORD_DEFAULT),
+                        ])->where('id', 1)->save();
+            if($update)
+            {
+                Admin_auth::login(Input::get('email'));
+                Session::flash('success', 'Password updated successfully!');
+                return back();
+            }
+        }
     }
-    
     
 }
 
@@ -164,19 +166,16 @@ $app_settings =  $connection->select('settings')->where('id', 1)->first();
                                     </div>
                                 </div>
                             </div>
+                            <?= csrf_token() ?>
                         </form>
-                    </div>
-                </div>
-                <div class="row mt50 mb50">
-                    <div class="col-lg-6 offset-lg-3">
-                        <div class="copyright-widget text-center">
-                            <p class="color-black2"><?= $app_settings->alrights ?></p>
-                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+</div>
+<div class="footer-copy-right">
+    <p><?= $banner->alrights ?></p>
 </div>
 <a class="scrollToHome" href="#"><i class="flaticon-up-arrow-1"></i></a>
 </div>

@@ -14,8 +14,7 @@ $course_user = $connection->select('course_users')->where('id', Auth_course::use
 		<div class="nav-left"> <!-- nav left start-->
 			<i class="fa fa-bars toggle-side-navigation"></i>
 			<a href="<?= url('/') ?>">
-			   <img src="<?= asset($settings->logo) ?>" alt="<?= $settings->app_name ?>" class="nav-img">
-			   <span class="nav-app-name"><?= $settings->app_name ?></span>
+			   <img src="<?= asset($settings->logo) ?>" alt="<?= $settings->app_name ?>" class="nav-img-img">
 			</a>
 		</div><!-- nav left end-->
 		<div class="navigation-search">
@@ -32,7 +31,9 @@ $course_user = $connection->select('course_users')->where('id', Auth_course::use
 					<a href="<?= url('/courses/login')?>"><i class="fa fa-sign-in text-danger"></i></a>
 				<?php endif; ?>
 				<?php $profile_image = $course_user && $course_user->image ? $course_user->image : '/employee/images/demo.png' ?>
-				<img src="<?= asset($profile_image) ?>" alt="name" class="nav-profile-img"></span>
+				<a href="<?= url('/courses/account')?>">
+					<img src="<?= asset($profile_image) ?>" alt="name" class="nav-profile-img"></span>
+				</a>
 				<i class="fa fa-bars toggle-side-navigation"></i>
 			</div>
 		</div><!-- nav right end-->

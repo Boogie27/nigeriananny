@@ -11,6 +11,9 @@ if(Cookie::has('saved_worker'))
 {
     $savedSides = json_decode(Cookie::get('saved_worker'), true);
 }
+
+$auth_employee = Auth_employee::is_loggedin();
+$auth_employer = Auth_employer::is_loggedin();
 ?>
 
 
@@ -25,7 +28,7 @@ if(Cookie::has('saved_worker'))
                 <a href="<?= url('/')?>"><i class="fa fa-home"></i>Home</a>
             </li>
             <li>
-                <a href="#" class="nav-drop-down"><i class="fa fa-cubes"></i>Categories <i class="fa fa-angle-right float-right angle"></i></a>
+                <a href="#" class="nav-drop-down"><i class="fa fa-cubes"></i>Job Categories <i class="fa fa-angle-right float-right angle"></i></a>
                 <?php if(count($categories)):?>
                 <ul class="child-drop-down">
                     <li><a href="<?= url('/jobs')?>">All categories</a></li>
@@ -37,16 +40,18 @@ if(Cookie::has('saved_worker'))
             </li>
             <li>
                 <a href="#" class="nav-drop-down"><i class="fa fa-heart"></i>Saved jobs <span class="text-danger side-saved-workers"><?= $savedSides ? '('.count($savedSides).')' : ''?></span><i class="fa fa-angle-right float-right angle"></i></a>
+                <ul class="child-drop-down" id="side_saved_workers">
                 <?php if($savedSides):?>
-                <ul class="child-drop-down">
                     <?php foreach($savedSides as $savedSide): ?>
-                    <li><a href="<?= url('/job-detail.php?wid='.$savedSide['worker_id']) ?>"><?= $savedSide['title']?></a></li>
+                        <li><a href="<?= url('/job-detail.php?wid='.$savedSide['worker_id']) ?>"><?= $savedSide['title']?></a></li>
                     <?php endforeach; ?>
-                </ul>
+                    <?php else: ?>
+                    <li class="text-center text-danger" style="font-size: 10px;">No saved workers</li>
                 <?php endif; ?>
+                </ul>
             </li>
             <li>
-                <?php if(Auth_employee::is_loggedin()):?>
+                <?php if($auth_employee):?>
                     <a href="#" class="nav-drop-down"><i class="fa fa-user"></i>Account <i class="fa fa-angle-right float-right angle"></i></a>
                     <ul class="child-drop-down">
                         <li> <a href="<?= url('/employee/account') ?>">Account</a></li>
@@ -55,7 +60,7 @@ if(Cookie::has('saved_worker'))
                 <?php endif; ?>
             </li>
             <li>
-                <?php if(Auth_employer::is_loggedin()):?>
+                <?php if($auth_employer):?>
                     <a href="<?= url('/employer/account') ?>"><i class="fa fa-user"></i> Account</a>
                 <?php endif; ?>
                 <a href="<?= url('/subscription') ?>"><i class="fa fa-money"></i> Subscription plan</a>
@@ -63,8 +68,13 @@ if(Cookie::has('saved_worker'))
             <li>
                 <a href="<?= url('/jobs') ?>"><i class="fa fa-briefcase"></i>Find a worker</a>
             </li>
+            <?php if($auth_employer || $auth_employee):?>
             <li>
                 <a href="<?= url('/flagged') ?>"><i class="fa fa-flag"></i>Flagged </a>
+            </li>
+            <?php endif; ?>
+            <li>
+                <a href="<?= url('/how-it-works') ?>"><i class="fa fa-cog"></i>How it works </a>
             </li>
             <li>
                 <a href="<?= url('/shop') ?>"><i class="fa fa-shopping-cart"></i>Market place</a>
@@ -76,22 +86,22 @@ if(Cookie::has('saved_worker'))
                 <a href="<?= url('/contact') ?>"><i class="fa fa-phone"></i>Contact us</a>
             </li>
             <li>
-                <?php if(!Auth_employer::is_loggedin()):?>
+                <?php if(!$auth_employer):?>
                     <a href="<?= url('/employer/login') ?>"><i class="fa fa-sign-in"></i>Employer Login</a>
                 <?php endif; ?>
             </li>
             <li>
-                <?php if(!Auth_employee::is_loggedin()):?>
+                <?php if(!$auth_employee):?>
                     <a href="<?= url('/employee/login') ?>"><i class="fa fa-sign-in"></i>Employee Login</a>
                 <?php endif; ?>
             </li>
             <li>
-                <?php if(Auth_employer::is_loggedin()):?>
+                <?php if($auth_employer):?>
                     <a href="<?= url('/employer/logout') ?>" id="employer_logout_btn"><i class="fa fa-power-off"></i> Logout</a>
                 <?php endif; ?>
             </li>
             <li>
-                <?php if(Auth_employee::is_loggedin()):?>
+                <?php if($auth_employee):?>
                     <a href="<?= url('/employee/logout') ?>" id="employee_logout_btn"><i class="fa fa-power-off"></i> Logout</a>
                 <?php endif; ?>
             </li>

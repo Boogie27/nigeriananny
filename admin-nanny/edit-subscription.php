@@ -17,46 +17,49 @@ if(!Input::exists('get') || !Input::get('sid'))
   
 if(Input::post('subscription'))
 {
-     $validate = new DB();
-     $validation = $validate->validate([
-            'type' => 'required|min:2|max:50',
-            'duration' => 'required',
-            'amount' => 'required',
-            'access' => 'required',
-            'description' => 'required|min:6|max:500'
-     ]);
+    if(Token::check())
+    {
+        $validate = new DB();
+        $validation = $validate->validate([
+                'type' => 'required|min:2|max:50',
+                'duration' => 'required',
+                'amount' => 'required',
+                'access' => 'required',
+                'description' => 'required|min:6|max:500'
+        ]);
 
-    if(!$validation->passed())
-    {
-        return back();
-    }
-     
-    if($validation->passed())
-    {
-        $type = $connection->select('subscription_pan')->where('type', Input::get('type'))->where('sub_id', Input::get('sid'))->first();
-        if(!$type)
+        if(!$validation->passed())
         {
-            $type_other = $connection->select('subscription_pan')->where('type', Input::get('type'))->get();
-            if(count($type_other))
+            return back();
+        }
+        
+        if($validation->passed())
+        {
+            $type = $connection->select('subscription_pan')->where('type', Input::get('type'))->where('sub_id', Input::get('sid'))->first();
+            if(!$type)
             {
-                Session::errors('errors', ['type' => '*Type already exist']);
-                return back();
+                $type_other = $connection->select('subscription_pan')->where('type', Input::get('type'))->get();
+                if(count($type_other))
+                {
+                    Session::errors('errors', ['type' => '*Type already exist']);
+                    return back();
+                }
             }
         }
-    }
-    
-    $is_feature = Input::get('feature') ? 1 : 0;
-    $update = $connection->update('subscription_pan', [
-                   'type' => Input::get('type'),
-                   'duration' => Input::get('duration'),
-                   'access' => Input::get('access'),
-                   'description' => Input::get('description'),
-                   'amount' => Input::get('amount'),
-                   'is_feature' => $is_feature,
-    ])->where('sub_id', Input::get('sid'))->save();
-    if($update){
-        Session::flash('success', 'Subscription updated successfully!');
-        return view('/admin-nanny/subscriptions');
+        
+        $is_feature = Input::get('feature') ? 1 : 0;
+        $update = $connection->update('subscription_pan', [
+                    'type' => Input::get('type'),
+                    'duration' => Input::get('duration'),
+                    'access' => Input::get('access'),
+                    'description' => Input::get('description'),
+                    'amount' => Input::get('amount'),
+                    'is_feature' => $is_feature,
+        ])->where('sub_id', Input::get('sid'))->save();
+        if($update){
+            Session::flash('success', 'Subscription updated successfully!');
+            return view('/admin-nanny/subscriptions');
+        }
     }
 }
 
@@ -67,15 +70,6 @@ if(Input::post('subscription'))
 // GET EDIT SUBSCRIPTION
 // ===========================================
 $subscription = $connection->select('subscription_pan')->where('sub_id', Input::get('sid'))->first();
-
-
-
-
-
-// ================================================
-// app banner settings
-// ================================================
-$banner =  $connection->select('settings')->where('id', 1)->first();
 
 
 ?>
@@ -203,19 +197,16 @@ $banner =  $connection->select('settings')->where('id', 1)->first();
                                     </div>
                                 </div>
                             </div>
+                            <?= csrf_token() ?>
                         </form>
-                    </div>
-                </div>
-                <div class="row mt50 mb50">
-                    <div class="col-lg-6 offset-lg-3">
-                        <div class="copyright-widget text-center">
-                            <p class="color-black2"><?= $banner->alrights ?></p>
-                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+</div>
+<div class="footer-copy-right">
+    <p><?= $banner->alrights ?></p>
 </div>
 <a class="scrollToHome" href="#"><i class="flaticon-up-arrow-1"></i></a>
 </div>

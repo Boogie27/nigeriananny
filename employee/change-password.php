@@ -10,38 +10,43 @@ if(!Auth_employee::is_loggedin())
 
 if(Input::post('update_password'))
 {
-    $validate = new DB();
-    $validation = $validate->validate([
-        'old_password' => 'required|min:6|max:12',
-        'new_password' => 'required|min:6|max:12',
-        'confirm_password' => 'required|min:6|max:12|match:new_password',
-    ]);
-
-    if(!$validation->passed())
+    if(Token::check())
     {
-        return back();
-    }
+        $validate = new DB();
+        $validation = $validate->validate([
+            'old_password' => 'required|min:6|max:12',
+            'new_password' => 'required|min:6|max:12',
+            'confirm_password' => 'required|min:6|max:12|match:new_password',
+        ]);
 
-    if($validation->passed())
-    {
-        $old_password = $connection->select('employee')->where('e_id', Auth_employee::employee('id'))->first();
-        if(!password_verify(Input::get('old_password'), $old_password->password))
+        if(!$validation->passed())
         {
-            Session::errors('errors', ['old_password' => '*Wrong old password, try again!']);
             return back();
         }
 
-        $update = $connection->update('employee', [
-                    'password' =>  password_hash(Input::get('new_password'), PASSWORD_DEFAULT),
-                ])->where('e_id', Auth_employee::employee('id'))->save();
-
-        if($update->passed())
+        if($validation->passed())
         {
-            Session::flash('success', 'Password updated successfully!');
-            Session::flash('success-m', 'Password updated successfully!');
-            return back();
+            $old_password = $connection->select('employee')->where('e_id', Auth_employee::employee('id'))->first();
+            if(!password_verify(Input::get('old_password'), $old_password->password))
+            {
+                Session::errors('errors', ['old_password' => '*Wrong old password, try again!']);
+                return back();
+            }
+
+            $update = $connection->update('employee', [
+                        'password' =>  password_hash(Input::get('new_password'), PASSWORD_DEFAULT),
+                    ])->where('e_id', Auth_employee::employee('id'))->save();
+
+            if($update->passed())
+            {
+                Session::flash('success', 'Password updated successfully!');
+                Session::flash('success-m', 'Password updated successfully!');
+                return back();
+            }
         }
     }
+    Session::flash('error', 'Network error, try again later!');
+    return back();
 }
 
 
@@ -110,7 +115,7 @@ if(!$employee)
                                        <div class="dob text-center text-success" style="font-size: 12px;"><span>Joined: </span><?= date('d M Y', strtotime($employee->date_joined)) ?></div>
                                          <ul class="anchor-acc">
                                             <li><a href="<?= url('/employee/account') ?>">Account</a></li>
-                                            <li><a href="<?= url('/employee/job-offer') ?>">Job offeres</a></li>
+                                            <li><a href="<?= url('/employee/job-offer') ?>">Job offers</a></li>
                                             <li><a href="<?= url('/employee/accepted')?>">Accepted offers</a></li>
                                             <li><a href="<?= url('/employee/job-history')?>">Offer history</a></li>
                                             <li><a href="<?= url('/employee/change-password')?>">Change password</a></li>
@@ -158,6 +163,7 @@ if(!$employee)
                                                     <button type="submit" name="update_password" class="btn btn-primary view-btn-fill">Update...</button>
                                             </div>
                                         </div>
+                                        <?= csrf_token() ?>
                                     </form>
                                 </div>
                             </div>

@@ -12,34 +12,36 @@
 // ******** REGISTER COURSE USER ***********//
 if(Input::post('register'))
 {
-    $validate = new DB();
-       
-    $validation = $validate->validate([
-        'first_name' => 'required|min:3|max:50',
-        'last_name' => 'required|min:3|max:50',
-        'password' => 'required|min:6|max:12',
-        'confirm_password' => 'required|min:6|match:password',
-        'email' => 'required|email|unique:course_users'
-    ]);
-
-    if($validation->passed())
+    if(Token::check())
     {
-        $connection->create('course_users', [
-            'first_name' => Input::get('first_name'),
-            'last_name' => Input::get('last_name'),
-            'email' => Input::get('email'),
-            'password' => password_hash(Input::get('password'), PASSWORD_DEFAULT),
+        $validate = new DB();
+        
+        $validation = $validate->validate([
+            'first_name' => 'required|min:3|max:50',
+            'last_name' => 'required|min:3|max:50',
+            'password' => 'required|min:6|max:12',
+            'confirm_password' => 'required|min:6|match:password',
+            'email' => 'required|email|unique:course_users'
         ]);
 
-        $remember_me = Input::get('remember_me') ? true : false;
-
-        if(Auth_course::login(Input::get('email'), $remember_me))
+        if($validation->passed())
         {
-            Session::flash('success', 'Account created successfully');
-            return view('/courses');
+            $connection->create('course_users', [
+                'first_name' => Input::get('first_name'),
+                'last_name' => Input::get('last_name'),
+                'email' => Input::get('email'),
+                'password' => password_hash(Input::get('password'), PASSWORD_DEFAULT),
+            ]);
+
+            $remember_me = Input::get('remember_me') ? true : false;
+
+            if(Auth_course::login(Input::get('email'), $remember_me))
+            {
+                Session::flash('success', 'Account created successfully');
+                return view('/courses');
+            }
         }
     }
-   
 }
 
 
@@ -142,6 +144,7 @@ $others = $connection->select('courses')->where('is_feature', 1)->random()->limi
                                         </div>
                                      </div>
                                 </div>
+                                <?= csrf_token() ?>
 							</form>
 						</div>
                     </div>

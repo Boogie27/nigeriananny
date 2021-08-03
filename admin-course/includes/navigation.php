@@ -32,7 +32,6 @@ $nav_nots = $connection->select('notifications')->where('to_id', 1)->where('to_u
 		        <a href="<?= url('/') ?>" class="navbar_brand float-left dn-smd">
 		            <img class="logo1 img-fluid navi-top-img" src="<?= asset($banner->logo) ?>" alt="<?= $banner->app_name ?>">
 		            <img class="logo2 img-fluid navi-top-img" src="<?= asset($banner->logo) ?>" alt="<?= $banner->app_name ?>">
-		            <span><?= $banner->app_name ?></span>
 		        </a>
 		        <!-- Responsive Menu Structure-->
 		        <!--Note: declare the Menu style in the data-menu-style="horizontal" (options: horizontal, vertical, accordion) -->
@@ -57,8 +56,6 @@ $nav_nots = $connection->select('notifications')->where('to_id', 1)->where('to_u
 		                <a href="#"><span class="title">News letter</span></a>
 		                <ul>
 							<li><a href="<?= url('/admin-nanny/news-letters') ?>">News letter</a></li>
-							<li><a href="<?= url('/admin-nanny/employer-newsletter') ?>">Employer news letter</a></li>
-							<li><a href="<?= url('/admin-nanny/employee-newsletter') ?>">Employee news letter</a></li>
 		                </ul>
 					</li>
 					<li>

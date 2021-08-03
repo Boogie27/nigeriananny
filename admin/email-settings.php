@@ -12,38 +12,41 @@ if(!Admin_auth::is_loggedin())
 
 if(Input::post('update_email_settings'))
 {
-	$validate = new DB();
-       
-	$validation = $validate->validate([
-		'from_name' => 'required|min:1|max:50',
-		'from_email' => 'required',
-		'smtp_host' => 'required|min:3|max:50',
-		'smtp_port' => 'required|number',
-		'smtp_username' => 'required|min:3|max:200',
-		'smtp_password' => 'required|min:6',
-	]);
-
-	if(!$validation->passed())
+	if(Token::check())
     {
-        return back();
-    }
-	
-	if($validation->passed())
-	{
-		$connection = new DB();
-		$update_settings = $connection->update('settings', [
-						'from_name' => Input::get('from_name'),
-						'from_email' => Input::get('from_email'),
-						'smtp_host' => Input::get('smtp_host'),
-						'smtp_port' => Input::get('smtp_port'),
-						'smtp_username' => Input::get('smtp_username'),
-						'smtp_password' => Input::get('smtp_password'),
-					])->where('id', 1)->save();
-		if($update_settings)
+		$validate = new DB();
+		
+		$validation = $validate->validate([
+			'from_name' => 'required|min:1|max:50',
+			'from_email' => 'required',
+			'smtp_host' => 'required|min:3|max:50',
+			'smtp_port' => 'required|number',
+			'smtp_username' => 'required|min:3|max:200',
+			'smtp_password' => 'required|min:6',
+		]);
+
+		if(!$validation->passed())
 		{
-			Session::flash('success', 'Email settings has been updated successfully!');
 			return back();
-		}   
+		}
+		
+		if($validation->passed())
+		{
+			$connection = new DB();
+			$update_settings = $connection->update('settings', [
+							'from_name' => Input::get('from_name'),
+							'from_email' => Input::get('from_email'),
+							'smtp_host' => Input::get('smtp_host'),
+							'smtp_port' => Input::get('smtp_port'),
+							'smtp_username' => Input::get('smtp_username'),
+							'smtp_password' => Input::get('smtp_password'),
+						])->where('id', 1)->save();
+			if($update_settings)
+			{
+				Session::flash('success', 'Email settings has been updated successfully!');
+				return back();
+			}   
+		}
 	}
 }
 
@@ -155,6 +158,7 @@ $settings =  $connection->select('settings')->where('id', 1)->first();
 										</div>
 							    	</div>
 								</div>
+								<?= csrf_token() ?>
 							</form>
 						</div>
 					</div>
