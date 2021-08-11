@@ -139,8 +139,12 @@ if(Input::get('search') && !count($workers->result()))
                             <?php endforeach; ?>
                         </div>
                         <?php else: ?>
-                            <div class="empty-alert">
+                            <!-- <div class="empty-alert">
                                 <div class="empty-alert-content">There are no employees!</div>
+                            </div> -->
+                            <div class="empty-alert-img">
+                                <img src="<?= asset('/images/banner/awr.jpg') ?>" alt="">
+                                <div class="alert-font">There are no employees!</div>
                             </div>
                         <?php endif;?>
                     </div>

@@ -17,68 +17,71 @@ if(!$user)
 // ==========================================
 if(Input::post('update_detail'))
 {
-    $validate = new DB();
-       
-    $validation = $validate->validate([
-        'email' => 'required|email',
-        'first_name' => 'required|min:3|max:50',
-        'last_name' => 'required|min:3|max:50',
-        'phone' => 'required|min:11|max:15',
-        'gender' => 'required',
-    ]);
-
-    $user_email = $connection->select('users')->where('email', Auth::user('email'))->where('id', Auth::user('id'))->first();
-    if(!$user_email)
+    if(Token::check())
     {
-        $other_email = $connection->select('users')->where('email', Input::get('email'))->first();
-        if($other_email)
-        {
-            Session::flash('errors', ['email' => "*email already exist!"]);
-            return back();
-        }
-    }
-
-    $image_name = $user_email->user_image ? $user_email->user_image : null;
-    if(Image::exists('image'))
-    {
-
-        if($user_email->user_image)
-        {
-            Image::delete('../'.$user_email->user_image);
-        }
-
-        $image = new Image();
-        $file = Image::files('image');
-
-        $file_name = Image::name('image', 'users');
-        $image->resize_image($file, [ 'name' => $file_name, 'width' => 100, 'height' => 100, 'size_allowed' => 1000000,'file_destination' => '../shop/images/users/']);
-            
-        $image_name = '/shop/images/users/'.$file_name;
-        if(!$image->passed())
-        {
-            Session::flash('errors', ['profile_image' => $image->error()]);
-            return back();
-        }
-    }
-
-
-
-    
-    if($validation->passed())
-    {
-        $update = $connection->update('users', [
-            'first_name' => Input::get('first_name'),
-            'last_name' => Input::get('last_name'),
-            'email' => Input::get('email'),
-            'phone' => Input::get('phone'),
-            'gender' => Input::get('gender'),
-            'birth_date' => Input::get('birth_date'),
-            'user_image' => $image_name,
-        ])->where('id', Auth::user('id'))->save();
+        $validate = new DB();
         
-        Auth::login(Input::get('email'));
-        Session::put('success', 'Detail has been updated sucessfully!');
-        return back();
+        $validation = $validate->validate([
+            'email' => 'required|email',
+            'first_name' => 'required|min:3|max:50',
+            'last_name' => 'required|min:3|max:50',
+            'phone' => 'required|min:11|max:15',
+            'gender' => 'required',
+        ]);
+
+        $user_email = $connection->select('users')->where('email', Auth::user('email'))->where('id', Auth::user('id'))->first();
+        if(!$user_email)
+        {
+            $other_email = $connection->select('users')->where('email', Input::get('email'))->first();
+            if($other_email)
+            {
+                Session::flash('errors', ['email' => "*email already exist!"]);
+                return back();
+            }
+        }
+
+        $image_name = $user_email->user_image ? $user_email->user_image : null;
+        if(Image::exists('image'))
+        {
+
+            if($user_email->user_image)
+            {
+                Image::delete('../'.$user_email->user_image);
+            }
+
+            $image = new Image();
+            $file = Image::files('image');
+
+            $file_name = Image::name('image', 'users');
+            $image->resize_image($file, [ 'name' => $file_name, 'width' => 100, 'height' => 100, 'size_allowed' => 10000000,'file_destination' => '../shop/images/users/']);
+                
+            $image_name = '/shop/images/users/'.$file_name;
+            if(!$image->passed())
+            {
+                Session::flash('errors', ['profile_image' => $image->error()]);
+                return back();
+            }
+        }
+
+
+
+        
+        if($validation->passed())
+        {
+            $update = $connection->update('users', [
+                'first_name' => Input::get('first_name'),
+                'last_name' => Input::get('last_name'),
+                'email' => Input::get('email'),
+                'phone' => Input::get('phone'),
+                'gender' => Input::get('gender'),
+                'birth_date' => Input::get('birth_date'),
+                'user_image' => $image_name,
+            ])->where('id', Auth::user('id'))->save();
+            
+            Auth::login(Input::get('email'));
+            Session::put('success', 'Detail has been updated sucessfully!');
+            return back();
+        }
     }
 }
 
@@ -214,14 +217,8 @@ if(Input::post('update_detail'))
 											</div>
 										</div>
 									</div>
+                                    <?= csrf_token() ?>
 								</form>
-							</div>
-						</div>
-					</div>
-					<div class="row mt50 mb50">
-						<div class="col-lg-6 offset-lg-3">
-							<div class="copyright-widget text-center">
-								<p class="color-black2">Copyright Edumy © 2019. All Rights Reserved.</p>
 							</div>
 						</div>
 					</div>

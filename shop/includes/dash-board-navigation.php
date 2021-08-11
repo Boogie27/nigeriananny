@@ -39,6 +39,9 @@ $banner =  $connection->select('settings')->where('id', 1)->first();
 		        <!-- Responsive Menu Structure-->
 		        <!--Note: declare the Menu style in the data-menu-style="horizontal" (options: horizontal, vertical, accordion) -->
 		        <ul id="respMenu" class="ace-responsive-menu" data-menu-style="horizontal">
+				    <li>
+		                <a href="<?= url('/shop') ?>"><span class="title">Home</span></a>
+		            </li>
 		            <li>
 		                <a href="#"><span class="title">Categories</span></a>
 						<!-- Level Two-->
@@ -68,9 +71,6 @@ $banner =  $connection->select('settings')->where('id', 1)->first();
 		            </li>
 		            <li>
 		                <a href="<?= url('/shop/order') ?>"><span class="title">My order</span></a>
-		            </li>
-					<li>
-		                <a href="<?= url('/shop/cart') ?>"><span class="title">Cart</span></a>
 		            </li>
 					<li>
 						<a href="#">More</a>

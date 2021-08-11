@@ -781,3 +781,6 @@ img.footer-img, img.navi-top-img{
 .navbar_brand span.nav-app-name{
     font-size: 11px;
 }
+ul.ace-responsive-menu ul.sub-navi{
+    display: none;
+}

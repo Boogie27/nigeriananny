@@ -9,34 +9,37 @@
 
    if(Input::post('register'))
    {
-        $validate = new DB();
-       
-        $validation = $validate->validate([
-            'first_name' => 'required|min:3|max:50',
-            'last_name' => 'required|min:3|max:50',
-            'email' => 'required|email|unique:users',
-            'password' => 'required|min:6|max:12',
-            'confirm_password' => 'required|match:password',
-        ]);
-        
-        if($validation->passed())
+        if(Token::check())
         {
-            $create = new DB();
-            $create->create('users', [
-                    'first_name' => Input::get('first_name'),
-                    'last_name' => Input::get('last_name'),
-                    'email' => Input::get('email'),
-                    'password' => password_hash(Input::get('password'), PASSWORD_DEFAULT)
-                ]);
-
-            if($create->passed())
+            $validate = new DB();
+        
+            $validation = $validate->validate([
+                'first_name' => 'required|min:3|max:50',
+                'last_name' => 'required|min:3|max:50',
+                'email' => 'required|email|unique:users',
+                'password' => 'required|min:6|max:12',
+                'confirm_password' => 'required|match:password',
+            ]);
+            
+            if($validation->passed())
             {
-                if(Auth::login(Input::get('email')))
+                $create = new DB();
+                $create->create('users', [
+                        'first_name' => Input::get('first_name'),
+                        'last_name' => Input::get('last_name'),
+                        'email' => Input::get('email'),
+                        'password' => password_hash(Input::get('password'), PASSWORD_DEFAULT)
+                    ]);
+
+                if($create->passed())
                 {
-                   return view('/shop');
+                    if(Auth::login(Input::get('email')))
+                    {
+                    return view('/shop');
+                    }
                 }
+            
             }
-           
         }
    }
 
@@ -139,6 +142,7 @@
                         <button type="submit"  class="btn btn-block color-white bgc-gogle"><i class="fa fa-google float-left mt5"></i> Google</button>
                     </div>
                 </div>
+                <?= csrf_token() ?>
             </form>
         </div>
     </div>

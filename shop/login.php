@@ -10,58 +10,60 @@
     
    if(Input::post('login'))
    {
-        $validate = new DB();
-       
-        $validate->validate([
-            'email' => 'required|email',
-            'password' => 'required|min:6|max:12',
-        ]);
-
-
-        if(!$validate->passed())
+        if(Token::check())
         {
-            return back();
-        }
+            $validate = new DB();
         
-        if($validate->passed())
-        {
-            $verify = new DB();
-            $verification = $verify->select('users')->where('email', Input::get('email'))->first();
-            if(!$verification)
+            $validate->validate([
+                'email' => 'required|email',
+                'password' => 'required|min:6|max:12',
+            ]);
+
+
+            if(!$validate->passed())
             {
-                Session::errors('errors', ['email' => '*Wrong email provided, try again!']);
-               return back();
+                return back();
             }
-
-            if(!password_verify(Input::get('password'), $verification->password))
+            
+            if($validate->passed())
             {
-                Session::errors('errors', ['password' => '*Wrong password, try again!']);
-               return back();
-            }
+                $verify = new DB();
+                $verification = $verify->select('users')->where('email', Input::get('email'))->first();
+                if(!$verification)
+                {
+                    Session::errors('errors', ['email' => '*Wrong email provided, try again!']);
+                return back();
+                }
 
-            if($verification->is_deactivate)
-            {
-                Session::flash('error', '*This account has been deactivated, please contact the admin.');
-               return back();
-            }
+                if(!password_verify(Input::get('password'), $verification->password))
+                {
+                    Session::errors('errors', ['password' => '*Wrong password, try again!']);
+                return back();
+                }
 
-            $remember_me = Input::get('remember_me')? true : false;
+                if($verification->is_deactivate)
+                {
+                    Session::flash('error', '*This account has been deactivated, please contact the admin.');
+                return back();
+                }
 
-            $logged_in = Auth::login(Input::get('email'), $remember_me);
+                $remember_me = Input::get('remember_me')? true : false;
 
-            if($logged_in && Session::has('old_url'))
-            {
-                $old_url = Session::get('old_url');
-                Session::delete('old_url');
-                return Redirect::to($old_url);
-            }
+                $logged_in = Auth::login(Input::get('email'), $remember_me);
 
-            if($logged_in)
-            {
-                return view('/shop');
+                if($logged_in && Session::has('old_url'))
+                {
+                    $old_url = Session::get('old_url');
+                    Session::delete('old_url');
+                    return Redirect::to($old_url);
+                }
+
+                if($logged_in)
+                {
+                    return view('/shop');
+                }
             }
         }
-       
    }
 
 
@@ -177,6 +179,7 @@ if(Input::post('facebook_login'))
                     <button type="submit" name="google_login" class="btn btn-block color-white bgc-gogle"><i class="fa fa-google float-left mt5"></i> Google</button>
                 </div>
             </div>
+            <?= csrf_token() ?>
         </form>
     </div>
 </div>

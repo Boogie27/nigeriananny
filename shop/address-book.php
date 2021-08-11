@@ -13,34 +13,37 @@ if(!Auth::is_loggedin())
 
 if(Input::post('update_address'))
 {
-    $validate = new DB();
-    $message = Input::get('message');
-       
-    $validation = $validate->validate([
-        'first_name' => 'required|min:3|max:50',
-        'last_name' => 'required|min:3|max:50',
-        'message' => 'min:3|max:4000',
-        'address' => 'required:3|max:1000',
-        'state' => 'required|min:3|max:50',
-        'city' => 'required|min:3|max:50',
-        'country' => 'required|min:3|max:50'
-    ]);
-
-    if($validation->passed())
+	if(Token::check())
     {
-        $update = $connection->update('users', [
-            'first_name' => Input::get('first_name'),
-            'last_name' => Input::get('last_name'),
-            'address' => Input::get('address'),
-            'user_about' => Input::get('message'),
-            'city' => Input::get('city'),
-            'state' => Input::get('state'),
-            'country' => Input::get('country'),
-        ])->where('id', Auth::user('id'))->save();
-        
-        Session::put('success', 'Address has been updated sucessfully!');
-        return back();
-    }
+		$validate = new DB();
+		$message = Input::get('message');
+		
+		$validation = $validate->validate([
+			'first_name' => 'required|min:3|max:50',
+			'last_name' => 'required|min:3|max:50',
+			'message' => 'min:3|max:4000',
+			'address' => 'required:3|max:1000',
+			'state' => 'required|min:3|max:50',
+			'city' => 'required|min:3|max:50',
+			'country' => 'required|min:3|max:50'
+		]);
+
+		if($validation->passed())
+		{
+			$update = $connection->update('users', [
+				'first_name' => Input::get('first_name'),
+				'last_name' => Input::get('last_name'),
+				'address' => Input::get('address'),
+				'user_about' => Input::get('message'),
+				'city' => Input::get('city'),
+				'state' => Input::get('state'),
+				'country' => Input::get('country'),
+			])->where('id', Auth::user('id'))->save();
+			
+			Session::put('success', 'Address has been updated sucessfully!');
+			return back();
+		}
+	}
 }
 ?>
 <?php include('includes/header.php') ?>
@@ -168,6 +171,7 @@ if(Input::post('update_address'))
 											</div>
 										</div>
 									</div>
+									<?= csrf_token() ?>
 								</form>
 							</div>
 						</div>
