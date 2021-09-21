@@ -539,9 +539,9 @@ ul.child-drop-down{
 .banner-style-two .slide:before{
   background-color: rgba(0, 0, 0, 0.431);
 }
-.banner-style-one{
+/* .banner-style-one{
     height: 500px;
-}
+} */
 .carousel-btn i, .carousel-btn span{
     color: rgba(255, 255, 255, 0.445);
 }
