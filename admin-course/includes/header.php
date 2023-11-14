@@ -18,6 +18,16 @@ if(count($employer_subs))
 	}
 }
 
+
+// app banner settings
+$settings =  $connection->select('settings')->where('id', 1)->first();
+if(!$settings->is_active && !Admin_auth::is_loggedin())
+{
+    return view('/under-construction');
+}
+
+
+
 ?>
 
 
@@ -33,9 +43,15 @@ if(count($employer_subs))
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="keywords" content="academy, college, coursera, courses, education, elearning, kindergarten, lms, lynda, online course, online education, school, training, udemy, university">
-<meta name="description" content="admin">
+<meta name="keywords">
+<meta name="description" content="shop">
 <meta name="CreativeLayers" content="ATFN">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<meta property="og:url" content="<?= current_url() ?>">
+<meta property="og:title" content="<?= $settings->site_name ?>">
+<meta name="description" content="We offer you the best employee">
+<meta property="og:image" content="<?= asset('/images/icons/icon.ico') ?>" href="<?= asset('/images/icons/icon.ico') ?>">
+
 <!-- css file -->
 <link rel="stylesheet" href="<?= asset('/admin-course/css/bootstrap.min.css') ?>">
 <link rel="stylesheet" href="<?= asset('/admin-course/css/style.css') ?>">
