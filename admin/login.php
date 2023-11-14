@@ -1,4 +1,4 @@
-<?php include('../Connection.php');  ?>
+<?php include('../Connection_Admin.php');  ?>
 
 <?php
     if(Admin_auth::is_loggedin())
@@ -41,13 +41,14 @@
                 
                 if(Admin_auth::login(Input::get('email')))
                 {
-                    if(Session::has('old_url'))
-                    {
-                        $old_url = Session::get('old_url');
-                        Session::delete('old_url');
-                        Session::flash('success', 'You have loggedin successfully!');
-                        return view($old_url);
-                    }
+                    // if(Session::has('old_url'))
+                    // {
+                    //     $old_url = Session::get('old_url');
+                    //     Session::delete('old_url');
+                    //     Session::flash('success', 'You have loggedin successfully!');
+                        
+                    //     return view($old_url);
+                    // }
 
                     Session::flash('success', 'You have loggedin successfully!');
                     return view('/admin-nanny');

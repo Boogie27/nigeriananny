@@ -29,10 +29,15 @@ include('helpers/helpers.php');
 
 
 
+
 $connection = DB::instantiate(); //use this instantiated class to make query to database;
 
 $errors = Session::flash('errors'); //get field errors from session
      
+
+
+
+
 // ******* DELETE OLD POST INPUT *********//
 if(Session::has('old_post_url'))
 {
@@ -59,7 +64,7 @@ if(Cookie::exists('remember_me') && !Session::has('user'))
 // ==========================================
 // EMPLOYEE REMEMBER ME
 // ==========================================
-if(Cookie::exists('employee_remember_me') && !Session::has('user'))
+if(Cookie::exists('employee_remember_me') && !Session::has('employee'))
 {
     if(Auth_employee::remember_login(Cookie::get('employee_remember_me')))
     {
@@ -73,9 +78,9 @@ if(Cookie::exists('employee_remember_me') && !Session::has('user'))
 // ==========================================
 // EMPLOYER REMEMBER ME
 // ==========================================
-if(Cookie::exists('employee_remember_me') && !Session::has('user'))
+if(Cookie::exists('employer_remember_me') && !Session::has('employer'))
 {
-    if(Auth_employer::remember_login(Cookie::get('employee_remember_me')))
+    if(Auth_employer::remember_login(Cookie::get('employer_remember_me')))
     {
         return view('/');
     }

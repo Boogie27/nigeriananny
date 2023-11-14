@@ -132,7 +132,7 @@ if(Input::get('search') && !count($workers->result()))
                                         <?php if($worker->job_type):?>
                                         <li><?= $worker->job_type != 'live in' ? 'Live out | '.$location['state'] : 'Live in';?></li>
                                         <?php endif; ?>
-                                        <li><span class="text-warning"><?= $amount ?></span> <span class="float-right"><?= date('d M Y', strtotime($worker->date_added)) ?></span></li>
+                                        <li><span class="text-primary"><?= $amount ?></span> <span class="float-right"><?= date('d M Y', strtotime($worker->date_added)) ?></span></li>
                                     </ul>
                                 </div>
                             </div>

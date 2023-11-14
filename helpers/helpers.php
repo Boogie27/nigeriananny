@@ -64,6 +64,19 @@ function path($string){
 
 
 
+// check for url
+function url_check($string){
+    $url = explode('/', $_SERVER["REQUEST_URI"]);
+    foreach($url as $x){
+        if($x == $string){
+            return true;
+        }
+    }
+    return false;
+}
+
+
+
 
 
 
@@ -340,7 +353,7 @@ function page_expired()
                         </head>
                         <body>
                                 <div class="container">
-                                    <p class="inner">419 | page expired</p>
+                                    <p class="inner">Oops page expired</p>
                                 </div>
                         </body>
                         </html>';

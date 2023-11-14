@@ -1,4 +1,4 @@
-<?php include('../Connection.php');  ?>
+<?php include('../Connection_Admin.php');  ?>
 <?php
 if(!Admin_auth::is_loggedin())
 {
@@ -324,6 +324,11 @@ $setting =  $connection->select('settings')->where('id', 1)->first();
 											</div>
 										<?php endif; ?>
 									</div>
+									<div class="col-lg-12">
+										<div class="form-gorup">
+											<button type="submit" name="update_general_settings" class="btn btn-info float-right">Update...</button>
+										</div>
+									</div>
 								</div>
 							</div>
 
@@ -458,7 +463,6 @@ $setting =  $connection->select('settings')->where('id', 1)->first();
 											<button type="submit" name="update_general_settings" class="btn btn-info float-right">Update...</button>
 										</div>
 									</div>
-								
 								</div>
 							</div>
 							<!-- footer message start-->

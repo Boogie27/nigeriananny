@@ -238,9 +238,9 @@ a.btn-fill:hover{
 /*  NAVIGATION                             */
 /* ====================================== */
 .navigation{
-    padding: 10px 20px;
+    padding: 20px 20px;
     background-color: #fff;
-    box-shadow: 0px 2px 0px 0px rgba(177, 175, 175, 0.3);
+    border-bottom: 1px solid rgb(221, 221, 221);
 }
 .inner-navigation{
     display: flex;
@@ -299,6 +299,8 @@ span.nav-app-name{
 }
 .navigation-search{
     margin-left: 200px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
 }
 .navigation-search .nav-form{
     width: 400px;
@@ -591,12 +593,15 @@ ul.ul-content{
     font-size: 12px;
 }
 .inner-content ul li span{
-    font-size: 10px;
+    font-size: 12px;
 }
 ul.ul-content li h4{
-    font-size: 15px;
+    font-size: 17px;
     margin: 0px;
     color: rgb(71, 71, 71);
+}
+ul.ul-content li{
+    font-size: 15px;
 }
 .flex{
     display: flex;
@@ -700,13 +705,12 @@ ul.ul-content-two li p{
 /* ******** NEWS LETTER ************* */
 .content-three{
     padding: 30px 0px;
-    background-color: rgb(246, 246, 246);
+    background-color: rgb(228, 228, 228);
 }
 .news-letter-body{
     width: 80%;
     padding: 20px;
     margin: 0 auto;
-    background-color: #fff;
 }
 .update-content{
     top: 50px;

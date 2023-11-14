@@ -19,7 +19,7 @@ $new_messages = $connection->select('contact_us')->where('is_seen', 0)->get();
                
                 <ul>
                     <li class="<?= path('/') ? 'active' : ''?>"><a href="<?= url('/admin-nanny') ?>"><span class="flaticon-puzzle-1"></span> Dashboard</a></li>
-                    <li class="<?= path('categories') ? 'active' : ''?>"><a href="<?= url('/admin-nanny/categories') ?>"><span class="fa fa-cubes"></span>Categories</a></li>
+                    <li class="<?= path('categories') ? 'active' : ''?>"><a href="<?= url('/admin-nanny/categories') ?>"><span class="fa fa-cubes"></span>Job Categories</a></li>
                     <li class="<?= path('employees') ? 'active' : ''?>"><a href="<?= url('/admin-nanny/employees') ?>"><span class="fa fa-briefcase"></span>Employees</a></li>
                     <li class="<?= path('unapproved-employees') ? 'active' : ''?>"><a href="<?= url('/admin-nanny/unapproved-employees') ?>">Unapproved Employees <b class="badge bg-danger unapproved-span"><?= unapproved_members('employee') ?></b></a></li>
                     <li class="<?= path('deactivated-employees') ? 'active' : ''?>"><a href="<?= url('/admin-nanny/deactivated-employees') ?>">Deactivated Employees</a></li>

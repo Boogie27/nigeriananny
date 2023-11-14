@@ -1,4 +1,4 @@
-<?php include('../Connection.php');  ?>
+<?php include('../Connection_Admin.php');  ?>
 <?php
 if(!Admin_auth::is_loggedin())
 {

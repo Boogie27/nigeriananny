@@ -138,7 +138,8 @@ if(Cookie::has('saved_course'))
                                     <li class="c-font"><i class="fa fa-comment-o"></i> (<?= $course->rating_count ?>) Reviews </li>
                                 </ul>
                                 <div class="course-iframe">
-                                    <iframe width="560" height="315" src="<?= $course->video_link ?>" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                                    <?= $course->video_link ?>
+                                    <!-- <iframe width="560" height="315" src="#" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe> -->
                                 </div>
                                 <ul class="ul-share">
                                     <li>

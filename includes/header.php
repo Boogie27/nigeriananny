@@ -48,7 +48,7 @@ if(!$settings->is_active && !Admin_auth::is_loggedin())
 <body>
 
 <div class="wrapper page_wrapper">
-	<div class="preloader"></div>
+	<!-- <div class="preloader"></div> -->
 
 
 <!-- ajax preloader-->

@@ -922,7 +922,7 @@ img.nav-img-img{
     height: 50px;
 }
 .j-summary-detail p{
-    font-size: 13px;
+    font-size: 15px;
     margin-left: 15px;
 }
 .j-summary ul li{
@@ -935,10 +935,10 @@ ul.inner-ex{
     border-bottom: 1px solid rgba(221, 221, 221, 0.829);
 }
 ul#inner-ex li{
-   font-size: 13px;
+   font-size: 15px;
 }
 ul#inner-ex li span{
-    font-size: 11px;
+    font-size: 15px;
  }
 .experience-x{
     padding: 10px 0px;
@@ -985,6 +985,9 @@ ul#inner-ex li span{
 .j-bio{
    border-bottom: 1px solid rgba(221, 221, 221, 0.829);
 }
+.j-bio p{
+    font-size: 15px;
+}
 .j-bio, .j-contact{ 
     padding-bottom: 10px;
 }
@@ -1030,7 +1033,7 @@ ul.ability-x{
     padding-left: 30px;
 }
 ul.ability-x li{
-    font-size: 13px;
+    font-size: 15px;
 }
 @media only screen and (max-width: 992px){
     .row-expand{
@@ -1067,7 +1070,7 @@ ul.ability-x li{
     .j-summary-detail p{
         margin-left: 0px;
         padding-left: 10px;
-        font-size: 11px;
+        font-size: 15px;
     }
     .j-safety, .j-share{
         padding: 0px 8px;
@@ -2836,21 +2839,37 @@ ul.ul-job-side li a:hover{
     background-color: #fff;
 }
 .testimonial-body{
+    padding: 40px 10px;
     margin-bottom: 50px;
+    border-radius: 10px;
+    transition: transform  0.2s ease;
+    border: 1px solid transparent;
+    background-color: #fff;
+    border: 1px solid #ccc;
+}
+.testimonial-body:hover{
+    transform: scale(1.03);
+    background-color: rgb(255, 238, 205);
+    border: 1px solid rgb(246, 187, 76);
 }
 .testimoial-img{
+    width: 100px;
+    height: 100px;
+    margin: 0 auto;
+    overflow: hidden;
+    border-radius: 50%;
     text-align: center;
+    border: 2px solid  rgb(248, 179, 50);
 }
 .testimonial-body img{
     width: 100px;
-    border-radius: 50%;
-    border: 2px solid  rgb(248, 179, 50);
+    /* border-radius: 50%; */
+    
 }
 .testimonial-body ul{
     text-align: center;
     margin-top: 30px;
     padding: 10px;
-    box-shadow: 2px 2px 6px 3px rgba(230, 228, 228, 0.753);
 }
 .testimonial-body ul li h4{
     font-weight: 300;
